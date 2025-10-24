@@ -2,14 +2,16 @@
   "name": "@chati/database",
   "version": "1.0.0",
   "type": "module",
-  "main": "./src/index.js",
-  "types": "./src/index.d.ts",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
   "scripts": {
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
-    "db:studio": "prisma studio",
-    "build": "tsc"
+    "db:studio": "prisma studio"
   },
   "keywords": [],
   "author": "",

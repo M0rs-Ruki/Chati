@@ -15,10 +15,17 @@
     "strict": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "baseUrl": "./src"
+    "baseUrl": ".",
+    "paths": {
+      "@chati/database": [
+        "../../packages/database/src/index.ts"
+      ]
+    },
+    "allowJs": true
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "../../packages/database/src/**/*"
   ],
   "exclude": [
     "node_modules",
