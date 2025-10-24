@@ -1,0 +1,19 @@
+{
+  "name": "chati-cms",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "dev:backend": "npm run dev --workspace=backend",
+    "dev:site": "npm run dev --workspace=site",
+    "dev:admin": "npm run dev --workspace=admin"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.8"
+  }
+}
