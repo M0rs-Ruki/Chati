@@ -1,5 +1,0 @@
-{
-  "name": "@chati/types",
-  "type": "module",
-  "main": "./src/index.ts"
-}

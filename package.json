@@ -1,19 +1,21 @@
 {
-  "name": "chati-cms",
+  "name": "chati",
   "version": "1.0.0",
-  "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "dev": "turbo run dev",
-    "build": "turbo run build",
-    "dev:backend": "npm run dev --workspace=backend",
-    "dev:site": "npm run dev --workspace=site",
-    "dev:admin": "npm run dev --workspace=admin",
-    "install:all": "npm install"
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "db:push": "cd packages/database && pnpm db:push",
+    "db:migrate": "cd packages/database && pnpm db:migrate",
+    "db:studio": "cd packages/database && pnpm db:studio",
+    "db:seed": "cd packages/database && pnpm db:seed"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.19.0",
   "devDependencies": {
     "turbo": "^2.5.8"
   }
