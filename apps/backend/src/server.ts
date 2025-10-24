@@ -21,34 +21,6 @@ app.get("/", (req: Request, res: Response) => {
   });
 });
 
-// Test database route - Get all users
-app.get("/api/users", async (req: Request, res: Response) => {
-  try {
-    const users = await prisma.user.findMany({
-      select: {
-        id: true,
-        email: true,
-        name: true,
-        role: true,
-        status: true,
-        createdAt: true,
-      },
-    });
-
-    res.json({
-      status: "success",
-      count: users.length,
-      data: users,
-    });
-  } catch (error) {
-    res.status(500).json({
-      status: "error",
-      message: "Failed to fetch users",
-      error: error instanceof Error ? error.message : "Unknown error",
-    });
-  }
-});
-
 // Graceful shutdown
 process.on("SIGINT", async () => {
   await prisma.$disconnect();
