@@ -16,7 +16,9 @@
     "next": "16.0.0",
     "next-auth": "5.0.0-beta.29",
     "react": "19.2.0",
-    "react-dom": "19.2.0"
+    "react-dom": "19.2.0",
+    "react-quill": "^2.0.0",
+    "react-simple-wysiwyg": "^3.4.1"
   },
   "devDependencies": {
     "@repo/database": "workspace:*",
