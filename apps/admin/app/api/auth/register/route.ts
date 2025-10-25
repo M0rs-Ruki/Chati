@@ -1,4 +1,4 @@
-import { prisma } from '@repo/database'
+import { prisma } from '@/lib/prisma'
 import { NextResponse } from 'next/server'
 import { hashPassword, generateToken, setAuthCookie } from '@/lib/auth-utils'
 
