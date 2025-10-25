@@ -181,7 +181,7 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       {/* Welcome Header - glassy */}
-      <div className="relative overflow-hidden rounded-2xl p-6 md:p-7 border border-emerald-200/40 bg-white/50 backdrop-blur-xl shadow-[0_10px_30px_-10px_rgba(16,185,129,0.25)]">
+      <div className="relative overflow-hidden rounded-2xl p-6 md:p-7 border border-emerald-200/40 bg-white/5 backdrop-blur-xl shadow-[0_10px_30px_-10px_rgba(16,185,129,0.25)]">
         <div className="absolute -right-8 -top-8 h-40 w-40 rounded-full bg-emerald-200/30 blur-2xl" />
         <div className="absolute right-6 top-6 h-10 w-10 rounded-full bg-emerald-300/30 blur-xl" />
         <h1 className="text-3xl font-bold tracking-tight text-emerald-900">
