@@ -6,14 +6,16 @@ import { hashPassword } from "@/lib/auth-utils";
 // GET single user
 export async function GET(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { error } = await requireAuth(req);
     if (error) return error;
 
+    const { id } = await params;
+
     const user = await prisma.user.findUnique({
-      where: { id: params.id },
+      where: { id },
       select: {
         id: true,
         email: true,
@@ -42,42 +44,46 @@ export async function GET(
 // PUT update user
 export async function PUT(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { error, user: currentUser } = await requireAdmin(req);
+    const { error, user: currentUser } = await requireAuth(req);
     if (error) return error;
 
+    const { id } = await params;
     const body = await req.json();
-    const { email, name, role, status, password } = body;
+    const { name, role, status, password } = body;
 
+    // Only admin can change role and status
     if ((role || status) && currentUser!.role !== "ADMIN") {
       return NextResponse.json(
-        { error: "Admin access required to change role or status" },
+        { error: "Only admins can change role or status" },
         { status: 403 }
       );
     }
 
-    if (params.id !== currentUser!.userId && currentUser!.role !== "ADMIN") {
+    // Users can only edit themselves unless they're admin
+    if (id !== currentUser!.userId && currentUser!.role !== "ADMIN") {
       return NextResponse.json(
-        { error: "Cannot update other users' information" },
+        { error: "You can only edit your own profile" },
         { status: 403 }
       );
     }
 
+    // Prepare update data
     const updateData: any = {};
 
     if (name !== undefined) updateData.name = name;
-    if (email !== undefined) updateData.email = email;
     if (role !== undefined) updateData.role = role;
     if (status !== undefined) updateData.status = status;
-    if (password !== undefined) {
-      const hashedPassword = await hashPassword(password);
-      updateData.password = hashedPassword;
+
+    // Hash new password if provided
+    if (password) {
+      updateData.password = await hashPassword(password);
     }
 
     const updatedUser = await prisma.user.update({
-      where: { id: params.id },
+      where: { id },
       data: updateData,
       select: {
         id: true,
@@ -112,13 +118,16 @@ export async function PUT(
 // DELETE user (admin only)
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { error, user } = await requireAdmin(req);
     if (error) return error;
 
-    if (params.id === user!.userId) {
+    const { id } = await params;
+
+    // Prevent deleting yourself
+    if (id === user!.userId) {
       return NextResponse.json(
         { error: "You cannot delete your own account" },
         { status: 400 }
@@ -126,8 +135,9 @@ export async function DELETE(
     }
 
     await prisma.user.delete({
-      where: { id: params.id },
+      where: { id },
     });
+
     return NextResponse.json(
       { message: "User deleted successfully" },
       { status: 200 }
