@@ -1,28 +1,33 @@
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
 async function main() {
+  // Hash password
+  const hashedPassword = await bcrypt.hash("admin123", 10);
+
   // Create admin user
   const admin = await prisma.user.upsert({
-    where: { email: "admin@example.com" },
+    where: { email: "admin@chati.ai" },
     update: {},
     create: {
-      email: "admin@example.com",
+      email: "admin@chati.ai",
       name: "Admin User",
+      password: hashedPassword,
       role: "ADMIN",
       status: "ACTIVE",
     },
   });
 
-  // Create Default Themes
+  // Create default theme
   const theme = await prisma.theme.upsert({
     where: { name: "Default" },
     update: {},
     create: {
       name: "Default",
-      primaryColor: "#3498db",
-      secondaryColor: "#2ecc71",
+      primaryColor: "#4F46E5",
+      secondaryColor: "#10B981",
       isDefault: true,
     },
   });
@@ -34,14 +39,18 @@ async function main() {
     create: {
       key: "header",
       items: [
-        { label: "Home", url: "/" },
-        { label: "About", url: "/about" },
+        { title: "Home", href: "/" },
+        { title: "About", href: "/about" },
         { title: "Blog", href: "/blog" },
-        { label: "Contact", url: "/contact" },
+        { title: "Contact", href: "/contact" },
       ],
     },
   });
-  console.log("✅ Seed data created:", { admin, theme });
+
+  console.log("✅ Seed data created");
+  console.log("Admin credentials:");
+  console.log("Email: admin@chati.ai");
+  console.log("Password: admin123");
 }
 
 main()
