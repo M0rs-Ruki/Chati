@@ -50,8 +50,8 @@ export default function BlogPage() {
   const fetchData = async () => {
     try {
       const [postsRes, categoriesRes] = await Promise.all([
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/blog`, { credentials: "include" }),
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/categories`, {
+        fetch('/api/blog', { credentials: "include" }),
+        fetch('/api/categories', {
           credentials: "include",
         }),
       ]);
@@ -71,7 +71,7 @@ export default function BlogPage() {
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this post?")) return;
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/blog/${id}`, {
+      const response = await fetch(`/api/blog/${id}`, {
         method: "DELETE",
         credentials: "include",
       });
@@ -87,8 +87,8 @@ export default function BlogPage() {
     try {
       const endpoint =
         currentStatus === "PUBLISHED"
-          ? `${process.env.NEXT_PUBLIC_API_URL}/api/blog/${id}/unpublish`
-          : `${process.env.NEXT_PUBLIC_API_URL}/api/blog/${id}/publish`;
+          ? `/api/blog/${id}/unpublish`
+          : `/api/blog/${id}/publish`;
 
       const response = await fetch(endpoint, {
         method: "POST",

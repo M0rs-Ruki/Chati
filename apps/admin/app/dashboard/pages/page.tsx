@@ -35,7 +35,7 @@ export default function PagesPage() {
 
   const fetchPages = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/pages`, {
+      const response = await fetch('/api/pages', {
         credentials: "include",
       });
       const data = await response.json();
@@ -50,7 +50,7 @@ export default function PagesPage() {
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this page?")) return;
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/pages/${id}`, {
+      const response = await fetch(`/api/pages/${id}`, {
         method: "DELETE",
         credentials: "include",
       });
@@ -67,8 +67,8 @@ export default function PagesPage() {
     try {
       const endpoint =
         currentStatus === "PUBLISHED"
-          ? `${process.env.NEXT_PUBLIC_API_URL}/api/pages/${id}/unpublish`
-          : `${process.env.NEXT_PUBLIC_API_URL}/api/pages/${id}/publish`;
+          ? `/api/pages/${id}/unpublish`
+          : `/api/pages/${id}/publish`;
 
       const response = await fetch(endpoint, {
         method: "POST",

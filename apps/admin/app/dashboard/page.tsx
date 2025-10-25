@@ -63,10 +63,10 @@ export default function DashboardPage() {
     try {
       // Fetch all data in parallel
       const [usersRes, pagesRes, postsRes, mediaRes] = await Promise.all([
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users`, { credentials: "include" }),
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/pages`, { credentials: "include" }),
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/blog`, { credentials: "include" }),
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/media`, { credentials: "include" }),
+        fetch('/api/users', { credentials: "include" }),
+        fetch('/api/pages', { credentials: "include" }),
+        fetch('/api/blog', { credentials: "include" }),
+        fetch('/api/media', { credentials: "include" }),
       ]);
 
       const [usersData, pagesData, postsData, mediaData] = await Promise.all([

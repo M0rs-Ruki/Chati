@@ -35,12 +35,9 @@ export default function ThemePage() {
 
   const fetchTheme = async () => {
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/theme`,
-        {
-          credentials: "include",
-        }
-      );
+      const response = await fetch("/api/theme", {
+        credentials: "include",
+      });
       if (response.ok) {
         const data = await response.json();
         if (data.theme) {
@@ -58,15 +55,12 @@ export default function ThemePage() {
 
     try {
       const method = theme.id ? "PUT" : "POST";
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/theme`,
-        {
-          method,
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify(theme),
-        }
-      );
+      const response = await fetch("/api/theme", {
+        method,
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(theme),
+      });
 
       if (response.ok) {
         setSaveSuccess(true);

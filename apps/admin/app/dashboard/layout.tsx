@@ -43,12 +43,9 @@ export default function DashboardLayout({
 
   const fetchUser = async () => {
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/me`,
-        {
-          credentials: "include",
-        }
-      );
+      const response = await fetch("/api/auth/me", {
+        credentials: "include",
+      });
       if (response.ok) {
         const data = await response.json();
         setUser(data.user);
@@ -60,7 +57,7 @@ export default function DashboardLayout({
 
   const handleLogout = async () => {
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`, {
+      await fetch("/api/auth/logout", {
         method: "POST",
         credentials: "include",
       });
