@@ -36,7 +36,7 @@ export default function MediaPage() {
 
   const fetchMedia = async () => {
     try {
-      const response = await fetch("http://localhost:3001/api/media", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/media`, {
         credentials: "include",
       });
       const data = await response.json();
@@ -60,7 +60,7 @@ export default function MediaPage() {
       formData.append("alt", file.name.replace(/\.[^/.]+$/, ""));
 
       try {
-        const response = await fetch("http://localhost:3001/api/media/upload", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/media/upload`, {
           method: "POST",
           credentials: "include",
           body: formData,
@@ -82,7 +82,7 @@ export default function MediaPage() {
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this file?")) return;
     try {
-      const response = await fetch(`http://localhost:3001/api/media/${id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/media/${id}`, {
         method: "DELETE",
         credentials: "include",
       });

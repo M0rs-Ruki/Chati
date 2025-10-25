@@ -60,9 +60,12 @@ export default function BlogCreatePage() {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch("http://localhost:3001/api/categories", {
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/categories`,
+        {
+          credentials: "include",
+        }
+      );
       const data = await response.json();
       setCategories(data.categories || []);
     } catch (error) {
@@ -72,9 +75,12 @@ export default function BlogCreatePage() {
 
   const fetchPost = async () => {
     try {
-      const response = await fetch(`http://localhost:3001/api/blog/${postId}`, {
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/blog/${postId}`,
+        {
+          credentials: "include",
+        }
+      );
       const data = await response.json();
       if (data.post) {
         setPostData(data.post);
@@ -91,8 +97,8 @@ export default function BlogCreatePage() {
     setIsSaving(true);
     try {
       const url = postId
-        ? `http://localhost:3001/api/blog/${postId}`
-        : "http://localhost:3001/api/blog";
+        ? `${process.env.NEXT_PUBLIC_API_URL}/api/blog/${postId}`
+        : `${process.env.NEXT_PUBLIC_API_URL}/api/blog`;
 
       const response = await fetch(url, {
         method: postId ? "PUT" : "POST",

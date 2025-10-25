@@ -20,9 +20,12 @@ export default function UsersPage() {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch("http://localhost:3001/api/users", {
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/users`,
+        {
+          credentials: "include",
+        }
+      );
       const data = await response.json();
       setUsers(data.users || []);
     } catch (error) {

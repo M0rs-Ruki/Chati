@@ -27,8 +27,8 @@ export default function NavigationPage() {
   const fetchNavigation = async () => {
     try {
       const [headerRes, footerRes] = await Promise.all([
-        fetch('http://localhost:3001/api/navigation?key=header', { credentials: 'include' }),
-        fetch('http://localhost:3001/api/navigation?key=footer', { credentials: 'include' }),
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/navigation?key=header`, { credentials: 'include' }),
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/navigation?key=footer`, { credentials: 'include' }),
       ])
       
       if (headerRes.ok) {
@@ -51,13 +51,13 @@ export default function NavigationPage() {
     
     try {
       await Promise.all([
-        fetch('http://localhost:3001/api/navigation', {
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/navigation`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
           body: JSON.stringify({ key: 'header', items: headerNav }),
         }),
-        fetch('http://localhost:3001/api/navigation', {
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/navigation`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
