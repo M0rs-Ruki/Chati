@@ -47,7 +47,20 @@ export async function PUT(
     if (error) return error;
 
     const { id } = await params;
-    const body = await req.json();
+
+    let body;
+    try {
+      const text = await req.text(); // Get raw text first
+      console.log("Raw body:", text); // Debug log
+      body = JSON.parse(text); // Parse manually
+    } catch (parseError: any) {
+      console.error("JSON parse error:", parseError.message);
+      return NextResponse.json(
+        { error: `Invalid JSON: ${parseError.message}` },
+        { status: 400 }
+      );
+    }
+
     const { alt } = body;
 
     if (!alt) {

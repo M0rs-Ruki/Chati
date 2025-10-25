@@ -3,22 +3,42 @@ import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth-middleware";
 import cloudinary from "@/lib/cloudinary";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: Request) {
   try {
     const { error, user } = await requireAuth(req);
-    if (error)
-      return NextResponse.json(
-        { error: `Unauthorized: ${error}` },
-        { status: 401 }
-      );
+    if (error) return error;
 
-    const formData = await req.formData();
+    // Get Content-Type header
+    const contentType = req.headers.get("content-type");
+
+    if (!contentType || !contentType.includes("multipart/form-data")) {
+      return NextResponse.json(
+        { error: "Request must be multipart/form-data" },
+        { status: 400 }
+      );
+    }
+
+    let formData: FormData;
+
+    try {
+      formData = await req.formData();
+    } catch (error: any) {
+      return NextResponse.json(
+        { error: `Invalid form data: ${error}` },
+        { status: 400 }
+      );
+    }
+
     const file = formData.get("file") as File;
     const alt = formData.get("alt") as string;
 
-    if (!file)
-      return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
+    if (!file) {
+      return NextResponse.json({ error: "File is required" }, { status: 400 });
+    }
 
+    // Validate file type
     const allowedTypes = [
       "image/jpeg",
       "image/jpg",
@@ -33,23 +53,28 @@ export async function POST(req: Request) {
       );
     }
 
-    const maxFileSize = 5 * 1024 * 1024; // 5MB
-    if (file.size > maxFileSize)
+    // Validate file size (max 10MB)
+    const maxSize = 10 * 1024 * 1024; // 10MB
+    if (file.size > maxSize) {
       return NextResponse.json(
-        { error: "File size exceeds 5MB" },
+        { error: "File size exceeds 10MB limit" },
         { status: 400 }
       );
+    }
 
+    // Convert file to base64 for Cloudinary
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
     const base64 = buffer.toString("base64");
     const dataURI = `data:${file.type};base64,${base64}`;
 
+    // Upload to Cloudinary
     const uploadResponse = await cloudinary.uploader.upload(dataURI, {
       folder: "chati-cms",
       resource_type: "auto",
     });
 
+    // Save metadata to database
     const media = await prisma.media.create({
       data: {
         url: uploadResponse.secure_url,
@@ -74,10 +99,10 @@ export async function POST(req: Request) {
       },
       { status: 201 }
     );
-  } catch (error) {
+  } catch (error: any) {
     console.error("Upload media error:", error);
     return NextResponse.json(
-      { error: "Failed to upload file" },
+      { error: error.message || "Failed to upload file" },
       { status: 500 }
     );
   }
