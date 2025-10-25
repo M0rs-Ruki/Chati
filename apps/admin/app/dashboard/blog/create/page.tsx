@@ -1,11 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft, Save, Eye } from "lucide-react";
 import dynamic from "next/dynamic";
 
-// Use react-simple-wysiwyg instead of ReactQuill
 const Editor = dynamic(
   () => import("react-simple-wysiwyg").then((mod) => mod.default),
   { ssr: false }
@@ -29,7 +28,7 @@ interface Category {
   name: string;
 }
 
-export default function BlogCreatePage() {
+function BlogCreateContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const postId = searchParams?.get("id");
@@ -60,12 +59,9 @@ export default function BlogCreatePage() {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/categories`,
-        {
-          credentials: "include",
-        }
-      );
+      const response = await fetch("http://localhost:3001/api/categories", {
+        credentials: "include",
+      });
       const data = await response.json();
       setCategories(data.categories || []);
     } catch (error) {
@@ -75,12 +71,9 @@ export default function BlogCreatePage() {
 
   const fetchPost = async () => {
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/blog/${postId}`,
-        {
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`http://localhost:3001/api/blog/${postId}`, {
+        credentials: "include",
+      });
       const data = await response.json();
       if (data.post) {
         setPostData(data.post);
@@ -97,8 +90,8 @@ export default function BlogCreatePage() {
     setIsSaving(true);
     try {
       const url = postId
-        ? `${process.env.NEXT_PUBLIC_API_URL}/api/blog/${postId}`
-        : `${process.env.NEXT_PUBLIC_API_URL}/api/blog`;
+        ? `http://localhost:3001/api/blog/${postId}`
+        : "http://localhost:3001/api/blog";
 
       const response = await fetch(url, {
         method: postId ? "PUT" : "POST",
@@ -417,5 +410,13 @@ export default function BlogCreatePage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function BlogCreatePage() {
+  return (
+    <Suspense fallback={<div className="p-6 text-center">Loading...</div>}>
+      <BlogCreateContent />
+    </Suspense>
   );
 }
