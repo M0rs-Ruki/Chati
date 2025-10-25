@@ -1,10 +1,10 @@
 
-import DashboardLayout from "../components/dashboard-layout";
 
 export default function DashboardPage() {
   return (
-    <DashboardLayout>
-      <h1>Dashboard</h1>
-    </DashboardLayout>
+    <div>
+      <h1>Dashboard Page</h1>
+      <p>Welcome to your dashboard!</p>
+    </div>
   );
 }
