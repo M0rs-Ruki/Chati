@@ -1,7 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "cd apps/admin && pnpm build",
-  "outputDirectory": "apps/admin/.next",
-  "installCommand": "pnpm install",
-  "framework": null
+  "buildCommand": "turbo run build --filter=admin",
+  "installCommand": "pnpm install --no-frozen-lockfile"
 }
