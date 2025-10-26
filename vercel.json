@@ -1,5 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "turbo run build --filter=admin",
-  "installCommand": "pnpm install --no-frozen-lockfile"
+  "buildCommand": "cd apps/admin && npm install && npm run build",
+  "installCommand": "echo 'Skipping root install'",
+  "ignoreCommand": "exit 1"
 }
