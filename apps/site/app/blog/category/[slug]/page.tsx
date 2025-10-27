@@ -7,11 +7,28 @@ interface PageProps {
   params: Promise<{ slug: string }>
 }
 
+interface Category {
+  id: string
+  slug: string
+  title: string
+  description?: string
+}
+
+interface Post {
+  id: string
+  title: string
+  slug: string
+  excerpt: string
+  coverImage?: string
+  categoryId: string
+  createdAt: string
+}
+
 export default async function CategoryPage({ params }: PageProps) {
   const { slug } = await params
   
-  let category = null
-  let posts = []
+  let category: Category | null = null
+  let posts: Post[] = []
 
   try {
     const [categoriesData, postsData] = await Promise.all([
@@ -19,11 +36,11 @@ export default async function CategoryPage({ params }: PageProps) {
       api.getBlogPosts(),
     ])
     
-    category = categoriesData.categories?.find((c: any) => c.slug === slug)
+    category = categoriesData?.categories?.find((c: Category) => c.slug === slug) || null
     
     if (category) {
-      posts = postsData.posts?.filter(
-        (p: any) => p.categoryId === category.id
+      posts = postsData?.posts?.filter(
+        (p: Post) => p.categoryId === category!.id
       ) || []
     }
   } catch (error) {
@@ -36,7 +53,6 @@ export default async function CategoryPage({ params }: PageProps) {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      {/* Back Button */}
       <Link
         href="/blog"
         className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-8"
@@ -45,19 +61,17 @@ export default async function CategoryPage({ params }: PageProps) {
         Back to Blog
       </Link>
 
-      {/* Header */}
       <div className="text-center mb-12">
         <h1 className="text-5xl font-bold text-gray-900 mb-4">
-          {category.name}
+          {category.title}
         </h1>
         {category.description && (
           <p className="text-xl text-gray-600">{category.description}</p>
         )}
       </div>
 
-      {/* Posts Grid */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {posts.map((post: any) => (
+        {posts.map((post) => (
           <article
             key={post.id}
             className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition"
