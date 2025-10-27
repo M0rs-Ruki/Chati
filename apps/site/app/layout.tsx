@@ -9,22 +9,54 @@ export const metadata: Metadata = {
   description: "Built with Next.js",
 };
 
+async function getNavigationWithPages() {
+  try {
+    const [navData, pagesData] = await Promise.all([
+      api.getNavigation("header"),
+      api.getPages(),
+    ]);
+
+    const pages = pagesData?.pages || [];
+
+    // Start with Home and Blog
+    const navigation = [
+      { id: "home", label: "Home", url: "/" },
+      { id: "blog", label: "Blog", url: "/blog" },
+    ];
+
+    // Add all published pages
+    pages.forEach((page: any) => {
+      navigation.push({
+        id: page.id,
+        label: page.title,
+        url: `/${page.slug}`,
+      });
+    });
+
+    return navigation;
+  } catch (error) {
+    console.error("Failed to load navigation:", error);
+    return [
+      { id: "home", label: "Home", url: "/" },
+      { id: "blog", label: "Blog", url: "/blog" },
+    ];
+  }
+}
+
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  // Fetch navigation data
-  let headerNav = [];
-  let footerNav = [];
+  const headerNav = await getNavigationWithPages();
 
+  // Footer can use manual nav or same as header
+  let footerNav = [];
   try {
-    const headerData = await api.getNavigation("header");
     const footerData = await api.getNavigation("footer");
-    headerNav = headerData.items || [];
-    footerNav = footerData.items || [];
-  } catch (error) {
-    console.error("Failed to load navigation:", error);
+    footerNav = footerData?.items || headerNav;
+  } catch {
+    footerNav = headerNav;
   }
 
   return (
