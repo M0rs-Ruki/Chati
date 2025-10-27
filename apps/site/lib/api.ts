@@ -28,9 +28,10 @@ export const api = {
   getBlogPosts: () => fetchAPI('/api/public/blog'),
   getBlogPost: (id: string) => fetchAPI(`/api/public/blog/${id}`),
   
+  
   // Pages - PUBLIC endpoints
   getPages: () => fetchAPI('/api/public/pages'),
-  getPage: (id: string) => fetchAPI(`/api/public/pages/${id}`),
+  getPage: (slug: string) => fetchAPI(`/api/public/pages/${slug}`),
   getPageSections: (pageId: string) => 
     fetchAPI(`/api/public/sections?pageId=${pageId}`),
   
