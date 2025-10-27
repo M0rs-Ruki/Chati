@@ -9,18 +9,13 @@ interface PageProps {
 export default async function DynamicPage({ params }: PageProps) {
   const { slug } = await params
   
-  let page = null
+  const data = await api.getPage(slug)
 
-  try {
-    const data = await api.getPage(slug)
-    page = data.page
-  } catch (error) {
-    console.error('Failed to load page:', error)
-  }
-
-  if (!page) {
+  if (!data || !data.page) {
     notFound()
   }
+
+  const page = data.page
 
   return (
     <article>
