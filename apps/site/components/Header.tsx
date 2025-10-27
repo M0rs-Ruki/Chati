@@ -17,6 +17,11 @@ interface HeaderProps {
 export default function Header({ navigation = [] }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
+  // Filter out invalid items
+  const validNavigation = navigation.filter(
+    (item) => item && item.id && item.label && item.url
+  )
+
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -30,7 +35,7 @@ export default function Header({ navigation = [] }: HeaderProps) {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            {navigation.map((item) => (
+            {validNavigation.map((item) => (
               <Link
                 key={item.id}
                 href={item.url}
@@ -53,9 +58,9 @@ export default function Header({ navigation = [] }: HeaderProps) {
         </div>
 
         {/* Mobile Navigation */}
-        {mobileMenuOpen && (
+        {mobileMenuOpen && validNavigation.length > 0 && (
           <div className="md:hidden pb-4">
-            {navigation.map((item) => (
+            {validNavigation.map((item) => (
               <Link
                 key={item.id}
                 href={item.url}

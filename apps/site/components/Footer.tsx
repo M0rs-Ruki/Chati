@@ -11,6 +11,11 @@ interface FooterProps {
 }
 
 export default function Footer({ navigation = [] }: FooterProps) {
+  // Filter out invalid items
+  const validNavigation = navigation.filter(
+    (item) => item && item.id && item.label && item.url
+  )
+
   return (
     <footer className="bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -24,21 +29,23 @@ export default function Footer({ navigation = [] }: FooterProps) {
           </div>
 
           {/* Navigation */}
-          <div>
-            <h4 className="font-semibold mb-4">Quick Links</h4>
-            <ul className="space-y-2">
-              {navigation.map((item) => (
-                <li key={item.id}>
-                  <Link
-                    href={item.url}
-                    className="text-gray-400 hover:text-white"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {validNavigation.length > 0 && (
+            <div>
+              <h4 className="font-semibold mb-4">Quick Links</h4>
+              <ul className="space-y-2">
+                {validNavigation.map((item) => (
+                  <li key={item.id}>
+                    <Link
+                      href={item.url}
+                      className="text-gray-400 hover:text-white"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           {/* Contact */}
           <div>
