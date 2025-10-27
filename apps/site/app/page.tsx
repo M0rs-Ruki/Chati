@@ -1,14 +1,21 @@
-export default function HomePage() {
+import { api } from '@/lib/api'
+import Hero from '@/components/Hero'
+import FeaturedPosts from '@/components/FeaturedPosts'
+
+export default async function HomePage() {
+  let posts = []
+
+  try {
+    const data = await api.getBlogPosts()
+    posts = data.posts || []
+  } catch (error) {
+    console.error('Failed to load posts:', error)
+  }
+
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">
-          Welcome to Your Site
-        </h1>
-        <p className="text-gray-600">
-          Frontend is being built... 🚀
-        </p>
-      </div>
-    </div>
+    <>
+      <Hero />
+      <FeaturedPosts posts={posts} />
+    </>
   )
 }
