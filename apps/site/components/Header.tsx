@@ -1,70 +1,101 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { Menu, X } from 'lucide-react'
-import { useState } from 'react'
+import Link from "next/link";
+import Image from "next/image";
+import { Menu, X } from "lucide-react";
+import { useState } from "react";
 
 interface NavItem {
-  id: string
-  label: string
-  url: string
+  id: string;
+  label: string;
+  url: string;
+}
+
+interface Theme {
+  primaryColor?: string;
+  secondaryColor?: string;
+  accentColor?: string;
+  logoUrl?: string;
+  name?: string;
 }
 
 interface HeaderProps {
-  navigation?: NavItem[]
+  navigation?: NavItem[];
+  theme?: Theme | null;
 }
 
-export default function Header({ navigation = [] }: HeaderProps) {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+export default function Header({ navigation = [], theme }: HeaderProps) {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Filter out invalid items
   const validNavigation = navigation.filter(
     (item) => item && item.id && item.label && item.url
-  )
+  );
+
+  const bgColor = theme?.primaryColor || "#ffffff";
+  const textColor = "#111827";
+  const hoverColor = theme?.accentColor || "#3B82F6";
 
   return (
-    <header className="bg-white shadow-sm sticky top-0 z-50">
+    <header
+      className="shadow-sm sticky top-0 z-50"
+      style={{ backgroundColor: bgColor }}
+    >
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
-          {/* Logo */}
           <div className="flex items-center">
-            <Link href="/" className="text-2xl font-bold text-gray-900">
-              MyWebsite
+            <Link
+              href="/"
+              className="text-2xl font-bold flex items-center gap-3"
+              style={{ color: textColor }}
+            >
+              {theme?.logoUrl ? (
+                <Image
+                  src={theme.logoUrl}
+                  alt={theme.name || "Logo"}
+                  width={120}
+                  height={40}
+                  className="h-10 w-auto"
+                  priority
+                />
+              ) : (
+                <span>MyWebsite</span>
+              )}
             </Link>
           </div>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {validNavigation.map((item) => (
               <Link
                 key={item.id}
                 href={item.url}
-                className="text-gray-700 hover:text-gray-900 font-medium"
+                className="font-medium transition-colors"
+                style={{ color: textColor }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = hoverColor)}
+                onMouseLeave={(e) => (e.currentTarget.style.color = textColor)}
               >
                 {item.label}
               </Link>
             ))}
           </div>
 
-          {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-gray-700 hover:text-gray-900"
+              style={{ color: textColor }}
             >
               {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Navigation */}
         {mobileMenuOpen && validNavigation.length > 0 && (
           <div className="md:hidden pb-4">
             {validNavigation.map((item) => (
               <Link
                 key={item.id}
                 href={item.url}
-                className="block py-2 text-gray-700 hover:text-gray-900 font-medium"
+                className="block py-2 font-medium"
+                style={{ color: textColor }}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {item.label}
@@ -74,5 +105,5 @@ export default function Header({ navigation = [] }: HeaderProps) {
         )}
       </nav>
     </header>
-  )
+  );
 }

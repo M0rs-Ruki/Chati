@@ -1,27 +1,49 @@
 import { api } from "@/lib/api";
 import Link from "next/link";
-import { Calendar, Tag } from "lucide-react";
+import Image from "next/image";
+import { Calendar } from "lucide-react";
+
+async function getTheme() {
+  try {
+    const theme = await api.getTheme();
+    return theme || null;
+  } catch {
+    return null;
+  }
+}
 
 export default async function BlogPage() {
   let posts = [];
   let categories = [];
+  let theme = null;
 
   try {
-    const [postsData, categoriesData] = await Promise.all([
+    const [postsData, categoriesData, themeData] = await Promise.all([
       api.getBlogPosts(),
       api.getCategories(),
+      getTheme(),
     ]);
-    posts = postsData.posts || [];
-    categories = categoriesData.categories || [];
+    posts = postsData?.posts || [];
+    categories = categoriesData?.categories || [];
+    theme = themeData;
   } catch (error) {
     console.error("Failed to load blog data:", error);
   }
+
+  const primaryColor = "#000000ff";
+  const secondaryColor = theme?.secondaryColor || "#2563EB";
+  const accentColor = theme?.accentColor || "#10B981";
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {/* Header */}
       <div className="text-center mb-12">
-        <h1 className="text-5xl font-bold text-gray-900 mb-4">Blog</h1>
+        <h1
+          className="text-5xl font-bold mb-4"
+          style={{ color: secondaryColor }}
+        >
+          Blog
+        </h1>
         <p className="text-xl text-gray-600">
           Explore our latest articles and insights
         </p>
@@ -32,7 +54,8 @@ export default async function BlogPage() {
         <div className="mb-8 flex flex-wrap gap-2 justify-center">
           <Link
             href="/blog"
-            className="px-4 py-2 bg-blue-600 text-white rounded-full text-sm font-medium"
+            className="px-4 py-2 text-white rounded-full text-sm font-medium transition"
+            style={{ backgroundColor: primaryColor }}
           >
             All Posts
           </Link>
@@ -40,9 +63,9 @@ export default async function BlogPage() {
             <Link
               key={category.id}
               href={`/blog/category/${category.slug}`}
-              className="px-4 py-2 bg-gray-200 text-gray-700 rounded-full text-sm font-medium hover:bg-gray-300"
+              className="px-4 py-2 bg-gray-200 text-gray-700 rounded-full text-sm font-medium hover:bg-gray-300 transition"
             >
-              {category.name}
+              {category.title}
             </Link>
           ))}
         </div>
@@ -57,9 +80,11 @@ export default async function BlogPage() {
           >
             {post.coverImage && (
               <Link href={`/blog/${post.slug}`}>
-                <img
+                <Image
                   src={post.coverImage}
                   alt={post.title}
+                  width={500}
+                  height={200}
                   className="w-full h-48 object-cover"
                 />
               </Link>
@@ -68,7 +93,10 @@ export default async function BlogPage() {
               <h2 className="text-2xl font-bold text-gray-900 mb-3">
                 <Link
                   href={`/blog/${post.slug}`}
-                  className="hover:text-blue-600"
+                  className="transition-colors"
+                  style={{
+                    color: "inherit",
+                  }}
                 >
                   {post.title}
                 </Link>
@@ -84,7 +112,8 @@ export default async function BlogPage() {
 
               <Link
                 href={`/blog/${post.slug}`}
-                className="text-blue-600 hover:text-blue-800 font-semibold"
+                className="font-semibold transition-colors"
+                style={{ color: secondaryColor }}
               >
                 Read More →
               </Link>

@@ -9,26 +9,52 @@ interface Section {
   data: any;
 }
 
-interface SectionRendererProps {
-  sections: Section[];
+interface Theme {
+  primaryColor?: string;
+  secondaryColor?: string;
+  accentColor?: string;
 }
 
-export default function SectionRenderer({ sections }: SectionRendererProps) {
+interface SectionRendererProps {
+  sections: Section[];
+  theme?: Theme | null;
+}
+
+export default function SectionRenderer({
+  sections,
+  theme,
+}: SectionRendererProps) {
   return (
     <>
       {sections.map((section) => {
         switch (section.kind) {
           case "HERO":
-            return <HeroSection key={section.id} data={section.data} />;
+            return (
+              <HeroSection key={section.id} data={section.data} theme={theme} />
+            );
 
           case "RICH_TEXT":
-            return <RichTextSection key={section.id} data={section.data} />;
+            return (
+              <RichTextSection
+                key={section.id}
+                data={section.data}
+                theme={theme}
+              />
+            );
 
           case "FEATURES":
-            return <FeaturesSection key={section.id} data={section.data} />;
+            return (
+              <FeaturesSection
+                key={section.id}
+                data={section.data}
+                theme={theme}
+              />
+            );
 
           case "CTA":
-            return <CTASection key={section.id} data={section.data} />;
+            return (
+              <CTASection key={section.id} data={section.data} theme={theme} />
+            );
 
           default:
             return null;

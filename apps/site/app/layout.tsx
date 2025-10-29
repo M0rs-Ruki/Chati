@@ -18,13 +18,11 @@ async function getNavigationWithPages() {
 
     const pages = pagesData?.pages || [];
 
-    // Start with Home and Blog
     const navigation = [
       { id: "home", label: "Home", url: "/" },
       { id: "blog", label: "Blog", url: "/blog" },
     ];
 
-    // Add all published pages
     pages.forEach((page: any) => {
       navigation.push({
         id: page.id,
@@ -43,14 +41,25 @@ async function getNavigationWithPages() {
   }
 }
 
+async function getTheme() {
+  try {
+    const theme = await api.getTheme();
+    return theme || null;
+  } catch {
+    return null;
+  }
+}
+
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const headerNav = await getNavigationWithPages();
+  const [headerNav, theme] = await Promise.all([
+    getNavigationWithPages(),
+    getTheme(),
+  ]);
 
-  // Footer can use manual nav or same as header
   let footerNav = [];
   try {
     const footerData = await api.getNavigation("footer");
@@ -62,9 +71,9 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className="min-h-screen bg-gray-50 flex flex-col">
-        <Header navigation={headerNav} />
+        <Header navigation={headerNav} theme={theme} />
         <main className="flex-1">{children}</main>
-        <Footer navigation={footerNav} />
+        <Footer navigation={footerNav} theme={theme} />
       </body>
     </html>
   );

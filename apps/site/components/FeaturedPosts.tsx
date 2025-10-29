@@ -1,20 +1,33 @@
-import Link from "next/link";
-import { Calendar, User } from "lucide-react";
+'use client'
+
+import Link from "next/link"
+import Image from "next/image"
+import { Calendar } from "lucide-react"
 
 interface Post {
-  id: string;
-  title: string;
-  excerpt: string;
-  slug: string;
-  coverImage?: string;
-  createdAt: string;
+  id: string
+  title: string
+  excerpt: string
+  slug: string
+  coverImage?: string
+  createdAt: string
+}
+
+interface Theme {
+  primaryColor?: string
+  secondaryColor?: string
+  accentColor?: string
 }
 
 interface FeaturedPostsProps {
-  posts: Post[];
+  posts: Post[]
+  theme?: Theme | null
 }
 
-export default function FeaturedPosts({ posts }: FeaturedPostsProps) {
+export default function FeaturedPosts({ posts, theme }: FeaturedPostsProps) {
+  const primaryColor = theme?.primaryColor || '#3B82F6'
+  const secondaryColor = theme?.secondaryColor || '#2563EB'
+
   return (
     <section className="py-16 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -34,17 +47,22 @@ export default function FeaturedPosts({ posts }: FeaturedPostsProps) {
               className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition"
             >
               {post.coverImage && (
-                <img
+                <Image
                   src={post.coverImage}
                   alt={post.title}
                   className="w-full h-48 object-cover"
+                  width={500}
+                  height={200}
                 />
               )}
               <div className="p-6">
                 <h3 className="text-xl font-bold text-gray-900 mb-2">
                   <Link
                     href={`/blog/${post.slug}`}
-                    className="hover:text-blue-600"
+                    className="transition-colors"
+                    style={{ color: 'inherit' }}
+                    onMouseEnter={(e) => e.currentTarget.style.color = primaryColor}
+                    onMouseLeave={(e) => e.currentTarget.style.color = 'inherit'}
                   >
                     {post.title}
                   </Link>
@@ -58,7 +76,8 @@ export default function FeaturedPosts({ posts }: FeaturedPostsProps) {
                 </div>
                 <Link
                   href={`/blog/${post.slug}`}
-                  className="text-blue-600 hover:text-blue-800 font-semibold mt-4 inline-block"
+                  className="font-semibold mt-4 inline-block transition-colors"
+                  style={{ color: secondaryColor }}
                 >
                   Read More →
                 </Link>
@@ -70,12 +89,13 @@ export default function FeaturedPosts({ posts }: FeaturedPostsProps) {
         <div className="text-center mt-12">
           <Link
             href="/blog"
-            className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition inline-block"
+            className="px-8 py-3 rounded-lg font-semibold transition inline-block text-white"
+            style={{ backgroundColor: secondaryColor }}
           >
             View All Posts
           </Link>
         </div>
       </div>
     </section>
-  );
+  )
 }

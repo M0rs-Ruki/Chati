@@ -1,5 +1,6 @@
 import { api } from '@/lib/api'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Calendar, ArrowLeft } from 'lucide-react'
 import { notFound } from 'next/navigation'
 
@@ -24,19 +25,31 @@ interface Post {
   createdAt: string
 }
 
+async function getTheme() {
+  try {
+    const theme = await api.getTheme()
+    return theme || null
+  } catch {
+    return null
+  }
+}
+
 export default async function CategoryPage({ params }: PageProps) {
   const { slug } = await params
   
   let category: Category | null = null
   let posts: Post[] = []
+  let theme = null
 
   try {
-    const [categoriesData, postsData] = await Promise.all([
+    const [categoriesData, postsData, themeData] = await Promise.all([
       api.getCategories(),
       api.getBlogPosts(),
+      getTheme(),
     ])
     
     category = categoriesData?.categories?.find((c: Category) => c.slug === slug) || null
+    theme = themeData
     
     if (category) {
       posts = postsData?.posts?.filter(
@@ -51,18 +64,25 @@ export default async function CategoryPage({ params }: PageProps) {
     notFound()
   }
 
+  const primaryColor = theme?.primaryColor || '#ffffffff'
+  const secondaryColor = theme?.secondaryColor || '#ffffffff'
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <Link
         href="/blog"
-        className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-8"
+        className="inline-flex items-center gap-2 mb-8 transition-colors"
+        style={{ color: secondaryColor }}
       >
         <ArrowLeft size={20} />
         Back to Blog
       </Link>
 
       <div className="text-center mb-12">
-        <h1 className="text-5xl font-bold text-gray-900 mb-4">
+        <h1 
+          className="text-5xl font-bold mb-4"
+          style={{ color: secondaryColor }}
+        >
           {category.title}
         </h1>
         {category.description && (
@@ -78,16 +98,21 @@ export default async function CategoryPage({ params }: PageProps) {
           >
             {post.coverImage && (
               <Link href={`/blog/${post.slug}`}>
-                <img
+                <Image
                   src={post.coverImage}
                   alt={post.title}
+                  width={500}
+                  height={200}
                   className="w-full h-48 object-cover"
                 />
               </Link>
             )}
             <div className="p-6">
               <h2 className="text-2xl font-bold text-gray-900 mb-3">
-                <Link href={`/blog/${post.slug}`} className="hover:text-blue-600">
+                <Link 
+                  href={`/blog/${post.slug}`}
+                  className="transition-colors"
+                >
                   {post.title}
                 </Link>
               </h2>
@@ -102,7 +127,8 @@ export default async function CategoryPage({ params }: PageProps) {
 
               <Link
                 href={`/blog/${post.slug}`}
-                className="text-blue-600 hover:text-blue-800 font-semibold"
+                className="font-semibold transition-colors"
+                style={{ color: secondaryColor }}
               >
                 Read More →
               </Link>
