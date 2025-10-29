@@ -1,17 +1,18 @@
-import type React from "react"
-import type { Metadata } from "next"
-import { Geist, Geist_Mono } from "next/font/google"
-import { Analytics } from "@vercel/analytics/next"
-import "./globals.css"
-import Header from "@/components/header"
-import Footer from "@/components/footer"
-import { ThemeProvider } from "@/components/theme-provider"
+import type React from "react";
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import "./globals.css";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
+import { ThemeProvider } from "@/components/theme-provider";
 
-const _geist = Geist({ subsets: ["latin"] })
-const _geistMono = Geist_Mono({ subsets: ["latin"] })
+const _geist = Geist({ subsets: ["latin"] });
+const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Chati AI - WhatsApp Marketing Platform | Official WhatsApp Business API",
+  title:
+    "Chati AI - WhatsApp Marketing Platform | Official WhatsApp Business API",
   description:
     "Power up your marketing momentum with Chati AI, the ultimate WhatsApp Business API platform for customer engagement and automation. 97% open rates, 10-65% ROI increase.",
   keywords: [
@@ -53,7 +54,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Chati AI - WhatsApp Marketing Platform",
-    description: "The ultimate WhatsApp Business API platform for customer engagement.",
+    description:
+      "The ultimate WhatsApp Business API platform for customer engagement.",
     images: ["/og-image.jpg"],
   },
   robots: {
@@ -70,18 +72,21 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://chatiAI.com",
   },
-}
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
         <meta name="theme-color" content="#35a84a" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=5"
+        />
         {/* Structured data for organization */}
         <script
           type="application/ld+json"
@@ -92,7 +97,8 @@ export default function RootLayout({
               name: "Chati AI",
               url: "https://chatiAI.com",
               logo: "https://chatiAI.com/logo.png",
-              description: "WhatsApp Business API platform for customer engagement and marketing automation",
+              description:
+                "WhatsApp Business API platform for customer engagement and marketing automation",
               sameAs: [
                 "https://twitter.com/chatiAI",
                 "https://linkedin.com/company/chatiAI",
@@ -109,7 +115,12 @@ export default function RootLayout({
         />
       </head>
       <body className={`font-sans antialiased`} suppressHydrationWarning>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
           <Header />
           {children}
           <Footer />
@@ -117,5 +128,5 @@ export default function RootLayout({
         </ThemeProvider>
       </body>
     </html>
-  )
+  );
 }
