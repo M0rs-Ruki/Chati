@@ -90,7 +90,7 @@ export default function FeaturedPosts({ posts, theme }: FeaturedPostsProps) {
           <Link
             href="/blog"
             className="px-8 py-3 rounded-lg font-semibold transition inline-block text-white"
-            style={{ backgroundColor: secondaryColor }}
+            style={{ backgroundColor: primaryColor }}
           >
             View All Posts
           </Link>

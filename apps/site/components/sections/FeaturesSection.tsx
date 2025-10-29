@@ -22,6 +22,7 @@ interface FeaturesSectionProps {
 export default function FeaturesSection({ data, theme }: FeaturesSectionProps) {
   const { title, subtitle, features = [] } = data
   const primaryColor = theme?.primaryColor || '#3B82F6'
+  const secondaryColor = theme?.secondaryColor || '#8B5CF6'
   const accentColor = theme?.accentColor || '#10B981'
 
   return (
@@ -31,7 +32,7 @@ export default function FeaturesSection({ data, theme }: FeaturesSectionProps) {
           <div className="text-center mb-12">
             <h2 
               className="text-4xl font-bold mb-4"
-              style={{ color: primaryColor }}
+              style={{ color: secondaryColor }}
             >
               {title}
             </h2>

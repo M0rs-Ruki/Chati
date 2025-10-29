@@ -23,18 +23,18 @@ export default function CTASection({ data, theme }: CTASectionProps) {
   return (
     <section
       className="py-16 text-white"
-      style={{ backgroundColor: secondaryColor }}
+      style={{ backgroundColor: primaryColor }}
     >
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        {title && <h2 className="text-4xl font-bold mb-4">{title}</h2>}
+        {title && <h2 className="text-4xl font-bold mb-4 text-black">{title}</h2>}
         {description && (
-          <p className="text-xl mb-8 opacity-90">{description}</p>
+          <p className="text-xl mb-8 opacity-90 text-black">{description}</p>
         )}
         {buttonText && buttonLink && (
           <a
             href={buttonLink}
-            className="inline-block bg-white px-8 py-3 rounded-lg font-semibold transition"
-            style={{ color: secondaryColor }}
+            className="inline-block px-8 py-3 rounded-lg font-semibold transition"
+            style={{ backgroundColor: secondaryColor, color: primaryColor }}
           >
             {buttonText}
           </a>

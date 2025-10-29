@@ -54,7 +54,7 @@ export default function Header({ navigation = [], theme }: HeaderProps) {
                   alt={theme.name || "Logo"}
                   width={120}
                   height={40}
-                  className="h-10 w-auto"
+                  style={{ height: "40px", width: "auto" }}
                   priority
                 />
               ) : (

@@ -65,7 +65,7 @@ export default async function CategoryPage({ params }: PageProps) {
   }
 
   const primaryColor = theme?.primaryColor || '#ffffffff'
-  const secondaryColor = theme?.secondaryColor || '#ffffffff'
+  const secondaryColor = theme?.secondaryColor || '#000000ff'
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

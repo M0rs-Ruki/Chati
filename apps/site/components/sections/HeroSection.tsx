@@ -1,19 +1,29 @@
-interface HeroSectionProps {
-  data: {
-    title?: string;
-    subtitle?: string;
-    ctaText?: string;
-    ctaLink?: string;
-    backgroundImage?: string;
-  };
+interface Theme {
+  primaryColor?: string
+  secondaryColor?: string
+  accentColor?: string
 }
 
-export default function HeroSection({ data }: HeroSectionProps) {
-  const { title, subtitle, ctaText, ctaLink, backgroundImage } = data;
+interface HeroSectionProps {
+  data: {
+    title?: string
+    subtitle?: string
+    ctaText?: string
+    ctaLink?: string
+    backgroundImage?: string
+  }
+  theme?: Theme | null
+}
+
+export default function HeroSection({ data, theme }: HeroSectionProps) {
+  const { title, subtitle, ctaText, ctaLink, backgroundImage } = data
+  const primaryColor = theme?.primaryColor || '#ffffffff'
+  const secondaryColor = theme?.secondaryColor || '#8B5CF6'
+  const accentColor = theme?.accentColor || '#000000ff'
 
   return (
     <section
-      className="relative bg-gradient-to-r from-blue-600 to-purple-600 text-white py-24"
+      className="relative text-white py-24"
       style={
         backgroundImage
           ? {
@@ -21,25 +31,28 @@ export default function HeroSection({ data }: HeroSectionProps) {
               backgroundSize: "cover",
               backgroundPosition: "center",
             }
-          : {}
+          : {
+              background: `linear-gradient(to right, ${primaryColor}, ${secondaryColor})`,
+            }
       }
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         {title && (
-          <h1 className="text-5xl md:text-6xl font-bold mb-6">{title}</h1>
+          <h1 className="text-5xl md:text-6xl font-bold mb-6 text-black">{title}</h1>
         )}
         {subtitle && (
-          <p className="text-xl md:text-2xl mb-8 text-blue-100">{subtitle}</p>
+          <p className="text-xl md:text-2xl mb-8 opacity-90 text-black">{subtitle}</p>
         )}
         {ctaText && ctaLink && (
           <a
             href={ctaLink}
-            className="inline-block bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition"
+            className="inline-block bg-white px-8 py-3 rounded-lg font-semibold transition"
+            style={{ color: secondaryColor }}
           >
             {ctaText}
           </a>
         )}
       </div>
     </section>
-  );
+  )
 }
