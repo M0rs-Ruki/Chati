@@ -93,13 +93,13 @@ export async function POST(req: Request) {
       title,
       excerpt,
       content,
+      coverImage,
       coverId,
-      coverImage, // allow either id or URL
       categoryId,
       tagIds = [],
+      status,
       seoTitle,
       seoDescription,
-      status, // optional
     } = body as any;
 
     if (!slug || !title || !content) {
@@ -109,31 +109,42 @@ export async function POST(req: Request) {
       );
     }
 
-    const exists = await prisma.blogPost.findUnique({ where: { slug } });
-    if (exists) {
+    const existingPost = await prisma.blogPost.findUnique({
+      where: { slug },
+    });
+
+    if (existingPost) {
       return NextResponse.json(
         { error: "Blog post with this slug already exists" },
         { status: 409 }
       );
     }
 
+    // Convert content to JSON
     const contentJson =
       typeof content === "string" ? { html: content } : content;
 
-    // Prepare relations
+    // Handle cover image
     let coverRel: any = undefined;
     if (coverId) {
       coverRel = { connect: { id: coverId } };
     } else if (coverImage) {
-      const media = await prisma.media.upsert({
+      const existing = await prisma.media.findFirst({
         where: { url: coverImage },
-        update: {},
-        create: { url: coverImage, alt: title },
         select: { id: true },
       });
-      coverRel = { connect: { id: media.id } };
+      if (existing) {
+        coverRel = { connect: { id: existing.id } };
+      } else {
+        const created = await prisma.media.create({
+          data: { url: coverImage, alt: title },
+          select: { id: true },
+        });
+        coverRel = { connect: { id: created.id } };
+      }
     }
 
+    // Handle SEO
     let seoRel: any = undefined;
     if (seoTitle || seoDescription) {
       const seo = await prisma.seoMeta.create({
@@ -154,16 +165,18 @@ export async function POST(req: Request) {
         excerpt: excerpt ?? null,
         content: contentJson,
         status: status === "PUBLISHED" ? "PUBLISHED" : "DRAFT",
-        authorId: user!.userId,
+        author: { connect: { id: user!.userId } }, // FIXED: use connect instead of authorId
         ...(categoryId ? { category: { connect: { id: categoryId } } } : {}),
-        ...(tagIds.length
+        ...(tagIds.length > 0
           ? { tags: { set: tagIds.map((id: string) => ({ id })) } }
           : {}),
         ...(coverRel ? { cover: coverRel } : {}),
         ...(seoRel ? { seo: seoRel } : {}),
       },
       include: {
-        author: { select: { id: true, name: true, email: true } },
+        author: {
+          select: { id: true, name: true, email: true },
+        },
         category: true,
         tags: true,
         cover: true,
@@ -172,11 +185,14 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json(
-      { message: "Blog post created successfully", post },
+      {
+        message: "Blog post created successfully",
+        post,
+      },
       { status: 201 }
     );
-  } catch (e) {
-    console.error("Create blog post error:", e);
+  } catch (error) {
+    console.error("Create blog post error:", error);
     return NextResponse.json(
       { error: "Failed to create blog post" },
       { status: 500 }

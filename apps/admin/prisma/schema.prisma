@@ -75,7 +75,7 @@ model Navigation {
 
 model Media {
   id          String   @id @default(cuid())
-  url         String
+  url         String   @unique
   alt         String
   width       Int?
   height      Int?
@@ -85,8 +85,7 @@ model Media {
   createdBy   User?    @relation(fields: [createdById], references: [id], onDelete: SetNull)
   createdAt   DateTime @default(now())
 
-  // Relations
-  blogPosts BlogPost[]
+  blogPosts   BlogPost[]
 }
 
 // ============================================

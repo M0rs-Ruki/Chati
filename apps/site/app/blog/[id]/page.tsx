@@ -9,13 +9,22 @@ type ApiPost = {
   slug: string;
   title: string;
   excerpt: string;
-  content: string;
+  content: { html: string } | string;
   cover: { url?: string } | null;
-  category: { name?: string } | null;
+  category: { title?: string } | null;
   author: { id: string; name: string; email: string };
   createdAt: string;
   publishedAt?: string;
-  readTime?: string;
+  readTime?: number;
+  seo?: {
+    id: string;
+    title: string;
+    description: string;
+    canonical?: string;
+    ogImage?: string;
+    ogType?: string;
+    noindex?: boolean;
+  } | null;
 };
 
 async function getAllPosts(): Promise<ApiPost[]> {
@@ -35,23 +44,41 @@ async function getPostByIdOrSlug(idOrSlug: string): Promise<ApiPost | null> {
   );
 }
 
-// Note the Promise type for params + await usage
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
-  const { id } = await params; // await required in Next 15/16
+  const { id } = await params;
   const post = await getPostByIdOrSlug(id);
+
   if (!post) return { title: "Blog Post Not Found" };
+
+  const metaTitle = post.seo?.title || post.title;
+  const metaDescription = post.seo?.description || post.excerpt || post.title;
+  const ogImage = post.seo?.ogImage || post.cover?.url;
+  const canonical = post.seo?.canonical || `/blog/${post.slug}`;
+  const noindex = post.seo?.noindex || false;
+
   return {
-    title: `${post.title} - Chati AI Blog`,
-    description: post.excerpt || post.title,
+    title: `${metaTitle} - Chati AI Blog`,
+    description: metaDescription,
+    alternates: {
+      canonical,
+    },
+    robots: noindex ? { index: false, follow: false } : undefined,
     openGraph: {
-      title: post.title,
-      description: post.excerpt || post.title,
+      title: metaTitle,
+      description: metaDescription,
       type: "article",
-      images: post.cover?.url ? [{ url: post.cover.url }] : undefined,
+      url: canonical,
+      images: ogImage ? [{ url: ogImage }] : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: metaTitle,
+      description: metaDescription,
+      images: ogImage ? [ogImage] : undefined,
     },
   };
 }
@@ -81,10 +108,13 @@ export default async function BlogPost({
   }
 
   const dateStr = post.publishedAt ?? post.createdAt;
+  const htmlContent =
+    typeof post.content === "string"
+      ? post.content
+      : (post.content as any)?.html || "";
 
   return (
     <main>
-      {/* UI unchanged below */}
       <section className="relative overflow-hidden bg-gradient-to-br from-background via-background to-primary/5 py-12 md:py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <Link
@@ -96,7 +126,7 @@ export default async function BlogPost({
           </Link>
           <div className="max-w-3xl">
             <div className="inline-block mb-4 px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">
-              {post.category?.name || "General"}
+              {post.category?.title || "General"}
             </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
               {post.title}
@@ -114,7 +144,7 @@ export default async function BlogPost({
                   day: "numeric",
                 })}
               </div>
-              {post.readTime ? <span>{post.readTime}</span> : null}
+              {post.readTime ? <span>{post.readTime} min read</span> : null}
             </div>
           </div>
         </div>
@@ -139,7 +169,7 @@ export default async function BlogPost({
               <article className="prose prose-invert max-w-none">
                 <div
                   className="text-lg text-muted-foreground leading-relaxed space-y-6"
-                  dangerouslySetInnerHTML={{ __html: post.content }}
+                  dangerouslySetInnerHTML={{ __html: htmlContent }}
                 />
               </article>
 
