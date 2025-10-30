@@ -2,7 +2,6 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth-middleware";
 
-// GET all blog posts
 export async function GET(req: Request) {
   try {
     const { error } = await requireAuth(req);
@@ -83,14 +82,25 @@ export async function GET(req: Request) {
   }
 }
 
-// POST create new blog post
 export async function POST(req: Request) {
   try {
     const { error, user } = await requireAuth(req);
     if (error) return error;
 
     const body = await req.json();
-    const { slug, title, excerpt, content, coverId, categoryId, tagIds } = body;
+    const {
+      slug,
+      title,
+      excerpt,
+      content,
+      coverId,
+      coverImage, // allow either id or URL
+      categoryId,
+      tagIds = [],
+      seoTitle,
+      seoDescription,
+      status, // optional
+    } = body as any;
 
     if (!slug || !title || !content) {
       return NextResponse.json(
@@ -99,54 +109,74 @@ export async function POST(req: Request) {
       );
     }
 
-    // Check if slug already exists
-    const existingPost = await prisma.blogPost.findUnique({
-      where: { slug },
-    });
-
-    if (existingPost) {
+    const exists = await prisma.blogPost.findUnique({ where: { slug } });
+    if (exists) {
       return NextResponse.json(
         { error: "Blog post with this slug already exists" },
         { status: 409 }
       );
     }
 
+    const contentJson =
+      typeof content === "string" ? { html: content } : content;
+
+    // Prepare relations
+    let coverRel: any = undefined;
+    if (coverId) {
+      coverRel = { connect: { id: coverId } };
+    } else if (coverImage) {
+      const media = await prisma.media.upsert({
+        where: { url: coverImage },
+        update: {},
+        create: { url: coverImage, alt: title },
+        select: { id: true },
+      });
+      coverRel = { connect: { id: media.id } };
+    }
+
+    let seoRel: any = undefined;
+    if (seoTitle || seoDescription) {
+      const seo = await prisma.seoMeta.create({
+        data: {
+          title: seoTitle || title,
+          description: seoDescription || excerpt || "",
+          canonical: `/blog/${slug}`,
+        },
+        select: { id: true },
+      });
+      seoRel = { connect: { id: seo.id } };
+    }
+
     const post = await prisma.blogPost.create({
       data: {
         slug,
         title,
-        excerpt: excerpt || null,
-        content,
-        coverId: coverId || null,
-        categoryId: categoryId || null,
+        excerpt: excerpt ?? null,
+        content: contentJson,
+        status: status === "PUBLISHED" ? "PUBLISHED" : "DRAFT",
         authorId: user!.userId,
-        status: "DRAFT",
-        ...(tagIds &&
-          tagIds.length > 0 && {
-            tags: {
-              connect: tagIds.map((id: string) => ({ id })),
-            },
-          }),
+        ...(categoryId ? { category: { connect: { id: categoryId } } } : {}),
+        ...(tagIds.length
+          ? { tags: { set: tagIds.map((id: string) => ({ id })) } }
+          : {}),
+        ...(coverRel ? { cover: coverRel } : {}),
+        ...(seoRel ? { seo: seoRel } : {}),
       },
       include: {
-        author: {
-          select: { id: true, name: true, email: true },
-        },
+        author: { select: { id: true, name: true, email: true } },
         category: true,
         tags: true,
         cover: true,
+        seo: true,
       },
     });
 
     return NextResponse.json(
-      {
-        message: "Blog post created successfully",
-        post,
-      },
+      { message: "Blog post created successfully", post },
       { status: 201 }
     );
-  } catch (error) {
-    console.error("Create blog post error:", error);
+  } catch (e) {
+    console.error("Create blog post error:", e);
     return NextResponse.json(
       { error: "Failed to create blog post" },
       { status: 500 }

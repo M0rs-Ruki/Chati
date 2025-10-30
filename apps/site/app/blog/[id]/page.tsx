@@ -61,7 +61,7 @@ export default async function BlogPost({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const { id } = await params; // await required in Next 15/16
+  const { id } = await params;
   const post = await getPostByIdOrSlug(id);
 
   if (!post) {

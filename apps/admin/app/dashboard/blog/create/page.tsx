@@ -145,7 +145,7 @@ function BlogCreateContent() {
         <div className="flex items-center gap-3">
           {postId && postData.slug && (
             <a
-              href={`http://localhost:3000/blog/${postData.slug}`}
+              href={`${process.env.SITE_URL}/blog/${postData.slug}`}
               target="_blank"
               rel="noopener noreferrer"
               className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2"
@@ -319,6 +319,8 @@ function BlogCreateContent() {
                     src={postData.coverImage}
                     alt="Cover"
                     className="w-full h-32 object-cover"
+                    width={500}
+                    height={200}
                   />
                 </div>
               )}
