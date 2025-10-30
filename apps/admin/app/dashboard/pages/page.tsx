@@ -23,6 +23,8 @@ interface Page {
   updatedAt: string;
 }
 
+const base = process.env.SITE_URL;
+
 export default function PagesPage() {
   const [pages, setPages] = useState<Page[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -35,7 +37,7 @@ export default function PagesPage() {
 
   const fetchPages = async () => {
     try {
-      const response = await fetch('/api/pages', {
+      const response = await fetch("/api/pages", {
         credentials: "include",
       });
       const data = await response.json();
@@ -173,7 +175,7 @@ export default function PagesPage() {
                 {/* Actions */}
                 <div className="flex items-center gap-2">
                   <a
-                    href={`http://localhost:3000/${page.slug}`}
+                    href={`${base}/${page.slug}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition"

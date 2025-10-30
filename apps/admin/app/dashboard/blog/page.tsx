@@ -34,6 +34,8 @@ interface Category {
   name: string;
 }
 
+const base = process.env.SITE_URL;
+
 export default function BlogPage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -50,8 +52,8 @@ export default function BlogPage() {
   const fetchData = async () => {
     try {
       const [postsRes, categoriesRes] = await Promise.all([
-        fetch('/api/blog', { credentials: "include" }),
-        fetch('/api/categories', {
+        fetch("/api/blog", { credentials: "include" }),
+        fetch("/api/categories", {
           credentials: "include",
         }),
       ]);
@@ -245,7 +247,7 @@ export default function BlogPage() {
                     {/* Actions */}
                     <div className="flex items-center gap-2">
                       <a
-                        href={`http://localhost:3000/blog/${post.slug}`}
+                        href={`${base}/blog/${post.slug}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition"
