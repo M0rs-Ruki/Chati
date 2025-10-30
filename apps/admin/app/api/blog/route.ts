@@ -168,8 +168,9 @@ export async function POST(req: Request) {
         author: { connect: { id: user!.userId } }, // FIXED: use connect instead of authorId
         ...(categoryId ? { category: { connect: { id: categoryId } } } : {}),
         ...(tagIds.length > 0
-          ? { tags: { set: tagIds.map((id: string) => ({ id })) } }
+          ? { tags: { connect: tagIds.map((id: string) => ({ id })) } }
           : {}),
+
         ...(coverRel ? { cover: coverRel } : {}),
         ...(seoRel ? { seo: seoRel } : {}),
       },
