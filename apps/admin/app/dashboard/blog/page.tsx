@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import {
   Plus,
@@ -34,7 +35,8 @@ interface Category {
   name: string;
 }
 
-const base = process.env.SITE_URL;
+const base = process.env.NEXT_PUBLIC_SITE_URL;
+
 
 export default function BlogPage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
@@ -202,7 +204,7 @@ export default function BlogPage() {
             >
               <div className="flex gap-6">
                 {post.coverImage && (
-                  <img
+                  <Image
                     src={post.coverImage}
                     alt={post.title}
                     className="w-48 h-32 object-cover rounded-lg"

@@ -23,7 +23,7 @@ interface Page {
   updatedAt: string;
 }
 
-const base = process.env.SITE_URL;
+const base = process.env.NEXT_PUBLIC_SITE_URL;
 
 export default function PagesPage() {
   const [pages, setPages] = useState<Page[]>([]);
