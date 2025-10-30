@@ -1,7 +1,6 @@
-
-import Link from "next/link"
-import type { Metadata } from "next"
-import { ArrowRight, Calendar, User } from "lucide-react"
+import Link from "next/link";
+import type { Metadata } from "next";
+import { ArrowRight, Calendar, User } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Chati AI Blog - WhatsApp Marketing Tips & Insights",
@@ -9,35 +8,36 @@ export const metadata: Metadata = {
     "Read the latest articles on WhatsApp marketing, customer engagement strategies, and business automation tips from Chati AI experts.",
   openGraph: {
     title: "Chati AI Blog",
-    description: "Latest insights on WhatsApp marketing and customer engagement.",
+    description:
+      "Latest insights on WhatsApp marketing and customer engagement.",
     type: "website",
   },
-}
+};
 
 type ApiPost = {
-  id: string
-  slug: string
-  title: string
-  excerpt: string
-  content: string
-  cover: { url?: string } | null
-  category: { name?: string } | null
-  tags: { name?: string }[]
-  author: { id: string; name: string; email: string }
-  createdAt: string
-  publishedAt?: string
-}
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  cover: { url?: string } | null;
+  category: { name?: string } | null;
+  tags: { name?: string }[];
+  author: { id: string; name: string; email: string };
+  createdAt: string;
+  publishedAt?: string;
+};
 
 async function getPosts(): Promise<ApiPost[]> {
-  const base = process.env.NEXT_PUBLIC_API_URL 
-  const res = await fetch(`${base}/api/public/blog`, { cache: "no-store" })
-  if (!res.ok) return []
-  const data = (await res.json()) as { posts: ApiPost[] }
-  return data.posts ?? []
+  const base = process.env.NEXT_PUBLIC_API_URL;
+  const res = await fetch(`${base}/api/public/blog`, { cache: "no-store" });
+  if (!res.ok) return [];
+  const data = (await res.json()) as { posts: ApiPost[] };
+  return data.posts ?? [];
 }
 
 export default async function Blog() {
-  const posts = await getPosts()
+  const posts = await getPosts();
 
   return (
     <main>
@@ -49,7 +49,8 @@ export default async function Blog() {
               Chati AI <span className="text-primary">Blog</span>
             </h1>
             <p className="text-xl text-muted-foreground">
-              Expert insights, tips, and strategies for WhatsApp marketing success
+              Expert insights, tips, and strategies for WhatsApp marketing
+              success
             </p>
           </div>
         </div>
@@ -60,8 +61,8 @@ export default async function Blog() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {posts.map((post) => {
-              const href = `/blog/${post.slug || post.id}`
-              const dateStr = post.publishedAt ?? post.createdAt
+              const href = `/blog/${post.slug || post.id}`;
+              const dateStr = post.publishedAt ?? post.createdAt;
               return (
                 <Link key={post.id} href={href}>
                   <article className="bg-card border border-border rounded-lg overflow-hidden hover:shadow-lg transition-shadow h-full flex flex-col">
@@ -107,11 +108,11 @@ export default async function Blog() {
                     </div>
                   </article>
                 </Link>
-              )
+              );
             })}
           </div>
         </div>
       </section>
     </main>
-  )
+  );
 }

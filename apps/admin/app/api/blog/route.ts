@@ -165,7 +165,7 @@ export async function POST(req: Request) {
         excerpt: excerpt ?? null,
         content: contentJson,
         status: status === "PUBLISHED" ? "PUBLISHED" : "DRAFT",
-        author: { connect: { id: user!.userId } }, // FIXED: use connect instead of authorId
+        author: { connect: { id: user!.userId } },
         ...(categoryId ? { category: { connect: { id: categoryId } } } : {}),
         ...(tagIds.length > 0
           ? { tags: { connect: tagIds.map((id: string) => ({ id })) } }
