@@ -59,7 +59,7 @@ function BlogCreateContent() {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch("http://localhost:3001/api/categories", {
+      const response = await fetch("/api/categories", {
         credentials: "include",
       });
       const data = await response.json();
@@ -71,7 +71,7 @@ function BlogCreateContent() {
 
   const fetchPost = async () => {
     try {
-      const response = await fetch(`http://localhost:3001/api/blog/${postId}`, {
+      const response = await fetch(`/api/blog/${postId}`, {
         credentials: "include",
       });
       const data = await response.json();
@@ -89,9 +89,7 @@ function BlogCreateContent() {
   const savePost = async () => {
     setIsSaving(true);
     try {
-      const url = postId
-        ? `http://localhost:3001/api/blog/${postId}`
-        : "http://localhost:3001/api/blog";
+      const url = postId ? `/api/blog/${postId}` : "/api/blog";
 
       const response = await fetch(url, {
         method: postId ? "PUT" : "POST",
