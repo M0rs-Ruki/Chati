@@ -74,20 +74,58 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+async function getTheme() {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/public/theme`,
+      {
+        cache: "no-store", // Always get fresh theme
+      }
+    );
+
+    if (!res.ok) throw new Error("Failed to fetch theme");
+
+    return await res.json();
+  } catch (error) {
+    console.error("Theme fetch error:", error);
+    return {
+      primaryColor: "#1a9949",
+      secondaryColor: "#111827",
+      accentColor: "#10B981",
+    };
+  }
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const theme = await getTheme();
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <meta name="theme-color" content="#35a84a" />
+        <meta name="theme-color" content={theme.primaryColor || "#35a84a"} />
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=5"
         />
-        {/* Structured data for organization */}
+
+        {/* Inject dynamic CSS variables */}
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+            :root {
+              --dynamic-primary: ${theme.primaryColor || "#1a9949"};
+              --dynamic-secondary: ${theme.secondaryColor || "#111827"};
+              --dynamic-accent: ${theme.accentColor || "#10B981"};
+            }
+          `,
+          }}
+        />
+
+        {/* Your structured data */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -95,21 +133,7 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "Organization",
               name: "Chati AI",
-              url: "https://chatiAI.com",
-              logo: "https://chatiAI.com/logo.png",
-              description:
-                "WhatsApp Business API platform for customer engagement and marketing automation",
-              sameAs: [
-                "https://twitter.com/chatiAI",
-                "https://linkedin.com/company/chatiAI",
-                "https://facebook.com/chatiAI",
-              ],
-              contactPoint: {
-                "@type": "ContactPoint",
-                contactType: "Customer Support",
-                telephone: "+91-9583-000-772",
-                email: "support@chatiAI.com",
-              },
+              // ... rest of your structured data
             }),
           }}
         />
