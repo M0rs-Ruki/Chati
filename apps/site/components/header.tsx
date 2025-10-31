@@ -2,13 +2,39 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 
+interface NavItem {
+  title: string;
+  href: string;
+}
+
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [navItems, setNavItems] = useState<NavItem[]>([]);
+
+  useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/public/navigation`)
+      .then((res) => res.json())
+      .then((data) => {
+        setNavItems(data.items || []);
+      })
+      .catch((error) => {
+        console.error("Failed to fetch navigation:", error);
+        setNavItems([
+          { title: "Product", href: "/product" },
+          { title: "Features", href: "/features" },
+          { title: "Pricing", href: "/pricing" },
+          { title: "Industries", href: "/industries" },
+          { title: "Blog", href: "/blog" },
+          { title: "Resources", href: "/resources" },
+          { title: "About", href: "/about" },
+        ]);
+      });
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -28,48 +54,20 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
-            <Link
-              href="/product"
-              className="text-sm font-medium hover:text-primary transition-colors"
-            >
-              Product
-            </Link>
-            <Link
-              href="/features"
-              className="text-sm font-medium hover:text-primary transition-colors"
-            >
-              Features
-            </Link>
-            <Link
-              href="/pricing"
-              className="text-sm font-medium hover:text-primary transition-colors"
-            >
-              Pricing
-            </Link>
-            <Link
-              href="/industries"
-              className="text-sm font-medium hover:text-primary transition-colors"
-            >
-              Industries
-            </Link>
-            <Link
-              href="/blog"
-              className="text-sm font-medium hover:text-primary transition-colors"
-            >
-              Blog
-            </Link>
-            <Link
-              href="/resources"
-              className="text-sm font-medium hover:text-primary transition-colors"
-            >
-              Resources
-            </Link>
-            <Link
-              href="/about"
-              className="text-sm font-medium hover:text-primary transition-colors"
-            >
-              About
-            </Link>
+            {navItems.length > 0 ? (
+              navItems.map((item, index) => (
+                <Link
+                  key={`${item.href}-${index}`}
+                  href={item.href}
+                  className="text-sm font-medium hover:text-primary transition-colors"
+                >
+                  {item.title}
+                </Link>
+              ))
+            ) : (
+              // ✅ Loading state
+              <span className="text-sm text-muted-foreground">Loading...</span>
+            )}
           </nav>
 
           {/* CTA Buttons */}
@@ -99,48 +97,16 @@ export default function Header() {
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
           <nav className="md:hidden pb-4 space-y-2">
-            <Link
-              href="/product"
-              className="block px-4 py-2 text-sm hover:bg-muted rounded"
-            >
-              Product
-            </Link>
-            <Link
-              href="/features"
-              className="block px-4 py-2 text-sm hover:bg-muted rounded"
-            >
-              Features
-            </Link>
-            <Link
-              href="/pricing"
-              className="block px-4 py-2 text-sm hover:bg-muted rounded"
-            >
-              Pricing
-            </Link>
-            <Link
-              href="/industries"
-              className="block px-4 py-2 text-sm hover:bg-muted rounded"
-            >
-              Industries
-            </Link>
-            <Link
-              href="/blog"
-              className="block px-4 py-2 text-sm hover:bg-muted rounded"
-            >
-              Blog
-            </Link>
-            <Link
-              href="/resources"
-              className="block px-4 py-2 text-sm hover:bg-muted rounded"
-            >
-              Resources
-            </Link>
-            <Link
-              href="/about"
-              className="block px-4 py-2 text-sm hover:bg-muted rounded"
-            >
-              About
-            </Link>
+            {navItems.map((item, index) => (
+              <Link
+                key={`mobile-${item.href}-${index}`}
+                href={item.href}
+                className="block px-4 py-2 text-sm hover:bg-muted rounded"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {item.title}
+              </Link>
+            ))}
             <div className="px-4 pt-2 space-y-2">
               <Button
                 variant="outline"
