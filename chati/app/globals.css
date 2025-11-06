@@ -1,0 +1,293 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* Adding Degular Display font for hero titles */
+@font-face {
+  font-family: "Degular Display";
+  src: url("/fonts/DegularDisplay-Bold.woff2") format("woff2"), url("/fonts/DegularDisplay-Bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Updated color palette with blue, dark green, and pink for social media platforms */
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+
+  /* Primary - WhatsApp Green */
+  --primary: oklch(0.55 0.15 155);
+  --primary-foreground: oklch(1 0 0);
+
+  /* Secondary - Facebook Blue */
+  --secondary: oklch(0.5 0.2 250);
+  --secondary-foreground: oklch(1 0 0);
+
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+
+  /* Accent - Instagram Pink */
+  --accent: oklch(0.6 0.22 350);
+  --accent-foreground: oklch(1 0 0);
+
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.55 0.15 155);
+
+  /* Chart colors with social media theme */
+  --chart-1: oklch(0.5 0.2 250); /* Facebook blue */
+  --chart-2: oklch(0.55 0.15 155); /* WhatsApp green */
+  --chart-3: oklch(0.6 0.22 350); /* Instagram pink */
+  --chart-4: oklch(0.6 0.18 200); /* Cyan accent */
+  --chart-5: oklch(0.65 0.2 280); /* Purple accent */
+
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.55 0.15 155);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.145 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.145 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+
+  /* Primary - WhatsApp Green (brighter for dark mode) */
+  --primary: oklch(0.65 0.18 155);
+  --primary-foreground: oklch(0.145 0 0);
+
+  /* Secondary - Facebook Blue (brighter for dark mode) */
+  --secondary: oklch(0.6 0.22 250);
+  --secondary-foreground: oklch(0.985 0 0);
+
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+
+  /* Accent - Instagram Pink (brighter for dark mode) */
+  --accent: oklch(0.7 0.24 350);
+  --accent-foreground: oklch(0.145 0 0);
+
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.269 0 0);
+  --input: oklch(0.269 0 0);
+  --ring: oklch(0.65 0.18 155);
+
+  /* Chart colors adjusted for dark mode */
+  --chart-1: oklch(0.6 0.22 250);
+  --chart-2: oklch(0.65 0.18 155);
+  --chart-3: oklch(0.7 0.24 350);
+  --chart-4: oklch(0.65 0.2 200);
+  --chart-5: oklch(0.7 0.22 280);
+
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.65 0.18 155);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.269 0 0);
+  --sidebar-ring: oklch(0.439 0 0);
+}
+
+@theme inline {
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  /* Adding Degular Display as display font for hero titles */
+  --font-display: "Degular Display", "Inter", system-ui, sans-serif;
+
+  /* Updated color system with social media platform colors */
+  --color-background: #ffffff;
+  --color-foreground: #0f172a;
+
+  --color-card: #ffffff;
+  --color-card-foreground: #0f172a;
+
+  --color-popover: #ffffff;
+  --color-popover-foreground: #0f172a;
+
+  /* Primary - WhatsApp Green */
+  --color-primary: #25d366;
+  --color-primary-foreground: #ffffff;
+
+  /* Secondary - Facebook Blue */
+  --color-secondary: #1877f2;
+  --color-secondary-foreground: #ffffff;
+
+  /* Muted - Light backgrounds */
+  --color-muted: #f8fafc;
+  --color-muted-foreground: #64748b;
+
+  /* Accent - Instagram Pink/Purple */
+  --color-accent: #e4405f;
+  --color-accent-foreground: #ffffff;
+
+  /* Destructive */
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #ffffff;
+
+  /* Border and input */
+  --color-border: #e2e8f0;
+  --color-input: #e2e8f0;
+  --color-ring: #25d366;
+
+  /* Radius */
+  --radius: 0.5rem;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-semibold text-balance;
+  }
+
+  /* Applying Degular Display font to hero titles (h1) */
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-6xl;
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl lg:text-5xl;
+  }
+
+  h3 {
+    @apply text-2xl md:text-3xl;
+  }
+
+  p {
+    @apply text-pretty leading-relaxed;
+  }
+
+  /* Added floating animation for social media icons */
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0px) translateX(0px) rotate(0deg);
+    }
+    25% {
+      transform: translateY(-10px) translateX(5px) rotate(2deg);
+    }
+    50% {
+      transform: translateY(-5px) translateX(-5px) rotate(-2deg);
+    }
+    75% {
+      transform: translateY(-15px) translateX(3px) rotate(1deg);
+    }
+  }
+
+  /* Added will-change for better animation performance */
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  /* Added slow floating animation for hero images */
+  @keyframes float-slow {
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-15px);
+    }
+  }
+
+  .animate-float-slow {
+    animation: float-slow 6s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  /* Added delayed floating animation for staggered effects */
+  .animate-float-delayed {
+    animation: float 3s ease-in-out infinite;
+    animation-delay: 1.5s;
+    will-change: transform;
+  }
+
+  /* Added dash animation for connecting lines in CDP section */
+  @keyframes dash {
+    0% {
+      stroke-dashoffset: 0;
+    }
+    100% {
+      stroke-dashoffset: 20;
+    }
+  }
+
+  .animate-dash {
+    animation: dash 2s linear infinite;
+    will-change: stroke-dashoffset;
+  }
+
+  /* Added GPU acceleration for transitions */
+  [class*="transition"] {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+}
