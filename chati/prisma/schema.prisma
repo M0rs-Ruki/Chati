@@ -1,0 +1,105 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ENUMS
+
+enum Role {
+  ADMIN
+  EDITOR
+}
+
+enum UserStatus {
+  ACTIVE
+  DISABLED
+}
+
+enum PublishStatus {
+  DRAFT
+  REVIEW
+  PUBLISHED
+  ARCHIVED
+}
+
+// USER
+
+model User {
+  id             String          @id @default(cuid())
+  email          String          @unique
+  name           String?
+  password       String?
+  role           Role            @default(EDITOR)
+  status         UserStatus      @default(ACTIVE)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  blogPosts      BlogPost[]
+  documentations Documentation[]
+}
+
+// THEME
+
+model Theme {
+  id             String   @id @default(cuid())
+  name           String   @unique
+  primaryColor   String
+  secondaryColor String?
+  accentColor    String?
+  logoUrl        String?
+  faviconUrl     String?
+  typography     String?
+  isDefault      Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+// BLOG POST
+
+model BlogPost {
+  id          String        @id @default(cuid())
+  slug        String        @unique
+  title       String
+  content     Json
+  metadata    Json          // { tags: string[], description: string }
+  imageUrl    String?       // cover/hero or main image
+  status      PublishStatus @default(DRAFT)
+  publishedAt DateTime?
+  authorId    String?
+  author      User?         @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+// PAGE
+
+model Page {
+  id          String        @id @default(cuid())
+  slug        String        @unique
+  title       String
+  content     Json          // array of component blocks for flexible, drag-and-drop design
+  metadata    Json          // { tags: string[], description: string } or whatever structure you want
+  status      PublishStatus @default(DRAFT)
+  publishedAt DateTime?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+// DOCUMENTATION
+
+model Documentation {
+  id          String        @id @default(cuid())
+  slug        String        @unique
+  title       String
+  content     Json          // same, can be Markdown, rich JSON, or blocks
+  metadata    Json          // { tags: string[], description: string }
+  status      PublishStatus @default(DRAFT)
+  authorId    String?
+  author      User?         @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
