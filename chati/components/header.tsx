@@ -1,17 +1,23 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+} from "@/components/ui/navigation-menu";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import {
   Home,
   Sparkles,
@@ -37,8 +43,8 @@ import {
   HelpCircle,
   Radio,
   Workflow,
-} from "lucide-react"
-import { cn } from "@/lib/utils"
+} from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const features = [
   {
@@ -53,54 +59,111 @@ const features = [
     href: "/features/live-chat",
     description: "Real-time customer conversations",
   },
-  { name: "Chatbots & AI", icon: Bot, href: "/features/chatbots", description: "Intelligent automated responses" },
+  {
+    name: "Chatbots & AI",
+    icon: Bot,
+    href: "/features/chatbots",
+    description: "Intelligent automated responses",
+  },
   {
     name: "Automation Workflows",
     icon: Workflow,
     href: "/features/automation",
     description: "Automate repetitive tasks and processes",
   },
-  { name: "Team Collaboration", icon: Users, href: "/features/collaboration", description: "Work together seamlessly" },
+  {
+    name: "Team Collaboration",
+    icon: Users,
+    href: "/features/collaboration",
+    description: "Work together seamlessly",
+  },
   {
     name: "Customer Data Platform",
     icon: Database,
     href: "/features/cdp",
     description: "Unified customer data, analytics & integrations",
   },
-  { name: "Customization", icon: Palette, href: "/features/customization", description: "Tailor to your brand" },
-]
+  {
+    name: "Customization",
+    icon: Palette,
+    href: "/features/customization",
+    description: "Tailor to your brand",
+  },
+];
 
 const industries = [
-  { name: "E-commerce & Retail", icon: ShoppingCart, href: "/industries/ecommerce" },
-  { name: "Healthcare & Wellness", icon: Heart, href: "/industries/healthcare" },
-  { name: "Education & E-learning", icon: GraduationCap, href: "/industries/education" },
+  {
+    name: "E-commerce & Retail",
+    icon: ShoppingCart,
+    href: "/industries/ecommerce",
+  },
+  {
+    name: "Healthcare & Wellness",
+    icon: Heart,
+    href: "/industries/healthcare",
+  },
+  {
+    name: "Education & E-learning",
+    icon: GraduationCap,
+    href: "/industries/education",
+  },
   { name: "Travel & Hospitality", icon: Plane, href: "/industries/travel" },
   { name: "Food & Beverage", icon: Utensils, href: "/industries/food" },
   { name: "Real Estate", icon: Building2, href: "/industries/real-estate" },
   { name: "Financial Services", icon: DollarSign, href: "/industries/finance" },
   { name: "Technology & SaaS", icon: Sparkles, href: "/industries/technology" },
-]
+];
 
 const resources = [
-  { name: "Blog", icon: BookOpen, href: "/blog", description: "Latest insights and updates" },
-  { name: "Documentation", icon: FileText, href: "/docs", description: "Comprehensive guides and API docs" },
-  { name: "Case Studies", icon: Lightbulb, href: "/case-studies", description: "Success stories from our customers" },
-  { name: "Video Tutorials", icon: Video, href: "/tutorials", description: "Step-by-step video guides" },
-  { name: "Webinars", icon: Calendar, href: "/webinars", description: "Live training and Q&A sessions" },
-  { name: "Help Center", icon: HelpCircle, href: "/help", description: "Get answers to common questions" },
-]
+  {
+    name: "Blog",
+    icon: BookOpen,
+    href: "/blog",
+    description: "Latest insights and updates",
+  },
+  {
+    name: "Documentation",
+    icon: FileText,
+    href: "/docs",
+    description: "Comprehensive guides and API docs",
+  },
+  {
+    name: "Case Studies",
+    icon: Lightbulb,
+    href: "/case-studies",
+    description: "Success stories from our customers",
+  },
+  {
+    name: "Video Tutorials",
+    icon: Video,
+    href: "/tutorials",
+    description: "Step-by-step video guides",
+  },
+  {
+    name: "Webinars",
+    icon: Calendar,
+    href: "/webinars",
+    description: "Live training and Q&A sessions",
+  },
+  {
+    name: "Help Center",
+    icon: HelpCircle,
+    href: "/help",
+    description: "Get answers to common questions",
+  },
+];
 
 export function Header() {
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10)
-    }
-    window.addEventListener("scroll", handleScroll, { passive: true })
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+      setIsScrolled(window.scrollY > 10);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <header
@@ -108,17 +171,20 @@ export function Header() {
         "sticky top-0 z-50 w-full transition-all duration-300",
         isScrolled
           ? "bg-white/70 backdrop-blur-xl shadow-lg border-b border-white/20 supports-[backdrop-filter]:bg-white/60"
-          : "bg-white/90 backdrop-blur-sm border-b border-gray-100/50",
+          : "bg-white/90 backdrop-blur-sm border-b border-gray-100/50"
       )}
     >
       <div className="container mx-auto px-4">
         <div className="flex h-20 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2 group">
-            <img
+            <Image
               src="/chati-logo-full.png"
               alt="Chati - Create, Connect, Converse"
+              width={120}
+              height={40}
               className="h-10 w-auto transition-transform group-hover:scale-105 duration-300"
+              priority
             />
           </Link>
 
@@ -155,7 +221,9 @@ export function Header() {
                           <div className="text-sm font-semibold text-foreground group-hover:text-emerald-600 transition-colors duration-200">
                             {feature.name}
                           </div>
-                          <p className="text-xs text-muted-foreground line-clamp-2">{feature.description}</p>
+                          <p className="text-xs text-muted-foreground line-clamp-2">
+                            {feature.description}
+                          </p>
                         </div>
                       </Link>
                     ))}
@@ -213,7 +281,9 @@ export function Header() {
                           <div className="text-sm font-semibold text-foreground group-hover:text-emerald-600 transition-colors duration-200">
                             {resource.name}
                           </div>
-                          <p className="text-xs text-muted-foreground line-clamp-2">{resource.description}</p>
+                          <p className="text-xs text-muted-foreground line-clamp-2">
+                            {resource.description}
+                          </p>
                         </div>
                       </Link>
                     ))}
@@ -250,13 +320,23 @@ export function Header() {
               className="border-2 hover:bg-gray-50 bg-transparent transition-all duration-200"
               asChild
             >
-              <Link href={process.env.NEXT_PUBLIC_APP_URL || "https://app.chati.chat"}>Sign In</Link>
+              <Link
+                href={
+                  process.env.NEXT_PUBLIC_APP_URL || "https://app.chati.chat"
+                }
+              >
+                Sign In
+              </Link>
             </Button>
             <Button
               className="bg-green-600 hover:bg-green-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 group"
               asChild
             >
-              <Link href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""}`}>
+              <Link
+                href={`https://wa.me/${
+                  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""
+                }`}
+              >
                 <Bell className="mr-2 h-4 w-4 group-hover:animate-pulse" />
                 Book a Demo
               </Link>
@@ -270,7 +350,10 @@ export function Header() {
                 <Menu className="h-6 w-6" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] sm:w-[400px] overflow-y-auto">
+            <SheetContent
+              side="right"
+              className="w-[300px] sm:w-[400px] overflow-y-auto"
+            >
               <div className="flex flex-col gap-4 mt-6">
                 <Link
                   href="/"
@@ -373,13 +456,24 @@ export function Header() {
                     className="w-full border-2 bg-transparent transition-all duration-200"
                     asChild
                   >
-                    <Link href={process.env.NEXT_PUBLIC_APP_URL || "https://app.chati.chat"}>Sign In</Link>
+                    <Link
+                      href={
+                        process.env.NEXT_PUBLIC_APP_URL ||
+                        "https://app.chati.chat"
+                      }
+                    >
+                      Sign In
+                    </Link>
                   </Button>
                   <Button
                     className="w-full bg-green-600 hover:bg-green-700 text-white transition-all duration-200"
                     asChild
                   >
-                    <Link href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""}`}>
+                    <Link
+                      href={`https://wa.me/${
+                        process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""
+                      }`}
+                    >
                       <Bell className="mr-2 h-4 w-4" />
                       Book a Demo
                     </Link>
@@ -391,5 +485,5 @@ export function Header() {
         </div>
       </div>
     </header>
-  )
+  );
 }

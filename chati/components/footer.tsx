@@ -1,4 +1,5 @@
-import Link from "next/link"
+import Link from "next/link";
+import Image from "next/image";
 import {
   Facebook,
   Twitter,
@@ -12,7 +13,7 @@ import {
   Lock,
   ShieldCheck,
   Heart,
-} from "lucide-react"
+} from "lucide-react";
 
 export function Footer() {
   return (
@@ -25,19 +26,23 @@ export function Footer() {
           {/* Company Info with Logo */}
           <div className="lg:pr-8">
             <div className="mb-4">
-              <img
+              <Image
                 src="/chati-logo-full.png"
                 alt="Chati - WhatsApp Business API Platform"
+                width={144}
+                height={48}
                 className="h-12 w-auto mb-3"
               />
               <p className="text-sm text-slate-400 flex items-center gap-1.5">
-                Made with <Heart className="h-3.5 w-3.5 text-red-500 fill-red-500 inline" /> in India
+                Made with{" "}
+                <Heart className="h-3.5 w-3.5 text-red-500 fill-red-500 inline" />{" "}
+                in India
               </p>
             </div>
 
             <p className="text-sm text-slate-400 mb-6 max-w-sm leading-relaxed">
-              Transform your business communication with AI-powered WhatsApp Business API, multi-channel messaging, and
-              intelligent automation.
+              Transform your business communication with AI-powered WhatsApp
+              Business API, multi-channel messaging, and intelligent automation.
             </p>
 
             <div className="flex gap-3">
@@ -160,7 +165,9 @@ export function Footer() {
 
           {/* Follow Us Links */}
           <div>
-            <h3 className="font-semibold text-white mb-5 text-base">Follow Us</h3>
+            <h3 className="font-semibold text-white mb-5 text-base">
+              Follow Us
+            </h3>
             <ul className="space-y-3.5">
               <li>
                 <Link
@@ -199,11 +206,12 @@ export function Footer() {
         {/* Copyright Section */}
         <div className="mt-12 pt-8 border-t border-slate-800 text-center">
           <p className="text-sm text-slate-400">
-            © {new Date().getFullYear()} · <span className="text-white font-medium">Chati</span> ·{" "}
+            © {new Date().getFullYear()} ·{" "}
+            <span className="text-white font-medium">Chati</span> ·{" "}
             <span className="text-green-400">WhatsApp Chat-Bot Solution</span>
           </p>
         </div>
       </div>
     </footer>
-  )
+  );
 }
