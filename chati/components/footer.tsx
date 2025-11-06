@@ -26,7 +26,7 @@ export function Footer() {
           <div className="lg:pr-8">
             <div className="mb-4">
               <img
-                src="/chati-logo-white.webp"
+                src="/chati-logo-full.png"
                 alt="Chati - WhatsApp Business API Platform"
                 className="h-12 w-auto mb-3"
               />

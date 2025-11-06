@@ -116,7 +116,7 @@ export function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2 group">
             <img
-              src="/chati-logo-full.webp"
+              src="/chati-logo-full.png"
               alt="Chati - Create, Connect, Converse"
               className="h-10 w-auto transition-transform group-hover:scale-105 duration-300"
             />
