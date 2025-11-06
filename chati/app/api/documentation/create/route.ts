@@ -79,7 +79,7 @@ export async function POST(req: NextRequest) {
         content,
         imageUrl: imageUrl || null,
         metadata: finalMetadata,
-        authorId: user!.id, // Fixed: use user.id instead of user.userId
+        authorId: user!.id,
         status: "DRAFT",
       },
       include: {

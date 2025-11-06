@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
     const searchParams = req.nextUrl.searchParams;
     const statusParam = searchParams.get('status');
     const page = parseInt(searchParams.get('page') || '1', 10);
-    const limit = Math.min(parseInt(searchParams.get('limit') || '10', 10), 100); // Max 100 items
+    const limit = Math.min(parseInt(searchParams.get('limit') || '10', 10), 100);
     const skip = (page - 1) * limit;
 
     // Validate status parameter
@@ -45,6 +45,8 @@ export async function GET(req: NextRequest) {
         slug: true,
         title: true,
         status: true,
+        metadata: true,
+        imageUrl: true,
         author: {
           select: {
             id: true,
