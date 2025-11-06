@@ -7,25 +7,25 @@ const brands = [
   {
     name: "UTKAL BUILDERS",
     tagline: "BUILDING TRUST",
-    logo: "/utkal-builders-logo.jpg",
+    logo: "/utkal-builders-logo.png",
   },
   {
     name: "SnapShot",
-    logo: "/snapshot-logo.jpg",
+    logo: "/logo-blue-2015-Transparent.png",
   },
   {
     name: "26 prelude",
     tagline: "A SAP Creative Media House",
-    logo: "/26-prelude-logo.jpg",
+    logo: "/26-prelude-logo.png",
   },
   {
     name: "MiCT",
     tagline: "GROUP OF INSTITUTIONS",
-    logo: "/mict-logo.jpg",
+    logo: "/MICT-LOGO-new-10.png",
   },
   {
     name: "University",
-    logo: "/university-crest-logo.jpg",
+    logo: "/university-crest-logo.png",
   },
 ]
 

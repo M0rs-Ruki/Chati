@@ -105,7 +105,7 @@ export default function ClientPage() {
 
               <div className="pt-3 border-t border-gray-200">
                 <Image
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/chati%20gdpr-N88djHefyRDj9jPmx3BCHqi9AfhyZw.webp"
+                  src="/chati-gdpr.webp"
                   alt="GDPR Compliant, Meta Business Partner, 500+ Global Businesses"
                   width={600}
                   height={80}
@@ -123,7 +123,7 @@ export default function ClientPage() {
                 <FloatingSocialIcons />
 
                 <Image
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/whatsapp%20API%20with%20Chati-08HzE4mXORVAqoHcQ7VqW35AqrbaJJ.png"
+                  src="/whatsapp-API-with-Chati.png"
                   alt="Professional using WhatsApp Business API for customer engagement"
                   width={500}
                   height={500}
@@ -248,7 +248,7 @@ export default function ClientPage() {
                 <FloatingCDPElements />
 
                 <Image
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/cdp-marketing-chati-jj1mEBghwP4J7UYyMyOw2kT2xxs1fs.png"
+                  src="/cdp-marketing-chati.png"
                   alt="Customer Data Platform showing unified customer journey with real-time analytics, CRM integration, location intelligence, weather-based targeting, purchase tracking, and omnichannel messaging"
                   width={500}
                   height={600}
@@ -285,7 +285,7 @@ export default function ClientPage() {
                 <div className="absolute inset-0 bg-gradient-to-br from-green-400/20 via-blue-400/15 to-pink-400/20 blur-2xl rounded-3xl transform scale-105" />
 
                 <Image
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp-Business-API-chati-UjTKYnDjjzxGyBOH01t8NWD8x7N749.png"
+                  src="/WhatsApp-Business-API-chati.png"
                   alt="WhatsApp Business API features including 24/7 AI chatbot support, automated reminders and updates on WhatsApp, payment collection, and invoice downloads for seamless customer engagement"
                   width={700}
                   height={600}
