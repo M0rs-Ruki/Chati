@@ -98,6 +98,7 @@ model Documentation {
   content     Json          // same, can be Markdown, rich JSON, or blocks
   metadata    Json          // { tags: string[], description: string }
   status      PublishStatus @default(DRAFT)
+  imageUrl    String?      // optional image for the documentation
   authorId    String?
   author      User?         @relation(fields: [authorId], references: [id], onDelete: SetNull)
   createdAt   DateTime      @default(now())

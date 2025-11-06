@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { authenticateRequest } from "@/lib/auth";
 import { PublishStatus } from "@prisma/client";
 
 // Type-safe query parameters
@@ -11,9 +10,6 @@ interface BlogQueryParams {
 }
 
 export async function GET(req: NextRequest) {
-  const { user, error } = await authenticateRequest(req);
-  if (error) return error;
-
   try {
     // Query parameters for filtering and pagination
     const searchParams = req.nextUrl.searchParams;
