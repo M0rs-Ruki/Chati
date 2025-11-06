@@ -1,21 +1,43 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { authenticateRequest } from '@/lib/auth';
+import { PublishStatus } from '@prisma/client';
+
+// Type-safe query parameters
+interface DocumentationQueryParams {
+  status?: PublishStatus;
+  page: number;
+  limit: number;
+}
 
 export async function GET(req: NextRequest) {
+  const { user, error } = await authenticateRequest(req);
+  if (error) return error;
+
   try {
+    // Query parameters for filtering and pagination
     const searchParams = req.nextUrl.searchParams;
-    const status = searchParams.get('status');
-    const page = parseInt(searchParams.get('page') || '1');
-    const limit = parseInt(searchParams.get('limit') || '10');
+    const statusParam = searchParams.get('status');
+    const page = parseInt(searchParams.get('page') || '1', 10);
+    const limit = Math.min(parseInt(searchParams.get('limit') || '10', 10), 100); // Max 100 items
     const skip = (page - 1) * limit;
 
-    const where: any = {};
+    // Validate status parameter
+    const validStatuses: PublishStatus[] = ['DRAFT', 'REVIEW', 'PUBLISHED', 'ARCHIVED'];
+    const status = statusParam && validStatuses.includes(statusParam as PublishStatus)
+      ? (statusParam as PublishStatus)
+      : undefined;
+
+    // Build filter object with proper typing
+    const where: { status?: PublishStatus } = {};
     if (status) {
       where.status = status;
     }
 
+    // Get total count for pagination
     const total = await prisma.documentation.count({ where });
 
+    // Fetch documentation
     const docs = await prisma.documentation.findMany({
       where,
       select: {
@@ -50,9 +72,9 @@ export async function GET(req: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Error fetching All documentation:', error);
+    console.error('Error fetching documentation:', error);
     return NextResponse.json(
-      { message: 'Failed to fetch All documentation' },
+      { message: 'Failed to fetch documentation' },
       { status: 500 }
     );
   }
