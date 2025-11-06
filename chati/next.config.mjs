@@ -1,98 +1,96 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: true,
+
   typescript: {
     ignoreBuildErrors: true,
   },
-  
+
   images: {
-    formats: ['image/avif', 'image/webp'],
+    formats: ["image/avif", "image/webp"],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 31536000, // 1 year
+    minimumCacheTTL: 31536000,
     dangerouslyAllowSVG: true,
-    contentDispositionType: 'attachment',
+    contentDispositionType: "attachment",
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    unoptimized: false, // Enable image optimization
+
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**.vercel-storage.com",
+      },
+    ],
   },
-  
+
   compress: true,
-  
+
   reactCompiler: true,
-  
+
   experimental: {
-    optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
+    optimizePackageImports: [
+      "lucide-react",
+      "@radix-ui/react-icons",
+      "@radix-ui/react-accordion",
+      "@radix-ui/react-navigation-menu",
+      "@radix-ui/react-dialog",
+    ],
     optimizeCss: true,
     scrollRestoration: true,
     turbo: {
       rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
+        "*.svg": {
+          loaders: ["@svgr/webpack"],
+          as: "*.js",
         },
       },
     },
   },
-  
+
   async headers() {
     return [
       {
-        source: '/:path*',
+        source: "/:path*",
         headers: [
+          { key: "X-DNS-Prefetch-Control", value: "on" },
           {
-            key: 'X-DNS-Prefetch-Control',
-            value: 'on'
+            key: "Strict-Transport-Security",
+            value: "max-age=63072000; includeSubDomains; preload",
           },
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "X-XSS-Protection", value: "1; mode=block" },
+          { key: "Referrer-Policy", value: "origin-when-cross-origin" },
           {
-            key: 'Strict-Transport-Security',
-            value: 'max-age=63072000; includeSubDomains; preload'
-          },
-          {
-            key: 'X-Frame-Options',
-            value: 'SAMEORIGIN'
-          },
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff'
-          },
-          {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block'
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'origin-when-cross-origin'
-          },
-          {
-            key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=()'
-          }
-        ],
-      },
-      {
-        source: '/images/:path*',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=()",
           },
         ],
       },
       {
-        source: '/_next/static/:path*',
+        source: "/images/:path*",
         headers: [
           {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
           },
         ],
       },
-    ]
+      {
+        source: "/_next/static/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+    ];
   },
-  
-  // Added ESLint configuration
+
   eslint: {
     ignoreDuringBuilds: true,
   },
-}
+};
 
-export default nextConfig
+export default nextConfig;
