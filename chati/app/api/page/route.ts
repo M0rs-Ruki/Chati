@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-
+import { authenticateRequest } from "@/lib/auth";
 /**
  * GET /api/page
  * PUBLIC ENDPOINT
@@ -8,6 +8,9 @@ import { prisma } from "@/lib/prisma";
  */
 export async function GET(req: NextRequest): Promise<NextResponse> {
   try {
+    const { user, error } = await authenticateRequest(req);
+    if (error) return error;
+
     const { searchParams } = new URL(req.url);
 
     // Parse pagination
