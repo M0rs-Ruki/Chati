@@ -58,6 +58,18 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     }
 
     const { email, name, password, role } = validation.data;
+    const status = (validation.data as any).status;
+
+    // CRITICAL: Admins can ONLY create EDITORS, not other ADMINS
+    if (role === "ADMIN") {
+      return NextResponse.json(
+        {
+          message:
+            "Forbidden: Admins cannot create other admin accounts. You can only create editor accounts.",
+        },
+        { status: 403 }
+      );
+    }
 
     // Check if user with this email already exists
     const existingUser = await prisma.user.findUnique({
@@ -85,7 +97,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         name,
         password: hashedPassword,
         role,
-        status: "ACTIVE",
+        status: status || "ACTIVE",
       },
       select: {
         id: true,
@@ -99,7 +111,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     });
 
     // Log user creation for audit purposes
-    console.info(`[AUDIT] User created: ${newUser.id} (${newUser.email}) by admin: ${user.id}`);
+    console.info(
+      `[AUDIT] User created: ${newUser.id} (${newUser.email}) by admin: ${user.id}`
+    );
 
     return NextResponse.json(
       {
