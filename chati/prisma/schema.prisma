@@ -40,6 +40,7 @@ model User {
   updatedAt      DateTime        @updatedAt
   blogPosts      BlogPost[]
   documentations Documentation[]
+  pages          Page[]          // 👈 ADD THIS
 }
 
 // THEME
@@ -81,10 +82,12 @@ model Page {
   id          String        @id @default(cuid())
   slug        String        @unique
   title       String
-  content     Json          // array of component blocks for flexible, drag-and-drop design
-  metadata    Json          // { tags: string[], description: string } or whatever structure you want
+  content     Json
+  metadata    Json
   status      PublishStatus @default(DRAFT)
   publishedAt DateTime?
+  authorId    String?
+  author      User?         @relation(fields: [authorId], references: [id], onDelete: SetNull)
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 }
