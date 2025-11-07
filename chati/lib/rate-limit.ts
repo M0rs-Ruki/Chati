@@ -63,6 +63,27 @@ export const RATE_LIMIT_CONFIGS = {
     maxRequests: 100, // 100 reads
     message: "Too many requests. Please try again later.",
   },
+  // Theme management rate limits
+  themeCreate: {
+    windowMs: 60 * 60 * 1000, // 1 hour
+    maxRequests: 10, // 10 themes
+    message: "Too many theme creation requests. Please try again later.",
+  },
+  themeUpdate: {
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    maxRequests: 20, // 20 updates
+    message: "Too many theme update requests. Please try again later.",
+  },
+  themeDelete: {
+    windowMs: 60 * 60 * 1000, // 1 hour
+    maxRequests: 5, // 5 deletions
+    message: "Too many theme deletion requests. Please try again later.",
+  },
+  themeRead: {
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    maxRequests: 100, // 100 reads
+    message: "Too many requests. Please try again later.",
+  },
 } as const;
 
 /**
@@ -92,10 +113,7 @@ export function getRateLimitIdentifier(
   // Fall back to IP address
   const forwardedFor = request.headers.get("x-forwarded-for");
   const realIp = request.headers.get("x-real-ip");
-  const ip =
-    forwardedFor?.split(",")[0].trim() ||
-    realIp ||
-    "unknown";
+  const ip = forwardedFor?.split(",")[0].trim() || realIp || "unknown";
 
   return `ip:${ip}`;
 }
