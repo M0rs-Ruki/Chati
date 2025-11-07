@@ -1,137 +1,62 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import {
-  pagePaginationSchema,
-  pageListFiltersSchema,
-  validatePageSchema,
-} from "@/lib/page-validation";
-import { Prisma } from "@prisma/client";
 
 /**
  * GET /api/page
- * Retrieves a paginated list of pages with optional filters
- * PUBLIC ENDPOINT - No authentication required
- *
- * @param req - Next.js request object
- * @returns Paginated list of pages or error response
+ * PUBLIC ENDPOINT
+ * Returns all pages (with optional pagination + status filter)
  */
 export async function GET(req: NextRequest): Promise<NextResponse> {
   try {
-    // NOTE: NO AUTHENTICATION - This is a public endpoint
-    // Anyone can view all pages
-
-    // Parse query parameters
     const { searchParams } = new URL(req.url);
-    const queryParams = {
-      page: searchParams.get("page"),
-      limit: searchParams.get("limit"),
-      status: searchParams.get("status"),
-      search: searchParams.get("search"),
-      sortBy: searchParams.get("sortBy"),
-      sortOrder: searchParams.get("sortOrder"),
-    };
 
-    // Validate pagination parameters
-    const paginationValidation = validatePageSchema(pagePaginationSchema, {
-      page: queryParams.page,
-      limit: queryParams.limit,
-    });
+    // Parse pagination
+    const page = Number(searchParams.get("page") ?? 1);
+    const limit = Number(searchParams.get("limit") ?? 10);
+    const skip = (page - 1) * limit;
 
-    if (!paginationValidation.success) {
-      return NextResponse.json(
-        {
-          message: "Invalid pagination parameters",
-          errors: paginationValidation.errors,
-        },
-        { status: 400 }
-      );
-    }
+    // Optional: status filter
+    const status = searchParams.get("status");
 
-    const { page, limit } = paginationValidation.data;
-    const pageNum = Number(page);
-    const limitNum = Number(limit);
+    const where: any = {};
+    if (status) where.status = status;
 
-    // Validate filters
-    const filtersValidation = validatePageSchema(pageListFiltersSchema, {
-      status: queryParams.status,
-      search: queryParams.search,
-      sortBy: queryParams.sortBy,
-      sortOrder: queryParams.sortOrder,
-    });
+    // Fetch total count
+    const total = await prisma.page.count({ where });
 
-    if (!filtersValidation.success) {
-      return NextResponse.json(
-        {
-          message: "Invalid filter parameters",
-          errors: filtersValidation.errors,
-        },
-        { status: 400 }
-      );
-    }
-
-    const { status, search, sortBy, sortOrder } = filtersValidation.data;
-
-    // Build where clause
-    const where: Prisma.PageWhereInput = {};
-
-    if (status) {
-      where.status = status;
-    }
-
-    if (search) {
-      where.OR = [
-        { title: { contains: search, mode: "insensitive" } },
-        { slug: { contains: search, mode: "insensitive" } },
-      ];
-    }
-
-    // Calculate pagination
-    const skip = (pageNum - 1) * limitNum;
-
-    // Build orderBy object
-    const orderBy: Prisma.PageOrderByWithRelationInput = {
-      [sortBy as string]: sortOrder,
-    };
-
-    // Execute query with pagination
-    const [pages, total] = await Promise.all([
-      prisma.page.findMany({
-        where,
-        select: {
-          id: true,
-          slug: true,
-          title: true,
-          status: true,
-          publishedAt: true,
-          author: {
-            select: {
-              id: true,
-              name: true,
-              email: true,
-            },
+    // Query pages
+    const pages = await prisma.page.findMany({
+      where,
+      select: {
+        id: true,
+        slug: true,
+        title: true,
+        status: true,
+        publishedAt: true,
+        author: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
           },
-          createdAt: true,
-          updatedAt: true,
         },
-        orderBy,
-        skip,
-        take: limitNum,
-      }),
-      prisma.page.count({ where }),
-    ]);
-
-    const totalPages = Math.ceil(total / limitNum);
-    const hasMore = pageNum < totalPages;
+        createdAt: true,
+        updatedAt: true,
+      },
+      orderBy: { createdAt: "desc" }, // Default only
+      skip,
+      take: limit,
+    });
 
     return NextResponse.json({
       message: "Pages fetched successfully",
       data: pages,
       pagination: {
-        page: pageNum,
-        limit: limitNum,
+        page,
+        limit,
         total,
-        totalPages,
-        hasMore,
+        totalPages: Math.ceil(total / limit),
+        hasMore: page < Math.ceil(total / limit),
       },
     });
   } catch (error) {
