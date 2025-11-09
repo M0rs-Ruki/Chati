@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import Image from "next/image";
 import {
   Select,
   SelectContent,
@@ -684,10 +685,12 @@ export default function ThemeEditor() {
                 {editingTheme.logoUrl && (
                   <div className="mt-3 p-4 bg-gray-50 rounded-lg border">
                     <p className="text-xs text-gray-600 mb-2">Logo Preview:</p>
-                    <img
+                    <Image
                       src={editingTheme.logoUrl}
                       alt="Logo"
                       className="h-12 object-contain"
+                      width={150}
+                      height={48}
                     />
                   </div>
                 )}
@@ -704,7 +707,7 @@ export default function ThemeEditor() {
                       faviconUrl: e.target.value,
                     })
                   }
-                  placeholder="https://example.com/favicon.ico"
+                  placeholder="/chati-ai-icon-filled-256.webp"
                   className="mt-2"
                 />
               </div>

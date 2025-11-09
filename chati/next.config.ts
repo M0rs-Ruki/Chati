@@ -42,6 +42,12 @@ const nextConfig = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "chati.ai",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
   compress: true,
