@@ -292,7 +292,7 @@ export default function DocsPage() {
                       size="sm"
                       variant="outline"
                       onClick={() =>
-                        router.push(`/dashboard/documentation/${doc.id}/edit`)
+                        router.push(`/dashboard/docs/${doc.id}/edit`)
                       }
                       className="flex-1 border-gray-200 hover:bg-green-50"
                     >
