@@ -311,15 +311,15 @@ export default function MediaPage() {
           </CardContent>
         </Card>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
           {media.map((file, index) => (
             <Card
               key={file.id}
               className="bg-white border-gray-200 hover:shadow-xl transition-all duration-300 hover:scale-105 animate-in fade-in slide-in-from-bottom-4"
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              <CardContent className="p-4">
-                <div className="aspect-video bg-gray-100 rounded-lg mb-3 overflow-hidden">
+              <CardContent className="p-3">
+                <div className="aspect-square bg-gray-100 rounded-lg mb-2 overflow-hidden">
                   <img
                     src={file.url}
                     alt={file.alt}
@@ -328,7 +328,7 @@ export default function MediaPage() {
                 </div>
                 <div className="space-y-2">
                   <h3
-                    className="font-medium text-sm text-gray-900 truncate"
+                    className="font-medium text-xs text-gray-900 truncate"
                     title={file.alt}
                   >
                     {file.alt}
@@ -352,12 +352,12 @@ export default function MediaPage() {
                       size="icon"
                       variant="outline"
                       onClick={() => handleCopy(file.url, file.id)}
-                      className="border-gray-200 hover:bg-green-50 h-9 w-9 flex-shrink-0"
+                      className="border-gray-200 hover:bg-green-50 h-8 w-8 flex-shrink-0"
                     >
                       {copiedId === file.id ? (
-                        <Check className="h-4 w-4 text-green-600" />
+                        <Check className="h-3 w-3 text-green-600" />
                       ) : (
-                        <Copy className="h-4 w-4 text-gray-600" />
+                        <Copy className="h-3 w-3 text-gray-600" />
                       )}
                     </Button>
                     <Button
@@ -366,9 +366,9 @@ export default function MediaPage() {
                       onClick={() =>
                         setDeleteDialog({ open: true, mediaId: file.id })
                       }
-                      className="border-gray-200 hover:bg-red-50 h-9 w-9 flex-shrink-0"
+                      className="border-gray-200 hover:bg-red-50 h-8 w-8 flex-shrink-0"
                     >
-                      <Trash2 className="h-4 w-4 text-red-600" />
+                      <Trash2 className="h-3 w-3 text-red-600" />
                     </Button>
                   </div>
                 </div>
