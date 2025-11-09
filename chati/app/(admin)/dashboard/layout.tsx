@@ -1,29 +1,44 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useEffect } from "react"
-import { useRouter, usePathname } from "next/navigation"
-import Link from "next/link"
-import { LayoutDashboard, FileText, Newspaper, BookOpen, Users, Palette, LogOut, ImageIcon, Eye } from "lucide-react"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { useTheme } from "@/lib/theme-provider"
+import type React from "react";
+import { useEffect } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
+import {
+  LayoutDashboard,
+  FileText,
+  Newspaper,
+  BookOpen,
+  Users,
+  Palette,
+  LogOut,
+  ImageIcon,
+  Eye,
+} from "lucide-react";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { useTheme } from "@/lib/theme-provider";
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const router = useRouter()
-  const pathname = usePathname()
-  const { theme } = useTheme()
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const { theme } = useTheme();
 
   useEffect(() => {
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem("token");
     if (!token) {
-      router.push("/admin")
+      router.push("/admin");
     }
-  }, [router])
+  }, [router]);
 
   const handleLogout = () => {
-    localStorage.removeItem("token")
-    router.push("/admin")
-  }
+    localStorage.removeItem("token");
+    router.push("/admin");
+  };
 
   const navItems = [
     { href: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
@@ -33,7 +48,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     { href: "/dashboard/media", icon: ImageIcon, label: "Media Library" },
     { href: "/dashboard/themes", icon: Palette, label: "Theme" },
     { href: "/dashboard/users", icon: Users, label: "Users" },
-  ]
+  ];
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -42,7 +57,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           {/* Logo Section */}
           <div className="p-6 border-b border-gray-100">
             {theme?.logoUrl ? (
-              <img src={theme.logoUrl || "/placeholder.svg"} alt="Logo" className="h-10 w-auto" />
+              <Image
+                src={theme.logoUrl || "/placeholder.svg"}
+                alt="Logo"
+                className="h-10 w-auto"
+                width={150}
+                height={48}
+              />
             ) : (
               <div className="flex items-center gap-3">
                 <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-purple-600 to-purple-700 flex items-center justify-center">
@@ -59,23 +80,27 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           {/* Content Section */}
           <nav className="flex-1 p-4 space-y-6 overflow-y-auto">
             <div className="space-y-1">
-              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-3 mb-2">Content</p>
+              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-3 mb-2">
+                Content
+              </p>
               {navItems.map((item) => {
-                const Icon = item.icon
-                const isActive = pathname === item.href
+                const Icon = item.icon;
+                const isActive = pathname === item.href;
 
                 return (
                   <Link key={item.href} href={item.href}>
                     <div
                       className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 cursor-pointer ${
-                        isActive ? "bg-purple-50 text-purple-700" : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                        isActive
+                          ? "bg-purple-50 text-purple-700"
+                          : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                       }`}
                     >
                       <Icon className="h-5 w-5" />
                       <span className="font-medium text-sm">{item.label}</span>
                     </div>
                   </Link>
-                )
+                );
               })}
             </div>
 
@@ -94,10 +119,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <div className="p-4 border-t border-gray-100">
             <div className="flex items-center gap-3 mb-3">
               <Avatar className="h-10 w-10 bg-gradient-to-br from-purple-600 to-purple-700">
-                <AvatarFallback className="bg-transparent text-white font-semibold text-sm">JD</AvatarFallback>
+                <AvatarFallback className="bg-transparent text-white font-semibold text-sm">
+                  JD
+                </AvatarFallback>
               </Avatar>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-gray-900 truncate">jeet</p>
+                <p className="text-sm font-semibold text-gray-900 truncate">
+                  jeet
+                </p>
                 <p className="text-xs text-gray-500 truncate">admin</p>
               </div>
             </div>
@@ -114,5 +143,5 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
       <main className="flex-1 overflow-y-auto">{children}</main>
     </div>
-  )
+  );
 }

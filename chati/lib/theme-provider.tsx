@@ -41,7 +41,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         primaryColor: "#22c55e",
         secondaryColor: "#16a34a",
         accentColor: "#15803d",
-        logoUrl: "https://via.placeholder.com/150x50/22c55e/ffffff?text=Logo",
+        logoUrl: "https://chati.ai/wp-content/uploads/2023/10/smal-cht.png",
         faviconUrl: "https://via.placeholder.com/32x32/22c55e/ffffff?text=F",
         typography: JSON.stringify({
           heading: { fontFamily: "Inter", weight: 700 },
