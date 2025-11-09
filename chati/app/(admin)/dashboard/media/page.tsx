@@ -88,6 +88,7 @@ export default function MediaPage() {
       }
 
       const result = await response.json();
+      // Handle both old and new response formats
       setMedia(result.data || []);
     } catch (error) {
       console.error("Error fetching media:", error);
@@ -115,18 +116,19 @@ export default function MediaPage() {
       return;
     }
 
-    // Check file type
+    // Check file type - updated to match API validation
     const allowedTypes = [
       "image/jpeg",
       "image/jpg",
       "image/png",
       "image/gif",
       "image/webp",
+      "image/svg+xml",
     ];
     if (!allowedTypes.includes(file.type)) {
       toast({
         title: "Error",
-        description: "Only image files are allowed",
+        description: "Only image files are allowed (JPEG, PNG, GIF, WEBP, SVG)",
         variant: "destructive",
       });
       return;
@@ -147,6 +149,16 @@ export default function MediaPage() {
       toast({
         title: "Validation Error",
         description: "Please select a file and provide alt text",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Additional validation for alt text length
+    if (altText.trim().length > 500) {
+      toast({
+        title: "Validation Error",
+        description: "Alt text must be less than 500 characters",
         variant: "destructive",
       });
       return;
@@ -173,14 +185,15 @@ export default function MediaPage() {
         body: formData,
       });
 
+      const result = await response.json();
+
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || "Failed to upload media");
+        throw new Error(result.message || "Failed to upload media");
       }
 
       toast({
         title: "Success",
-        description: "Media uploaded successfully",
+        description: result.message || "Media uploaded successfully",
       });
 
       // Reset form
@@ -221,33 +234,33 @@ export default function MediaPage() {
         return;
       }
 
-      const response = await fetch(
-        `/api/media/${deleteDialog.mediaId}/delete`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      // FIXED: Updated endpoint from /api/media/[id]/delete to /api/media/[id]
+      const response = await fetch(`/api/media/${deleteDialog.mediaId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      const result = await response.json();
 
       if (!response.ok) {
-        throw new Error("Failed to delete media");
+        throw new Error(result.message || "Failed to delete media");
       }
 
       toast({
         title: "Success",
-        description: "Media deleted successfully",
+        description: result.message || "Media deleted successfully",
       });
 
       setMedia((prev) => prev.filter((m) => m.id !== deleteDialog.mediaId));
       setDeleteDialog({ open: false, mediaId: null });
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error deleting media:", error);
       toast({
         title: "Error",
-        description: "Failed to delete media",
+        description: error.message || "Failed to delete media",
         variant: "destructive",
       });
     }
@@ -405,7 +418,7 @@ export default function MediaPage() {
                         Click to select an image
                       </p>
                       <p className="text-xs text-gray-400 mt-1">
-                        JPG, PNG, GIF, WEBP (max 5MB)
+                        JPG, PNG, GIF, WEBP, SVG (max 5MB)
                       </p>
                     </>
                   )}
