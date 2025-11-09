@@ -40,7 +40,8 @@ model User {
   updatedAt      DateTime        @updatedAt
   blogPosts      BlogPost[]
   documentations Documentation[]
-  pages          Page[]          // 👈 ADD THIS
+  pages          Page[]
+  media          Media[]
 }
 
 // THEME
@@ -106,4 +107,17 @@ model Documentation {
   author      User?         @relation(fields: [authorId], references: [id], onDelete: SetNull)
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
+}
+
+// MEDIA ASSET
+
+model Media {
+  id        String   @id @default(cuid())
+  url       String
+  alt       String
+  type      String
+  size      Int
+  uploadedAt DateTime @default(now())
+  createdById String?
+  createdBy   User?    @relation(fields: [createdById], references: [id], onDelete: SetNull)
 }
