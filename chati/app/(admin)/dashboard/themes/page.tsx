@@ -119,13 +119,27 @@ export default function ThemeEditor() {
         return;
       }
 
+      // Convert typography string to JSON format
+      const typographyJSON = JSON.stringify({
+        heading: { fontFamily: newTheme.typography, weight: 700 },
+        body: { fontFamily: newTheme.typography, weight: 400 },
+      });
+
       const response = await fetch("/api/themes/create", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(newTheme),
+        body: JSON.stringify({
+          name: newTheme.name,
+          primaryColor: newTheme.primaryColor,
+          secondaryColor: newTheme.secondaryColor || null,
+          accentColor: newTheme.accentColor || null,
+          logoUrl: newTheme.logoUrl || null,
+          faviconUrl: newTheme.faviconUrl || null,
+          typography: typographyJSON,
+        }),
       });
 
       if (!response.ok) {
@@ -311,6 +325,48 @@ export default function ThemeEditor() {
     }
   };
 
+  // Extract current font family from the JSON string to use as Select value
+  const currentFontFamily = (() => {
+    try {
+      if (editingTheme?.typography) {
+        const parsed = JSON.parse(editingTheme.typography);
+        return parsed.body?.fontFamily ?? "inter";
+      }
+      return "inter";
+    } catch {
+      return "inter";
+    }
+  })();
+
+  // Change handler: update typography JSON string in editingTheme
+  const handleFontFamilyChange = (newFontFamily: string) => {
+    if (!editingTheme) return;
+    
+    try {
+      const parsed = editingTheme.typography
+        ? JSON.parse(editingTheme.typography)
+        : {
+            heading: { fontFamily: "Inter", weight: 700 },
+            body: { fontFamily: "Inter", weight: 400 },
+          };
+      parsed.heading.fontFamily = newFontFamily;
+      parsed.body.fontFamily = newFontFamily;
+      setEditingTheme({
+        ...editingTheme,
+        typography: JSON.stringify(parsed),
+      });
+    } catch {
+      // fallback simple stringify
+      setEditingTheme({
+        ...editingTheme,
+        typography: JSON.stringify({
+          heading: { fontFamily: newFontFamily, weight: 700 },
+          body: { fontFamily: newFontFamily, weight: 400 },
+        }),
+      });
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
@@ -424,6 +480,55 @@ export default function ThemeEditor() {
                   />
                 </div>
               </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="logo-url">Logo URL (Optional)</Label>
+                <Input
+                  id="logo-url"
+                  value={newTheme.logoUrl}
+                  onChange={(e) =>
+                    setNewTheme({ ...newTheme, logoUrl: e.target.value })
+                  }
+                  placeholder="https://example.com/logo.png"
+                  className="mt-2"
+                />
+              </div>
+              <div>
+                <Label htmlFor="favicon-url">Favicon URL (Optional)</Label>
+                <Input
+                  id="favicon-url"
+                  value={newTheme.faviconUrl}
+                  onChange={(e) =>
+                    setNewTheme({ ...newTheme, faviconUrl: e.target.value })
+                  }
+                  placeholder="https://example.com/favicon.ico"
+                  className="mt-2"
+                />
+              </div>
+            </div>
+
+            <div>
+              <Label htmlFor="font-family">Font Family</Label>
+              <Select
+                value={newTheme.typography}
+                onValueChange={(value) =>
+                  setNewTheme({ ...newTheme, typography: value })
+                }
+              >
+                <SelectTrigger className="mt-2">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="inter">Inter</SelectItem>
+                  <SelectItem value="roboto">Roboto</SelectItem>
+                  <SelectItem value="open-sans">Open Sans</SelectItem>
+                  <SelectItem value="lato">Lato</SelectItem>
+                  <SelectItem value="montserrat">Montserrat</SelectItem>
+                  <SelectItem value="poppins">Poppins</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="flex gap-4">
@@ -683,7 +788,7 @@ export default function ThemeEditor() {
                   className="mt-2"
                 />
                 {editingTheme.logoUrl && (
-                  <div className="mt-3 p-4 bg-gray-50 rounded-lg border">
+                  <div className="mt-3 p-4 bg-gray-50 rounded-lg border inline-block">
                     <p className="text-xs text-gray-600 mb-2">Logo Preview:</p>
                     <Image
                       src={editingTheme.logoUrl}
@@ -710,6 +815,20 @@ export default function ThemeEditor() {
                   placeholder="/chati-ai-icon-filled-256.webp"
                   className="mt-2"
                 />
+                {editingTheme.faviconUrl && (
+                  <div className="mt-3 p-4 bg-gray-50 rounded-lg border inline-block">
+                    <p className="text-xs text-gray-600 mb-2">
+                      Favicon Preview:
+                    </p>
+                    <Image
+                      src={editingTheme.faviconUrl}
+                      alt="Favicon"
+                      className="h-8 w-8 object-contain"
+                      width={32}
+                      height={32}
+                    />
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>
@@ -721,21 +840,21 @@ export default function ThemeEditor() {
             <CardContent>
               <Label htmlFor="typography">Font Family</Label>
               <Select
-                value={editingTheme.typography || "inter"}
-                onValueChange={(value) =>
-                  setEditingTheme({ ...editingTheme, typography: value })
-                }
+                value={currentFontFamily}
+                onValueChange={(value) => handleFontFamilyChange(value)}
               >
                 <SelectTrigger className="mt-2">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="inter">Inter (Modern & Clean)</SelectItem>
-                  <SelectItem value="poppins">Poppins (Geometric)</SelectItem>
-                  <SelectItem value="roboto">Roboto (Classic)</SelectItem>
-                  <SelectItem value="lato">Lato (Friendly)</SelectItem>
-                  <SelectItem value="montserrat">Montserrat (Bold)</SelectItem>
-                  <SelectItem value="opensans">Open Sans (Readable)</SelectItem>
+                  <SelectItem value="Inter">Inter (Modern & Clean)</SelectItem>
+                  <SelectItem value="Poppins">Poppins (Geometric)</SelectItem>
+                  <SelectItem value="Roboto">Roboto (Classic)</SelectItem>
+                  <SelectItem value="Lato">Lato (Friendly)</SelectItem>
+                  <SelectItem value="Montserrat">Montserrat (Bold)</SelectItem>
+                  <SelectItem value="Open Sans">
+                    Open Sans (Readable)
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </CardContent>
