@@ -42,6 +42,7 @@ export function WYSIWYGEditor({ value, onChange, placeholder }: WYSIWYGEditorPro
   const [imageFile, setImageFile] = useState<File | null>(null)
 
   const editor = useEditor({
+    immediatelyRender: false,
     extensions: [
       StarterKit.configure({
         codeBlock: false,

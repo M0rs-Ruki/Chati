@@ -1,25 +1,52 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import { ArrowLeft, Upload } from "lucide-react";
+import Link from "next/link";
+import { WYSIWYGEditor } from "@/components/wysiwyg-editor";
+import { useToast } from "@/hooks/use-toast";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Textarea } from "@/components/ui/textarea"
-import { ArrowLeft, Upload } from "lucide-react"
-import Link from "next/link"
-import { WYSIWYGEditor } from "@/components/wysiwyg-editor"
-import { useToast } from "@/hooks/use-toast"
+interface MediaFile {
+  id: string;
+  url: string;
+  alt: string;
+  type: string;
+  size: number;
+  uploadedAt: string;
+  createdBy?: {
+    id: string;
+    name: string;
+    email: string;
+  };
+}
 
 export default function CreateDocsPage() {
-  const router = useRouter()
-  const { toast } = useToast()
-  const [loading, setLoading] = useState(false)
+  const router = useRouter();
+  const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     content: "",
@@ -30,51 +57,96 @@ export default function CreateDocsPage() {
       description: "",
       tags: "",
     },
-  })
+  });
+
+  // Media Picker State
+  const [mediaPickerOpen, setMediaPickerOpen] = useState(false);
+  const [mediaFiles, setMediaFiles] = useState<MediaFile[]>([]);
+  const [mediaLoading, setMediaLoading] = useState(false);
+
+  // Fetch media files when media picker opens
+  useEffect(() => {
+    if (!mediaPickerOpen) return;
+    const fetchMedia = async () => {
+      setMediaLoading(true);
+      try {
+        const token = localStorage.getItem("token");
+        const res = await fetch("/api/media", {
+          headers: { Authorization: `Bearer ${token ?? ""}` },
+        });
+        const result = await res.json();
+        setMediaFiles(result.data || []);
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Failed to load media",
+          variant: "destructive",
+        });
+        setMediaFiles([]);
+      } finally {
+        setMediaLoading(false);
+      }
+    };
+    fetchMedia();
+  }, [mediaPickerOpen, toast]);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!formData.title || !formData.content) {
-      toast({ title: "Error", description: "Title and content are required", variant: "destructive" })
-      return
+      toast({
+        title: "Error",
+        description: "Title and content are required",
+        variant: "destructive",
+      });
+      return;
     }
 
-    setLoading(true)
+    setLoading(true);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      // TODO: Replace with your actual API call to create documentation
+
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       toast({
         title: "Success",
         description: "Documentation created successfully",
-      })
+      });
 
-      router.push("/dashboard/docs")
+      router.push("/dashboard/docs");
     } catch (error) {
-      console.error("Error creating documentation:", error)
+      console.error("Error creating documentation:", error);
       toast({
         title: "Error",
         description: "Failed to create documentation",
         variant: "destructive",
-      })
+      });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-500">
+    <div className="pt-8 px-6 space-y-6 animate-in fade-in duration-500 ">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Link href="/dashboard/docs">
-            <Button variant="outline" size="icon" className="border-[var(--border)] bg-transparent">
+            <Button
+              variant="outline"
+              size="icon"
+              className="border-[var(--border)] bg-transparent"
+            >
               <ArrowLeft className="h-4 w-4" />
             </Button>
           </Link>
-          <div>
-            <h2 className="text-3xl font-bold text-[var(--text-primary)]">Create Documentation</h2>
-            <p className="text-[var(--text-secondary)] mt-2">Write and publish new documentation</p>
+          <div className="space-y-1">
+            <h2 className="text-3xl font-bold text-[var(--text-primary)]">
+              Create Documentation
+            </h2>
+            <p className="text-[var(--text-secondary)] mt-2">
+              Write and publish new documentation
+            </p>
           </div>
         </div>
       </div>
@@ -82,7 +154,9 @@ export default function CreateDocsPage() {
       <form onSubmit={handleSubmit}>
         <Card className="bg-white border-[var(--border)]">
           <CardHeader>
-            <CardTitle className="text-[var(--text-primary)]">Documentation Details</CardTitle>
+            <CardTitle className="text-[var(--text-primary)]">
+              Documentation Details
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             {/* Title */}
@@ -93,7 +167,9 @@ export default function CreateDocsPage() {
               <Input
                 id="title"
                 value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, title: e.target.value })
+                }
                 placeholder="Enter documentation title"
                 required
                 className="bg-white border-[var(--border)]"
@@ -111,23 +187,42 @@ export default function CreateDocsPage() {
               <TabsContent value="content" className="space-y-4 mt-6">
                 {/* Hero Image */}
                 <div className="space-y-2">
-                  <Label htmlFor="imageUrl" className="text-[var(--text-secondary)]">
+                  <Label
+                    htmlFor="imageUrl"
+                    className="text-[var(--text-secondary)]"
+                  >
                     Hero Image
                   </Label>
                   <div className="space-y-2">
                     <div className="flex gap-2">
-                      <Button type="button" variant="outline" size="sm" className="flex-1 bg-transparent">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        className="flex-1 bg-transparent"
+                        onClick={() => {
+                          // TODO: add your upload dialog
+                        }}
+                      >
                         <Upload className="h-4 w-4 mr-2" />
                         Create New
                       </Button>
-                      <Button type="button" variant="outline" size="sm" className="flex-1 bg-transparent">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        className="flex-1 bg-transparent"
+                        onClick={() => setMediaPickerOpen(true)}
+                      >
                         Choose from existing
                       </Button>
                     </div>
                     <Input
                       id="imageUrl"
                       value={formData.imageUrl}
-                      onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, imageUrl: e.target.value })
+                      }
                       placeholder="Or enter image URL"
                       className="bg-white border-[var(--border)]"
                     />
@@ -141,14 +236,19 @@ export default function CreateDocsPage() {
                   </Label>
                   <WYSIWYGEditor
                     value={formData.content}
-                    onChange={(content) => setFormData({ ...formData, content })}
+                    onChange={(content) =>
+                      setFormData({ ...formData, content })
+                    }
                   />
                 </div>
               </TabsContent>
 
               <TabsContent value="meta" className="space-y-4 mt-6">
                 <div className="space-y-2">
-                  <Label htmlFor="description" className="text-[var(--text-secondary)]">
+                  <Label
+                    htmlFor="description"
+                    className="text-[var(--text-secondary)]"
+                  >
                     Description
                   </Label>
                   <Input
@@ -157,7 +257,10 @@ export default function CreateDocsPage() {
                     onChange={(e) =>
                       setFormData({
                         ...formData,
-                        metadata: { ...formData.metadata, description: e.target.value },
+                        metadata: {
+                          ...formData.metadata,
+                          description: e.target.value,
+                        },
                       })
                     }
                     placeholder="Brief description of the documentation"
@@ -166,7 +269,10 @@ export default function CreateDocsPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="tags" className="text-[var(--text-secondary)]">
+                  <Label
+                    htmlFor="tags"
+                    className="text-[var(--text-secondary)]"
+                  >
                     Tags (comma-separated)
                   </Label>
                   <Input
@@ -175,7 +281,10 @@ export default function CreateDocsPage() {
                     onChange={(e) =>
                       setFormData({
                         ...formData,
-                        metadata: { ...formData.metadata, tags: e.target.value },
+                        metadata: {
+                          ...formData.metadata,
+                          tags: e.target.value,
+                        },
                       })
                     }
                     placeholder="api, guide, tutorial"
@@ -184,12 +293,17 @@ export default function CreateDocsPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="status" className="text-[var(--text-secondary)]">
+                  <Label
+                    htmlFor="status"
+                    className="text-[var(--text-secondary)]"
+                  >
                     Status
                   </Label>
                   <Select
                     value={formData.status}
-                    onValueChange={(value) => setFormData({ ...formData, status: value })}
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, status: value })
+                    }
                   >
                     <SelectTrigger className="bg-white border-[var(--border)]">
                       <SelectValue />
@@ -207,17 +321,23 @@ export default function CreateDocsPage() {
               {/* Custom HTML tab */}
               <TabsContent value="html" className="space-y-4 mt-6">
                 <div className="space-y-2">
-                  <Label htmlFor="customHtml" className="text-[var(--text-secondary)]">
+                  <Label
+                    htmlFor="customHtml"
+                    className="text-[var(--text-secondary)]"
+                  >
                     Custom HTML Code
                   </Label>
                   <p className="text-sm text-gray-500">
-                    Add custom HTML that will be rendered alongside your content. Use this for special widgets, embeds,
-                    or custom styling.
+                    Add custom HTML that will be rendered alongside your
+                    content. Use this for special widgets, embeds, or custom
+                    styling.
                   </p>
                   <Textarea
                     id="customHtml"
                     value={formData.customHtml}
-                    onChange={(e) => setFormData({ ...formData, customHtml: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, customHtml: e.target.value })
+                    }
                     placeholder="<div>Your custom HTML here...</div>"
                     className="bg-white border-[var(--border)] font-mono text-sm min-h-[300px]"
                   />
@@ -234,7 +354,11 @@ export default function CreateDocsPage() {
                 {loading ? "Creating..." : "Create Documentation"}
               </Button>
               <Link href="/dashboard/docs">
-                <Button type="button" variant="outline" className="border-[var(--border)] bg-transparent">
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="border-[var(--border)] bg-transparent"
+                >
                   Cancel
                 </Button>
               </Link>
@@ -242,6 +366,52 @@ export default function CreateDocsPage() {
           </CardContent>
         </Card>
       </form>
+
+      {/* Media Picker Dialog */}
+      <Dialog open={mediaPickerOpen} onOpenChange={setMediaPickerOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Select Image</DialogTitle>
+          </DialogHeader>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 p-4 max-h-[400px] overflow-auto">
+            {mediaLoading ? (
+              <div className="flex justify-center items-center w-full">
+                Loading...
+              </div>
+            ) : mediaFiles.length === 0 ? (
+              <div className="col-span-full text-center text-gray-400">
+                No media files available
+              </div>
+            ) : (
+              mediaFiles.map((file) => (
+                <Button
+                  key={file.id}
+                  variant="ghost"
+                  className="flex flex-col items-center p-1 border border-gray-200 rounded-md"
+                  onClick={() => {
+                    setFormData((prev) => ({ ...prev, imageUrl: file.url }));
+                    setMediaPickerOpen(false);
+                  }}
+                >
+                  <img
+                    src={file.url}
+                    alt={file.alt}
+                    className="w-24 h-24 object-cover rounded mb-1"
+                  />
+                  <span className="text-xs truncate text-center">
+                    {file.alt}
+                  </span>
+                </Button>
+              ))
+            )}
+          </div>
+          <DialogFooter>
+            <Button onClick={() => setMediaPickerOpen(false)} variant="outline">
+              Cancel
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
-  )
+  );
 }

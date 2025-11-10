@@ -191,7 +191,7 @@ export default function DocsPage() {
           </p>
         </div>
         <Button
-          onClick={() => router.push("/dashboard/documentation/create")}
+          onClick={() => router.push("/dashboard/docs/create")}
           className="bg-green-600 hover:bg-green-700 text-white shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"
         >
           <Plus className="h-4 w-4 mr-2" />
