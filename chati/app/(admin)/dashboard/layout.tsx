@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -19,6 +19,14 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useTheme } from "@/lib/theme-provider";
 
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  status: string;
+}
+
 export default function DashboardLayout({
   children,
 }: {
@@ -27,12 +35,41 @@ export default function DashboardLayout({
   const router = useRouter();
   const pathname = usePathname();
   const { theme } = useTheme();
+  const [user, setUser] = useState<User | null>(null);
+  const [loadingUser, setLoadingUser] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
       router.push("/admin");
+      return;
     }
+
+    // Fetch current user data async
+    const fetchUser = async () => {
+      try {
+        const response = await fetch("/api/auth/me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch user");
+        }
+
+        const data = await response.json();
+        setUser(data.user);
+      } catch (error) {
+        console.error("Error fetching user:", error);
+        localStorage.removeItem("token");
+        router.push("/admin");
+      } finally {
+        setLoadingUser(false);
+      }
+    };
+
+    fetchUser();
   }, [router]);
 
   const handleLogout = () => {
@@ -49,6 +86,16 @@ export default function DashboardLayout({
     { href: "/dashboard/themes", icon: Palette, label: "Theme" },
     { href: "/dashboard/users", icon: Users, label: "Users" },
   ];
+
+  // Get user initials
+  const getUserInitials = (name: string) => {
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
+  };
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -117,22 +164,32 @@ export default function DashboardLayout({
 
           {/* User Profile Section */}
           <div className="p-4 border-t border-gray-100">
-            <Link
-              href="/dashboard/profile"
-              className="flex items-center gap-3 mb-3"
-            >
-              <Avatar className="h-10 w-10 bg-gradient-to-br from-purple-600 to-purple-700">
-                <AvatarFallback className="bg-transparent text-white font-semibold text-sm">
-                  JD
-                </AvatarFallback>
-              </Avatar>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-gray-900 truncate">
-                  jeet
-                </p>
-                <p className="text-xs text-gray-500 truncate">admin</p>
+            {loadingUser ? (
+              <div className="flex items-center justify-center h-10 text-gray-600">
+                Loading user...
               </div>
-            </Link>
+            ) : user ? (
+              <Link
+                href="/dashboard/profile"
+                className="flex items-center gap-3 mb-3"
+              >
+                <Avatar className="h-10 w-10 bg-gradient-to-br from-purple-600 to-purple-700">
+                  <AvatarFallback className="bg-transparent text-white font-semibold text-sm">
+                    {getUserInitials(user.name)}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-gray-900 truncate">
+                    {user.name}
+                  </p>
+                  <p className="text-xs text-gray-500 truncate">
+                    {user.role.toLowerCase()}
+                  </p>
+                </div>
+              </Link>
+            ) : (
+              <div className="text-red-600">Failed to load user</div>
+            )}
             <button
               onClick={handleLogout}
               className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-red-50 hover:text-red-600 transition-colors"
