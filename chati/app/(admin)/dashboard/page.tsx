@@ -120,9 +120,8 @@ export default function DashboardPage() {
       link: "/dashboard/media",
     },
     {
-      title: "Published",
-      value: [...pages, ...posts].filter((item) => item.status === "PUBLISHED")
-        .length,
+      title: "Total Users",
+      value: dashboardData?.totalUsers || 0,
       icon: TrendingUp,
       color: "orange",
     },
