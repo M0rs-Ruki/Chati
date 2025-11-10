@@ -35,9 +35,12 @@ export default function ThemeEditor() {
   const { toast } = useToast();
   const router = useRouter();
   const [themes, setThemes] = useState<Theme[]>([]);
-  const [activeTheme, setActiveTheme] = useState<Theme | null>(null);
+  const [activeThemeId, setActiveThemeId] = useState<string | null>(null);
+  const [isCreating, setIsCreating] = useState(false);
   const [editingTheme, setEditingTheme] = useState<Theme | null>(null);
-  const [isSaving, setIsSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isDeleting, setIsDeleting] = useState<string | null>(null);
+  const [isActivating, setIsActivating] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [showCreateForm, setShowCreateForm] = useState(false);
 
@@ -85,7 +88,7 @@ export default function ThemeEditor() {
       // Find and set the active (default) theme
       const defaultTheme = themesData.find((t: Theme) => t.isDefault);
       if (defaultTheme) {
-        setActiveTheme(defaultTheme);
+        setActiveThemeId(defaultTheme.id);
         setEditingTheme(defaultTheme);
       }
     } catch (error) {
@@ -110,7 +113,7 @@ export default function ThemeEditor() {
       return;
     }
 
-    setIsSaving(true);
+    setIsLoading(true);
     try {
       const token = localStorage.getItem("token");
 
@@ -174,14 +177,14 @@ export default function ThemeEditor() {
         variant: "destructive",
       });
     } finally {
-      setIsSaving(false);
+      setIsLoading(false);
     }
   };
 
   const updateTheme = async () => {
     if (!editingTheme) return;
 
-    setIsSaving(true);
+    setIsLoading(true);
     try {
       const token = localStorage.getItem("token");
 
@@ -243,11 +246,12 @@ export default function ThemeEditor() {
         variant: "destructive",
       });
     } finally {
-      setIsSaving(false);
+      setIsLoading(false);
     }
   };
 
   const setAsActive = async (themeId: string) => {
+    setIsActivating(themeId);
     try {
       const token = localStorage.getItem("token");
 
@@ -282,31 +286,24 @@ export default function ThemeEditor() {
         description: "Failed to activate theme",
         variant: "destructive",
       });
+    } finally {
+      setIsActivating(null);
     }
   };
 
-  const deleteTheme = async (themeId: string) => {
+    const deleteTheme = async (id: string) => {
     if (!confirm("Are you sure you want to delete this theme?")) return;
 
+    setIsDeleting(id);
     try {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        router.push("/admin");
-        return;
-      }
-
-      const response = await fetch(`/api/themes/${themeId}/delete`, {
+      const response = await fetch(`/api/themes/${id}/delete`, {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || "Failed to delete theme");
+        throw new Error(data.error || "Failed to delete theme");
       }
 
       toast({
@@ -316,12 +313,13 @@ export default function ThemeEditor() {
 
       fetchThemes();
     } catch (error: any) {
-      console.error("Error deleting theme:", error);
       toast({
         title: "Error",
-        description: error.message || "Failed to delete theme",
+        description: error.message,
         variant: "destructive",
       });
+    } finally {
+      setIsDeleting(null);
     }
   };
 
@@ -534,10 +532,10 @@ export default function ThemeEditor() {
             <div className="flex gap-4">
               <Button
                 onClick={createTheme}
-                disabled={isSaving}
+                disabled={isLoading}
                 className="bg-green-500 hover:bg-green-600"
               >
-                {isSaving ? (
+                {isLoading ? (
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                 ) : (
                   <Save className="w-4 h-4 mr-2" />
@@ -583,8 +581,17 @@ export default function ThemeEditor() {
                       size="sm"
                       variant="outline"
                       onClick={() => setAsActive(theme.id)}
+                      disabled={isActivating === theme.id}
+                      className="border-blue-200 hover:bg-blue-50"
                     >
-                      Set Active
+                      {isActivating === theme.id ? (
+                        <>
+                          <Loader2 className="w-4 h-4 mr-1 animate-spin" />
+                          Activating...
+                        </>
+                      ) : (
+                        "Set Active"
+                      )}
                     </Button>
                   )}
                   <Button
@@ -600,9 +607,14 @@ export default function ThemeEditor() {
                       size="sm"
                       variant="outline"
                       onClick={() => deleteTheme(theme.id)}
+                      disabled={isDeleting === theme.id}
                       className="border-red-200 hover:bg-red-50"
                     >
-                      <Trash2 className="w-4 h-4 text-red-600" />
+                      {isDeleting === theme.id ? (
+                        <Loader2 className="w-4 h-4 text-red-600 animate-spin" />
+                      ) : (
+                        <Trash2 className="w-4 h-4 text-red-600" />
+                      )}
                     </Button>
                   )}
                 </div>
@@ -862,10 +874,10 @@ export default function ThemeEditor() {
 
           <Button
             onClick={updateTheme}
-            disabled={isSaving}
+            disabled={isLoading}
             className="w-full bg-green-500 hover:bg-green-600 text-white shadow-lg"
           >
-            {isSaving ? (
+            {isLoading ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                 Saving...
