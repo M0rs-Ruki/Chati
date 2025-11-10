@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
   FileText,
   Newspaper,
@@ -18,148 +18,143 @@ import {
   Sparkles,
   Rocket,
   Eye,
-} from "lucide-react"
-import { format } from "date-fns"
+} from "lucide-react";
+import { format } from "date-fns";
 
 interface Page {
-  id: string
-  title: string
-  slug: string
-  status: "draft" | "review" | "published" | "archived"
-  updated_date: string
-  created_by: string
+  id: string;
+  title: string;
+  slug: string;
+  status: "DRAFT" | "REVIEW" | "PUBLISHED" | "ARCHIVED";
+  publishedAt: string | null;
+  author: {
+    id: string;
+    name: string;
+  };
 }
 
 interface BlogPost {
-  id: string
-  title: string
-  excerpt: string
-  status: "draft" | "review" | "published" | "archived"
-  updated_date: string
+  id: string;
+  title: string;
+  slug: string;
+  status: "DRAFT" | "REVIEW" | "PUBLISHED" | "ARCHIVED";
+  publishedAt: string | null;
+  author: {
+    id: string;
+    name: string;
+  };
+}
+
+interface DashboardData {
+  totalPages: number;
+  totalUsers: number;
+  totalBlogs: number;
+  totalMedias: number;
+  recentPages: Page[];
+  recentBlogs: BlogPost[];
 }
 
 export default function DashboardPage() {
-  const [pages, setPages] = useState<Page[]>([])
-  const [posts, setPosts] = useState<BlogPost[]>([])
-  const [media, setMedia] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
+  const [dashboardData, setDashboardData] = useState<DashboardData | null>(
+    null
+  );
+  const [loading, setLoading] = useState(true);
+  const [currentUser, setCurrentUser] = useState<{ name: string } | null>(null);
 
   useEffect(() => {
-    fetchDashboardData()
-  }, [])
+    fetchDashboardData();
+  }, []);
 
   const fetchDashboardData = async () => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      // Fetch current user
+      const userResponse = await fetch("/api/auth/me");
+      if (userResponse.ok) {
+        const userData = await userResponse.json();
+        setCurrentUser(userData.user);
+      }
 
-      // Demo pages
-      setPages([
-        {
-          id: "1",
-          title: "Home",
-          slug: "home",
-          status: "published",
-          updated_date: new Date().toISOString(),
-          created_by: "Admin",
-        },
-        {
-          id: "2",
-          title: "About Us",
-          slug: "about",
-          status: "published",
-          updated_date: new Date(Date.now() - 86400000).toISOString(),
-          created_by: "Admin",
-        },
-        {
-          id: "3",
-          title: "Contact",
-          slug: "contact",
-          status: "draft",
-          updated_date: new Date(Date.now() - 172800000).toISOString(),
-          created_by: "Editor",
-        },
-      ])
-
-      // Demo blog posts
-      setPosts([
-        {
-          id: "1",
-          title: "Getting Started with Chati AI",
-          excerpt: "Learn how to build amazing chatbots with our platform",
-          status: "published",
-          updated_date: new Date().toISOString(),
-        },
-        {
-          id: "2",
-          title: "10 Tips for Better Customer Engagement",
-          excerpt: "Improve your customer support with these proven strategies",
-          status: "published",
-          updated_date: new Date(Date.now() - 86400000).toISOString(),
-        },
-      ])
-
-      // Demo media
-      setMedia([{ id: "1" }, { id: "2" }, { id: "3" }])
+      // Fetch dashboard data
+      const response = await fetch("/api/public/dashboard");
+      if (!response.ok) {
+        throw new Error("Failed to fetch dashboard data");
+      }
+      const data = await response.json();
+      // CHANGE THIS:
+      setDashboardData(data.data);
     } catch (error) {
-      console.error("Error fetching dashboard data:", error)
+      console.error("Error fetching dashboard data:", error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
-  const homePages = pages.filter((p) => p.slug === "home" || p.title === "Home")
-  const hasHomepageIssue = homePages.length !== 1
+  // Safely access data with defaults
+  const pages = dashboardData?.recentPages || [];
+  const posts = dashboardData?.recentBlogs || [];
+  const homePages = pages.filter(
+    (p) => p.slug === "home" || p.title.toLowerCase() === "home"
+  );
+  const hasHomepageIssue = homePages.length !== 1;
 
   const stats = [
     {
       title: "Total Pages",
-      value: pages.length,
+      value: dashboardData?.totalPages || 0,
       icon: FileText,
       color: "blue",
       link: "/dashboard/pages",
     },
     {
       title: "Blog Posts",
-      value: posts.length,
+      value: dashboardData?.totalBlogs || 0,
       icon: Newspaper,
       color: "purple",
       link: "/dashboard/blogs",
     },
     {
       title: "Media Files",
-      value: media.length,
+      value: dashboardData?.totalMedias || 0,
       icon: ImageIcon,
       color: "green",
       link: "/dashboard/media",
     },
     {
       title: "Published",
-      value: [...pages, ...posts].filter((item) => item.status === "published").length,
+      value: [...pages, ...posts].filter((item) => item.status === "PUBLISHED")
+        .length,
       icon: TrendingUp,
       color: "orange",
     },
-  ]
+  ];
 
   const getStatusBadge = (status: string) => {
-    const variants: Record<string, "secondary" | "outline" | "default" | "destructive"> = {
-      draft: "secondary",
-      review: "outline",
-      published: "default",
-      archived: "destructive",
-    }
+    const variants: Record<
+      string,
+      "secondary" | "outline" | "default" | "destructive"
+    > = {
+      DRAFT: "secondary",
+      REVIEW: "outline",
+      PUBLISHED: "default",
+      ARCHIVED: "destructive",
+    };
     return (
       <Badge variant={variants[status]} className="capitalize">
-        {status}
+        {status.toLowerCase()}
       </Badge>
-    )
-  }
+    );
+  };
 
   return (
     <div className="pt-8 px-6 space-y-8 max-w-7xl animate-in fade-in slide-in-from-bottom-4 duration-700">
       {/* Welcome Header */}
       <div className="space-y-2">
-        <h1 className="text-4xl font-bold text-gray-900 tracking-tight">Welcome back, Admin</h1>
-        <p className="text-lg text-gray-600">Here's what's happening with your content</p>
+        <h1 className="text-4xl font-bold text-gray-900 tracking-tight">
+          Welcome back{currentUser ? `, ${currentUser.name}` : ""}
+        </h1>
+        <p className="text-lg text-gray-600">
+          Here's what's happening with your content
+        </p>
       </div>
 
       {/* Featured: Create Demo Page Card */}
@@ -169,13 +164,19 @@ export default function DashboardPage() {
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-3">
                 <Sparkles className="w-8 h-8 animate-pulse" />
-                <h3 className="text-2xl font-bold">Create Ultimate Demo Page</h3>
+                <h3 className="text-2xl font-bold">
+                  Create Ultimate Demo Page
+                </h3>
               </div>
               <p className="text-white/90 mb-6 text-lg">
-                Showcase all 20+ premium sections in one beautiful demo page with real sample data
+                Showcase all 20+ premium sections in one beautiful demo page
+                with real sample data
               </p>
               <Link href="/dashboard/pages/create">
-                <Button size="lg" className="bg-white text-purple-600 hover:bg-gray-100 font-bold shadow-xl">
+                <Button
+                  size="lg"
+                  className="bg-white text-purple-600 hover:bg-gray-100 font-bold shadow-xl"
+                >
                   <Rocket className="w-5 h-5 mr-2" />
                   Create Demo Now
                 </Button>
@@ -193,8 +194,13 @@ export default function DashboardPage() {
           <CardContent className="p-6">
             <div className="flex items-start justify-between">
               <div className="flex-1">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2 flex items-center gap-2">🏠 Setup Homepage</h3>
-                <p className="text-gray-600 mb-4">Clean and rebuild your homepage with professional Chati.ai design</p>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                  🏠 Setup Homepage
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Clean and rebuild your homepage with professional Chati.ai
+                  design
+                </p>
                 <Link href="/dashboard/pages/create">
                   <Button className="bg-green-600 hover:bg-green-700">
                     <CheckCircle2 className="w-4 h-4 mr-2" />
@@ -214,7 +220,9 @@ export default function DashboardPage() {
                 <h3 className="text-lg font-semibold text-gray-900 mb-2 flex items-center gap-2">
                   🤖 Quick Chatbot Development
                 </h3>
-                <p className="text-gray-600 mb-4">Create industry page with chatbot features and sections</p>
+                <p className="text-gray-600 mb-4">
+                  Create industry page with chatbot features and sections
+                </p>
                 <Link href="/dashboard/pages/create">
                   <Button className="bg-blue-600 hover:bg-blue-700">
                     <CheckCircle2 className="w-4 h-4 mr-2" />
@@ -236,7 +244,9 @@ export default function DashboardPage() {
                 <AlertTriangle className="w-6 h-6 text-orange-600" />
               </div>
               <div className="flex-1">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">⚠️ Homepage Issue Detected</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  ⚠️ Homepage Issue Detected
+                </h3>
                 <p className="text-gray-600 mb-4">
                   {homePages.length === 0
                     ? "No homepage found. Your site needs a homepage to work properly."
@@ -260,7 +270,9 @@ export default function DashboardPage() {
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <CheckCircle2 className="w-5 h-5 text-green-600" />
-              <p className="text-green-800 font-medium">✓ Homepage is properly configured</p>
+              <p className="text-green-800 font-medium">
+                ✓ Homepage is properly configured
+              </p>
             </div>
           </CardContent>
         </Card>
@@ -269,7 +281,7 @@ export default function DashboardPage() {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-in slide-in-from-bottom-4 duration-500 delay-300">
         {stats.map((stat, index) => {
-          const Icon = stat.icon
+          const Icon = stat.icon;
           return (
             <Card
               key={stat.title}
@@ -279,8 +291,12 @@ export default function DashboardPage() {
               <CardContent className="p-6">
                 <div className="flex items-start justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600 mb-1">{stat.title}</p>
-                    <p className="text-3xl font-bold text-gray-900">{loading ? "..." : stat.value}</p>
+                    <p className="text-sm font-medium text-gray-600 mb-1">
+                      {stat.title}
+                    </p>
+                    <p className="text-3xl font-bold text-gray-900">
+                      {loading ? "..." : stat.value}
+                    </p>
                   </div>
                   <div className={`p-3 rounded-xl bg-${stat.color}-100`}>
                     <Icon className={`w-6 h-6 text-${stat.color}-600`} />
@@ -295,7 +311,7 @@ export default function DashboardPage() {
                 )}
               </CardContent>
             </Card>
-          )
+          );
         })}
       </div>
 
@@ -320,23 +336,37 @@ export default function DashboardPage() {
             {pages.length > 0 ? (
               <div className="divide-y">
                 {pages.map((page) => (
-                  <div key={page.id} className="p-4 hover:bg-gray-50 transition-colors">
+                  <div
+                    key={page.id}
+                    className="p-4 hover:bg-gray-50 transition-colors"
+                  >
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
-                        <h3 className="font-medium text-gray-900 mb-1">{page.title}</h3>
-                        <p className="text-sm text-gray-500 mb-2">/{page.slug}</p>
+                        <h3 className="font-medium text-gray-900 mb-1">
+                          {page.title}
+                        </h3>
+                        <p className="text-sm text-gray-500 mb-2">
+                          /{page.slug}
+                        </p>
                         <div className="flex items-center gap-3 text-xs text-gray-500">
                           <span className="flex items-center gap-1">
                             <Calendar className="w-3 h-3" />
-                            {format(new Date(page.updated_date), "MMM d, yyyy")}
+                            {page.publishedAt
+                              ? format(
+                                  new Date(page.publishedAt),
+                                  "MMM d, yyyy"
+                                )
+                              : "Not published"}
                           </span>
                           <span className="flex items-center gap-1">
                             <User className="w-3 h-3" />
-                            {page.created_by}
+                            {page.author.name}
                           </span>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2">{getStatusBadge(page.status)}</div>
+                      <div className="flex items-center gap-2">
+                        {getStatusBadge(page.status)}
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -375,19 +405,37 @@ export default function DashboardPage() {
             {posts.length > 0 ? (
               <div className="divide-y">
                 {posts.map((post) => (
-                  <div key={post.id} className="p-4 hover:bg-gray-50 transition-colors">
+                  <div
+                    key={post.id}
+                    className="p-4 hover:bg-gray-50 transition-colors"
+                  >
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
-                        <h3 className="font-medium text-gray-900 mb-1">{post.title}</h3>
-                        <p className="text-sm text-gray-500 mb-2 line-clamp-1">{post.excerpt}</p>
+                        <h3 className="font-medium text-gray-900 mb-1">
+                          {post.title}
+                        </h3>
+                        <p className="text-sm text-gray-500 mb-2 line-clamp-1">
+                          /{post.slug}
+                        </p>
                         <div className="flex items-center gap-3 text-xs text-gray-500">
                           <span className="flex items-center gap-1">
                             <Calendar className="w-3 h-3" />
-                            {format(new Date(post.updated_date), "MMM d, yyyy")}
+                            {post.publishedAt
+                              ? format(
+                                  new Date(post.publishedAt),
+                                  "MMM d, yyyy"
+                                )
+                              : "Not published"}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <User className="w-3 h-3" />
+                            {post.author.name}
                           </span>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2">{getStatusBadge(post.status)}</div>
+                      <div className="flex items-center gap-2">
+                        {getStatusBadge(post.status)}
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -416,42 +464,57 @@ export default function DashboardPage() {
         <CardContent>
           <div className="grid md:grid-cols-3 gap-4">
             <Link href="/dashboard/pages/create" className="block">
-              <Button variant="outline" className="w-full justify-start h-auto p-4 bg-transparent">
+              <Button
+                variant="outline"
+                className="w-full justify-start h-auto p-4 bg-transparent"
+              >
                 <div className="flex items-center gap-3">
                   <div className="p-2 rounded-lg bg-blue-100">
                     <FileText className="w-5 h-5 text-blue-600" />
                   </div>
                   <div className="text-left">
                     <p className="font-medium">New Page</p>
-                    <p className="text-xs text-gray-500">Create a landing page</p>
+                    <p className="text-xs text-gray-500">
+                      Create a landing page
+                    </p>
                   </div>
                 </div>
               </Button>
             </Link>
 
             <Link href="/dashboard/blogs/create" className="block">
-              <Button variant="outline" className="w-full justify-start h-auto p-4 bg-transparent">
+              <Button
+                variant="outline"
+                className="w-full justify-start h-auto p-4 bg-transparent"
+              >
                 <div className="flex items-center gap-3">
                   <div className="p-2 rounded-lg bg-purple-100">
                     <Newspaper className="w-5 h-5 text-purple-600" />
                   </div>
                   <div className="text-left">
                     <p className="font-medium">New Post</p>
-                    <p className="text-xs text-gray-500">Write a blog article</p>
+                    <p className="text-xs text-gray-500">
+                      Write a blog article
+                    </p>
                   </div>
                 </div>
               </Button>
             </Link>
 
             <Link href="/" target="_blank" className="block">
-              <Button variant="outline" className="w-full justify-start h-auto p-4 bg-transparent">
+              <Button
+                variant="outline"
+                className="w-full justify-start h-auto p-4 bg-transparent"
+              >
                 <div className="flex items-center gap-3">
                   <div className="p-2 rounded-lg bg-green-100">
                     <Eye className="w-5 h-5 text-green-600" />
                   </div>
                   <div className="text-left">
                     <p className="font-medium">View Site</p>
-                    <p className="text-xs text-gray-500">See your public site</p>
+                    <p className="text-xs text-gray-500">
+                      See your public site
+                    </p>
                   </div>
                 </div>
               </Button>
@@ -460,5 +523,5 @@ export default function DashboardPage() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
