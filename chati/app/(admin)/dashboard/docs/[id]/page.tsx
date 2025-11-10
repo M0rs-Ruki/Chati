@@ -43,61 +43,87 @@ export default function ViewDocPage() {
   const [doc, setDoc] = useState<Documentation | null>(null)
   const [loading, setLoading] = useState(true)
   const [deleteModal, setDeleteModal] = useState(false)
-  const [currentUser] = useState({ id: "user-1", role: "ADMIN" })
+  const [currentUser, setCurrentUser] = useState<{ id: string; role: string } | null>(null)
 
   useEffect(() => {
-    fetchDoc()
+    fetchCurrentUser()
+  }, [])
+
+  useEffect(() => {
+    if (params.id) {
+      fetchDoc()
+    }
   }, [params.id])
+
+  const fetchCurrentUser = async () => {
+    try {
+      const response = await fetch("/api/auth/me")
+      if (response.ok) {
+        const data = await response.json()
+        setCurrentUser(data.user)
+      }
+    } catch (error) {
+      console.error("Error fetching current user:", error)
+    }
+  }
 
   const fetchDoc = async () => {
     try {
-      // Demo: Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 600))
-
-      // Mock documentation data
-      const mockDoc: Documentation = {
-        id: params.id as string,
-        title: "API Reference",
-        slug: "api-reference",
-        content: {
-          markdown:
-            '# API Reference\n\nComplete API documentation for all endpoints.\n\n## Authentication\n\nAll API requests require authentication using JWT tokens. Include your token in the Authorization header:\n\n```\nAuthorization: Bearer <your-token>\n```\n\n## Endpoints\n\n### GET /api/users\n\nRetrieve a list of all users.\n\n**Response:**\n```json\n{\n  "users": [\n    {\n      "id": "1",\n      "name": "John Doe",\n      "email": "john@example.com"\n    }\n  ]\n}\n```\n\n### POST /api/users/create\n\nCreate a new user.\n\n**Request Body:**\n```json\n{\n  "name": "Jane Smith",\n  "email": "jane@example.com",\n  "password": "securepassword"\n}\n```',
-        },
-        imageUrl: "/api-documentation-hero-image.jpg",
-        status: "PUBLISHED",
-        metadata: {
-          tags: ["api", "reference", "documentation"],
-          description: "Complete API reference documentation for developers",
-        },
-        author: { id: "user-1", name: "Admin User", email: "admin@example.com" },
-        createdAt: "2024-01-15T10:00:00Z",
-        updatedAt: "2024-01-15T10:00:00Z",
+      const response = await fetch(`/api/documentation/${params.id}`)
+      
+      if (!response.ok) {
+        throw new Error("Failed to fetch documentation")
       }
 
-      setDoc(mockDoc)
+      const result = await response.json()
+      setDoc(result.data)
+    } catch (error) {
+      console.error("Error fetching documentation:", error)
+      toast({
+        title: "Error",
+        description: "Failed to load documentation",
+        variant: "destructive",
+      })
     } finally {
       setLoading(false)
     }
   }
 
   const canEdit = () => {
-    if (!doc) return false
+    if (!doc || !currentUser) return false
     return doc.author.id === currentUser.id || currentUser.role === "ADMIN"
   }
 
   const canDelete = () => {
-    if (!doc) return false
+    if (!doc || !currentUser) return false
     return doc.author.id === currentUser.id || currentUser.role === "ADMIN"
   }
 
   const handleDelete = async () => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 400))
-      // Demo: In production, call DELETE /api/documentation/[id]/delete
-      toast({ title: "Success", description: "Documentation deleted successfully" })
+      const response = await fetch(`/api/documentation/${doc?.id}/delete`, {
+        method: "DELETE",
+      })
+
+      const result = await response.json()
+
+      if (!response.ok) {
+        throw new Error(result.message || "Failed to delete documentation")
+      }
+
+      toast({ 
+        title: "Success", 
+        description: "Documentation deleted successfully" 
+      })
+      
       router.push("/dashboard/docs")
     } catch (error) {
-      toast({ title: "Error", description: "Failed to delete documentation", variant: "destructive" })
+      console.error("Error deleting documentation:", error)
+      toast({ 
+        title: "Error", 
+        description: error instanceof Error ? error.message : "Failed to delete documentation", 
+        variant: "destructive" 
+      })
     }
   }
 
@@ -203,9 +229,18 @@ export default function ViewDocPage() {
           )}
 
           <div className="prose prose-lg max-w-none mb-8">
-            <pre className="whitespace-pre-wrap bg-gray-50 p-6 rounded-lg text-sm leading-relaxed">
-              {doc.content.markdown || "No content"}
-            </pre>
+            {doc.content.html ? (
+              <div 
+                dangerouslySetInnerHTML={{ __html: doc.content.html }} 
+                className="text-gray-700"
+              />
+            ) : doc.content.markdown ? (
+              <pre className="whitespace-pre-wrap bg-gray-50 p-6 rounded-lg text-sm leading-relaxed">
+                {doc.content.markdown}
+              </pre>
+            ) : (
+              <p className="text-gray-500">No content available</p>
+            )}
           </div>
 
           {doc.metadata.tags && doc.metadata.tags.length > 0 && (

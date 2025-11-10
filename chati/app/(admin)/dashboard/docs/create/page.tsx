@@ -168,21 +168,48 @@ export default function CreateDocsPage() {
     setLoading(true);
 
     try {
-      // TODO: Replace with your actual API call to create documentation
+      // Parse tags from comma-separated string to array
+      const tags = formData.metadata.tags
+        ? formData.metadata.tags.split(",").map((tag) => tag.trim()).filter((tag) => tag.length > 0)
+        : [];
 
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Prepare request body
+      const requestBody = {
+        title: formData.title,
+        content: { html: formData.content }, // Store HTML content in an object
+        metadata: {
+          description: formData.metadata.description || "",
+          tags: tags,
+        },
+        imageUrl: formData.imageUrl || null,
+      };
+
+      const response = await fetch("/api/documentation/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Failed to create documentation");
+      }
 
       toast({
         title: "Success",
         description: "Documentation created successfully",
       });
 
+      // Redirect to the documentation list or detail page
       router.push("/dashboard/docs");
     } catch (error) {
       console.error("Error creating documentation:", error);
       toast({
         title: "Error",
-        description: "Failed to create documentation",
+        description: error instanceof Error ? error.message : "Failed to create documentation",
         variant: "destructive",
       });
     } finally {
