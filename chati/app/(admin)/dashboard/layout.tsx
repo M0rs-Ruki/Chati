@@ -117,7 +117,10 @@ export default function DashboardLayout({
 
           {/* User Profile Section */}
           <div className="p-4 border-t border-gray-100">
-            <div className="flex items-center gap-3 mb-3">
+            <Link
+              href="/dashboard/profile"
+              className="flex items-center gap-3 mb-3"
+            >
               <Avatar className="h-10 w-10 bg-gradient-to-br from-purple-600 to-purple-700">
                 <AvatarFallback className="bg-transparent text-white font-semibold text-sm">
                   JD
@@ -129,7 +132,7 @@ export default function DashboardLayout({
                 </p>
                 <p className="text-xs text-gray-500 truncate">admin</p>
               </div>
-            </div>
+            </Link>
             <button
               onClick={handleLogout}
               className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-red-50 hover:text-red-600 transition-colors"

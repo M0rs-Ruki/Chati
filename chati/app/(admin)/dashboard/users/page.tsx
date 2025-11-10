@@ -38,8 +38,8 @@ export default function UsersPage() {
   const [users, setUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState("")
-  const [currentUserRole] = useState<"ADMIN" | "EDITOR">("ADMIN") // Demo - get from auth context
-  const [currentUserId] = useState<string>("1") // Demo - get from auth context
+  const [currentUserRole, setCurrentUserRole] = useState<"ADMIN" | "EDITOR" | null>(null)
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null)
   const { toast } = useToast()
 
   // Modal states
@@ -73,55 +73,40 @@ export default function UsersPage() {
   })
 
   useEffect(() => {
-    fetchUsers()
+    fetchCurrentUser()
   }, [])
+
+  const fetchCurrentUser = async () => {
+    try {
+      const response = await fetch("/api/auth/me")
+      if (!response.ok) {
+        throw new Error("Failed to fetch current user")
+      }
+      const data = await response.json()
+      setCurrentUserId(data.user.id)
+      setCurrentUserRole(data.user.role)
+      
+      // After getting current user, fetch all users
+      fetchUsers()
+    } catch (error) {
+      console.error("Error fetching current user:", error)
+      toast({
+        title: "Error",
+        description: "Failed to authenticate. Please login again.",
+        variant: "destructive",
+      })
+      setLoading(false)
+    }
+  }
 
   const fetchUsers = async () => {
     try {
-      // Demo data - replace with: const response = await fetch('/api/user')
-      await new Promise((resolve) => setTimeout(resolve, 600))
-      setUsers([
-        {
-          id: "1",
-          email: "admin@example.com",
-          name: "Admin User",
-          role: "ADMIN",
-          status: "ACTIVE",
-          createdAt: "2024-01-01T00:00:00.000Z",
-          updatedAt: "2024-01-01T00:00:00.000Z",
-          _count: { blogPosts: 5, documentations: 3 },
-        },
-        {
-          id: "2",
-          email: "editor@example.com",
-          name: "Editor User",
-          role: "EDITOR",
-          status: "ACTIVE",
-          createdAt: "2024-01-05T00:00:00.000Z",
-          updatedAt: "2024-01-05T00:00:00.000Z",
-          _count: { blogPosts: 2, documentations: 1 },
-        },
-        {
-          id: "3",
-          email: "john@example.com",
-          name: "John Doe",
-          role: "EDITOR",
-          status: "ACTIVE",
-          createdAt: "2024-01-10T00:00:00.000Z",
-          updatedAt: "2024-01-10T00:00:00.000Z",
-          _count: { blogPosts: 0, documentations: 0 },
-        },
-        {
-          id: "4",
-          email: "jane@example.com",
-          name: "Jane Smith",
-          role: "EDITOR",
-          status: "DISABLED",
-          createdAt: "2024-01-15T00:00:00.000Z",
-          updatedAt: "2024-01-15T00:00:00.000Z",
-          _count: { blogPosts: 0, documentations: 0 },
-        },
-      ])
+      const response = await fetch("/api/user")
+      if (!response.ok) {
+        throw new Error("Failed to fetch users")
+      }
+      const data = await response.json()
+      setUsers(data.data || [])
     } catch (error) {
       console.error("Error fetching users:", error)
       toast({
@@ -155,21 +140,29 @@ export default function UsersPage() {
 
     setSubmitting(true)
     try {
-      // Demo - replace with actual API call to POST /api/user/create
-      await new Promise((resolve) => setTimeout(resolve, 800))
+      const response = await fetch("/api/user/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: createForm.name,
+          email: createForm.email,
+          password: createForm.password,
+          role: "EDITOR", // Only EDITOR can be created
+          status: createForm.status,
+        }),
+      })
 
-      const newUser: User = {
-        id: String(users.length + 1),
-        name: createForm.name,
-        email: createForm.email,
-        role: "EDITOR",
-        status: "ACTIVE",
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        _count: { blogPosts: 0, documentations: 0 },
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to create user")
       }
 
-      setUsers([newUser, ...users])
+      // Refresh users list
+      await fetchUsers()
+      
       setCreateModalOpen(false)
       setCreateForm({ name: "", email: "", password: "", role: "EDITOR", status: "ACTIVE" })
 
@@ -177,10 +170,10 @@ export default function UsersPage() {
         title: "Success",
         description: "User created successfully",
       })
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: "Error",
-        description: "Failed to create user",
+        description: error.message || "Failed to create user",
         variant: "destructive",
       })
     } finally {
@@ -200,12 +193,27 @@ export default function UsersPage() {
 
     setSubmitting(true)
     try {
-      // Demo - replace with: PUT /api/user/[id]
-      await new Promise((resolve) => setTimeout(resolve, 800))
+      const response = await fetch(`/api/user/${selectedUser.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: editForm.name,
+          email: editForm.email,
+          role: editForm.role,
+          status: editForm.status,
+        }),
+      })
 
-      setUsers(
-        users.map((u) => (u.id === selectedUser.id ? { ...u, ...editForm, updatedAt: new Date().toISOString() } : u)),
-      )
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to update user")
+      }
+
+      // Refresh users list
+      await fetchUsers()
 
       setEditModalOpen(false)
       setSelectedUser(null)
@@ -214,10 +222,10 @@ export default function UsersPage() {
         title: "Success",
         description: "User updated successfully",
       })
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: "Error",
-        description: "Failed to update user",
+        description: error.message || "Failed to update user",
         variant: "destructive",
       })
     } finally {
@@ -227,17 +235,6 @@ export default function UsersPage() {
 
   const handleChangePassword = async () => {
     if (!selectedUser) return
-
-    const isChangingOwnPassword = currentUserId === selectedUser.id
-
-    if (isChangingOwnPassword && !passwordForm.oldPassword) {
-      toast({
-        title: "Validation Error",
-        description: "Old password is required when changing your own password",
-        variant: "destructive",
-      })
-      return
-    }
 
     if (!passwordForm.newPassword || !passwordForm.confirmPassword) {
       toast({
@@ -268,8 +265,22 @@ export default function UsersPage() {
 
     setSubmitting(true)
     try {
-      // Demo - replace with: PUT /api/user/[id]/password
-      await new Promise((resolve) => setTimeout(resolve, 800))
+      const response = await fetch(`/api/user/${selectedUser.id}/password`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          newPassword: passwordForm.newPassword,
+          confirmPassword: passwordForm.confirmPassword,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to change password")
+      }
 
       setPasswordModalOpen(false)
       setSelectedUser(null)
@@ -279,10 +290,10 @@ export default function UsersPage() {
         title: "Success",
         description: "Password changed successfully",
       })
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: "Error",
-        description: "Failed to change password",
+        description: error.message || "Failed to change password",
         variant: "destructive",
       })
     } finally {
@@ -293,24 +304,21 @@ export default function UsersPage() {
   const handleDeleteUser = async () => {
     if (!selectedUser) return
 
-    const hasContent =
-      selectedUser._count && (selectedUser._count.blogPosts > 0 || selectedUser._count.documentations > 0)
-
-    if (hasContent) {
-      toast({
-        title: "Cannot Delete User",
-        description: "User has related content. Please reassign or delete content first.",
-        variant: "destructive",
-      })
-      return
-    }
-
     setSubmitting(true)
     try {
-      // Demo - replace with: DELETE /api/user/[id]/delete
-      await new Promise((resolve) => setTimeout(resolve, 800))
+      const response = await fetch(`/api/user/${selectedUser.id}/delete`, {
+        method: "DELETE",
+      })
 
-      setUsers(users.filter((u) => u.id !== selectedUser.id))
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to delete user")
+      }
+
+      // Refresh users list
+      await fetchUsers()
+
       setDeleteModalOpen(false)
       setSelectedUser(null)
 
@@ -318,10 +326,10 @@ export default function UsersPage() {
         title: "Success",
         description: "User deleted successfully",
       })
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: "Error",
-        description: "Failed to delete user",
+        description: error.message || "Failed to delete user",
         variant: "destructive",
       })
     } finally {
@@ -340,19 +348,35 @@ export default function UsersPage() {
     }
 
     try {
-      // Demo - replace with: PUT /api/user/[id]
       const newStatus = user.status === "ACTIVE" ? "DISABLED" : "ACTIVE"
 
-      setUsers(users.map((u) => (u.id === user.id ? { ...u, status: newStatus } : u)))
+      const response = await fetch(`/api/user/${user.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          status: newStatus,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to update user status")
+      }
+
+      // Refresh users list
+      await fetchUsers()
 
       toast({
         title: "Success",
         description: `User ${newStatus === "ACTIVE" ? "enabled" : "disabled"} successfully`,
       })
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: "Error",
-        description: "Failed to update user status",
+        description: error.message || "Failed to update user status",
         variant: "destructive",
       })
     }
@@ -381,24 +405,50 @@ export default function UsersPage() {
   }
 
   const canEditUser = (user: User) => {
-    if (currentUserRole === "ADMIN") {
-      return user.role !== "ADMIN" || user.id === currentUserId
+    // Editors cannot edit anyone (view only)
+    if (currentUserRole === "EDITOR") {
+      return false
     }
-    return user.id === currentUserId
+    
+    // Admins can only edit EDITORs, not other admins or themselves
+    if (currentUserRole === "ADMIN") {
+      return user.role === "EDITOR" && user.id !== currentUserId
+    }
+    
+    return false
   }
 
   const canDeleteUser = (user: User) => {
-    if (currentUserRole === "ADMIN") {
-      return user.role !== "ADMIN" || user.id === currentUserId
+    // Editors cannot delete anyone (view only)
+    if (currentUserRole === "EDITOR") {
+      return false
     }
-    return user.id === currentUserId
+    
+    // Admins can only delete EDITORs, not other admins or themselves
+    if (currentUserRole === "ADMIN") {
+      return user.role === "EDITOR" && user.id !== currentUserId
+    }
+    
+    return false
   }
 
   const canChangePassword = (user: User) => {
-    if (currentUserRole === "ADMIN") {
-      return user.role !== "ADMIN" || user.id === currentUserId
+    // Editors cannot change passwords (view only)
+    if (currentUserRole === "EDITOR") {
+      return false
     }
-    return user.id === currentUserId
+    
+    // Admins can only change passwords for EDITORs, not other admins or themselves
+    if (currentUserRole === "ADMIN") {
+      return user.role === "EDITOR" && user.id !== currentUserId
+    }
+    
+    return false
+  }
+
+  const canToggleStatus = (user: User) => {
+    // Only admins can toggle status and only for EDITORs
+    return currentUserRole === "ADMIN" && user.role === "EDITOR" && user.id !== currentUserId
   }
 
   const filteredUsers = users.filter(
@@ -490,7 +540,7 @@ export default function UsersPage() {
                         >
                           {user.status}
                         </Badge>
-                        {currentUserRole === "ADMIN" && (
+                        {canToggleStatus(user) && (
                           <Switch
                             checked={user.status === "ACTIVE"}
                             onCheckedChange={() => handleToggleStatus(user)}
@@ -537,7 +587,6 @@ export default function UsersPage() {
                             variant="outline"
                             onClick={() => openDeleteModal(user)}
                             className="border-red-200 text-red-600 hover:bg-red-50"
-                            disabled={user._count && (user._count.blogPosts > 0 || user._count.documentations > 0)}
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
@@ -657,30 +706,8 @@ export default function UsersPage() {
               />
             </div>
 
-            {currentUserRole === "ADMIN" && (
+            {currentUserRole === "ADMIN" && selectedUser?.role === "EDITOR" && (
               <>
-                <div className="space-y-2">
-                  <Label htmlFor="edit-role" className="text-gray-700">
-                    Role
-                  </Label>
-                  <Select
-                    value={editForm.role}
-                    onValueChange={(value: "ADMIN" | "EDITOR") => setEditForm({ ...editForm, role: value })}
-                    disabled={selectedUser?.role === "ADMIN" && selectedUser?.id !== currentUserId}
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="ADMIN">ADMIN</SelectItem>
-                      <SelectItem value="EDITOR">EDITOR</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  {selectedUser?.role === "ADMIN" && selectedUser?.id !== currentUserId && (
-                    <p className="text-sm text-gray-500">Cannot change role of other admins</p>
-                  )}
-                </div>
-
                 <div className="space-y-2">
                   <Label htmlFor="edit-status" className="text-gray-700">
                     Status
@@ -717,34 +744,16 @@ export default function UsersPage() {
         </DialogContent>
       </Dialog>
 
-      {/* Change Password Modal */}
       <Dialog open={passwordModalOpen} onOpenChange={setPasswordModalOpen}>
         <DialogContent className="bg-white">
           <DialogHeader>
             <DialogTitle className="text-gray-900">Change Password</DialogTitle>
             <DialogDescription className="text-gray-600">
-              {selectedUser?.id === currentUserId
-                ? "Change your password"
-                : `Set a new password for ${selectedUser?.name}`}
+              Set a new password for {selectedUser?.name}
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4 py-4">
-            {selectedUser?.id === currentUserId && (
-              <div className="space-y-2">
-                <Label htmlFor="old-password" className="text-gray-700">
-                  Current Password <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="old-password"
-                  type="password"
-                  value={passwordForm.oldPassword}
-                  onChange={(e) => setPasswordForm({ ...passwordForm, oldPassword: e.target.value })}
-                  placeholder="••••••••"
-                />
-              </div>
-            )}
-
             <div className="space-y-2">
               <Label htmlFor="new-password" className="text-gray-700">
                 New Password <span className="text-red-500">*</span>
@@ -788,7 +797,6 @@ export default function UsersPage() {
         </DialogContent>
       </Dialog>
 
-      {/* Delete Confirmation Modal */}
       <Dialog open={deleteModalOpen} onOpenChange={setDeleteModalOpen}>
         <DialogContent className="bg-white">
           <DialogHeader>
@@ -807,18 +815,6 @@ export default function UsersPage() {
                 </span>
               </p>
             </div>
-
-            {selectedUser?._count && (selectedUser._count.blogPosts > 0 || selectedUser._count.documentations > 0) && (
-              <div className="p-4 bg-orange-50 border border-orange-200 rounded-lg">
-                <p className="text-sm text-orange-700 flex items-start gap-2">
-                  <AlertCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                  <span>
-                    This user has {selectedUser._count.blogPosts} blog post(s) and {selectedUser._count.documentations}{" "}
-                    documentation(s). Please reassign or delete this content before deleting the user.
-                  </span>
-                </p>
-              </div>
-            )}
           </div>
 
           <DialogFooter>
@@ -827,10 +823,7 @@ export default function UsersPage() {
             </Button>
             <Button
               onClick={handleDeleteUser}
-              disabled={
-                submitting ||
-                (selectedUser?._count && (selectedUser._count.blogPosts > 0 || selectedUser._count.documentations > 0))
-              }
+              disabled={submitting}
               className="bg-red-500 hover:bg-red-600 text-white"
             >
               {submitting ? "Deleting..." : "Delete User"}
