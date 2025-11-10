@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowLeft, Upload } from "lucide-react";
+import { ArrowLeft, Upload, X } from "lucide-react";
 import Link from "next/link";
 import { WYSIWYGEditor } from "@/components/wysiwyg-editor";
 import { useToast } from "@/hooks/use-toast";
@@ -58,6 +58,69 @@ export default function CreateDocsPage() {
       tags: "",
     },
   });
+
+  // Media Upload Dialog state
+  const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
+  const [uploadSelectedFile, setUploadSelectedFile] = useState<File | null>(
+    null
+  );
+  const [uploadPreviewUrl, setUploadPreviewUrl] = useState<string | null>(null);
+  const [uploadAltText, setUploadAltText] = useState("");
+  const [uploading, setUploading] = useState(false);
+
+  const handleUploadFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Optional: validate file size and type here
+
+    setUploadSelectedFile(file);
+
+    // Create preview url
+    const reader = new FileReader();
+    reader.onloadend = () => setUploadPreviewUrl(reader.result as string);
+    reader.readAsDataURL(file);
+  };
+
+  const handleUploadSubmit = async () => {
+    if (!uploadSelectedFile || !uploadAltText.trim()) {
+      alert("Please select a file and enter alt text");
+      return;
+    }
+    setUploading(true);
+
+    try {
+      const token = localStorage.getItem("token");
+      const formData = new FormData();
+      formData.append("file", uploadSelectedFile);
+      formData.append("alt", uploadAltText.trim());
+
+      const res = await fetch("/api/media/upload", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token || ""}`,
+        },
+        body: formData,
+      });
+
+      const result = await res.json();
+
+      if (!res.ok) throw new Error(result.message || "Failed to upload");
+
+      // Set uploaded image URL in your main form
+      setFormData((prev) => ({ ...prev, imageUrl: result.data.url }));
+
+      // Close modal and reset upload fields
+      setUploadDialogOpen(false);
+      setUploadSelectedFile(null);
+      setUploadPreviewUrl(null);
+      setUploadAltText("");
+    } catch (error) {
+      alert("Upload failed: " + (error as Error).message);
+    } finally {
+      setUploading(false);
+    }
+  };
 
   // Media Picker State
   const [mediaPickerOpen, setMediaPickerOpen] = useState(false);
@@ -200,13 +263,12 @@ export default function CreateDocsPage() {
                         variant="outline"
                         size="sm"
                         className="flex-1 bg-transparent"
-                        onClick={() => {
-                          // TODO: add your upload dialog
-                        }}
+                        onClick={() => setUploadDialogOpen(true)}
                       >
                         <Upload className="h-4 w-4 mr-2" />
                         Create New
                       </Button>
+
                       <Button
                         type="button"
                         variant="outline"
@@ -366,6 +428,94 @@ export default function CreateDocsPage() {
           </CardContent>
         </Card>
       </form>
+
+      {/* Upload Dialog */}
+
+      <Dialog open={uploadDialogOpen} onOpenChange={setUploadDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Upload Image</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="upload-file" className="cursor-pointer">
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-green-500 transition-colors">
+                  {uploadPreviewUrl ? (
+                    <div className="relative">
+                      <img
+                        src={uploadPreviewUrl}
+                        alt="Preview"
+                        className="max-h-64 mx-auto rounded"
+                      />
+                      <Button
+                        size="sm"
+                        variant="destructive"
+                        className="absolute top-2 right-2"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setUploadSelectedFile(null);
+                          setUploadPreviewUrl(null);
+                        }}
+                      >
+                        <X className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  ) : (
+                    <>
+                      <Upload className="w-12 h-12 mx-auto text-gray-400 mb-2" />
+                      <p className="text-sm text-gray-600">
+                        Click to select an image
+                      </p>
+                      <p className="text-xs text-gray-400 mt-1">
+                        JPG, PNG, GIF, WEBP, SVG (max 5MB)
+                      </p>
+                    </>
+                  )}
+                </div>
+                <Input
+                  id="upload-file"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleUploadFileSelect}
+                  className="hidden"
+                />
+              </Label>
+            </div>
+
+            <div>
+              <Label htmlFor="upload-alt-text">
+                Alt Text <span className="text-red-500">*</span>
+              </Label>
+              <Input
+                id="upload-alt-text"
+                value={uploadAltText}
+                onChange={(e) => setUploadAltText(e.target.value)}
+                placeholder="Describe the image..."
+                className="mt-2"
+                required
+              />
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setUploadDialogOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleUploadSubmit}
+              disabled={
+                uploading || !uploadSelectedFile || !uploadAltText.trim()
+              }
+              className="bg-green-600 hover:bg-green-700 text-white"
+            >
+              {uploading ? "Uploading..." : "Upload"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Media Picker Dialog */}
       <Dialog open={mediaPickerOpen} onOpenChange={setMediaPickerOpen}>
