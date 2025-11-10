@@ -13,13 +13,9 @@
   "license": "UNLICENSED",
   "author": "Chati",
   "scripts": {
-    "analyze": "ANALYZE=true next build",
+    "dev": "next dev",
     "build": "next build",
-    "dev": "next dev --turbo",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "start": "next start",
-    "type-check": "tsc --noEmit"
+    "start": "next start"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
