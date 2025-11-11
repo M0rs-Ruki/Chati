@@ -43,7 +43,14 @@ export default function BlogsPage() {
   const router = useRouter();
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleting, setDeleting] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [pagination, setPagination] = useState({
+    total: 0,
+    page: 1,
+    limit: 10,
+    pages: 0,
+  });
   const [deleteDialog, setDeleteDialog] = useState<{
     open: boolean;
     blogId: string | null;
@@ -66,7 +73,8 @@ export default function BlogsPage() {
         return;
       }
 
-      const response = await fetch("/api/blog", {
+      // Fetch with pagination support
+      const response = await fetch("/api/blog?page=1&limit=100", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -80,6 +88,11 @@ export default function BlogsPage() {
 
       const result = await response.json();
       setBlogs(result.data || []);
+      
+      // Update pagination info if available
+      if (result.pagination) {
+        setPagination(result.pagination);
+      }
     } catch (error) {
       console.error("Error fetching blogs:", error);
       toast({
@@ -96,6 +109,7 @@ export default function BlogsPage() {
     if (!deleteDialog.blogId) return;
 
     try {
+      setDeleting(true);
       const token = localStorage.getItem("token");
 
       if (!token) {
@@ -103,6 +117,7 @@ export default function BlogsPage() {
         return;
       }
 
+      // Fixed: Use the correct delete endpoint path
       const response = await fetch(`/api/blog/${deleteDialog.blogId}/delete`, {
         method: "DELETE",
         headers: {
@@ -112,7 +127,8 @@ export default function BlogsPage() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to delete blog");
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to delete blog");
       }
 
       // Remove blog from local state
@@ -127,9 +143,11 @@ export default function BlogsPage() {
       console.error("Error deleting blog:", error);
       toast({
         title: "Error",
-        description: "Failed to delete blog post",
+        description: error instanceof Error ? error.message : "Failed to delete blog post",
         variant: "destructive",
       });
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -161,10 +179,15 @@ export default function BlogsPage() {
           </h2>
           <p className="text-lg text-gray-600">
             Manage your blog posts and articles
+            {!loading && pagination.total > 0 && (
+              <span className="ml-2 text-sm font-medium text-green-600">
+                ({pagination.total} total)
+              </span>
+            )}
           </p>
         </div>
         <Button
-          onClick={() => router.push("/dashboard/blog-posts/create")}
+          onClick={() => router.push("/dashboard/blogs/create")}
           className="bg-green-600 hover:bg-green-700 text-white font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"
         >
           <Plus className="h-4 w-4 mr-2" />
@@ -185,6 +208,7 @@ export default function BlogsPage() {
       {loading ? (
         <div className="text-center py-12">
           <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-green-600 border-r-transparent" />
+          <p className="mt-4 text-gray-600">Loading blog posts...</p>
         </div>
       ) : filteredBlogs.length === 0 ? (
         <Card className="bg-white border-gray-200">
@@ -248,9 +272,10 @@ export default function BlogsPage() {
                     size="sm"
                     variant="outline"
                     onClick={() =>
-                      router.push(`/dashboard/blog-posts/${blog.id}`)
+                      router.push(`/dashboard/blogs/${blog.id}`)
                     }
-                    className="flex-1 border-gray-200 hover:bg-blue-50 hover:border-blue-300"
+                    disabled={deleting}
+                    className="flex-1 border-gray-200 hover:bg-blue-50 hover:border-blue-300 disabled:opacity-50"
                   >
                     <Eye className="h-4 w-4 mr-1" />
                     View
@@ -259,9 +284,10 @@ export default function BlogsPage() {
                     size="sm"
                     variant="outline"
                     onClick={() =>
-                      router.push(`/dashboard/blog-posts/${blog.id}/edit`)
+                      router.push(`/dashboard/blogs/${blog.id}/edit`)
                     }
-                    className="flex-1 border-gray-200 hover:bg-green-50 hover:border-green-300"
+                    disabled={deleting}
+                    className="flex-1 border-gray-200 hover:bg-green-50 hover:border-green-300 disabled:opacity-50"
                   >
                     <Edit className="h-4 w-4 mr-1" />
                     Edit
@@ -272,7 +298,8 @@ export default function BlogsPage() {
                     onClick={() =>
                       setDeleteDialog({ open: true, blogId: blog.id })
                     }
-                    className="border-gray-200 hover:bg-red-50 hover:border-red-300 px-2"
+                    disabled={deleting}
+                    className="border-gray-200 hover:bg-red-50 hover:border-red-300 px-2 disabled:opacity-50"
                   >
                     <Trash2 className="h-4 w-4 text-red-600" />
                   </Button>
@@ -296,12 +323,20 @@ export default function BlogsPage() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel disabled={deleting}>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
-              className="bg-red-600 hover:bg-red-700 text-white"
+              disabled={deleting}
+              className="bg-red-600 hover:bg-red-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Delete
+              {deleting ? (
+                <>
+                  <div className="inline-block h-4 w-4 mr-2 animate-spin rounded-full border-2 border-white border-r-transparent" />
+                  Deleting...
+                </>
+              ) : (
+                "Delete"
+              )}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
