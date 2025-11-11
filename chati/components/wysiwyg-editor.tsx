@@ -22,7 +22,7 @@ import {
   Undo,
   Redo,
 } from "lucide-react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
@@ -76,6 +76,13 @@ export function WYSIWYGEditor({ value, onChange, placeholder }: WYSIWYGEditorPro
       },
     },
   })
+
+  // Update editor content when value prop changes (e.g., when loading data from API)
+  useEffect(() => {
+    if (editor && value !== editor.getHTML()) {
+      editor.commands.setContent(value || "")
+    }
+  }, [value, editor])
 
   if (!editor) {
     return null
