@@ -255,10 +255,20 @@ export default function EditBlogPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!formData.title || !formData.content) {
+    // Validate that at least title and either content or customHtml is provided
+    if (!formData.title) {
       toast({ 
         title: "Error", 
-        description: "Title and content are required", 
+        description: "Title is required", 
+        variant: "destructive" 
+      })
+      return
+    }
+
+    if (!formData.content && !formData.customHtml) {
+      toast({ 
+        title: "Error", 
+        description: "Either content or custom HTML is required", 
         variant: "destructive" 
       })
       return
@@ -274,10 +284,22 @@ export default function EditBlogPage() {
         return
       }
 
+      // Combine content and customHtml if both are provided
+      let finalContent = formData.content
+      if (formData.customHtml) {
+        // If both content and customHtml exist, combine them
+        if (formData.content) {
+          finalContent = `${formData.content}\n\n${formData.customHtml}`
+        } else {
+          // If only customHtml exists, use it as content
+          finalContent = formData.customHtml
+        }
+      }
+
       // Prepare the request body
       const updateData = {
         title: formData.title,
-        content: { html: formData.content },
+        content: { html: finalContent },
         imageUrl: formData.imageUrl || null,
         status: formData.status,
         metadata: {
@@ -426,8 +448,11 @@ export default function EditBlogPage() {
 
                 <div className="space-y-2">
                   <Label className="text-[var(--text-secondary)]">
-                    Content <span className="text-red-500">*</span>
+                    Content
                   </Label>
+                  <p className="text-xs text-gray-500 mb-2">
+                    Use the visual editor for content or switch to Custom HTML tab
+                  </p>
                   <WYSIWYGEditor
                     value={formData.content}
                     onChange={(content: string) => setFormData({ ...formData, content })}
@@ -503,9 +528,8 @@ export default function EditBlogPage() {
                     Custom HTML Code
                   </Label>
                   <p className="text-sm text-gray-500">
-                    Add custom HTML that will be rendered alongside your
-                    content. Use this for special widgets, embeds, or custom
-                    styling.
+                    Add custom HTML that will be rendered as your content. Use this for special widgets, embeds,
+                    or custom styling. You can use this instead of or in addition to the visual editor.
                   </p>
                   <Textarea
                     id="customHtml"
@@ -516,6 +540,13 @@ export default function EditBlogPage() {
                     placeholder="<div>Your custom HTML here...</div>"
                     className="bg-white border-[var(--border)] font-mono text-sm min-h-[300px]"
                   />
+                  {formData.customHtml && (
+                    <div className="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-md">
+                      <p className="text-xs text-blue-700">
+                        ✓ Custom HTML will be {formData.content ? 'combined with your content' : 'used as content'}
+                      </p>
+                    </div>
+                  )}
                 </div>
               </TabsContent>
             </Tabs>

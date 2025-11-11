@@ -289,8 +289,8 @@ export default function ViewBlogPage() {
 
           {blog.metadata.tags && blog.metadata.tags.length > 0 && (
             <div className="flex flex-wrap gap-2 pt-6 border-t border-[var(--border)]">
-              {blog.metadata.tags.map((tag) => (
-                <span key={tag} className="text-sm bg-green-100 text-green-700 px-3 py-1 rounded-full">
+              {blog.metadata.tags.map((tag, index) => (
+                <span key={`${tag}-${index}`} className="text-sm bg-green-100 text-green-700 px-3 py-1 rounded-full">
                   {tag}
                 </span>
               ))}

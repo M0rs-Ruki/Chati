@@ -259,7 +259,7 @@ export default function BlogsPage() {
                   <div className="flex flex-wrap gap-1 mb-4">
                     {blog.metadata.tags.slice(0, 3).map((tag, idx) => (
                       <span
-                        key={idx}
+                        key={`${blog.id}-${tag}-${idx}`}
                         className="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded-md"
                       >
                         {tag}
