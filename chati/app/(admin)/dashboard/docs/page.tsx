@@ -41,6 +41,7 @@ export default function DocsPage() {
   const { toast } = useToast();
   const [docs, setDocs] = useState<Documentation[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleting, setDeleting] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentUser, setCurrentUser] = useState<{
     id: string;
@@ -120,6 +121,7 @@ export default function DocsPage() {
     if (!deleteModal.docId) return;
 
     try {
+      setDeleting(true);
       const token = localStorage.getItem("token");
 
       if (!token) {
@@ -157,6 +159,8 @@ export default function DocsPage() {
         description: "Failed to delete documentation",
         variant: "destructive",
       });
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -335,14 +339,23 @@ export default function DocsPage() {
             <Button
               variant="outline"
               onClick={() => setDeleteModal({ open: false, docId: null })}
+              disabled={deleting}
             >
               Cancel
             </Button>
             <Button
               onClick={handleDelete}
+              disabled={deleting}
               className="bg-red-600 hover:bg-red-700 text-white"
             >
-              Delete
+              {deleting ? (
+                <>
+                  <div className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-white border-r-transparent mr-2" />
+                  Deleting...
+                </>
+              ) : (
+                "Delete"
+              )}
             </Button>
           </DialogFooter>
         </DialogContent>
