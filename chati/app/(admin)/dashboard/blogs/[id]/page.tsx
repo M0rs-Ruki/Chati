@@ -8,25 +8,26 @@ import { ArrowLeft, Edit, Trash2 } from "lucide-react"
 import Link from "next/link"
 import { useToast } from "@/hooks/use-toast"
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 
 interface Blog {
   id: string
   title: string
-  content: any
+  slug: string
+  content: Record<string, any>
   imageUrl: string | null
-  status: string
+  status: "DRAFT" | "REVIEW" | "PUBLISHED" | "ARCHIVED"
+  publishedAt: string | null
   createdAt: string
   updatedAt: string
   author: {
+    id: string
     name: string
     email: string
   }
@@ -42,43 +43,123 @@ export default function ViewBlogPage() {
   const { toast } = useToast()
   const [blog, setBlog] = useState<Blog | null>(null)
   const [loading, setLoading] = useState(true)
+  const [deleting, setDeleting] = useState(false)
   const [deleteDialog, setDeleteDialog] = useState(false)
+  const [currentUser, setCurrentUser] = useState<{ id: string; role: string } | null>(null)
 
   useEffect(() => {
-    fetchBlog()
+    fetchCurrentUser()
+  }, [])
+
+  useEffect(() => {
+    if (params.id) {
+      fetchBlog()
+    }
   }, [params.id])
+
+  const fetchCurrentUser = async () => {
+    try {
+      const token = localStorage.getItem("token")
+      if (!token) return
+
+      const response = await fetch("/api/auth/me", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      if (response.ok) {
+        const data = await response.json()
+        setCurrentUser(data.user)
+      }
+    } catch (error) {
+      console.error("Error fetching current user:", error)
+    }
+  }
 
   const fetchBlog = async () => {
     try {
-      // Demo data
-      await new Promise((resolve) => setTimeout(resolve, 600))
+      setLoading(true)
+      const token = localStorage.getItem("token")
 
-      setBlog({
-        id: params.id as string,
-        title: "Getting Started with Our Platform",
-        content: { markdown: "# Welcome\n\nThis is the blog content in markdown format..." },
-        imageUrl: "/placeholder.svg?height=400&width=800",
-        status: "PUBLISHED",
-        createdAt: "2024-01-15T10:00:00Z",
-        updatedAt: "2024-01-15T10:00:00Z",
-        author: { name: "Admin User", email: "admin@example.com" },
-        metadata: {
-          description: "Learn how to get started with our platform",
-          tags: ["tutorial", "beginner"],
+      if (!token) {
+        router.push("/admin")
+        return
+      }
+
+      const response = await fetch(`/api/blog/${params.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
+      })
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch blog post")
+      }
+
+      const result = await response.json()
+      setBlog(result.data)
+    } catch (error) {
+      console.error("Error fetching blog:", error)
+      toast({
+        title: "Error",
+        description: "Failed to load blog post",
+        variant: "destructive",
       })
     } finally {
       setLoading(false)
     }
   }
 
+  const canEdit = () => {
+    if (!blog || !currentUser) return false
+    return blog.author.id === currentUser.id || currentUser.role === "ADMIN"
+  }
+
+  const canDelete = () => {
+    if (!blog || !currentUser) return false
+    return blog.author.id === currentUser.id || currentUser.role === "ADMIN"
+  }
+
   const handleDelete = async () => {
+    if (!blog) return
+
     try {
-      await new Promise((resolve) => setTimeout(resolve, 400))
-      toast({ title: "Success", description: "Blog post deleted successfully" })
+      setDeleting(true)
+      const token = localStorage.getItem("token")
+
+      if (!token) {
+        router.push("/admin")
+        return
+      }
+
+      const response = await fetch(`/api/blog/${blog.id}/delete`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      const result = await response.json()
+
+      if (!response.ok) {
+        throw new Error(result.message || "Failed to delete blog post")
+      }
+
+      toast({ 
+        title: "Success", 
+        description: "Blog post deleted successfully" 
+      })
+
       router.push("/dashboard/blogs")
     } catch (error) {
-      toast({ title: "Error", description: "Failed to delete blog post", variant: "destructive" })
+      console.error("Error deleting blog:", error)
+      toast({ 
+        title: "Error", 
+        description: error instanceof Error ? error.message : "Failed to delete blog post", 
+        variant: "destructive" 
+      })
+    } finally {
+      setDeleting(false)
     }
   }
 
@@ -86,12 +167,22 @@ export default function ViewBlogPage() {
     return (
       <div className="text-center py-12">
         <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-[var(--primary-green)] border-r-transparent" />
+        <p className="mt-4 text-gray-600">Loading blog post...</p>
       </div>
     )
   }
 
   if (!blog) {
-    return <div className="text-center py-12 text-[var(--text-secondary)]">Blog post not found</div>
+    return (
+      <div className="text-center py-12">
+        <p className="text-[var(--text-secondary)]">Blog post not found</p>
+        <Link href="/dashboard/blogs">
+          <Button className="mt-4 bg-transparent" variant="outline">
+            Back to Blog Posts
+          </Button>
+        </Link>
+      </div>
+    )
   }
 
   const getStatusColor = (status: string) => {
@@ -110,7 +201,7 @@ export default function ViewBlogPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="pt-6 px-4 space-y-6 animate-in fade-in duration-500">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Link href="/dashboard/blogs">
@@ -118,43 +209,54 @@ export default function ViewBlogPage() {
               <ArrowLeft className="h-4 w-4" />
             </Button>
           </Link>
-          <div>
-            <h2 className="text-3xl font-bold text-[var(--text-primary)]">View Blog Post</h2>
-            <p className="text-[var(--text-secondary)] mt-2">Read-only view of the blog post</p>
-          </div>
+          <span
+            className={`text-xs px-3 py-1 rounded-full font-medium border ${getStatusColor(blog.status)}`}
+          >
+            {blog.status}
+          </span>
         </div>
         <div className="flex gap-2">
-          <Button
-            variant="outline"
-            onClick={() => router.push(`/dashboard/blogs/${blog.id}/edit`)}
-            className="border-[var(--border)] bg-transparent hover:bg-green-50"
-          >
-            <Edit className="h-4 w-4 mr-2" />
-            Edit
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => setDeleteDialog(true)}
-            className="border-red-600 text-red-600 hover:bg-red-50"
-          >
-            <Trash2 className="h-4 w-4 mr-2" />
-            Delete
-          </Button>
+          {canEdit() && (
+            <Link href={`/dashboard/blogs/${blog.id}/edit`}>
+              <Button 
+                variant="outline" 
+                className="border-[var(--border)] hover:bg-green-50 bg-transparent"
+                disabled={deleting}
+              >
+                <Edit className="h-4 w-4 mr-2" />
+                Edit
+              </Button>
+            </Link>
+          )}
+          {canDelete() && (
+            <Button
+              variant="outline"
+              onClick={() => setDeleteDialog(true)}
+              disabled={deleting}
+              className="border-red-300 text-red-600 hover:bg-red-50"
+            >
+              <Trash2 className="h-4 w-4 mr-2" />
+              Delete
+            </Button>
+          )}
         </div>
       </div>
 
       <Card className="bg-white border-[var(--border)]">
         <CardContent className="p-8">
-          <div className="flex items-center justify-between mb-6">
-            <span className={`text-sm px-4 py-1.5 rounded-full font-medium ${getStatusColor(blog.status)}`}>
-              {blog.status}
-            </span>
-            <div className="text-sm text-[var(--text-muted)]">
-              By {blog.author.name} • {new Date(blog.createdAt).toLocaleDateString()}
-            </div>
-          </div>
+          <h1 className="text-4xl font-bold text-[var(--text-primary)] mb-4">{blog.title}</h1>
 
-          <h1 className="text-4xl font-bold text-[var(--text-primary)] mb-6">{blog.title}</h1>
+          <div className="flex items-center gap-4 text-sm text-[var(--text-secondary)] mb-6">
+            <span>{blog.author.name}</span>
+            <span>•</span>
+            <span>{new Date(blog.createdAt).toLocaleDateString()}</span>
+            {blog.createdAt !== blog.updatedAt && (
+              <>
+                <span>•</span>
+                <span>Updated {new Date(blog.updatedAt).toLocaleDateString()}</span>
+              </>
+            )}
+          </div>
 
           {blog.imageUrl && (
             <img
@@ -165,19 +267,30 @@ export default function ViewBlogPage() {
           )}
 
           {blog.metadata.description && (
-            <p className="text-lg text-[var(--text-secondary)] mb-6 italic">{blog.metadata.description}</p>
+            <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+              <p className="text-gray-700">{blog.metadata.description}</p>
+            </div>
           )}
 
           <div className="prose prose-lg max-w-none mb-8">
-            <pre className="whitespace-pre-wrap bg-gray-50 p-6 rounded-lg text-sm">
-              {blog.content.markdown || "No content"}
-            </pre>
+            {blog.content.html ? (
+              <div 
+                dangerouslySetInnerHTML={{ __html: blog.content.html }} 
+                className="text-gray-700"
+              />
+            ) : blog.content.markdown ? (
+              <pre className="whitespace-pre-wrap bg-gray-50 p-6 rounded-lg text-sm leading-relaxed">
+                {blog.content.markdown}
+              </pre>
+            ) : (
+              <p className="text-gray-500">No content available</p>
+            )}
           </div>
 
           {blog.metadata.tags && blog.metadata.tags.length > 0 && (
             <div className="flex flex-wrap gap-2 pt-6 border-t border-[var(--border)]">
               {blog.metadata.tags.map((tag) => (
-                <span key={tag} className="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full">
+                <span key={tag} className="text-sm bg-green-100 text-green-700 px-3 py-1 rounded-full">
                   {tag}
                 </span>
               ))}
@@ -186,22 +299,40 @@ export default function ViewBlogPage() {
         </CardContent>
       </Card>
 
-      <AlertDialog open={deleteDialog} onOpenChange={setDeleteDialog}>
-        <AlertDialogContent className="bg-white">
-          <AlertDialogHeader>
-            <AlertDialogTitle>Delete Blog Post</AlertDialogTitle>
-            <AlertDialogDescription>
-              Are you sure you want to delete this blog post? This action cannot be undone.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete} className="bg-red-600 hover:bg-red-700 text-white">
-              Delete
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      {/* Delete Modal */}
+      <Dialog open={deleteDialog} onOpenChange={setDeleteDialog}>
+        <DialogContent className="bg-white">
+          <DialogHeader>
+            <DialogTitle>Delete Blog Post</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete "{blog.title}"? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button 
+              variant="outline" 
+              onClick={() => setDeleteDialog(false)}
+              disabled={deleting}
+            >
+              Cancel
+            </Button>
+            <Button 
+              onClick={handleDelete} 
+              disabled={deleting}
+              className="bg-red-600 hover:bg-red-700 text-white"
+            >
+              {deleting ? (
+                <>
+                  <div className="inline-block h-4 w-4 mr-2 animate-spin rounded-full border-2 border-white border-r-transparent" />
+                  Deleting...
+                </>
+              ) : (
+                "Delete"
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
