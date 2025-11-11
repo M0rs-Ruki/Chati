@@ -16,10 +16,33 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Upload } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { ArrowLeft, Upload, X } from "lucide-react";
 import Link from "next/link";
 import { WYSIWYGEditor } from "@/components/wysiwyg-editor";
 import { useToast } from "@/hooks/use-toast";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+
+interface MediaFile {
+  id: string;
+  url: string;
+  alt: string;
+  type: string;
+  size: number;
+  uploadedAt: string;
+  createdBy?: {
+    id: string;
+    name: string;
+    email: string;
+  };
+}
 
 interface Documentation {
   id: string;

@@ -72,7 +72,15 @@ export default function CreateDocsPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Optional: validate file size and type here
+    // Validate file size (5MB max)
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        title: "Error",
+        description: "File size must be less than 5MB",
+        variant: "destructive",
+      });
+      return;
+    }
 
     setUploadSelectedFile(file);
 
@@ -84,23 +92,27 @@ export default function CreateDocsPage() {
 
   const handleUploadSubmit = async () => {
     if (!uploadSelectedFile || !uploadAltText.trim()) {
-      alert("Please select a file and enter alt text");
+      toast({
+        title: "Error",
+        description: "Please select a file and enter alt text",
+        variant: "destructive",
+      });
       return;
     }
     setUploading(true);
 
     try {
       const token = localStorage.getItem("token");
-      const formData = new FormData();
-      formData.append("file", uploadSelectedFile);
-      formData.append("alt", uploadAltText.trim());
+      const formDataUpload = new FormData();
+      formDataUpload.append("file", uploadSelectedFile);
+      formDataUpload.append("alt", uploadAltText.trim());
 
       const res = await fetch("/api/media/upload", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token || ""}`,
         },
-        body: formData,
+        body: formDataUpload,
       });
 
       const result = await res.json();
@@ -110,13 +122,22 @@ export default function CreateDocsPage() {
       // Set uploaded image URL in your main form
       setFormData((prev) => ({ ...prev, imageUrl: result.data.url }));
 
+      toast({
+        title: "Success",
+        description: "Image uploaded successfully",
+      });
+
       // Close modal and reset upload fields
       setUploadDialogOpen(false);
       setUploadSelectedFile(null);
       setUploadPreviewUrl(null);
       setUploadAltText("");
     } catch (error) {
-      alert("Upload failed: " + (error as Error).message);
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Upload failed",
+        variant: "destructive",
+      });
     } finally {
       setUploading(false);
     }
@@ -156,10 +177,20 @@ export default function CreateDocsPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.title || !formData.content) {
+    // Validate that at least title and either content or customHtml is provided
+    if (!formData.title) {
       toast({
         title: "Error",
-        description: "Title and content are required",
+        description: "Title is required",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!formData.content && !formData.customHtml) {
+      toast({
+        title: "Error",
+        description: "Either content or custom HTML is required",
         variant: "destructive",
       });
       return;
@@ -173,10 +204,22 @@ export default function CreateDocsPage() {
         ? formData.metadata.tags.split(",").map((tag) => tag.trim()).filter((tag) => tag.length > 0)
         : [];
 
+      // Combine content and customHtml if both are provided
+      let finalContent = formData.content;
+      if (formData.customHtml) {
+        // If both content and customHtml exist, combine them
+        if (formData.content) {
+          finalContent = `${formData.content}\n\n${formData.customHtml}`;
+        } else {
+          // If only customHtml exists, use it as content
+          finalContent = formData.customHtml;
+        }
+      }
+
       // Prepare request body
       const requestBody = {
         title: formData.title,
-        content: { html: formData.content }, // Store HTML content in an object
+        content: { html: finalContent }, // Store HTML content in an object
         metadata: {
           description: formData.metadata.description || "",
           tags: tags,
@@ -321,8 +364,11 @@ export default function CreateDocsPage() {
                 {/* WYSIWYG Editor */}
                 <div className="space-y-2">
                   <Label className="text-[var(--text-secondary)]">
-                    Content <span className="text-red-500">*</span>
+                    Content
                   </Label>
+                  <p className="text-xs text-gray-500 mb-2">
+                    Use the visual editor for content or switch to Custom HTML tab
+                  </p>
                   <WYSIWYGEditor
                     value={formData.content}
                     onChange={(content) =>
@@ -417,9 +463,8 @@ export default function CreateDocsPage() {
                     Custom HTML Code
                   </Label>
                   <p className="text-sm text-gray-500">
-                    Add custom HTML that will be rendered alongside your
-                    content. Use this for special widgets, embeds, or custom
-                    styling.
+                    Add custom HTML that will be rendered as your content. Use this for special widgets, embeds,
+                    or custom styling. You can use this instead of or in addition to the visual editor.
                   </p>
                   <Textarea
                     id="customHtml"
@@ -430,6 +475,13 @@ export default function CreateDocsPage() {
                     placeholder="<div>Your custom HTML here...</div>"
                     className="bg-white border-[var(--border)] font-mono text-sm min-h-[300px]"
                   />
+                  {formData.customHtml && (
+                    <div className="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-md">
+                      <p className="text-xs text-blue-700">
+                        ✓ Custom HTML will be {formData.content ? 'combined with your content' : 'used as content'}
+                      </p>
+                    </div>
+                  )}
                 </div>
               </TabsContent>
             </Tabs>
@@ -440,13 +492,21 @@ export default function CreateDocsPage() {
                 className="bg-[var(--primary-green)] hover:bg-[var(--primary-green-dark)] text-white"
                 disabled={loading}
               >
-                {loading ? "Creating..." : "Create Documentation"}
+                {loading ? (
+                  <>
+                    <div className="inline-block h-4 w-4 mr-2 animate-spin rounded-full border-2 border-white border-r-transparent" />
+                    Creating...
+                  </>
+                ) : (
+                  "Create Documentation"
+                )}
               </Button>
               <Link href="/dashboard/docs">
                 <Button
                   type="button"
                   variant="outline"
                   className="border-[var(--border)] bg-transparent"
+                  disabled={loading}
                 >
                   Cancel
                 </Button>
@@ -462,6 +522,9 @@ export default function CreateDocsPage() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Upload Image</DialogTitle>
+            <DialogDescription>
+              Upload a new image to use in your documentation
+            </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div>
@@ -528,6 +591,7 @@ export default function CreateDocsPage() {
             <Button
               variant="outline"
               onClick={() => setUploadDialogOpen(false)}
+              disabled={uploading}
             >
               Cancel
             </Button>
@@ -538,25 +602,34 @@ export default function CreateDocsPage() {
               }
               className="bg-green-600 hover:bg-green-700 text-white"
             >
-              {uploading ? "Uploading..." : "Upload"}
+              {uploading ? (
+                <>
+                  <div className="inline-block h-4 w-4 mr-2 animate-spin rounded-full border-2 border-white border-r-transparent" />
+                  Uploading...
+                </>
+              ) : (
+                "Upload"
+              )}
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
-      {/* Media Picker Dialog */}
       <Dialog open={mediaPickerOpen} onOpenChange={setMediaPickerOpen}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Select Image</DialogTitle>
+            <DialogDescription>
+              Choose an image from your media library
+            </DialogDescription>
           </DialogHeader>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 p-4 max-h-[400px] overflow-auto">
             {mediaLoading ? (
-              <div className="flex justify-center items-center w-full">
-                Loading...
+              <div className="col-span-full flex justify-center items-center py-8">
+                <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-green-600 border-r-transparent" />
               </div>
             ) : mediaFiles.length === 0 ? (
-              <div className="col-span-full text-center text-gray-400">
+              <div className="col-span-full text-center text-gray-400 py-8">
                 No media files available
               </div>
             ) : (
@@ -564,10 +637,14 @@ export default function CreateDocsPage() {
                 <Button
                   key={file.id}
                   variant="ghost"
-                  className="flex flex-col items-center p-1 border border-gray-200 rounded-md"
+                  className="flex flex-col items-center p-1 border border-gray-200 rounded-md hover:border-green-500 transition-colors"
                   onClick={() => {
                     setFormData((prev) => ({ ...prev, imageUrl: file.url }));
                     setMediaPickerOpen(false);
+                    toast({
+                      title: "Success",
+                      description: "Image selected successfully",
+                    });
                   }}
                 >
                   <img
@@ -575,7 +652,7 @@ export default function CreateDocsPage() {
                     alt={file.alt}
                     className="w-24 h-24 object-cover rounded mb-1"
                   />
-                  <span className="text-xs truncate text-center">
+                  <span className="text-xs truncate text-center w-full">
                     {file.alt}
                   </span>
                 </Button>
