@@ -4,8 +4,18 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Plus, Eye, Pencil, Trash2 } from "lucide-react";
+import { Plus, Eye, Pencil, Trash2, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface Page {
   id: string;
@@ -139,8 +149,12 @@ export default function PagesPage() {
 
       {/* Pages List */}
       {loading ? (
-        <div className="text-center py-12">
-          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-green-600 border-r-transparent" />
+        <div className="flex flex-col items-center justify-center py-20 space-y-4">
+          <Loader2 className="h-12 w-12 animate-spin text-green-600" />
+          <div className="text-center space-y-2">
+            <p className="text-lg font-medium text-gray-900">Loading pages...</p>
+            <p className="text-sm text-gray-500">Please wait while we fetch your pages</p>
+          </div>
         </div>
       ) : pages.length === 0 ? (
         <Card className="bg-white border-gray-200">
@@ -148,6 +162,13 @@ export default function PagesPage() {
             <p className="text-gray-500">
               No pages found. Create your first page to get started!
             </p>
+            <Button
+              onClick={() => router.push("/dashboard/pages/create")}
+              className="mt-4 bg-green-600 hover:bg-green-700"
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Create Your First Page
+            </Button>
           </CardContent>
         </Card>
       ) : (
@@ -236,41 +257,26 @@ export default function PagesPage() {
         </div>
       )}
 
-      {/* Delete Modal */}
-      {deleteModal.open && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
-          onClick={() => setDeleteModal({ open: false, pageId: null })}
-        >
-          <div
-            className="bg-white rounded-lg shadow-xl w-full max-w-md m-4 p-6"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2 className="text-xl font-bold text-gray-900 mb-4">
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteModal.open} onOpenChange={(open) => setDeleteModal({ open, pageId: null })}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Page</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete this page? This action cannot be undone and will permanently remove the page from your website.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDelete}
+              className="bg-red-600 hover:bg-red-700 text-white"
+            >
               Delete Page
-            </h2>
-            <p className="text-gray-600 mb-6">
-              Are you sure you want to delete this page? This action cannot be
-              undone.
-            </p>
-            <div className="flex justify-end gap-3">
-              <Button
-                variant="outline"
-                onClick={() => setDeleteModal({ open: false, pageId: null })}
-                className="border-gray-200"
-              >
-                Cancel
-              </Button>
-              <Button
-                onClick={handleDelete}
-                className="bg-red-600 hover:bg-red-700 text-white"
-              >
-                Delete
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

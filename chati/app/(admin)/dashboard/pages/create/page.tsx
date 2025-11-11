@@ -1,14 +1,14 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useToast } from "@/hooks/use-toast"
-import { ArrowLeft, Save, Eye } from "lucide-react"
+import { ArrowLeft, Save, Eye, Loader2 } from "lucide-react"
 import PageBuilder from "@/components/page-builder"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
@@ -28,6 +28,14 @@ export default function CreatePagePage() {
     tags: [] as string[],
   })
   const [content, setContent] = useState<any[]>([])
+
+  // Auto-generate slug from title
+  useEffect(() => {
+    if (formData.title) {
+      const slug = generateSlug(formData.title)
+      setFormData(prev => ({ ...prev, slug }))
+    }
+  }, [formData.title])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -145,8 +153,17 @@ export default function CreatePagePage() {
             disabled={loading}
             className="bg-green-600 hover:bg-green-700 text-white font-semibold"
           >
-            <Save className="h-4 w-4 mr-2" />
-            {loading ? "Creating..." : "Create Page"}
+            {loading ? (
+              <>
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                Creating...
+              </>
+            ) : (
+              <>
+                <Save className="h-4 w-4 mr-2" />
+                Create Page
+              </>
+            )}
           </Button>
         </div>
       </div>
@@ -243,6 +260,7 @@ export default function CreatePagePage() {
                       <div className="text-center py-12 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg">
                         <h1 className="text-5xl font-bold mb-4">{block.data.title || "Hero Title"}</h1>
                         <p className="text-xl text-gray-600">{block.data.subtitle || "Hero subtitle"}</p>
+                        <Button className="mt-4 bg-green-600 hover:bg-green-700">{block.data.buttonText || "Button"}</Button>
                       </div>
                     )}
                     {block.type === "heading" && (
@@ -272,6 +290,52 @@ export default function CreatePagePage() {
                         alt={block.data.alt || "Image"}
                         className="w-full rounded-lg"
                       />
+                    )}
+                    {block.type === "text-image" && (
+                      <div className={`grid md:grid-cols-2 gap-8 items-center ${
+                        block.data.imagePosition === "left" ? "md:flex-row-reverse" : ""
+                      }`}>
+                        <div className="space-y-4">
+                          <h3 className="text-2xl font-bold">{block.data.title || "Title"}</h3>
+                          <p className="text-gray-700">{block.data.text || "Description text"}</p>
+                        </div>
+                        <div>
+                          <img 
+                            src={block.data.imageSrc || "/placeholder.svg"} 
+                            alt={block.data.title || "Image"} 
+                            className="w-full rounded-lg" 
+                          />
+                        </div>
+                      </div>
+                    )}
+                    {block.type === "feature-cards" && (
+                      <div className="space-y-6">
+                        <h2 className="text-3xl font-bold text-center">{block.data.title || "Features"}</h2>
+                        <div className="grid md:grid-cols-3 gap-6">
+                          {block.data.cards?.map((card: any, idx: number) => (
+                            <div key={idx} className="p-6 border border-gray-200 rounded-lg">
+                              <h3 className="text-xl font-bold mb-2">{card.title}</h3>
+                              <p className="text-gray-600">{card.description}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    {block.type === "faq" && (
+                      <div className="space-y-6">
+                        <h2 className="text-3xl font-bold text-center">{block.data.title || "FAQ"}</h2>
+                        <div className="space-y-4">
+                          {block.data.items?.map((item: any, idx: number) => (
+                            <div key={idx} className="p-6 border border-gray-200 rounded-lg">
+                              <h3 className="text-lg font-bold mb-2">{item.question}</h3>
+                              <p className="text-gray-600">{item.answer}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    {block.type === "divider" && (
+                      <hr className="border-gray-300 my-8" />
                     )}
                   </div>
                 ))}
