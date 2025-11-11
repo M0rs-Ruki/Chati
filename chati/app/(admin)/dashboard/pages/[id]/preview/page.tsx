@@ -20,17 +20,28 @@ export default function PreviewPage() {
 
   const fetchPage = async () => {
     try {
-      const token = localStorage.getItem("token")
-      const response = await fetch(`/api/pages/${params.id}`, {
-        headers: { Authorization: `Bearer ${token}` },
+      const response = await fetch(`/api/page/${params.id}`, {
+        method: 'GET',
+        credentials: 'include', // Include cookies for authentication
       })
 
-      if (!response.ok) throw new Error("Failed to fetch page")
+      if (!response.ok) {
+        if (response.status === 401) {
+          toast({
+            title: "Unauthorized",
+            description: "Please log in to view pages",
+            variant: "destructive",
+          })
+          router.push('/auth/login')
+          return
+        }
+        throw new Error("Failed to fetch page")
+      }
 
       const data = await response.json()
       setPage(data.data)
     } catch (error) {
-      console.error("[v0] Error fetching page:", error)
+      console.error("Error fetching page:", error)
       toast({
         title: "Error",
         description: "Failed to load page preview",

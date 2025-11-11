@@ -35,42 +35,48 @@ export default function EditPagePage() {
 
   const fetchPage = async () => {
     try {
-      // TODO: Replace with actual API call
-      // const response = await fetch(`/api/page/${params.id}`)
-      // const result = await response.json()
+      const response = await fetch(`/api/page/${params.id}`, {
+        method: 'GET',
+        credentials: 'include', // Include cookies for authentication
+      })
 
-      await new Promise((resolve) => setTimeout(resolve, 600))
-
-      const storedPages = localStorage.getItem("demo_pages")
-      let demoPage
-
-      if (storedPages) {
-        const pages = JSON.parse(storedPages)
-        demoPage = pages.find((p: any) => p.id === params.id)
-      }
-
-      // CHANGE: Remove fallback "Sample Page" - if page not found, show error
-      if (!demoPage) {
-        toast({
-          title: "Error",
-          description: "Page not found. Redirecting to pages list...",
-          variant: "destructive",
-        })
+      if (!response.ok) {
+        if (response.status === 404) {
+          toast({
+            title: "Error",
+            description: "Page not found. Redirecting to pages list...",
+            variant: "destructive",
+          })
+        } else if (response.status === 401) {
+          toast({
+            title: "Unauthorized",
+            description: "Please log in to view pages",
+            variant: "destructive",
+          })
+          router.push('/auth/login')
+          return
+        } else {
+          throw new Error("Failed to fetch page")
+        }
         router.push("/dashboard/pages")
         return
       }
 
+      const result = await response.json()
+      const page = result.data
+
       setFormData({
-        title: demoPage.title || "",
-        slug: demoPage.slug || "",
-        status: demoPage.status || "DRAFT",
+        title: page.title || "",
+        slug: page.slug || "",
+        status: page.status || "DRAFT",
       })
       setMetadata({
-        description: demoPage.metadata?.description || "",
-        tags: demoPage.metadata?.tags || [],
+        description: page.metadata?.description || "",
+        tags: page.metadata?.tags || [],
       })
-      setContent(demoPage.content?.blocks || [])
+      setContent(page.content?.blocks || [])
     } catch (error) {
+      console.error("Error fetching page:", error)
       toast({ title: "Error", description: "Failed to load page", variant: "destructive" })
       router.push("/dashboard/pages")
     } finally {
@@ -83,43 +89,73 @@ export default function EditPagePage() {
     setSaving(true)
 
     try {
-      // TODO: Replace with actual API call
-      // await fetch(`/api/page/${params.id}`, {
-      //   method: 'PUT',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({
-      //     title: formData.title,
-      //     slug: formData.slug,
-      //     content: { blocks: content },
-      //     metadata,
-      //     status: formData.status
-      //   })
-      // })
+      const response = await fetch(`/api/page/${params.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include', // Include cookies for authentication
+        body: JSON.stringify({
+          title: formData.title,
+          slug: formData.slug,
+          content: { blocks: content },
+          metadata: {
+            description: metadata.description || "",
+            keywords: [],
+            tags: metadata.tags || [],
+          },
+          status: formData.status
+        })
+      })
 
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      const result = await response.json()
 
-      const storedPages = localStorage.getItem("demo_pages")
-      if (storedPages) {
-        const pages = JSON.parse(storedPages)
-        const updatedPages = pages.map((p: any) =>
-          p.id === params.id
-            ? {
-                ...p,
-                title: formData.title,
-                slug: formData.slug,
-                content: { blocks: content },
-                metadata,
-                status: formData.status,
-                updatedAt: new Date().toISOString(),
-              }
-            : p,
-        )
-        localStorage.setItem("demo_pages", JSON.stringify(updatedPages))
+      if (!response.ok) {
+        // Handle specific error cases
+        if (response.status === 409) {
+          toast({
+            title: "Duplicate Slug",
+            description: result.message || "A page with this slug already exists. Please use a different slug.",
+            variant: "destructive",
+          })
+        } else if (response.status === 401) {
+          toast({
+            title: "Unauthorized",
+            description: "Please log in to update pages",
+            variant: "destructive",
+          })
+          router.push('/auth/login')
+        } else if (response.status === 403) {
+          toast({
+            title: "Forbidden",
+            description: result.message || "You don't have permission to update this page",
+            variant: "destructive",
+          })
+        } else if (response.status === 404) {
+          toast({
+            title: "Not Found",
+            description: "Page not found",
+            variant: "destructive",
+          })
+          router.push("/dashboard/pages")
+        } else if (response.status === 429) {
+          toast({
+            title: "Rate Limit Exceeded",
+            description: "Too many requests. Please try again later.",
+            variant: "destructive",
+          })
+        } else {
+          toast({
+            title: "Error",
+            description: result.message || "Failed to update page",
+            variant: "destructive",
+          })
+        }
+        return
       }
 
       toast({ title: "Success", description: "Page updated successfully" })
     } catch (error) {
-      toast({ title: "Error", description: "Failed to update page", variant: "destructive" })
+      console.error("Error updating page:", error)
+      toast({ title: "Error", description: "Failed to update page. Please check your connection and try again.", variant: "destructive" })
     } finally {
       setSaving(false)
     }

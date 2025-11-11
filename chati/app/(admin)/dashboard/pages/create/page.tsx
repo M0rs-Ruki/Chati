@@ -40,49 +40,75 @@ export default function CreatePagePage() {
     setLoading(true)
 
     try {
-      // TODO: Replace with actual API call
-      // const response = await fetch('/api/page/create', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({
-      //     title: formData.title,
-      //     content: { blocks: content },
-      //     metadata,
-      //     status: formData.status
-      //   })
-      // })
-      // const result = await response.json()
+      const response = await fetch('/api/page/create', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include', // Include cookies for authentication
+        body: JSON.stringify({
+          title: formData.title,
+          content: { blocks: content },
+          metadata: {
+            description: metadata.description || "",
+            keywords: [],
+            tags: metadata.tags || [],
+          },
+          status: formData.status
+        })
+      })
 
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      const result = await response.json()
 
-      const newPage = {
-        id: Date.now().toString(),
-        title: formData.title,
-        slug: formData.slug || generateSlug(formData.title),
-        content: { blocks: content },
-        metadata,
-        status: formData.status,
-        publishedAt: formData.status === "PUBLISHED" ? new Date().toISOString() : null,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        author: { id: "1", name: "Admin", email: "admin@example.com" },
+      if (!response.ok) {
+        // Handle specific error cases
+        if (response.status === 409) {
+          toast({
+            title: "Duplicate Slug",
+            description: result.message || "A page with a similar title already exists. Please use a different title.",
+            variant: "destructive",
+          })
+        } else if (response.status === 401) {
+          toast({
+            title: "Unauthorized",
+            description: "Please log in to create pages",
+            variant: "destructive",
+          })
+          router.push('/auth/login')
+        } else if (response.status === 403) {
+          toast({
+            title: "Forbidden",
+            description: result.message || "You don't have permission to create pages",
+            variant: "destructive",
+          })
+        } else if (response.status === 429) {
+          toast({
+            title: "Rate Limit Exceeded",
+            description: "Too many requests. Please try again later.",
+            variant: "destructive",
+          })
+        } else {
+          toast({
+            title: "Error",
+            description: result.message || "Failed to create page",
+            variant: "destructive",
+          })
+        }
+        return
       }
-
-      const storedPages = localStorage.getItem("demo_pages")
-      const pages = storedPages ? JSON.parse(storedPages) : []
-      pages.push(newPage)
-      localStorage.setItem("demo_pages", JSON.stringify(pages))
 
       toast({
         title: "Success",
         description: "Page created successfully",
       })
-      router.push(`/dashboard/pages/${newPage.id}/edit`)
+      
+      // Redirect to edit page with the new page ID
+      router.push(`/dashboard/pages/${result.data.id}/edit`)
     } catch (error) {
       console.error("Error creating page:", error)
       toast({
         title: "Error",
-        description: "Failed to create page",
+        description: "Failed to create page. Please check your connection and try again.",
         variant: "destructive",
       })
     } finally {
