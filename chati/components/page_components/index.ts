@@ -1,0 +1,7 @@
+export * from "./text-image-component";
+export * from "./feature-block-component";
+export * from "./faq-component";
+export * from "./cta-component";
+export * from "./features-grid-component";
+export * from "./brand-slider-component";
+export * from "./use-cases-component";
