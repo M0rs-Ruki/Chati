@@ -1,19 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { useToast } from "@/hooks/use-toast";
 import {
   Plus,
   GripVertical,
   Trash2,
-  Type,
-  ImageIcon,
-  Square,
   LayoutGrid,
   HelpCircle,
-  Minus,
   ChevronDown,
   ChevronUp,
   Blocks,
@@ -27,16 +22,16 @@ import {
   textImageDefaults,
   FeatureBlockComponent,
   featureBlockDefaults,
+  FeaturesGridComponent,
+  featuresGridDefaults,
+  UseCasesComponent,
+  useCasesDefaults,
+  BrandSliderComponent,
+  brandSliderDefaults,
   FAQComponent,
   faqDefaults,
   CTAComponent,
   ctaDefaults,
-  FeaturesGridComponent,
-  featuresGridDefaults,
-  BrandSliderComponent,
-  brandSliderDefaults,
-  UseCasesComponent,
-  useCasesDefaults,
 } from "./page_components";
 
 interface Component {
@@ -56,11 +51,6 @@ export default function PageBuilder({ content, onChange }: PageBuilderProps) {
   );
 
   const componentTypes = [
-    { type: "hero", label: "Hero Section", icon: Square },
-    { type: "heading", label: "Heading", icon: Type },
-    { type: "paragraph", label: "Paragraph", icon: Type },
-    { type: "button", label: "Button", icon: Square },
-    { type: "image", label: "Image", icon: ImageIcon },
     { type: "text-image", label: "Text + Image Hero", icon: LayoutGrid },
     { type: "feature-block", label: "Feature Block", icon: Blocks },
     { type: "features-grid", label: "Features Grid", icon: Grid3x3 },
@@ -68,7 +58,6 @@ export default function PageBuilder({ content, onChange }: PageBuilderProps) {
     { type: "brand-slider", label: "Brand Slider", icon: Images },
     { type: "faq", label: "FAQ Section", icon: HelpCircle },
     { type: "cta", label: "CTA Section", icon: Megaphone },
-    { type: "divider", label: "Divider", icon: Minus },
   ];
 
   const addComponent = (type: string) => {
@@ -97,8 +86,6 @@ export default function PageBuilder({ content, onChange }: PageBuilderProps) {
         return faqDefaults;
       case "cta":
         return ctaDefaults;
-      case "divider":
-        return { style: "solid" };
       default:
         return {};
     }
@@ -162,10 +149,6 @@ export default function PageBuilder({ content, onChange }: PageBuilderProps) {
         return <FAQComponent data={component.data} onChange={handleChange} />;
       case "cta":
         return <CTAComponent data={component.data} onChange={handleChange} />;
-      case "divider":
-        return (
-          <div className="text-sm text-gray-500">Horizontal divider line</div>
-        );
       default:
         return <div className="text-muted-foreground">No editor available</div>;
     }
@@ -178,14 +161,14 @@ export default function PageBuilder({ content, onChange }: PageBuilderProps) {
         <Card className="bg-secondary border-border sticky top-4">
           <CardContent className="p-4">
             <h3 className="font-semibold mb-4 text-foreground">Components</h3>
-            <div className="space-y-2 max-h-[calc(100vh-200px)] overflow-y-auto">
+            <div className="space-y-2">
               {componentTypes.map((comp) => {
                 const Icon = comp.icon;
                 return (
                   <Button
                     key={comp.type}
                     variant="outline"
-                    className="w-full justify-start bg-transparent"
+                    className="w-full justify-start bg-transparent hover:bg-gray-100"
                     onClick={() => addComponent(comp.type)}
                   >
                     <Icon className="h-4 w-4 mr-2" />
@@ -220,7 +203,7 @@ export default function PageBuilder({ content, onChange }: PageBuilderProps) {
             >
               <CardContent className="p-4">
                 <div className="flex items-start gap-3">
-                  <GripVertical className="h-5 w-5 text-muted-foreground mt-1" />
+                  <GripVertical className="h-5 w-5 text-muted-foreground mt-1 cursor-grab" />
                   <div className="flex-1">
                     <div className="flex items-center justify-between mb-3">
                       <span className="font-medium text-sm text-foreground capitalize">
