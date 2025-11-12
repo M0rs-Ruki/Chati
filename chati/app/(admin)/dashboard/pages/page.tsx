@@ -38,6 +38,7 @@ export default function PagesPage() {
   const { toast } = useToast();
   const [pages, setPages] = useState<Page[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleting, setDeleting] = useState(false);
   const [deleteModal, setDeleteModal] = useState<{
     open: boolean;
     pageId: string | null;
@@ -89,6 +90,8 @@ export default function PagesPage() {
   const handleDelete = async () => {
     if (!deleteModal.pageId) return;
 
+    setDeleting(true);
+
     try {
       const token = localStorage.getItem("token");
 
@@ -106,7 +109,8 @@ export default function PagesPage() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to delete page");
+        const result = await response.json();
+        throw new Error(result.message || "Failed to delete page");
       }
 
       // Remove page from local state
@@ -121,9 +125,11 @@ export default function PagesPage() {
       console.error("Error deleting page:", error);
       toast({
         title: "Error",
-        description: "Failed to delete page",
+        description: error instanceof Error ? error.message : "Failed to delete page",
         variant: "destructive",
       });
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -258,7 +264,7 @@ export default function PagesPage() {
       )}
 
       {/* Delete Confirmation Dialog */}
-      <AlertDialog open={deleteModal.open} onOpenChange={(open) => setDeleteModal({ open, pageId: null })}>
+      <AlertDialog open={deleteModal.open} onOpenChange={(open) => !deleting && setDeleteModal({ open, pageId: null })}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Delete Page</AlertDialogTitle>
@@ -267,12 +273,20 @@ export default function PagesPage() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel disabled={deleting}>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
-              className="bg-red-600 hover:bg-red-700 text-white"
+              disabled={deleting}
+              className="bg-red-600 hover:bg-red-700 text-white disabled:opacity-50"
             >
-              Delete Page
+              {deleting ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Deleting...
+                </>
+              ) : (
+                "Delete Page"
+              )}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
