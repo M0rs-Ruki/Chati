@@ -61,24 +61,66 @@ export default function BlogPostPage({ post: rawPost }: BlogPostPageProps) {
       return (
         <div
           dangerouslySetInnerHTML={{ __html: post.content }}
+          className="text-gray-700"
         />
       )
     }
 
-    // If content is JSON (from API), render it as structured data
+    // If content is JSON object (from API database)
     if (typeof post.content === 'object') {
-      // Handle different content formats here
-      // For now, just stringify it or handle specific formats
+      // Check for HTML content in the object
+      if (post.content.html) {
+        return (
+          <div 
+            dangerouslySetInnerHTML={{ __html: post.content.html }} 
+            className="text-gray-700"
+          />
+        )
+      }
+      
+      // Check for markdown content
+      if (post.content.markdown) {
+        return (
+          <pre className="whitespace-pre-wrap bg-gray-50 p-6 rounded-lg text-sm leading-relaxed text-gray-700">
+            {post.content.markdown}
+          </pre>
+        )
+      }
+
+      // Check for blocks (page builder format)
+      if (post.content.blocks && Array.isArray(post.content.blocks)) {
+        return (
+          <div className="space-y-6">
+            {post.content.blocks.map((block: any, index: number) => (
+              <div key={index}>
+                {block.type === 'paragraph' && (
+                  <p className="text-gray-700 leading-relaxed">{block.data?.text || ''}</p>
+                )}
+                {block.type === 'heading' && (
+                  <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">{block.data?.text || ''}</h2>
+                )}
+                {block.type === 'list' && (
+                  <ul className="list-disc pl-6 space-y-2">
+                    {block.data?.items?.map((item: string, i: number) => (
+                      <li key={i} className="text-gray-700">{item}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ))}
+          </div>
+        )
+      }
+
+      // Fallback: show excerpt if available
       return (
-        <div>
-          <p className="text-gray-700">
-            {post.excerpt || 'Content will be displayed here...'}
-          </p>
+        <div className="text-gray-700">
+          <p>{post.excerpt || 'Content will be displayed here...'}</p>
         </div>
       )
     }
 
-    return null
+    return <p className="text-gray-600">Unable to display content.</p>
   }
 
   return (
