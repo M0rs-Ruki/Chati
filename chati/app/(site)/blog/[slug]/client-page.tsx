@@ -171,15 +171,19 @@ export default function BlogPostPage({ post: rawPost }: BlogPostPageProps) {
             {/* Tags */}
             <div className="mt-10 pt-8 border-t border-gray-200">
               <div className="flex flex-wrap gap-2">
-                {post.tags.map((tag) => (
-                  <Badge
-                    key={tag}
-                    variant="secondary"
-                    className="bg-gray-100 text-gray-700 hover:bg-gray-200 px-3 py-1"
-                  >
-                    #{tag}
-                  </Badge>
-                ))}
+                {post.tags && post.tags.length > 0 ? (
+                  post.tags.map((tag) => (
+                    <Badge
+                      key={tag}
+                      variant="secondary"
+                      className="bg-gray-100 text-gray-700 hover:bg-gray-200 px-3 py-1"
+                    >
+                      #{tag}
+                    </Badge>
+                  ))
+                ) : (
+                  <p className="text-sm text-gray-500">No tags available</p>
+                )}
               </div>
             </div>
           </div>

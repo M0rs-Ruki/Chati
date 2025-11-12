@@ -46,7 +46,8 @@ export default function BlogListingPage() {
     const fetchBlogs = async () => {
       try {
         setLoading(true)
-        const response = await fetch('/api/blog?status=PUBLISHED&limit=100')
+        // Fetch ALL blog posts (no status filter) with high limit
+        const response = await fetch('/api/blog?limit=100')
         
         if (!response.ok) {
           throw new Error('Failed to fetch blogs')
@@ -65,7 +66,7 @@ export default function BlogListingPage() {
           date: post.publishedAt || post.createdAt,
           publishedAt: post.publishedAt,
           createdAt: post.createdAt,
-          category: post.metadata?.category || 'General',
+          category: post.metadata?.category || 'Uncategorized',
           thumbnail: post.imageUrl,
           imageUrl: post.imageUrl,
           readTime: post.metadata?.readTime || '5 min read',

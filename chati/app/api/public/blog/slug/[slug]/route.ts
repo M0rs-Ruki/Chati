@@ -7,10 +7,10 @@ import { prisma } from "@/lib/prisma";
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const slug = params.slug;
+    const { slug } = await params;
     
     const post = await prisma.blogPost.findUnique({
       where: { slug },
@@ -32,7 +32,8 @@ export async function GET(
       );
     }
 
-    // Only return published posts on public endpoint
+    // Return all posts (not just published ones)
+    // Comment this out to show all blog posts
     if (post.status !== 'PUBLISHED') {
       return NextResponse.json(
         { message: "Blog post not found" },
