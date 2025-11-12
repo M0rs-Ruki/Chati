@@ -10,8 +10,31 @@ export async function generateStaticParams() {
   }))
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const article = getArticleBySlug(params.slug)
+export async function generateMetadata({ 
+  params 
+}: { 
+  params: Promise<{ slug: string }> 
+}): Promise<Metadata> {
+  const { slug } = await params
+  
+  // Try to fetch from database first
+  let article = null
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/public/doc/slug/${slug}`, {
+      next: { revalidate: 60 }
+    })
+    if (response.ok) {
+      const result = await response.json()
+      article = result.data
+    }
+  } catch (error) {
+    console.error('Error fetching doc from API:', error)
+  }
+  
+  // Fallback to static data
+  if (!article) {
+    article = getArticleBySlug(slug)
+  }
 
   if (!article) {
     return {
@@ -21,18 +44,41 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
   return {
     title: `${article.title} | WhatsApp Business API Documentation`,
-    description: article.description,
-    keywords: article.tags.join(", "),
+    description: article.metadata?.description || article.description,
+    keywords: article.metadata?.tags?.join(", ") || article.tags?.join(", "),
     openGraph: {
       title: article.title,
-      description: article.description,
+      description: article.metadata?.description || article.description,
       type: "article",
     },
   }
 }
 
-export default function DocArticlePage({ params }: { params: { slug: string } }) {
-  const article = getArticleBySlug(params.slug)
+export default async function DocArticlePage({ 
+  params 
+}: { 
+  params: Promise<{ slug: string }> 
+}) {
+  const { slug } = await params
+  
+  // Try to fetch from database first
+  let article = null
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/public/doc/slug/${slug}`, {
+      next: { revalidate: 60 }
+    })
+    if (response.ok) {
+      const result = await response.json()
+      article = result.data
+    }
+  } catch (error) {
+    console.error('Error fetching doc from API:', error)
+  }
+  
+  // Fallback to static data
+  if (!article) {
+    article = getArticleBySlug(slug)
+  }
 
   if (!article) {
     notFound()

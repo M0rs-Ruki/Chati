@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -19,6 +19,7 @@ import {
   FileText,
   Menu,
   X,
+  Loader2,
 } from "lucide-react"
 import Link from "next/link"
 import { docCategories, searchArticles } from "@/lib/docs-data"
@@ -32,21 +33,91 @@ const iconMap: Record<string, any> = {
   AlertCircle,
 }
 
+// Database doc type
+interface DbDoc {
+  id: string
+  slug: string
+  title: string
+  status: string
+  metadata: any
+  imageUrl: string | null
+  author: {
+    id: string
+    name: string | null
+    email: string
+  } | null
+  createdAt: string
+  updatedAt: string
+}
+
 export default function DocsPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [dbDocs, setDbDocs] = useState<DbDoc[]>([])
+  const [loading, setLoading] = useState(true)
+
+  // Fetch docs from database
+  useEffect(() => {
+    async function fetchDocs() {
+      try {
+        const response = await fetch('/api/public/doc?limit=100')
+        if (response.ok) {
+          const result = await response.json()
+          setDbDocs(result.data || [])
+        }
+      } catch (error) {
+        console.error('Error fetching docs:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchDocs()
+  }, [])
+
+  // Merge static docs with database docs
+  const allDocs = useMemo(() => {
+    const staticArticles = docCategories.flatMap((cat) => cat.articles)
+    
+    // Convert DB docs to article format
+    const dbArticles = dbDocs.map((doc) => ({
+      id: doc.id,
+      slug: doc.slug,
+      title: doc.title,
+      description: doc.metadata?.description || doc.metadata?.excerpt || 'No description available',
+      category: doc.metadata?.category || 'Uncategorized',
+      tags: doc.metadata?.tags || [],
+      readTime: doc.metadata?.readTime || '5 min read',
+      lastUpdated: new Date(doc.updatedAt).toLocaleDateString(),
+      content: '', // Not needed for listing
+    }))
+
+    // Merge arrays, prioritizing database docs over static ones
+    const merged = [...dbArticles]
+    staticArticles.forEach((staticDoc) => {
+      if (!merged.find((doc) => doc.slug === staticDoc.slug)) {
+        merged.push({
+          ...staticDoc,
+        })
+      }
+    })
+
+    return merged
+  }, [dbDocs])
 
   const filteredArticles = useMemo(() => {
     if (searchQuery) {
-      return searchArticles(searchQuery)
+      return allDocs.filter((doc) =>
+        doc.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        doc.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        doc.tags.some((tag: string) => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+      )
     }
     if (selectedCategory) {
-      const category = docCategories.find((cat) => cat.id === selectedCategory)
-      return category?.articles || []
+      return allDocs.filter((doc) => doc.category === selectedCategory)
     }
-    return docCategories.flatMap((cat) => cat.articles)
-  }, [searchQuery, selectedCategory])
+    return allDocs
+  }, [searchQuery, selectedCategory, allDocs])
 
   const displayedCategories = selectedCategory
     ? docCategories.filter((cat) => cat.id === selectedCategory)
@@ -174,7 +245,12 @@ export default function DocsPage() {
 
             {/* Main Content Area */}
             <main className="flex-1 max-w-5xl">
-              {!searchQuery && !selectedCategory && (
+              {loading ? (
+                <div className="flex items-center justify-center py-20">
+                  <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+                  <span className="ml-3 text-gray-600">Loading documentation...</span>
+                </div>
+              ) : !searchQuery && !selectedCategory && (
                 <>
                   {/* Category Overview */}
                   <div className="mb-12">
@@ -205,36 +281,34 @@ export default function DocsPage() {
                     </div>
                   </div>
 
-                  {/* Popular Articles */}
+                  {/* Popular Articles - Shows ALL database docs */}
                   <div>
-                    <h2 className="text-3xl font-bold mb-6">Popular Articles</h2>
+                    <h2 className="text-3xl font-bold mb-6">All Articles</h2>
                     <div className="space-y-4">
-                      {docCategories
-                        .flatMap((cat) => cat.articles)
-                        .slice(0, 6)
-                        .map((article) => (
-                          <Card
-                            key={article.id}
-                            className="p-6 hover:shadow-lg transition-all cursor-pointer group"
-                            onClick={() => (window.location.href = `/docs/${article.slug}`)}
-                          >
-                            <div className="flex items-start justify-between gap-4">
-                              <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-2">
-                                  <Badge variant="secondary" className="text-xs">
-                                    {article.category}
-                                  </Badge>
-                                  <span className="text-xs text-gray-500 flex items-center gap-1">
-                                    <Clock className="w-3 h-3" />
-                                    {article.readTime}
-                                  </span>
-                                </div>
-                                <h3 className="text-lg font-semibold mb-2 group-hover:text-blue-600 transition-colors">
-                                  {article.title}
-                                </h3>
-                                <p className="text-sm text-gray-600 mb-3">{article.description}</p>
-                                <div className="flex flex-wrap gap-2">
-                                  {article.tags.slice(0, 3).map((tag) => (
+                      {allDocs.map((article) => (
+                        <Card
+                          key={article.id}
+                          className="p-6 hover:shadow-lg transition-all cursor-pointer group"
+                          onClick={() => (window.location.href = `/docs/${article.slug}`)}
+                        >
+                          <div className="flex items-start justify-between gap-4">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-2">
+                                <Badge variant="secondary" className="text-xs">
+                                  {article.category}
+                                </Badge>
+                                <span className="text-xs text-gray-500 flex items-center gap-1">
+                                  <Clock className="w-3 h-3" />
+                                  {article.readTime}
+                                </span>
+                              </div>
+                              <h3 className="text-lg font-semibold mb-2 group-hover:text-blue-600 transition-colors">
+                                {article.title}
+                              </h3>
+                              <p className="text-sm text-gray-600 mb-3">{article.description}</p>
+                              <div className="flex flex-wrap gap-2">
+                                {article.tags && article.tags.length > 0 ? (
+                                  article.tags.slice(0, 3).map((tag: string) => (
                                     <span
                                       key={tag}
                                       className="inline-flex items-center gap-1 text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded"
@@ -242,13 +316,16 @@ export default function DocsPage() {
                                       <Tag className="w-3 h-3" />
                                       {tag}
                                     </span>
-                                  ))}
-                                </div>
+                                  ))
+                                ) : (
+                                  <span className="text-xs text-gray-400">No tags</span>
+                                )}
                               </div>
-                              <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all flex-shrink-0" />
                             </div>
-                          </Card>
-                        ))}
+                            <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all flex-shrink-0" />
+                          </div>
+                        </Card>
+                      ))}
                     </div>
                   </div>
                 </>
@@ -320,7 +397,7 @@ export default function DocsPage() {
                               </h3>
                               <p className="text-sm text-gray-600 mb-3">{article.description}</p>
                               <div className="flex flex-wrap gap-2">
-                                {article.tags.slice(0, 3).map((tag) => (
+                                {article.tags.slice(0, 3).map((tag: string) => (
                                   <span
                                     key={tag}
                                     className="inline-flex items-center gap-1 text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded"

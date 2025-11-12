@@ -2,18 +2,18 @@ import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 /**
- * GET /api/public/doc/[id]
- * PUBLIC ENDPOINT - Get documentation by ID
+ * GET /api/public/doc/slug/[slug]
+ * PUBLIC ENDPOINT - Get documentation by slug
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const { id: docId } = await params;
+    const { slug } = await params;
     
     const doc = await prisma.documentation.findUnique({
-      where: { id: docId },
+      where: { slug },
       include: {
         author: {
           select: {
@@ -27,19 +27,20 @@ export async function GET(
 
     if (!doc) {
       return NextResponse.json(
-        { message: "Document not found" },
+        { message: "Documentation not found" },
         { status: 404 }
       );
     }
 
+    // Return all docs regardless of status (show everything)
     return NextResponse.json({
       message: "Documentation fetched successfully",
       data: doc
     });
   } catch (error) {
-    console.error("Error fetching document:", error);
+    console.error("Error fetching documentation:", error);
     return NextResponse.json(
-      { message: "An error occurred while fetching the document" },
+      { message: "An error occurred while fetching the documentation" },
       { status: 500 }
     );
   }

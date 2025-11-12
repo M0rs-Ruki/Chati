@@ -9,15 +9,28 @@ import Link from "next/link"
 import { type DocArticle, getAllArticles } from "@/lib/docs-data"
 
 interface DocArticleClientProps {
-  article: DocArticle
+  article: any // Can be DocArticle or database doc
 }
 
 export default function DocArticleClient({ article }: DocArticleClientProps) {
   const [copiedCode, setCopiedCode] = useState<string | null>(null)
   const [activeSection, setActiveSection] = useState<string>("")
 
+  // Normalize article data (database or static)
+  const normalizedArticle = {
+    id: article.id,
+    slug: article.slug,
+    title: article.title,
+    description: article.metadata?.description || article.description || 'No description available',
+    category: article.metadata?.category || article.category || 'Uncategorized',
+    tags: Array.isArray(article.metadata?.tags) ? article.metadata.tags : (Array.isArray(article.tags) ? article.tags : []),
+    readTime: article.metadata?.readTime || article.readTime || '5 min read',
+    lastUpdated: article.updatedAt || article.lastUpdated,
+    content: article.content || {},
+  }
+
   const relatedArticles = getAllArticles()
-    .filter((a) => a.id !== article.id && a.category === article.category)
+    .filter((a) => a.id !== normalizedArticle.id && a.category === normalizedArticle.category)
     .slice(0, 3)
 
   const copyToClipboard = (code: string, id: string) => {
@@ -26,9 +39,84 @@ export default function DocArticleClient({ article }: DocArticleClientProps) {
     setTimeout(() => setCopiedCode(null), 2000)
   }
 
-  // Get detailed content based on article slug
+  // Render content from database
+  const renderContent = () => {
+    const content = normalizedArticle.content
+
+    // If content is from database with html/markdown/blocks format
+    if (content && typeof content === 'object') {
+      if (content.html) {
+        return (
+          <div 
+            className="prose prose-lg max-w-none" 
+            dangerouslySetInnerHTML={{ __html: content.html }} 
+          />
+        )
+      }
+      
+      if (content.markdown) {
+        return (
+          <div className="prose prose-lg max-w-none">
+            <pre className="whitespace-pre-wrap bg-gray-50 p-6 rounded-lg">{content.markdown}</pre>
+          </div>
+        )
+      }
+      
+      if (content.blocks && Array.isArray(content.blocks)) {
+        return (
+          <div className="prose prose-lg max-w-none space-y-4">
+            {content.blocks.map((block: any, index: number) => {
+              switch (block.type) {
+                case 'paragraph':
+                  return <p key={index}>{block.data.text}</p>
+                case 'heading':
+                  const level = block.data.level || 2
+                  if (level === 1) return <h1 key={index}>{block.data.text}</h1>
+                  if (level === 2) return <h2 key={index}>{block.data.text}</h2>
+                  if (level === 3) return <h3 key={index}>{block.data.text}</h3>
+                  if (level === 4) return <h4 key={index}>{block.data.text}</h4>
+                  if (level === 5) return <h5 key={index}>{block.data.text}</h5>
+                  return <h6 key={index}>{block.data.text}</h6>
+                case 'list':
+                  return block.data.style === 'ordered' ? (
+                    <ol key={index}>
+                      {block.data.items.map((item: string, i: number) => (
+                        <li key={i}>{item}</li>
+                      ))}
+                    </ol>
+                  ) : (
+                    <ul key={index}>
+                      {block.data.items.map((item: string, i: number) => (
+                        <li key={i}>{item}</li>
+                      ))}
+                    </ul>
+                  )
+                default:
+                  return null
+              }
+            })}
+          </div>
+        )
+      }
+    }
+
+    // If content is a string (HTML)
+    if (typeof content === 'string') {
+      return (
+        <div 
+          className="prose prose-lg max-w-none" 
+          dangerouslySetInnerHTML={{ __html: content }} 
+        />
+      )
+    }
+
+    // Fallback to static detailed content
+    return getDetailedContent()
+  }
+
+  // Get detailed content based on article slug (for static articles)
   const getDetailedContent = () => {
-    switch (article.slug) {
+    switch (normalizedArticle.slug) {
       case "introduction":
         return (
           <div className="prose prose-lg max-w-none">
@@ -749,11 +837,11 @@ app.post('/webhook', (req, res) => {
               Documentation
             </Link>
             <ChevronRight className="w-4 h-4" />
-            <Link href={`/docs?category=${article.category}`} className="hover:text-blue-600 transition-colors">
-              {article.category}
+            <Link href={`/docs?category=${normalizedArticle.category}`} className="hover:text-blue-600 transition-colors">
+              {normalizedArticle.category}
             </Link>
             <ChevronRight className="w-4 h-4" />
-            <span className="text-gray-900 font-medium">{article.title}</span>
+            <span className="text-gray-900 font-medium">{normalizedArticle.title}</span>
           </div>
         </div>
       </div>
@@ -772,35 +860,39 @@ app.post('/webhook', (req, res) => {
 
             {/* Article Header */}
             <div className="mb-8">
-              <Badge className="mb-4">{article.category}</Badge>
-              <h1 className="text-4xl md:text-5xl font-bold mb-4 text-balance">{article.title}</h1>
-              <p className="text-xl text-gray-600 mb-6">{article.description}</p>
+              <Badge className="mb-4">{normalizedArticle.category}</Badge>
+              <h1 className="text-4xl md:text-5xl font-bold mb-4 text-balance">{normalizedArticle.title}</h1>
+              <p className="text-xl text-gray-600 mb-6">{normalizedArticle.description}</p>
 
               {/* Meta Information */}
               <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
                 <div className="flex items-center gap-2">
                   <Calendar className="w-4 h-4" />
-                  <span>Updated {new Date(article.lastUpdated).toLocaleDateString()}</span>
+                  <span>Updated {new Date(normalizedArticle.lastUpdated).toLocaleDateString()}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4" />
-                  <span>{article.readTime} read</span>
+                  <span>{normalizedArticle.readTime} read</span>
                 </div>
               </div>
 
               {/* Tags */}
               <div className="flex flex-wrap gap-2 mt-4">
-                {article.tags.map((tag) => (
-                  <span key={tag} className="inline-flex items-center gap-1 text-xs bg-gray-100 px-3 py-1 rounded-full">
-                    <Tag className="w-3 h-3" />
-                    {tag}
-                  </span>
-                ))}
+                {normalizedArticle.tags && normalizedArticle.tags.length > 0 ? (
+                  normalizedArticle.tags.map((tag: string) => (
+                    <span key={tag} className="inline-flex items-center gap-1 text-xs bg-gray-100 px-3 py-1 rounded-full">
+                      <Tag className="w-3 h-3" />
+                      {tag}
+                    </span>
+                  ))
+                ) : (
+                  <span className="text-xs text-gray-400">No tags</span>
+                )}
               </div>
             </div>
 
             {/* Article Content */}
-            <div className="article-content">{getDetailedContent()}</div>
+            <div className="article-content">{renderContent()}</div>
 
             {/* Related Articles */}
             {relatedArticles.length > 0 && (
