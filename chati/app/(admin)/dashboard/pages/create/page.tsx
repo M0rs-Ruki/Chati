@@ -281,7 +281,7 @@ export default function CreatePagePage() {
   };
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="pt-8 px-6 space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Button
@@ -301,32 +301,6 @@ export default function CreatePagePage() {
           </div>
         </div>
         <div className="flex items-center gap-3">
-          {/* Toggle Button */}
-          <Button
-            type="button"
-            variant={viewMode === "preview" ? "default" : "outline"}
-            onClick={() =>
-              setViewMode(viewMode === "edit" ? "preview" : "edit")
-            }
-            className={
-              viewMode === "preview"
-                ? "bg-blue-600 hover:bg-blue-700"
-                : "border-gray-200"
-            }
-          >
-            {viewMode === "edit" ? (
-              <>
-                <Eye className="h-4 w-4 mr-2" />
-                Preview
-              </>
-            ) : (
-              <>
-                <Edit2 className="h-4 w-4 mr-2" />
-                Edit
-              </>
-            )}
-          </Button>
-
           <Button
             onClick={handleSubmit}
             disabled={loading}
@@ -347,7 +321,7 @@ export default function CreatePagePage() {
         </div>
       </div>
 
-      {/* Page Settings (Always Visible) */}
+      {/* Page Settings */}
       <Card className="bg-white border-gray-200">
         <CardHeader>
           <CardTitle className="text-lg">Page Settings</CardTitle>
@@ -421,12 +395,38 @@ export default function CreatePagePage() {
         </CardContent>
       </Card>
 
-      {/* Toggle between Edit and Preview */}
+      {/* Page Content with Toggle Button Inside Header */}
       <Card className="bg-white border-gray-200">
-        <CardHeader>
+        <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle className="text-lg">
             {viewMode === "edit" ? "Page Content - Edit Mode" : "Page Preview"}
           </CardTitle>
+          {/* Toggle Button Inside Card Header */}
+          <Button
+            type="button"
+            variant={viewMode === "preview" ? "default" : "outline"}
+            size="sm"
+            onClick={() =>
+              setViewMode(viewMode === "edit" ? "preview" : "edit")
+            }
+            className={
+              viewMode === "preview"
+                ? "bg-blue-600 hover:bg-blue-700"
+                : "border-gray-200"
+            }
+          >
+            {viewMode === "edit" ? (
+              <>
+                <Eye className="h-4 w-4 mr-2" />
+                Preview
+              </>
+            ) : (
+              <>
+                <Edit2 className="h-4 w-4 mr-2" />
+                Edit
+              </>
+            )}
+          </Button>
         </CardHeader>
         <CardContent>
           {viewMode === "edit" ? (
