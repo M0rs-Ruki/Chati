@@ -141,136 +141,324 @@ export default function CreatePagePage() {
 
   const renderPreview = () => {
     return (
-      <div className="bg-white border border-gray-200 rounded-lg p-8 min-h-[600px]">
-        <h1 className="text-4xl font-bold mb-6 text-gray-900">
-          {formData.title || "Untitled Page"}
-        </h1>
+      <div className="bg-white min-h-[600px]">
         {debouncedContent.length === 0 ? (
-          <div className="text-center py-12">
+          <div className="text-center py-12 border border-dashed border-gray-300 rounded-lg">
             <p className="text-gray-500 text-lg">
               No content added yet. Add components to see the preview.
             </p>
           </div>
         ) : (
-          <div className="space-y-8">
+          <div className="space-y-0">
             {debouncedContent.map((block: any, index: number) => (
-              <div key={block.id || index} className="space-y-4">
-                {block.type === "hero" && (
-                  <div className="text-center py-12 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg">
-                    <h1 className="text-5xl font-bold mb-4 text-gray-900">
-                      {block.data?.title || "Hero Title"}
-                    </h1>
-                    <p className="text-xl text-gray-600 mb-6">
-                      {block.data?.subtitle || "Hero subtitle"}
-                    </p>
-                    {block.data?.buttonText && (
-                      <Button className="bg-green-600 hover:bg-green-700">
-                        {block.data.buttonText}
-                      </Button>
-                    )}
-                  </div>
-                )}
-                {block.type === "heading" && (
-                  <div
-                    className={`font-bold ${
-                      block.data?.level === "h1"
-                        ? "text-4xl"
-                        : block.data?.level === "h2"
-                        ? "text-3xl"
-                        : block.data?.level === "h3"
-                        ? "text-2xl"
-                        : "text-xl"
-                    }`}
-                  >
-                    {block.data?.text || "Heading"}
-                  </div>
-                )}
-                {block.type === "paragraph" && (
-                  <p className="text-gray-700 leading-relaxed text-lg">
-                    {block.data?.text || "Paragraph text"}
-                  </p>
-                )}
-                {block.type === "button" && (
-                  <Button className="bg-green-600 hover:bg-green-700">
-                    {block.data?.text || "Button"}
-                  </Button>
-                )}
-                {block.type === "image" && block.data?.src && (
-                  <div className="rounded-lg overflow-hidden">
-                    <img
-                      src={block.data.src}
-                      alt={block.data.alt || "Image"}
-                      className="w-full h-auto"
-                    />
-                  </div>
-                )}
+              <div key={block.id || index}>
+                {/* Text + Image Hero */}
                 {block.type === "text-image" && (
-                  <div
-                    className={`grid md:grid-cols-2 gap-8 items-center ${
-                      block.data?.imagePosition === "left"
-                        ? "md:flex-row-reverse"
-                        : ""
-                    }`}
-                  >
-                    <div className="space-y-4">
-                      <h3 className="text-2xl font-bold">
-                        {block.data?.title || "Title"}
-                      </h3>
-                      <p className="text-gray-700">
-                        {block.data?.text || "Description"}
-                      </p>
-                    </div>
-                    <div>
-                      <img
-                        src={block.data?.imageSrc || "/placeholder.svg"}
-                        alt={block.data?.title || "Image"}
-                        className="w-full rounded-lg"
-                      />
-                    </div>
-                  </div>
-                )}
-                {block.type === "feature-cards" && (
-                  <div className="space-y-6">
-                    <h2 className="text-3xl font-bold text-center">
-                      {block.data?.title || "Features"}
-                    </h2>
-                    <div className="grid md:grid-cols-3 gap-6">
-                      {block.data?.cards?.map((card: any, idx: number) => (
+                  <section className="relative overflow-hidden py-12 md:py-16 bg-gradient-to-br from-blue-50 via-white to-green-50">
+                    <div className="container mx-auto px-4">
+                      <div className="grid gap-8 lg:grid-cols-2 items-center">
                         <div
-                          key={idx}
-                          className="p-6 border border-gray-200 rounded-lg"
+                          className={
+                            block.data?.imagePosition === "right"
+                              ? "order-1"
+                              : "order-2"
+                          }
                         >
-                          <h3 className="text-xl font-bold mb-2">
-                            {card.title}
-                          </h3>
-                          <p className="text-gray-600">{card.description}</p>
+                          <div className="inline-block px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm mb-4">
+                            {block.data?.badgeText || "Badge"}
+                          </div>
+                          <h1 className="text-3xl md:text-4xl font-bold mb-4">
+                            <span className="block">
+                              {block.data?.titlePart1 || "Title Part 1"}
+                            </span>
+                            <span className="block bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent">
+                              {block.data?.titlePart2 || "Title Part 2"}
+                            </span>
+                          </h1>
+                          <p className="text-gray-600 mb-6">
+                            {block.data?.description || "Description"}
+                          </p>
+                          <div className="flex gap-3">
+                            <Button className="bg-green-600 hover:bg-green-700">
+                              {block.data?.button1Text || "Button 1"}
+                            </Button>
+                            <Button variant="outline">
+                              {block.data?.button2Text || "Button 2"}
+                            </Button>
+                          </div>
                         </div>
-                      ))}
+                        <div
+                          className={
+                            block.data?.imagePosition === "right"
+                              ? "order-2"
+                              : "order-1"
+                          }
+                        >
+                          <img
+                            src={block.data?.imageSrc || "/placeholder.svg"}
+                            alt={block.data?.imageAlt || "Image"}
+                            className="w-full rounded-lg shadow-xl"
+                          />
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  </section>
                 )}
+
+                {/* Feature Block */}
+                {block.type === "feature-block" && (
+                  <section className="py-12 md:py-16 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+                    <div className="container mx-auto px-4">
+                      <div className="grid gap-8 lg:grid-cols-2 items-center">
+                        <div
+                          className={
+                            block.data?.imagePosition === "right"
+                              ? "order-1"
+                              : "order-2"
+                          }
+                        >
+                          <div className="inline-block px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-sm mb-4">
+                            {block.data?.badgeText || "Badge"}
+                          </div>
+                          <h2 className="text-3xl font-bold mb-4">
+                            {block.data?.title || "Title"}
+                          </h2>
+                          <p className="text-gray-600 mb-6">
+                            {block.data?.description || "Description"}
+                          </p>
+                          <div className="space-y-4">
+                            {block.data?.features?.map(
+                              (feature: any, idx: number) => (
+                                <div key={idx} className="flex gap-3">
+                                  <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center flex-shrink-0">
+                                    <span className="text-green-600">✓</span>
+                                  </div>
+                                  <div>
+                                    <h3 className="font-semibold">
+                                      {feature.title}
+                                    </h3>
+                                    <p className="text-sm text-gray-600">
+                                      {feature.description}
+                                    </p>
+                                  </div>
+                                </div>
+                              )
+                            )}
+                          </div>
+                        </div>
+                        <div
+                          className={
+                            block.data?.imagePosition === "right"
+                              ? "order-2"
+                              : "order-1"
+                          }
+                        >
+                          <img
+                            src={block.data?.imageSrc || "/placeholder.svg"}
+                            alt={block.data?.imageAlt || "Image"}
+                            className="w-full rounded-lg shadow-xl"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+                )}
+
+                {/* Features Grid */}
+                {block.type === "features-grid" && (
+                  <section className="py-12 md:py-16 bg-white">
+                    <div className="container mx-auto px-4">
+                      <div className="text-center mb-10">
+                        <h2 className="text-3xl font-bold mb-3">
+                          {block.data?.title || "Features"}
+                        </h2>
+                        <p className="text-gray-600">
+                          {block.data?.description || "Description"}
+                        </p>
+                      </div>
+                      <div
+                        className={`grid gap-6 ${
+                          block.data?.columns === "4"
+                            ? "md:grid-cols-4"
+                            : block.data?.columns === "2"
+                            ? "md:grid-cols-2"
+                            : "md:grid-cols-3"
+                        }`}
+                      >
+                        {block.data?.features?.map(
+                          (feature: any, idx: number) => (
+                            <div
+                              key={idx}
+                              className="p-6 border rounded-lg hover:shadow-lg transition-shadow"
+                            >
+                              <div className="w-12 h-12 rounded-lg bg-cyan-100 flex items-center justify-center mb-4">
+                                <span className="text-cyan-600">★</span>
+                              </div>
+                              <h3 className="font-semibold mb-2">
+                                {feature.title}
+                              </h3>
+                              <p className="text-sm text-gray-600">
+                                {feature.description}
+                              </p>
+                            </div>
+                          )
+                        )}
+                      </div>
+                    </div>
+                  </section>
+                )}
+
+                {/* Use Cases */}
+                {block.type === "use-cases" && (
+                  <section className="py-12 md:py-16 bg-white">
+                    <div className="container mx-auto px-4">
+                      <div className="text-center mb-10">
+                        <h2 className="text-3xl font-bold mb-3">
+                          {block.data?.title || "Use Cases"}
+                        </h2>
+                        <p className="text-gray-600">
+                          {block.data?.description || "Description"}
+                        </p>
+                      </div>
+                      <div
+                        className={`grid gap-6 ${
+                          block.data?.columns === "4"
+                            ? "md:grid-cols-4"
+                            : block.data?.columns === "2"
+                            ? "md:grid-cols-2"
+                            : "md:grid-cols-3"
+                        }`}
+                      >
+                        {block.data?.useCases?.map(
+                          (useCase: any, idx: number) => (
+                            <div
+                              key={idx}
+                              className="p-5 border rounded-lg hover:shadow-lg transition-shadow"
+                            >
+                              <div className="flex gap-3">
+                                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center flex-shrink-0">
+                                  <span className="text-white">★</span>
+                                </div>
+                                <div>
+                                  <h3 className="font-semibold mb-1">
+                                    {useCase.title}
+                                  </h3>
+                                  <p className="text-sm text-gray-600">
+                                    {useCase.description}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          )
+                        )}
+                      </div>
+                    </div>
+                  </section>
+                )}
+
+                {/* Brand Slider */}
+                {block.type === "brand-slider" && (
+                  <section className="py-12 md:py-16 bg-white border-b">
+                    <div className="container mx-auto px-4">
+                      <div className="text-center mb-8">
+                        <h2 className="text-2xl font-bold">
+                          {block.data?.title || "Trusted by"}{" "}
+                          <span className="text-green-600">
+                            {block.data?.titleHighlight || "Leading Brands"}
+                          </span>
+                        </h2>
+                      </div>
+                      <div className="flex flex-wrap justify-center gap-8 mb-8">
+                        {block.data?.brands?.map((brand: any, idx: number) => (
+                          <div key={idx} className="flex flex-col items-center">
+                            <img
+                              src={brand.logo || "/placeholder.svg"}
+                              alt={brand.name}
+                              className="h-16 w-auto grayscale"
+                            />
+                            {brand.tagline && (
+                              <p className="text-xs text-gray-500 mt-1">
+                                {brand.tagline}
+                              </p>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                      <div className="flex flex-wrap justify-center gap-8">
+                        {block.data?.trustBadges?.map(
+                          (badge: any, idx: number) => (
+                            <div key={idx} className="flex items-center gap-2">
+                              <span className="text-green-600">✓</span>
+                              <span className="text-sm text-gray-600">
+                                {badge.text}
+                              </span>
+                            </div>
+                          )
+                        )}
+                      </div>
+                    </div>
+                  </section>
+                )}
+
+                {/* FAQ */}
                 {block.type === "faq" && (
-                  <div className="space-y-6">
-                    <h2 className="text-3xl font-bold text-center">
-                      {block.data?.title || "FAQ"}
-                    </h2>
-                    <div className="space-y-4">
-                      {block.data?.items?.map((item: any, idx: number) => (
-                        <div
-                          key={idx}
-                          className="p-6 border border-gray-200 rounded-lg"
-                        >
-                          <h3 className="text-lg font-bold mb-2">
-                            {item.question}
-                          </h3>
-                          <p className="text-gray-600">{item.answer}</p>
-                        </div>
-                      ))}
+                  <section className="py-12 md:py-16 bg-gradient-to-br from-gray-50 to-white">
+                    <div className="container mx-auto px-4">
+                      <div className="text-center mb-10">
+                        <h2 className="text-3xl font-bold mb-3">
+                          {block.data?.title || "FAQ"}
+                        </h2>
+                        <p className="text-gray-600">
+                          {block.data?.description || "Description"}
+                        </p>
+                      </div>
+                      <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-4">
+                        {block.data?.faqs?.map((faq: any, idx: number) => (
+                          <div
+                            key={idx}
+                            className="p-6 bg-white border rounded-lg"
+                          >
+                            <h3 className="font-semibold mb-2">
+                              {faq.question}
+                            </h3>
+                            <p className="text-sm text-gray-600">
+                              {faq.answer}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  </section>
                 )}
-                {block.type === "divider" && (
-                  <hr className="border-gray-300 my-8" />
+
+                {/* CTA */}
+                {block.type === "cta" && (
+                  <section className="py-12 md:py-16 bg-gradient-to-br from-blue-600 to-purple-700 text-white">
+                    <div className="container mx-auto px-4 text-center">
+                      <h2 className="text-3xl font-bold mb-4">
+                        {block.data?.title || "CTA Title"}
+                      </h2>
+                      <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
+                        {block.data?.description || "CTA Description"}
+                      </p>
+                      <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                        <Button
+                          size="lg"
+                          variant="secondary"
+                          className="bg-white text-blue-600"
+                        >
+                          {block.data?.button1Text || "Button 1"}
+                        </Button>
+                        <Button
+                          size="lg"
+                          variant="outline"
+                          className="border-white text-white"
+                        >
+                          {block.data?.button2Text || "Button 2"}
+                        </Button>
+                      </div>
+                    </div>
+                  </section>
                 )}
               </div>
             ))}
@@ -281,7 +469,7 @@ export default function CreatePagePage() {
   };
 
   return (
-    <div className="pt-8 px-6 space-y-6">
+    <div className="pt-8 px-6 space-y-6 pb-12">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Button
@@ -397,11 +585,10 @@ export default function CreatePagePage() {
 
       {/* Page Content with Toggle Button Inside Header */}
       <Card className="bg-white border-gray-200">
-        <CardHeader className="flex flex-row items-center justify-between">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0">
           <CardTitle className="text-lg">
             {viewMode === "edit" ? "Page Content - Edit Mode" : "Page Preview"}
           </CardTitle>
-          {/* Toggle Button Inside Card Header */}
           <Button
             type="button"
             variant={viewMode === "preview" ? "default" : "outline"}
