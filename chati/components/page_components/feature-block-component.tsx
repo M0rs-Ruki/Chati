@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -9,7 +12,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, ImageIcon } from "lucide-react";
+import { MediaPicker } from "@/components/media-picker";
 
 interface FeatureItem {
   icon: string;
@@ -19,25 +23,14 @@ interface FeatureItem {
 }
 
 interface FeatureBlockData {
-  // Layout
   imagePosition: "left" | "right";
-
-  // Badge
   badgeText: string;
   badgeColor: string;
-
-  // Title & Description
   title: string;
   description: string;
-
-  // Image
   imageSrc: string;
   imageAlt: string;
-
-  // Features List
   features: FeatureItem[];
-
-  // Background & Colors
   backgroundGradient: string;
   decorOrbColor1: string;
   decorOrbColor2: string;
@@ -52,6 +45,8 @@ export function FeatureBlockComponent({
   data,
   onChange,
 }: FeatureBlockComponentProps) {
+  const [mediaPickerOpen, setMediaPickerOpen] = useState(false);
+
   const addFeature = () => {
     onChange({
       ...data,
@@ -170,11 +165,22 @@ export function FeatureBlockComponent({
         <h4 className="font-semibold text-sm">Image</h4>
         <div className="space-y-2">
           <Label>Image URL</Label>
-          <Input
-            value={data.imageSrc}
-            onChange={(e) => onChange({ ...data, imageSrc: e.target.value })}
-            placeholder="https://example.com/image.jpg"
-          />
+          <div className="flex gap-2">
+            <Input
+              value={data.imageSrc}
+              onChange={(e) => onChange({ ...data, imageSrc: e.target.value })}
+              placeholder="https://example.com/image.jpg"
+            />
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              onClick={() => setMediaPickerOpen(true)}
+              title="Select from media library"
+            >
+              <ImageIcon className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
         <div className="space-y-2">
           <Label>Image Alt Text</Label>
@@ -344,6 +350,15 @@ export function FeatureBlockComponent({
           </div>
         </div>
       </div>
+
+      {/* Media Picker Dialog */}
+      <MediaPicker
+        open={mediaPickerOpen}
+        onOpenChange={setMediaPickerOpen}
+        onSelect={(url, alt) => {
+          onChange({ ...data, imageSrc: url, imageAlt: alt || data.imageAlt });
+        }}
+      />
     </div>
   );
 }

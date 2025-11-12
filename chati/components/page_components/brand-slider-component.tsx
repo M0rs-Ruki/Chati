@@ -1,6 +1,8 @@
+"use client";
+
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -9,7 +11,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, ImageIcon } from "lucide-react";
+import { MediaPicker } from "@/components/media-picker";
 
 interface Brand {
   name: string;
@@ -23,19 +26,12 @@ interface TrustBadge {
 }
 
 interface BrandSliderData {
-  // Title
   title: string;
-  titleHighlight: string; // The highlighted word
+  titleHighlight: string;
   highlightColor: string;
   highlightBgColor: string;
-
-  // Brands (logos)
   brands: Brand[];
-
-  // Trust Badges
   trustBadges: TrustBadge[];
-
-  // Settings
   backgroundColor: string;
   showBorder: boolean;
 }
@@ -49,6 +45,11 @@ export function BrandSliderComponent({
   data,
   onChange,
 }: BrandSliderComponentProps) {
+  const [mediaPickerOpen, setMediaPickerOpen] = useState(false);
+  const [selectedBrandIndex, setSelectedBrandIndex] = useState<number | null>(
+    null
+  );
+
   const addBrand = () => {
     onChange({
       ...data,
@@ -219,11 +220,25 @@ export function BrandSliderComponent({
 
               <div className="space-y-2">
                 <Label>Logo URL</Label>
-                <Input
-                  placeholder="https://example.com/logo.png"
-                  value={brand.logo}
-                  onChange={(e) => updateBrand(index, "logo", e.target.value)}
-                />
+                <div className="flex gap-2">
+                  <Input
+                    placeholder="https://example.com/logo.png"
+                    value={brand.logo}
+                    onChange={(e) => updateBrand(index, "logo", e.target.value)}
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="icon"
+                    onClick={() => {
+                      setSelectedBrandIndex(index);
+                      setMediaPickerOpen(true);
+                    }}
+                    title="Select from media library"
+                  >
+                    <ImageIcon className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
 
               <div className="space-y-2">
@@ -326,6 +341,18 @@ export function BrandSliderComponent({
           <Label htmlFor="showBorder">Show Border</Label>
         </div>
       </div>
+
+      {/* Media Picker Dialog */}
+      <MediaPicker
+        open={mediaPickerOpen}
+        onOpenChange={setMediaPickerOpen}
+        onSelect={(url, alt) => {
+          if (selectedBrandIndex !== null) {
+            updateBrand(selectedBrandIndex, "logo", url);
+            setSelectedBrandIndex(null);
+          }
+        }}
+      />
     </div>
   );
 }

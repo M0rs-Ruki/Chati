@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -10,7 +13,8 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, ImageIcon } from "lucide-react";
+import { MediaPicker } from "@/components/media-picker";
 
 interface StatItem {
   value: string;
@@ -25,39 +29,26 @@ interface BottomItem {
 }
 
 interface TextImageData {
-  // Badge
   badgeText: string;
   badgeIcon: string;
   badgeColor: string;
-
-  // Title (2 parts)
   titlePart1: string;
   titlePart2: string;
   titlePart2Color: string;
-
-  // Description
   description: string;
-
-  // Buttons
   button1Text: string;
   button1Link: string;
   button1Color: string;
   button2Text: string;
   button2Link: string;
   button2Variant: "outline" | "default";
-
-  // Stats or Icons at bottom
   bottomType: "stats" | "icons";
   stats: StatItem[];
   icons: BottomItem[];
-
-  // Image
   imageSrc: string;
   imageAlt: string;
   imagePosition: "left" | "right";
   showFloatingIcons: boolean;
-
-  // Colors & Gradients
   backgroundGradient: string;
   decorOrbColor1: string;
   decorOrbColor2: string;
@@ -72,6 +63,8 @@ export function TextImageComponent({
   data,
   onChange,
 }: TextImageComponentProps) {
+  const [mediaPickerOpen, setMediaPickerOpen] = useState(false);
+
   const addStat = () => {
     onChange({
       ...data,
@@ -443,11 +436,22 @@ export function TextImageComponent({
         <h4 className="font-semibold text-sm">Image Settings</h4>
         <div className="space-y-2">
           <Label>Image URL</Label>
-          <Input
-            value={data.imageSrc}
-            onChange={(e) => onChange({ ...data, imageSrc: e.target.value })}
-            placeholder="https://example.com/image.jpg"
-          />
+          <div className="flex gap-2">
+            <Input
+              value={data.imageSrc}
+              onChange={(e) => onChange({ ...data, imageSrc: e.target.value })}
+              placeholder="https://example.com/image.jpg"
+            />
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              onClick={() => setMediaPickerOpen(true)}
+              title="Select from media library"
+            >
+              <ImageIcon className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
         <div className="space-y-2">
           <Label>Image Alt Text</Label>
@@ -548,6 +552,15 @@ export function TextImageComponent({
           </div>
         </div>
       </div>
+
+      {/* Media Picker Dialog */}
+      <MediaPicker
+        open={mediaPickerOpen}
+        onOpenChange={setMediaPickerOpen}
+        onSelect={(url, alt) => {
+          onChange({ ...data, imageSrc: url, imageAlt: alt || data.imageAlt });
+        }}
+      />
     </div>
   );
 }
