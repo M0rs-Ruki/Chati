@@ -6,14 +6,80 @@ import { Badge } from "@/components/ui/badge"
 import { Calendar, Clock, User, ArrowLeft, ArrowRight, Share2 } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
-import { type BlogPost, getRelatedPosts } from "@/lib/blog-data"
+import { blogPosts as staticBlogPosts, getRelatedPosts } from "@/lib/blog-data"
+
+interface BlogPost {
+  id?: string
+  slug: string
+  title: string
+  excerpt?: string
+  content?: string | any
+  author?: string | { id: string; name: string; email: string }
+  date?: string
+  publishedAt?: string | null
+  createdAt?: string
+  category?: string
+  thumbnail?: string
+  imageUrl?: string
+  readTime?: string
+  tags?: string[]
+  metadata?: {
+    tags?: string[]
+    description?: string
+    category?: string
+    readTime?: string
+  }
+}
 
 interface BlogPostPageProps {
   post: BlogPost
 }
 
-export default function BlogPostPage({ post }: BlogPostPageProps) {
+export default function BlogPostPage({ post: rawPost }: BlogPostPageProps) {
+  // Normalize post data to handle both API and static formats
+  const post = {
+    ...rawPost,
+    excerpt: rawPost.excerpt || rawPost.metadata?.description || '',
+    author: typeof rawPost.author === 'object' ? rawPost.author?.name : rawPost.author || 'Chati Team',
+    date: rawPost.date || rawPost.publishedAt || rawPost.createdAt || new Date().toISOString(),
+    category: rawPost.category || rawPost.metadata?.category || 'General',
+    thumbnail: rawPost.thumbnail || rawPost.imageUrl || '/placeholder.svg',
+    readTime: rawPost.readTime || rawPost.metadata?.readTime || '5 min read',
+    tags: rawPost.tags || rawPost.metadata?.tags || [],
+  }
+
   const relatedPosts = getRelatedPosts(post.slug, 3)
+
+  // Helper to render content (handles both string HTML and JSON format)
+  const renderContent = () => {
+    if (!post.content) {
+      return <p className="text-gray-600">No content available.</p>
+    }
+
+    // If content is a string (HTML), render it directly
+    if (typeof post.content === 'string') {
+      return (
+        <div
+          dangerouslySetInnerHTML={{ __html: post.content }}
+        />
+      )
+    }
+
+    // If content is JSON (from API), render it as structured data
+    if (typeof post.content === 'object') {
+      // Handle different content formats here
+      // For now, just stringify it or handle specific formats
+      return (
+        <div>
+          <p className="text-gray-700">
+            {post.excerpt || 'Content will be displayed here...'}
+          </p>
+        </div>
+      )
+    }
+
+    return null
+  }
 
   return (
     <div className="min-h-screen">
@@ -54,7 +120,7 @@ export default function BlogPostPage({ post }: BlogPostPageProps) {
                 {post.title}
               </h1>
 
-              <div className="flex flex-wrap items-center gap-6 text-gray-200">
+                            <div className="flex flex-wrap items-center gap-6 text-gray-200">
                 <div className="flex items-center gap-2">
                   <User className="w-4 h-4" />
                   <span className="font-medium">{post.author}</span>
@@ -98,8 +164,9 @@ export default function BlogPostPage({ post }: BlogPostPageProps) {
                 prose-li:text-gray-700 prose-li:leading-relaxed
                 prose-strong:text-gray-900 prose-strong:font-semibold
                 prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline"
-              dangerouslySetInnerHTML={{ __html: post.content }}
-            />
+            >
+              {renderContent()}
+            </div>
 
             {/* Tags */}
             <div className="mt-10 pt-8 border-t border-gray-200">

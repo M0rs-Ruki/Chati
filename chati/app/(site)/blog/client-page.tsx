@@ -4,28 +4,121 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
-import { BookOpen, Clock, ArrowRight, Search, Calendar } from "lucide-react"
+import { BookOpen, Clock, ArrowRight, Search, Calendar, Loader2 } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
-import { useState } from "react"
-import { blogPosts } from "@/lib/blog-data"
+import { useState, useEffect } from "react"
+import { blogPosts as staticBlogPosts } from "@/lib/blog-data"
+
+interface BlogPost {
+  id?: string
+  slug: string
+  title: string
+  excerpt?: string
+  content?: string | any
+  author?: string | { id: string; name: string; email: string }
+  date?: string
+  publishedAt?: string | null
+  createdAt?: string
+  category?: string
+  thumbnail?: string
+  imageUrl?: string
+  readTime?: string
+  tags?: string[]
+  metadata?: {
+    tags?: string[]
+    description?: string
+    category?: string
+    readTime?: string
+  }
+  status?: string
+}
 
 export default function BlogListingPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+  const [apiPosts, setApiPosts] = useState<BlogPost[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  const categories = Array.from(new Set(blogPosts.map((post) => post.category)))
+  // Fetch blog posts from API
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        setLoading(true)
+        const response = await fetch('/api/blog?status=PUBLISHED&limit=100')
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch blogs')
+        }
 
-  const filteredPosts = blogPosts.filter((post) => {
-    const matchesSearch =
-      post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.tags.some((tag) => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+        const result = await response.json()
+        
+        // Transform API data to match our BlogPost interface
+        const transformedPosts = result.data.map((post: any) => ({
+          id: post.id,
+          slug: post.slug,
+          title: post.title,
+          excerpt: post.metadata?.description || '',
+          content: post.content,
+          author: typeof post.author === 'object' ? post.author?.name : 'Chati Team',
+          date: post.publishedAt || post.createdAt,
+          publishedAt: post.publishedAt,
+          createdAt: post.createdAt,
+          category: post.metadata?.category || 'General',
+          thumbnail: post.imageUrl,
+          imageUrl: post.imageUrl,
+          readTime: post.metadata?.readTime || '5 min read',
+          tags: post.metadata?.tags || [],
+          metadata: post.metadata,
+          status: post.status
+        }))
 
+        setApiPosts(transformedPosts)
+        setError(null)
+      } catch (err) {
+        console.error('Error fetching blogs:', err)
+        setError('Failed to load blog posts from server')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchBlogs()
+  }, [])
+
+  // Merge API posts with static posts (API posts take priority)
+  const allPosts = [...apiPosts, ...staticBlogPosts]
+  
+  // Remove duplicates based on slug (API posts take priority)
+  const uniquePosts = allPosts.reduce((acc: BlogPost[], current) => {
+    const exists = acc.find(post => post.slug === current.slug)
+    if (!exists) {
+      acc.push(current)
+    }
+    return acc
+  }, [])
+
+  const categories = Array.from(new Set(uniquePosts.map((post) => post.category).filter(Boolean))) as string[]
+
+  const filteredPosts = uniquePosts.filter((post) => {
+    const searchableContent = `${post.title} ${post.excerpt || ''} ${post.tags?.join(' ') || ''}`.toLowerCase()
+    const matchesSearch = searchableContent.includes(searchQuery.toLowerCase())
     const matchesCategory = !selectedCategory || post.category === selectedCategory
 
     return matchesSearch && matchesCategory
   })
+
+  // Format date helper
+  const formatDate = (post: BlogPost) => {
+    const dateStr = post.date || post.publishedAt || post.createdAt
+    if (!dateStr) return 'Recent'
+    
+    return new Date(dateStr).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+    })
+  }
 
   return (
     <div className="min-h-screen">
@@ -83,7 +176,7 @@ export default function BlogListingPage() {
               <Button
                 key={category}
                 variant={selectedCategory === category ? "default" : "outline"}
-                onClick={() => setSelectedCategory(category)}
+                onClick={() => setSelectedCategory(category as string)}
                 size="sm"
                 className={selectedCategory === category ? "bg-blue-600 hover:bg-blue-700" : ""}
               >
@@ -97,11 +190,46 @@ export default function BlogListingPage() {
       {/* Blog Grid */}
       <section className="py-12 bg-gradient-to-b from-white via-gray-50/50 to-white">
         <div className="container mx-auto px-4">
-          {filteredPosts.length === 0 ? (
+          {/* Loading State */}
+          {loading && (
+            <div className="flex flex-col items-center justify-center py-20 space-y-4">
+              <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
+              <div className="text-center space-y-2">
+                <p className="text-lg font-medium text-gray-900">Loading blog posts...</p>
+                <p className="text-sm text-gray-500">Please wait while we fetch the latest articles</p>
+              </div>
+            </div>
+          )}
+
+          {/* Error State */}
+          {error && !loading && (
+            <div className="text-center py-12">
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 max-w-md mx-auto">
+                <p className="text-amber-800 font-medium mb-2">{error}</p>
+                <p className="text-sm text-amber-600">Showing cached articles</p>
+              </div>
+            </div>
+          )}
+
+          {/* No Results */}
+          {!loading && filteredPosts.length === 0 && (
             <div className="text-center py-12">
               <p className="text-lg text-gray-600">No articles found matching your search.</p>
+              <Button
+                onClick={() => {
+                  setSearchQuery('')
+                  setSelectedCategory(null)
+                }}
+                variant="outline"
+                className="mt-4"
+              >
+                Clear Filters
+              </Button>
             </div>
-          ) : (
+          )}
+
+          {/* Blog Posts Grid */}
+          {!loading && filteredPosts.length > 0 && (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 max-w-[1400px] mx-auto">
               {filteredPosts.map((post) => (
                 <Card
@@ -111,14 +239,14 @@ export default function BlogListingPage() {
                   <Link href={`/blog/${post.slug}`} className="relative overflow-hidden">
                     <div className="aspect-[16/9] relative bg-gray-100">
                       <Image
-                        src={post.thumbnail || "/placeholder.svg"}
+                        src={post.thumbnail || post.imageUrl || "/placeholder.svg"}
                         alt={post.title}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     </div>
                     <Badge className="absolute top-3 left-3 bg-blue-600 text-white border-none shadow-lg text-xs px-2 py-0.5">
-                      {post.category}
+                      {post.category || 'Article'}
                     </Badge>
                   </Link>
 
@@ -127,16 +255,11 @@ export default function BlogListingPage() {
                     <div className="flex items-center gap-3 text-xs text-gray-600 mb-2">
                       <div className="flex items-center gap-1">
                         <Calendar className="w-3 h-3" />
-                        <span>
-                          {new Date(post.date).toLocaleDateString("en-US", {
-                            month: "short",
-                            day: "numeric",
-                          })}
-                        </span>
+                        <span>{formatDate(post)}</span>
                       </div>
                       <div className="flex items-center gap-1">
                         <Clock className="w-3 h-3" />
-                        <span>{post.readTime}</span>
+                        <span>{post.readTime || '5 min read'}</span>
                       </div>
                     </div>
 
@@ -148,7 +271,9 @@ export default function BlogListingPage() {
                     </Link>
 
                     {/* Excerpt */}
-                    <p className="text-sm text-gray-600 mb-3 line-clamp-2 flex-grow leading-relaxed">{post.excerpt}</p>
+                    <p className="text-sm text-gray-600 mb-3 line-clamp-2 flex-grow leading-relaxed">
+                      {post.excerpt || post.metadata?.description || ''}
+                    </p>
 
                     {/* CTA */}
                     <Link href={`/blog/${post.slug}`} className="mt-auto">
@@ -164,6 +289,17 @@ export default function BlogListingPage() {
                   </div>
                 </Card>
               ))}
+            </div>
+          )}
+
+          {/* Display blog count */}
+          {!loading && filteredPosts.length > 0 && (
+            <div className="mt-8 text-center">
+              <p className="text-sm text-gray-600">
+                Showing {filteredPosts.length} {filteredPosts.length === 1 ? 'article' : 'articles'}
+                {searchQuery && ` matching "${searchQuery}"`}
+                {selectedCategory && ` in ${selectedCategory}`}
+              </p>
             </div>
           )}
         </div>

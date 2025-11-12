@@ -3,14 +3,37 @@ import { notFound } from "next/navigation"
 import { blogPosts } from "@/lib/blog-data"
 import BlogPostPage from "./client-page"
 
+// Fetch blog post from API or fallback to static data
+async function getBlogPost(slug: string) {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/public/blog/slug/${slug}`,
+      { 
+        cache: 'no-store' // Always get fresh data
+      }
+    )
+    
+    if (response.ok) {
+      const result = await response.json()
+      return result.data
+    }
+  } catch (error) {
+    console.error('Error fetching blog post from API:', error)
+  }
+  
+  // Fallback to static data
+  return blogPosts.find((p) => p.slug === slug)
+}
+
 export async function generateStaticParams() {
+  // Generate paths for static blog posts
   return blogPosts.map((post) => ({
     slug: post.slug,
   }))
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const post = blogPosts.find((p) => p.slug === params.slug)
+  const post = await getBlogPost(params.slug)
 
   if (!post) {
     return {
@@ -18,28 +41,35 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     }
   }
 
+  // Handle both API format and static data format
+  const title = post.title
+  const description = post.excerpt || post.metadata?.description || ''
+  const tags = post.tags || post.metadata?.tags || []
+  const author = typeof post.author === 'object' ? post.author?.name : post.author
+  const date = post.date || post.publishedAt || post.createdAt
+
   return {
-    title: `${post.title} | Chati Blog`,
-    description: post.excerpt,
-    keywords: post.tags.join(", "),
+    title: `${title} | Chati Blog`,
+    description,
+    keywords: Array.isArray(tags) ? tags.join(", ") : '',
     openGraph: {
-      title: post.title,
-      description: post.excerpt,
+      title,
+      description,
       type: "article",
-      publishedTime: post.date,
-      authors: [post.author],
+      publishedTime: date,
+      authors: author ? [author] : [],
       url: `https://chati.chat/blog/${post.slug}`,
     },
     twitter: {
       card: "summary_large_image",
-      title: post.title,
-      description: post.excerpt,
+      title,
+      description,
     },
   }
 }
 
-export default function BlogPost({ params }: { params: { slug: string } }) {
-  const post = blogPosts.find((p) => p.slug === params.slug)
+export default async function BlogPost({ params }: { params: { slug: string } }) {
+  const post = await getBlogPost(params.slug)
 
   if (!post) {
     notFound()
