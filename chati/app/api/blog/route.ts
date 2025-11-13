@@ -11,6 +11,8 @@ interface BlogQueryParams {
 
 export async function GET(req: NextRequest) {
   try {
+    console.log('📝 Blog API called');
+    
     // Query parameters for filtering and pagination
     const searchParams = req.nextUrl.searchParams;
     const statusParam = searchParams.get("status");
@@ -20,6 +22,8 @@ export async function GET(req: NextRequest) {
       100
     ); // Max 100 items
     const skip = (page - 1) * limit;
+
+    console.log('📊 Query params:', { statusParam, page, limit, skip });
 
     // Validate status parameter
     const validStatuses: PublishStatus[] = [
@@ -39,8 +43,12 @@ export async function GET(req: NextRequest) {
       where.status = status;
     }
 
+    console.log('🔍 WHERE clause:', where);
+
     // Get total count for pagination
     const total = await prisma.blogPost.count({ where });
+    
+    console.log('📈 Total count:', total);
 
     // Fetch blogs
     const blogs = await prisma.blogPost.findMany({
@@ -68,6 +76,9 @@ export async function GET(req: NextRequest) {
       take: limit,
     });
 
+    console.log('✅ Fetched blogs:', blogs.length, 'posts');
+    console.log('📝 Blog titles:', blogs.map(b => b.title));
+
     return NextResponse.json({
       message: "Blogs fetched successfully",
       data: blogs,
@@ -79,9 +90,13 @@ export async function GET(req: NextRequest) {
       },
     });
   } catch (error) {
-    console.error("Error fetching blogs:", error);
+    console.error("❌ Error fetching blogs:", error);
+    console.error("Stack:", error instanceof Error ? error.stack : 'No stack');
     return NextResponse.json(
-      { message: "Failed to fetch blogs" },
+      { 
+        message: "Failed to fetch blogs",
+        error: error instanceof Error ? error.message : String(error)
+      },
       { status: 500 }
     );
   }

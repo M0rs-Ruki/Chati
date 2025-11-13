@@ -9,7 +9,7 @@ import { blogPosts as staticBlogPosts } from "@/lib/blog-data";
 import SearchAndFilter from "@/components/blog/SearchAndFilter";
 
 // Force dynamic rendering to ensure API calls work on production
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 interface BlogPost {
@@ -44,37 +44,51 @@ interface PageProps {
 async function getBlogPosts(): Promise<BlogPost[]> {
   try {
     // Use relative URL for API calls - works on both local and production
-    const apiUrl = '/api/blog?limit=100';
-    
+    const apiUrl = "/api/blog?limit=100";
+
     // For server-side rendering, we need to use absolute URL
-    let baseUrl = '';
-    if (typeof window === 'undefined') {
+    let baseUrl = "";
+    if (typeof window === "undefined") {
       // Server-side: construct the full URL
-      baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 
-                (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 
-                'http://localhost:3000');
+      baseUrl =
+        process.env.NEXT_PUBLIC_BASE_URL ||
+        (process.env.VERCEL_URL
+          ? `https://${process.env.VERCEL_URL}`
+          : "http://localhost:3000");
     }
-    
+
     const fullUrl = baseUrl + apiUrl;
     
+    console.log('🔍 Fetching blog posts from:', fullUrl);
+
     const response = await fetch(fullUrl, {
       cache: "no-store",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     });
 
     if (!response.ok) {
       console.error(
-        "Failed to fetch blogs:",
+        "❌ Failed to fetch blogs:",
         response.status,
         response.statusText,
-        "URL:", fullUrl
+        "URL:",
+        fullUrl
       );
+      const errorText = await response.text();
+      console.error("Error response:", errorText);
       throw new Error("Failed to fetch blogs");
     }
 
     const result = await response.json();
+    
+    console.log('✅ API Response:', {
+      hasData: !!result.data,
+      isArray: Array.isArray(result.data),
+      count: result.data?.length || 0,
+      pagination: result.pagination
+    });
 
     if (!result.data || !Array.isArray(result.data)) {
       console.error("Invalid API response:", result);
@@ -101,10 +115,11 @@ async function getBlogPosts(): Promise<BlogPost[]> {
       status: post.status,
     }));
 
-    console.log(`Successfully fetched ${transformedPosts.length} blog posts`);
+    console.log(`✅ Successfully transformed ${transformedPosts.length} blog posts`);
     return transformedPosts;
   } catch (err) {
-    console.error("Error fetching blogs:", err);
+    console.error("❌ Error fetching blogs:", err);
+    console.error("Stack trace:", err instanceof Error ? err.stack : 'No stack trace');
     return [];
   }
 }
