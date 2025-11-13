@@ -2,18 +2,18 @@ import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 /**
- * GET /api/public/page/[id]
- * PUBLIC ENDPOINT - Get page by ID
+ * GET /api/public/page/slug/[slug]
+ * PUBLIC ENDPOINT - Get page by slug
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const { id: pageId } = await params;
+    const { slug } = await params;
     
     const page = await prisma.page.findUnique({
-      where: { id: pageId },
+      where: { slug },
       include: {
         author: {
           select: {
@@ -24,14 +24,15 @@ export async function GET(
         },
       },
     });
-    
+
     if (!page) {
       return NextResponse.json(
         { message: "Page not found" },
         { status: 404 }
       );
     }
-    
+
+    // Return all pages regardless of status (show everything)
     return NextResponse.json({
       message: "Page fetched successfully",
       data: page
