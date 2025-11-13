@@ -638,8 +638,18 @@ export default function CreatePagePage() {
       {/* Page Content with Toggle */}
       <Card className="bg-white border-gray-200 shadow-lg">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 border-b bg-gradient-to-r from-gray-50 to-white">
-          <CardTitle className="text-lg text-gray-900">
-            {viewMode === "edit" ? "Page Content - Edit Mode" : "Page Preview"}
+          <CardTitle className="text-lg text-gray-900 flex items-center gap-2">
+            {viewMode === "edit" ? (
+              <>
+                <Edit2 className="h-5 w-5 text-indigo-600" />
+                Page Content - Edit Mode
+              </>
+            ) : (
+              <>
+                <Eye className="h-5 w-5 text-blue-600" />
+                Page Preview
+              </>
+            )}
           </CardTitle>
           <Button
             type="button"
