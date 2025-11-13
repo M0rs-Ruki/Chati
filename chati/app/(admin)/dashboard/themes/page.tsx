@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
+import { MediaPicker } from "@/components/media-picker";
 import {
   Select,
   SelectContent,
@@ -53,6 +54,10 @@ export default function ThemeEditor() {
   const [loading, setLoading] = useState(true);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [mediaPickerOpen, setMediaPickerOpen] = useState(false);
+  const [mediaPickerTarget, setMediaPickerTarget] = useState<
+    "logo" | "favicon" | "create-logo" | "create-favicon" | null
+  >(null);
 
   const [newTheme, setNewTheme] = useState({
     name: "",
@@ -370,6 +375,39 @@ export default function ThemeEditor() {
     }
   };
 
+  const handleMediaSelect = (url: string, alt?: string) => {
+    if (mediaPickerTarget === "logo" && editingTheme) {
+      setEditingTheme({
+        ...editingTheme,
+        logoUrl: url,
+      });
+    } else if (mediaPickerTarget === "favicon" && editingTheme) {
+      setEditingTheme({
+        ...editingTheme,
+        faviconUrl: url,
+      });
+    } else if (mediaPickerTarget === "create-logo") {
+      setNewTheme({
+        ...newTheme,
+        logoUrl: url,
+      });
+    } else if (mediaPickerTarget === "create-favicon") {
+      setNewTheme({
+        ...newTheme,
+        faviconUrl: url,
+      });
+    }
+    setMediaPickerOpen(false);
+    setMediaPickerTarget(null);
+  };
+
+  const openMediaPicker = (
+    target: "logo" | "favicon" | "create-logo" | "create-favicon"
+  ) => {
+    setMediaPickerTarget(target);
+    setMediaPickerOpen(true);
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -533,15 +571,39 @@ export default function ThemeEditor() {
                 <Label htmlFor="logo-url" className="text-gray-700 font-medium">
                   Logo URL (Optional)
                 </Label>
-                <Input
-                  id="logo-url"
-                  value={newTheme.logoUrl}
-                  onChange={(e) =>
-                    setNewTheme({ ...newTheme, logoUrl: e.target.value })
-                  }
-                  placeholder="https://example.com/logo.png"
-                  className="mt-2"
-                />
+                <div className="flex gap-2 mt-2">
+                  <Input
+                    id="logo-url"
+                    value={newTheme.logoUrl}
+                    onChange={(e) =>
+                      setNewTheme({ ...newTheme, logoUrl: e.target.value })
+                    }
+                    placeholder="https://example.com/logo.png"
+                    className="flex-1"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => openMediaPicker("create-logo")}
+                    className="border-green-200 hover:bg-green-50"
+                  >
+                    <ImageIcon className="w-4 h-4" />
+                  </Button>
+                </div>
+                {newTheme.logoUrl && (
+                  <div className="mt-3 p-3 bg-gray-50 rounded-lg border inline-block">
+                    <p className="text-xs text-gray-600 mb-2 font-medium">
+                      Preview:
+                    </p>
+                    <Image
+                      src={newTheme.logoUrl}
+                      alt="Logo"
+                      className="h-12 object-contain"
+                      width={150}
+                      height={48}
+                    />
+                  </div>
+                )}
               </div>
               <div>
                 <Label
@@ -550,15 +612,39 @@ export default function ThemeEditor() {
                 >
                   Favicon URL (Optional)
                 </Label>
-                <Input
-                  id="favicon-url"
-                  value={newTheme.faviconUrl}
-                  onChange={(e) =>
-                    setNewTheme({ ...newTheme, faviconUrl: e.target.value })
-                  }
-                  placeholder="https://example.com/favicon.ico"
-                  className="mt-2"
-                />
+                <div className="flex gap-2 mt-2">
+                  <Input
+                    id="favicon-url"
+                    value={newTheme.faviconUrl}
+                    onChange={(e) =>
+                      setNewTheme({ ...newTheme, faviconUrl: e.target.value })
+                    }
+                    placeholder="https://example.com/favicon.ico"
+                    className="flex-1"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => openMediaPicker("create-favicon")}
+                    className="border-green-200 hover:bg-green-50"
+                  >
+                    <ImageIcon className="w-4 h-4" />
+                  </Button>
+                </div>
+                {newTheme.faviconUrl && (
+                  <div className="mt-3 p-3 bg-gray-50 rounded-lg border inline-block">
+                    <p className="text-xs text-gray-600 mb-2 font-medium">
+                      Preview:
+                    </p>
+                    <Image
+                      src={newTheme.faviconUrl}
+                      alt="Favicon"
+                      className="h-8 w-8 object-contain"
+                      width={32}
+                      height={32}
+                    />
+                  </div>
+                )}
               </div>
             </div>
 
@@ -877,18 +963,28 @@ export default function ThemeEditor() {
                 <Label htmlFor="logo_url" className="text-gray-700 font-medium">
                   Logo URL
                 </Label>
-                <Input
-                  id="logo_url"
-                  value={editingTheme.logoUrl || ""}
-                  onChange={(e) =>
-                    setEditingTheme({
-                      ...editingTheme,
-                      logoUrl: e.target.value,
-                    })
-                  }
-                  placeholder="https://example.com/logo.png"
-                  className="mt-2"
-                />
+                <div className="flex gap-2 mt-2">
+                  <Input
+                    id="logo_url"
+                    value={editingTheme.logoUrl || ""}
+                    onChange={(e) =>
+                      setEditingTheme({
+                        ...editingTheme,
+                        logoUrl: e.target.value,
+                      })
+                    }
+                    placeholder="https://example.com/logo.png"
+                    className="flex-1"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => openMediaPicker("logo")}
+                    className="border-purple-200 hover:bg-purple-50"
+                  >
+                    <ImageIcon className="w-4 h-4" />
+                  </Button>
+                </div>
                 {editingTheme.logoUrl && (
                   <div className="mt-4 p-4 bg-gray-50 rounded-lg border inline-block">
                     <p className="text-xs text-gray-600 mb-2 font-medium">
@@ -912,18 +1008,28 @@ export default function ThemeEditor() {
                 >
                   Favicon URL
                 </Label>
-                <Input
-                  id="favicon_url"
-                  value={editingTheme.faviconUrl || ""}
-                  onChange={(e) =>
-                    setEditingTheme({
-                      ...editingTheme,
-                      faviconUrl: e.target.value,
-                    })
-                  }
-                  placeholder="/chati-ai-icon-filled-256.webp"
-                  className="mt-2"
-                />
+                <div className="flex gap-2 mt-2">
+                  <Input
+                    id="favicon_url"
+                    value={editingTheme.faviconUrl || ""}
+                    onChange={(e) =>
+                      setEditingTheme({
+                        ...editingTheme,
+                        faviconUrl: e.target.value,
+                      })
+                    }
+                    placeholder="/chati-ai-icon-filled-256.webp"
+                    className="flex-1"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => openMediaPicker("favicon")}
+                    className="border-purple-200 hover:bg-purple-50"
+                  >
+                    <ImageIcon className="w-4 h-4" />
+                  </Button>
+                </div>
                 {editingTheme.faviconUrl && (
                   <div className="mt-4 p-4 bg-gray-50 rounded-lg border inline-block">
                     <p className="text-xs text-gray-600 mb-2 font-medium">
@@ -993,6 +1099,13 @@ export default function ThemeEditor() {
           </Button>
         </div>
       )}
+
+      {/* Media Picker Dialog */}
+      <MediaPicker
+        open={mediaPickerOpen}
+        onOpenChange={setMediaPickerOpen}
+        onSelect={handleMediaSelect}
+      />
     </div>
   );
 }
