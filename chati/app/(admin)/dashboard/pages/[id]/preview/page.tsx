@@ -3,7 +3,14 @@
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ExternalLink, Loader2 } from "lucide-react";
+import {
+  ArrowLeft,
+  ExternalLink,
+  Loader2,
+  Eye,
+  FileText,
+  Edit,
+} from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import type { JSX } from "react/jsx-runtime";
 
@@ -13,6 +20,11 @@ export default function PreviewPage() {
   const { toast } = useToast();
   const [page, setPage] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     fetchPage();
@@ -22,7 +34,7 @@ export default function PreviewPage() {
     try {
       const response = await fetch(`/api/page/${params.id}`, {
         method: "GET",
-        credentials: "include", // Include cookies for authentication
+        credentials: "include",
       });
 
       if (!response.ok) {
@@ -192,13 +204,10 @@ export default function PreviewPage() {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
-        <Loader2 className="h-12 w-12 animate-spin text-green-600" />
-        <div className="text-center space-y-2">
-          <p className="text-lg font-medium text-gray-900">
-            Loading preview...
-          </p>
-          <p className="text-sm text-gray-500">Rendering your page content</p>
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center space-y-4">
+          <Loader2 className="h-12 w-12 animate-spin text-indigo-600 mx-auto" />
+          <p className="text-gray-600">Loading preview...</p>
         </div>
       </div>
     );
@@ -206,10 +215,22 @@ export default function PreviewPage() {
 
   if (!page) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
-        <div className="text-center space-y-2">
-          <p className="text-lg font-medium text-gray-900">Page not found</p>
-          <Button onClick={() => router.push("/dashboard/pages")}>
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center space-y-4">
+          <div className="mx-auto w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center">
+            <FileText className="h-10 w-10 text-gray-400" />
+          </div>
+          <h3 className="text-xl font-semibold text-gray-900">
+            Page not found
+          </h3>
+          <p className="text-gray-600">
+            The page you're looking for doesn't exist
+          </p>
+          <Button
+            onClick={() => router.push("/dashboard/pages")}
+            className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Pages
           </Button>
         </div>
@@ -218,25 +239,48 @@ export default function PreviewPage() {
   }
 
   return (
-    <div className="space-y-6 p-6">
-      <div className="flex items-center justify-between bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+    <div
+      className={`space-y-8 p-6 max-w-7xl mx-auto transition-all duration-700 ${
+        mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+      }`}
+    >
+      {/* Header */}
+      <div className="flex items-center justify-between bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200 rounded-xl p-6 shadow-lg">
         <div className="flex items-center gap-4">
-          <Button variant="ghost" size="icon" onClick={() => router.back()}>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => router.back()}
+            className="border-gray-200 hover:bg-white transition-all"
+          >
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <div>
-            <h2 className="text-xl font-bold text-gray-900">{page.title}</h2>
-            <p className="text-sm text-gray-500">Preview Mode • /{page.slug}</p>
+            <div className="flex items-center gap-3 mb-1">
+              <Eye className="h-5 w-5 text-indigo-600" />
+              <h2 className="text-2xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 bg-clip-text text-transparent">
+                {page.title}
+              </h2>
+            </div>
+            <p className="text-sm text-gray-600">
+              Preview Mode -{" "}
+              <span className="text-indigo-600 font-mono">/{page.slug}</span>
+            </p>
           </div>
         </div>
         <div className="flex items-center gap-2">
           <Button
             variant="outline"
             onClick={() => router.push(`/dashboard/pages/${params.id}/edit`)}
+            className="border-green-200 hover:bg-green-50 transition-all"
           >
+            <Edit className="h-4 w-4 mr-2" />
             Edit Page
           </Button>
-          <Button variant="outline">
+          <Button
+            variant="outline"
+            className="border-blue-200 hover:bg-blue-50 transition-all"
+          >
             <ExternalLink className="h-4 w-4 mr-2" />
             Open in New Tab
           </Button>
@@ -244,7 +288,7 @@ export default function PreviewPage() {
       </div>
 
       {/* Preview Container */}
-      <div className="bg-white border border-gray-200 rounded-lg shadow-sm">
+      <div className="bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden">
         <div className="max-w-6xl mx-auto p-8 md:p-12">
           {page.content?.blocks && page.content.blocks.length > 0 ? (
             <div className="space-y-12">
@@ -254,10 +298,20 @@ export default function PreviewPage() {
             </div>
           ) : (
             <div className="text-center py-20">
-              <p className="text-gray-500 text-lg">No content added yet</p>
-              <p className="text-gray-400 text-sm mt-2">
+              <FileText className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+              <p className="text-gray-500 text-lg mb-2">No content added yet</p>
+              <p className="text-gray-400 text-sm mb-6">
                 Add components in the editor to see them here
               </p>
+              <Button
+                onClick={() =>
+                  router.push(`/dashboard/pages/${params.id}/edit`)
+                }
+                className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700"
+              >
+                <Edit className="h-4 w-4 mr-2" />
+                Start Editing
+              </Button>
             </div>
           )}
         </div>
@@ -265,11 +319,14 @@ export default function PreviewPage() {
 
       {/* Page Metadata */}
       {page.metadata?.description && (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <h3 className="font-semibold text-blue-900 mb-2">
+        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl p-6 shadow-sm">
+          <h3 className="font-semibold text-blue-900 mb-2 flex items-center gap-2">
+            <FileText className="h-5 w-5" />
             SEO Meta Description
           </h3>
-          <p className="text-blue-700 text-sm">{page.metadata.description}</p>
+          <p className="text-blue-700 text-sm leading-relaxed">
+            {page.metadata.description}
+          </p>
         </div>
       )}
     </div>

@@ -6,6 +6,7 @@ import { useRouter, useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import LoadingEdit from "./loading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -16,6 +17,7 @@ import {
   CheckCircle2,
   Loader2,
   AlertCircle,
+  FileText,
 } from "lucide-react";
 import PageBuilder from "@/components/page-builder";
 import {
@@ -35,6 +37,7 @@ export default function EditPagePage() {
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const [saveStatus, setSaveStatus] = useState<SaveStatus>("saved");
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
@@ -52,6 +55,10 @@ export default function EditPagePage() {
   const [content, setContent] = useState<any[]>([]);
   const [debouncedContent, setDebouncedContent] = useState<any[]>([]);
   const [initialData, setInitialData] = useState<any>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Debounce content updates for preview (1 second delay)
   useEffect(() => {
@@ -350,9 +357,11 @@ export default function EditPagePage() {
     return (
       <div className="bg-white min-h-[600px]">
         {debouncedContent.length === 0 ? (
-          <div className="text-center py-12 border border-dashed border-gray-300 rounded-lg">
-            <p className="text-gray-500 text-lg">
-              No content added yet. Add components to see the preview.
+          <div className="text-center py-16 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50">
+            <FileText className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+            <p className="text-gray-500 text-lg mb-2">No content added yet.</p>
+            <p className="text-gray-400 text-sm">
+              Add components from the editor to see your page preview
             </p>
           </div>
         ) : (
@@ -676,21 +685,11 @@ export default function EditPagePage() {
   };
 
   if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
-        <Loader2 className="h-12 w-12 animate-spin text-green-600" />
-        <div className="text-center space-y-2">
-          <p className="text-lg font-medium text-gray-900">Loading page...</p>
-          <p className="text-sm text-gray-500">
-            Please wait while we fetch your content
-          </p>
-        </div>
-      </div>
-    );
+    return <LoadingEdit />;
   }
 
   return (
-    <div className="space-y-6 p-6">
+    <div className={`space-y-8 p-6 max-w-7xl mx-auto transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Button
@@ -713,7 +712,9 @@ export default function EditPagePage() {
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">Edit Page</h2>
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 bg-clip-text text-transparent">
+              Edit Page ✏️
+            </h2>
             <p className="text-gray-600 mt-1">
               Update your page content and settings
             </p>
@@ -724,7 +725,7 @@ export default function EditPagePage() {
           <Button
             onClick={handleSubmit}
             disabled={saving}
-            className="bg-green-600 hover:bg-green-700 text-white font-semibold"
+            className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-green-600/25 transition-all duration-300 hover:scale-105"
           >
             {saving ? (
               <>
@@ -751,9 +752,12 @@ export default function EditPagePage() {
       )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        <Card className="bg-white border-gray-200">
-          <CardHeader>
-            <CardTitle className="text-lg">Page Settings</CardTitle>
+        <Card className="bg-white border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300">
+          <CardHeader className="border-b bg-gradient-to-r">
+            <CardTitle className="text-lg text-gray-900 flex items-center gap-2">
+              <FileText className="w-5 h-5 text-indigo-600" />
+              Page Settings
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -819,9 +823,9 @@ export default function EditPagePage() {
           </CardContent>
         </Card>
 
-        <Card className="bg-white border-gray-200">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0">
-            <CardTitle className="text-lg">
+        <Card className="bg-white border-gray-200 shadow-lg">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 border-b bg-gradient-to-r from-gray-50 to-white">
+            <CardTitle className="text-lg text-gray-900">
               {viewMode === "edit"
                 ? "Page Content - Edit Mode"
                 : "Page Preview"}
@@ -836,7 +840,7 @@ export default function EditPagePage() {
               }
               className={
                 viewMode === "preview"
-                  ? "bg-blue-600 hover:bg-blue-700"
+                  ? "bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white"
                   : "border-gray-200"
               }
             >

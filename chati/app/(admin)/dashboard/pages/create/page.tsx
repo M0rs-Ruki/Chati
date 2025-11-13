@@ -5,10 +5,19 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import LoadingCreate from "./loading";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowLeft, Save, Eye, Edit2, Loader2 } from "lucide-react";
+import {
+  ArrowLeft,
+  Save,
+  Eye,
+  Edit2,
+  Loader2,
+  FileText,
+  Plus,
+} from "lucide-react";
 import PageBuilder from "@/components/page-builder";
 import {
   Select,
@@ -22,6 +31,8 @@ export default function CreatePagePage() {
   const router = useRouter();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [pageLoading, setPageLoading] = useState(true);
   const [viewMode, setViewMode] = useState<"edit" | "preview">("edit");
   const [formData, setFormData] = useState({
     title: "",
@@ -34,6 +45,15 @@ export default function CreatePagePage() {
   });
   const [content, setContent] = useState<any[]>([]);
   const [debouncedContent, setDebouncedContent] = useState<any[]>([]);
+
+  useEffect(() => {
+    setMounted(true);
+    // Simulate initial page load
+    const timer = setTimeout(() => {
+      setPageLoading(false);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Auto-generate slug from title
   useEffect(() => {
@@ -141,12 +161,21 @@ export default function CreatePagePage() {
 
   const renderPreview = () => {
     return (
-      <div className="bg-white min-h-[600px]">
+      <div className="bg-white min-h-[600px] rounded-lg">
         {debouncedContent.length === 0 ? (
-          <div className="text-center py-12 border border-dashed border-gray-300 rounded-lg">
-            <p className="text-gray-500 text-lg">
-              No content added yet. Add components to see the preview.
+          <div className="text-center py-16 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50">
+            <FileText className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+            <p className="text-gray-500 text-lg mb-2">No content added yet.</p>
+            <p className="text-gray-400 text-sm mb-6">
+              Add components from the editor to see your page preview
             </p>
+            <Button
+              onClick={() => setViewMode("edit")}
+              className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700"
+            >
+              <Edit2 className="h-4 w-4 mr-2" />
+              Start Building
+            </Button>
           </div>
         ) : (
           <div className="space-y-0">
@@ -154,7 +183,7 @@ export default function CreatePagePage() {
               <div key={block.id || index}>
                 {/* Text + Image Hero */}
                 {block.type === "text-image" && (
-                  <section className="relative overflow-hidden py-12 md:py-16 bg-gradient-to-br from-blue-50 via-white to-green-50">
+                  <section className="relative overflow-hidden py-12 md:py-16 bg-gradient-to-br from-blue-50 via-white to-green-50 rounded-lg">
                     <div className="container mx-auto px-4">
                       <div className="grid gap-8 lg:grid-cols-2 items-center">
                         <div
@@ -207,7 +236,7 @@ export default function CreatePagePage() {
 
                 {/* Feature Block */}
                 {block.type === "feature-block" && (
-                  <section className="py-12 md:py-16 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+                  <section className="py-12 md:py-16 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 rounded-lg">
                     <div className="container mx-auto px-4">
                       <div className="grid gap-8 lg:grid-cols-2 items-center">
                         <div
@@ -266,7 +295,7 @@ export default function CreatePagePage() {
 
                 {/* Features Grid */}
                 {block.type === "features-grid" && (
-                  <section className="py-12 md:py-16 bg-white">
+                  <section className="py-12 md:py-16 bg-white rounded-lg">
                     <div className="container mx-auto px-4">
                       <div className="text-center mb-10">
                         <h2 className="text-3xl font-bold mb-3">
@@ -310,7 +339,7 @@ export default function CreatePagePage() {
 
                 {/* Use Cases */}
                 {block.type === "use-cases" && (
-                  <section className="py-12 md:py-16 bg-white">
+                  <section className="py-12 md:py-16 bg-white rounded-lg">
                     <div className="container mx-auto px-4">
                       <div className="text-center mb-10">
                         <h2 className="text-3xl font-bold mb-3">
@@ -358,7 +387,7 @@ export default function CreatePagePage() {
 
                 {/* Brand Slider */}
                 {block.type === "brand-slider" && (
-                  <section className="py-12 md:py-16 bg-white border-b">
+                  <section className="py-12 md:py-16 bg-white border-b rounded-lg">
                     <div className="container mx-auto px-4">
                       <div className="text-center mb-8">
                         <h2 className="text-2xl font-bold">
@@ -402,7 +431,7 @@ export default function CreatePagePage() {
 
                 {/* FAQ */}
                 {block.type === "faq" && (
-                  <section className="py-12 md:py-16 bg-gradient-to-br from-gray-50 to-white">
+                  <section className="py-12 md:py-16 bg-gradient-to-br from-gray-50 to-white rounded-lg">
                     <div className="container mx-auto px-4">
                       <div className="text-center mb-10">
                         <h2 className="text-3xl font-bold mb-3">
@@ -433,7 +462,7 @@ export default function CreatePagePage() {
 
                 {/* CTA */}
                 {block.type === "cta" && (
-                  <section className="py-12 md:py-16 bg-gradient-to-br from-blue-600 to-purple-700 text-white">
+                  <section className="py-12 md:py-16 bg-gradient-to-br from-blue-600 to-purple-700 text-white rounded-lg">
                     <div className="container mx-auto px-4 text-center">
                       <h2 className="text-3xl font-bold mb-4">
                         {block.data?.title || "CTA Title"}
@@ -468,19 +497,28 @@ export default function CreatePagePage() {
     );
   };
 
+  if (pageLoading) {
+    return <LoadingCreate />;
+  }
+
   return (
-    <div className="pt-8 px-6 space-y-6 pb-12">
+    <div
+      className={`pt-8 px-6 space-y-8 pb-12 max-w-7xl mx-auto transition-all duration-700 ${
+        mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+      }`}
+    >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Button
-            variant="ghost"
+            variant="outline"
             size="icon"
             onClick={() => router.push("/dashboard/pages")}
+            className="border-gray-200 hover:bg-gray-100 transition-all"
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 bg-clip-text text-transparent">
               Create New Page
             </h2>
             <p className="text-gray-600 mt-1">
@@ -492,7 +530,7 @@ export default function CreatePagePage() {
           <Button
             onClick={handleSubmit}
             disabled={loading}
-            className="bg-green-600 hover:bg-green-700 text-white font-semibold"
+            className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-green-600/25 transition-all duration-300 hover:scale-105"
           >
             {loading ? (
               <>
@@ -501,7 +539,7 @@ export default function CreatePagePage() {
               </>
             ) : (
               <>
-                <Save className="h-4 w-4 mr-2" />
+                <Plus className="h-4 w-4 mr-2" />
                 Create Page
               </>
             )}
@@ -510,14 +548,19 @@ export default function CreatePagePage() {
       </div>
 
       {/* Page Settings */}
-      <Card className="bg-white border-gray-200">
-        <CardHeader>
-          <CardTitle className="text-lg">Page Settings</CardTitle>
+      <Card className="bg-white border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300">
+        <CardHeader className="border-b bg-gradient-to-r">
+          <CardTitle className="text-lg text-gray-900 flex items-center gap-2">
+            <FileText className="w-5 h-5 text-indigo-600" />
+            Page Settings
+          </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-4 p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="title">Page Title *</Label>
+              <Label htmlFor="title" className="text-gray-700 font-medium">
+                Page Title <span className="text-red-500">*</span>
+              </Label>
               <Input
                 id="title"
                 value={formData.title}
@@ -535,7 +578,9 @@ export default function CreatePagePage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="slug">URL Slug (auto-generated)</Label>
+              <Label htmlFor="slug" className="text-gray-700 font-medium">
+                URL Slug (auto-generated)
+              </Label>
               <Input
                 id="slug"
                 value={formData.slug}
@@ -543,14 +588,16 @@ export default function CreatePagePage() {
                   setFormData({ ...formData, slug: e.target.value })
                 }
                 placeholder="page-url-slug"
-                className="bg-white border-gray-200 font-mono text-sm"
+                className="bg-white border-gray-200 font-mono text-sm text-indigo-600"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="status">Status</Label>
+              <Label htmlFor="status" className="text-gray-700 font-medium">
+                Status
+              </Label>
               <Select
                 value={formData.status}
                 onValueChange={(value) =>
@@ -568,7 +615,12 @@ export default function CreatePagePage() {
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="description">Meta Description</Label>
+              <Label
+                htmlFor="description"
+                className="text-gray-700 font-medium"
+              >
+                Meta Description
+              </Label>
               <Input
                 id="description"
                 value={metadata.description}
@@ -583,10 +635,10 @@ export default function CreatePagePage() {
         </CardContent>
       </Card>
 
-      {/* Page Content with Toggle Button Inside Header */}
-      <Card className="bg-white border-gray-200">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0">
-          <CardTitle className="text-lg">
+      {/* Page Content with Toggle */}
+      <Card className="bg-white border-gray-200 shadow-lg">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 border-b bg-gradient-to-r from-gray-50 to-white">
+          <CardTitle className="text-lg text-gray-900">
             {viewMode === "edit" ? "Page Content - Edit Mode" : "Page Preview"}
           </CardTitle>
           <Button
@@ -598,7 +650,7 @@ export default function CreatePagePage() {
             }
             className={
               viewMode === "preview"
-                ? "bg-blue-600 hover:bg-blue-700"
+                ? "bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white"
                 : "border-gray-200"
             }
           >
@@ -615,7 +667,7 @@ export default function CreatePagePage() {
             )}
           </Button>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-6">
           {viewMode === "edit" ? (
             <PageBuilder content={content} onChange={setContent} />
           ) : (
