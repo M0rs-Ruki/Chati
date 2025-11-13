@@ -57,6 +57,7 @@ export default function CreateBlogPage() {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [pageLoading, setPageLoading] = useState(true);
   const [formData, setFormData] = useState({
     title: "",
     content: "",
@@ -85,6 +86,11 @@ export default function CreateBlogPage() {
 
   useEffect(() => {
     setMounted(true);
+    // Simulate initial page load
+    const timer = setTimeout(() => {
+      setPageLoading(false);
+    }, 500);
+    return () => clearTimeout(timer);
   }, []);
 
   // Fetch media files when media picker opens
@@ -279,6 +285,10 @@ export default function CreateBlogPage() {
       setLoading(false);
     }
   };
+
+  if (pageLoading) {
+    return <LoadingCreate />;
+  }
 
   return (
     <div
