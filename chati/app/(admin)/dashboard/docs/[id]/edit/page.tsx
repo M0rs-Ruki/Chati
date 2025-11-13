@@ -1,7 +1,6 @@
 "use client";
 
 import type React from "react";
-
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -16,33 +15,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Textarea } from "@/components/ui/textarea";
-import { ArrowLeft, Upload, X } from "lucide-react";
+import {
+  ArrowLeft,
+  Upload,
+  Loader2,
+  BookOpen,
+  Save,
+  ImageIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { WYSIWYGEditor } from "@/components/wysiwyg-editor";
 import { useToast } from "@/hooks/use-toast";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-
-interface MediaFile {
-  id: string;
-  url: string;
-  alt: string;
-  type: string;
-  size: number;
-  uploadedAt: string;
-  createdBy?: {
-    id: string;
-    name: string;
-    email: string;
-  };
-}
 
 interface Documentation {
   id: string;
@@ -62,6 +45,7 @@ export default function EditDocPage() {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
+  const [mounted, setMounted] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     content: "",
@@ -74,6 +58,7 @@ export default function EditDocPage() {
   });
 
   useEffect(() => {
+    setMounted(true);
     fetchDoc();
   }, [params.id]);
 
@@ -102,24 +87,20 @@ export default function EditDocPage() {
       const result = await response.json();
       const doc = result.data;
 
-      // Debug: Log the content structure
       console.log("Documentation content:", doc.content);
       console.log("Full doc:", doc);
 
-      // Try multiple ways to extract content
       let contentText = "";
       if (doc.content) {
         if (typeof doc.content === "string") {
           contentText = doc.content;
         } else if (doc.content.html) {
-          // HTML content from WYSIWYGEditor (most common)
           contentText = doc.content.html;
         } else if (doc.content.markdown) {
           contentText = doc.content.markdown;
         } else if (doc.content.content) {
           contentText = doc.content.content;
         } else {
-          // If content is an object but none of the expected keys, stringify it
           contentText = JSON.stringify(doc.content);
         }
       }
@@ -169,7 +150,6 @@ export default function EditDocPage() {
         return;
       }
 
-      // Prepare the request body
       const updateData = {
         title: formData.title,
         content: { html: formData.content },
@@ -223,47 +203,52 @@ export default function EditDocPage() {
 
   if (fetching) {
     return (
-      <div className="text-center py-12">
-        <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-[var(--primary-green)] border-r-transparent" />
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center space-y-4">
+          <Loader2 className="h-12 w-12 animate-spin text-blue-600 mx-auto" />
+          <p className="text-gray-600">Loading documentation...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="pt-6 px-4 space-y-6 animate-in fade-in duration-500">
+    <div
+      className={`pt-8 px-6 pb-12 space-y-8 max-w-5xl mx-auto transition-all duration-700 ${
+        mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+      }`}
+    >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Link href="/dashboard/docs">
             <Button
               variant="outline"
               size="icon"
-              className="border-[var(--border)] bg-transparent"
+              className="border-gray-200 hover:bg-gray-100 transition-all"
             >
               <ArrowLeft className="h-4 w-4" />
             </Button>
           </Link>
-          <div>
-            #
-            <h2 className="text-3xl font-bold text-[var(--text-primary)]">
-              Edit Documentation
+          <div className="space-y-1">
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 bg-clip-text text-transparent">
+              Edit Documentation ✏️
             </h2>
-            <p className="text-[var(--text-secondary)] mt-2">
-              Update your documentation
-            </p>
+            <p className="text-gray-600">Update your documentation</p>
           </div>
         </div>
       </div>
 
       <form onSubmit={handleSubmit}>
-        <Card className="bg-white border-[var(--border)]">
-          <CardHeader>
-            <CardTitle className="text-[var(--text-primary)]">
+        <Card className="bg-white border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300">
+          <CardHeader className="border-b border-gray-200">
+            <CardTitle className="text-gray-900 flex items-center gap-2">
+              <BookOpen className="w-5 h-5 text-blue-600" />
               Documentation Details
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-6 p-6">
             <div className="space-y-2">
-              <Label htmlFor="title" className="text-[var(--text-secondary)]">
+              <Label htmlFor="title" className="text-gray-700 font-medium">
                 Title <span className="text-red-500">*</span>
               </Label>
               <Input
@@ -274,21 +259,31 @@ export default function EditDocPage() {
                 }
                 placeholder="Enter documentation title"
                 required
-                className="bg-white border-[var(--border)]"
+                className="bg-white border-gray-200"
               />
             </div>
 
             <Tabs defaultValue="content" className="w-full">
-              <TabsList className="bg-gray-100">
-                <TabsTrigger value="content">Content</TabsTrigger>
-                <TabsTrigger value="meta">Meta</TabsTrigger>
+              <TabsList className="bg-gradient-to-r from-gray-100 to-gray-200 border border-gray-300">
+                <TabsTrigger
+                  value="content"
+                  className="data-[state=active]:bg-white data-[state=active]:shadow-sm"
+                >
+                  Content
+                </TabsTrigger>
+                <TabsTrigger
+                  value="meta"
+                  className="data-[state=active]:bg-white data-[state=active]:shadow-sm"
+                >
+                  Meta
+                </TabsTrigger>
               </TabsList>
 
               <TabsContent value="content" className="space-y-4 mt-6">
                 <div className="space-y-2">
                   <Label
                     htmlFor="imageUrl"
-                    className="text-[var(--text-secondary)]"
+                    className="text-gray-700 font-medium"
                   >
                     Hero Image
                   </Label>
@@ -298,18 +293,19 @@ export default function EditDocPage() {
                         type="button"
                         variant="outline"
                         size="sm"
-                        className="flex-1 bg-transparent"
+                        className="flex-1 bg-white border-purple-200 hover:bg-purple-50 transition-all"
                       >
                         <Upload className="h-4 w-4 mr-2" />
-                        Create New
+                        Upload New
                       </Button>
                       <Button
                         type="button"
                         variant="outline"
                         size="sm"
-                        className="flex-1 bg-transparent"
+                        className="flex-1 bg-white border-blue-200 hover:bg-blue-50 transition-all"
                       >
-                        Choose from existing
+                        <ImageIcon className="h-4 w-4 mr-2" />
+                        Choose Existing
                       </Button>
                     </div>
                     <Input
@@ -319,13 +315,22 @@ export default function EditDocPage() {
                         setFormData({ ...formData, imageUrl: e.target.value })
                       }
                       placeholder="Or enter image URL"
-                      className="bg-white border-[var(--border)]"
+                      className="bg-white border-gray-200"
                     />
+                    {formData.imageUrl && (
+                      <div className="mt-2 p-2 bg-gray-50 rounded-lg border border-gray-200">
+                        <img
+                          src={formData.imageUrl}
+                          alt="Preview"
+                          className="w-full h-32 object-cover rounded"
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-[var(--text-secondary)]">
+                  <Label className="text-gray-700 font-medium">
                     Content <span className="text-red-500">*</span>
                   </Label>
                   <WYSIWYGEditor
@@ -341,7 +346,7 @@ export default function EditDocPage() {
                 <div className="space-y-2">
                   <Label
                     htmlFor="description"
-                    className="text-[var(--text-secondary)]"
+                    className="text-gray-700 font-medium"
                   >
                     Description
                   </Label>
@@ -358,15 +363,12 @@ export default function EditDocPage() {
                       })
                     }
                     placeholder="Brief description of the documentation"
-                    className="bg-white border-[var(--border)]"
+                    className="bg-white border-gray-200"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label
-                    htmlFor="tags"
-                    className="text-[var(--text-secondary)]"
-                  >
+                  <Label htmlFor="tags" className="text-gray-700 font-medium">
                     Tags (comma-separated)
                   </Label>
                   <Input
@@ -382,15 +384,12 @@ export default function EditDocPage() {
                       })
                     }
                     placeholder="api, guide, tutorial"
-                    className="bg-white border-[var(--border)]"
+                    className="bg-white border-gray-200"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label
-                    htmlFor="status"
-                    className="text-[var(--text-secondary)]"
-                  >
+                  <Label htmlFor="status" className="text-gray-700 font-medium">
                     Status
                   </Label>
                   <Select
@@ -399,7 +398,7 @@ export default function EditDocPage() {
                       setFormData({ ...formData, status: value })
                     }
                   >
-                    <SelectTrigger className="bg-white border-[var(--border)]">
+                    <SelectTrigger className="bg-white border-gray-200">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -413,26 +412,30 @@ export default function EditDocPage() {
               </TabsContent>
             </Tabs>
 
-            <div className="flex gap-4 pt-4 border-t border-[var(--border)]">
+            <div className="flex gap-4 pt-4 border-t border-gray-200">
               <Button
                 type="submit"
-                className="bg-[var(--primary-green)] hover:bg-[var(--primary-green-dark)] text-white"
+                className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg hover:shadow-blue-600/25 transition-all duration-300 hover:scale-105"
                 disabled={loading}
               >
                 {loading ? (
                   <>
-                    <div className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-white border-r-transparent mr-2" />
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                     Updating...
                   </>
                 ) : (
-                  "Update Documentation"
+                  <>
+                    <Save className="h-4 w-4 mr-2" />
+                    Update Documentation
+                  </>
                 )}
               </Button>
               <Link href="/dashboard/docs">
                 <Button
                   type="button"
                   variant="outline"
-                  className="border-[var(--border)] bg-transparent"
+                  className="border-gray-200 bg-transparent hover:bg-gray-100"
+                  disabled={loading}
                 >
                   Cancel
                 </Button>
