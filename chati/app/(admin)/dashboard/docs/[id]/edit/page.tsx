@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import LoadingEditDoc from "./loading"
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -202,14 +203,7 @@ export default function EditDocPage() {
   };
 
   if (fetching) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center space-y-4">
-          <Loader2 className="h-12 w-12 animate-spin text-blue-600 mx-auto" />
-          <p className="text-gray-600">Loading documentation...</p>
-        </div>
-      </div>
-    );
+    return <LoadingEditDoc />;
   }
 
   return (
