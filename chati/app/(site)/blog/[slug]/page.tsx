@@ -9,7 +9,7 @@ async function getBlogPost(slug: string) {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/public/blog/slug/${slug}`,
       { 
-        cache: 'no-store' // Always get fresh data
+        cache: 'no-store'
       }
     )
     

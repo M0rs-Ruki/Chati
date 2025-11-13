@@ -9,6 +9,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { useState, useEffect } from "react"
 import { blogPosts as staticBlogPosts } from "@/lib/blog-data"
+import BlogListingLoading from "./loading"
 
 interface BlogPost {
   id?: string
@@ -193,13 +194,7 @@ export default function BlogListingPage() {
         <div className="container mx-auto px-4">
           {/* Loading State */}
           {loading && (
-            <div className="flex flex-col items-center justify-center py-20 space-y-4">
-              <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
-              <div className="text-center space-y-2">
-                <p className="text-lg font-medium text-gray-900">Loading blog posts...</p>
-                <p className="text-sm text-gray-500">Please wait while we fetch the latest articles</p>
-              </div>
-            </div>
+            <BlogListingLoading />
           )}
 
           {/* Error State */}
