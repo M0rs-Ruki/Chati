@@ -15,9 +15,13 @@ import {
   LogOut,
   ImageIcon,
   Eye,
+  Sparkles,
+  ChevronRight,
+  Settings,
 } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useTheme } from "@/lib/theme-provider";
+import { Button } from "@/components/ui/button";
 
 interface User {
   id: string;
@@ -37,6 +41,11 @@ export default function DashboardLayout({
   const { theme } = useTheme();
   const [user, setUser] = useState<User | null>(null);
   const [loadingUser, setLoadingUser] = useState(true);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -74,6 +83,7 @@ export default function DashboardLayout({
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     router.push("/admin");
   };
 
@@ -98,110 +108,212 @@ export default function DashboardLayout({
   };
 
   return (
-    <div className="flex h-screen bg-gray-50">
-      <aside className="w-64 bg-white border-r border-gray-200 flex flex-col">
-        <div className="flex flex-col h-full">
+    <div className="flex h-screen bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
+      {/* Sidebar */}
+      <aside
+        className={`w-72 bg-white border-r border-gray-200 flex flex-col shadow-xl relative transition-all duration-700 ${
+          mounted ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0"
+        }`}
+      >
+        {/* Decorative gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-green-500/5 to-transparent pointer-events-none" />
+
+        <div className="flex flex-col h-full relative z-10">
           {/* Logo Section */}
-          <div className="p-6 border-b border-gray-100">
+          <div className="p-6 border-b border-gray-100/50 bg-gradient-to-r from-white to-gray-50/30">
             {theme?.logoUrl ? (
               <Image
                 src={theme.logoUrl || "/placeholder.svg"}
                 alt="Logo"
-                className="h-10 w-auto"
+                className="h-12 w-auto"
                 width={150}
                 height={48}
               />
             ) : (
-              <div className="flex items-center gap-3">
-                <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-purple-600 to-purple-700 flex items-center justify-center">
-                  <span className="text-white font-bold text-xl">C</span>
+              <div className="flex items-center gap-3 group cursor-pointer">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl blur-lg opacity-50 group-hover:opacity-75 transition-opacity duration-500" />
+                  <div className="relative h-12 w-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg transform transition-transform duration-500 group-hover:scale-110">
+                    <Sparkles className="h-6 w-6 text-white" />
+                  </div>
                 </div>
                 <div>
-                  <h1 className="text-lg font-bold text-gray-900">ChatiCMS</h1>
+                  <h1 className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                    Chati CMS
+                  </h1>
                   <p className="text-xs text-gray-500">Content Management</p>
                 </div>
               </div>
             )}
           </div>
 
-          {/* Content Section */}
-          <nav className="flex-1 p-4 space-y-6 overflow-y-auto">
+          {/* Navigation Section */}
+          <nav className="flex-1 p-4 space-y-6 overflow-y-auto custom-scrollbar">
             <div className="space-y-1">
-              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-3 mb-2">
+              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-3 mb-3 flex items-center gap-2">
+                <span className="w-4 h-0.5 bg-gradient-to-r from-green-500 to-transparent rounded-full" />
                 Content
               </p>
-              {navItems.map((item) => {
+              {navItems.map((item, index) => {
                 const Icon = item.icon;
                 const isActive = pathname === item.href;
 
                 return (
                   <Link key={item.href} href={item.href}>
                     <div
-                      className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 cursor-pointer ${
+                      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 cursor-pointer group relative overflow-hidden ${
                         isActive
-                          ? "bg-purple-50 text-purple-700"
-                          : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                          ? "bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-lg shadow-green-500/25"
+                          : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
                       }`}
+                      style={{
+                        animationDelay: `${index * 50}ms`,
+                      }}
                     >
-                      <Icon className="h-5 w-5" />
-                      <span className="font-medium text-sm">{item.label}</span>
+                      {isActive && (
+                        <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent animate-shimmer" />
+                      )}
+                      <Icon
+                        className={`h-5 w-5 transition-transform duration-300 ${
+                          isActive ? "" : "group-hover:scale-110"
+                        }`}
+                      />
+                      <span className="font-medium text-sm flex-1">
+                        {item.label}
+                      </span>
+                      {isActive && (
+                        <ChevronRight className="h-4 w-4 animate-pulse" />
+                      )}
                     </div>
                   </Link>
                 );
               })}
             </div>
 
-            {/* View Public Site */}
-            <div className="pt-4 border-t border-gray-100">
+            {/* Settings & View Public Site */}
+            <div className="pt-4 border-t border-gray-100 space-y-1">
+              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-3 mb-3 flex items-center gap-2">
+                <span className="w-4 h-0.5 bg-gradient-to-r from-blue-500 to-transparent rounded-full" />
+                Actions
+              </p>
               <Link href="/" target="_blank">
-                <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 cursor-pointer text-gray-600 hover:bg-gray-50 hover:text-gray-900">
-                  <Eye className="h-5 w-5" />
+                <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 cursor-pointer text-gray-600 hover:bg-blue-50 hover:text-blue-700 group">
+                  <Eye className="h-5 w-5 group-hover:scale-110 transition-transform" />
                   <span className="font-medium text-sm">View Public Site</span>
+                </div>
+              </Link>
+              <Link href="/dashboard/profile">
+                <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 cursor-pointer text-gray-600 hover:bg-purple-50 hover:text-purple-700 group">
+                  <Settings className="h-5 w-5 group-hover:rotate-90 transition-transform duration-500" />
+                  <span className="font-medium text-sm">Settings</span>
                 </div>
               </Link>
             </div>
           </nav>
 
           {/* User Profile Section */}
-          <div className="p-4 border-t border-gray-100">
+          <div className="p-4 border-t border-gray-100 bg-gradient-to-r from-gray-50/50 to-white">
             {loadingUser ? (
-              <div className="flex items-center justify-center h-10 text-gray-600">
-                Loading user...
+              <div className="flex items-center justify-center h-16">
+                <div className="flex gap-1">
+                  <div
+                    className="w-2 h-2 bg-green-500 rounded-full animate-bounce"
+                    style={{ animationDelay: "0ms" }}
+                  />
+                  <div
+                    className="w-2 h-2 bg-green-500 rounded-full animate-bounce"
+                    style={{ animationDelay: "150ms" }}
+                  />
+                  <div
+                    className="w-2 h-2 bg-green-500 rounded-full animate-bounce"
+                    style={{ animationDelay: "300ms" }}
+                  />
+                </div>
               </div>
             ) : user ? (
-              <Link
-                href="/dashboard/profile"
-                className="flex items-center gap-3 mb-3"
-              >
-                <Avatar className="h-10 w-10 bg-gradient-to-br from-purple-600 to-purple-700">
-                  <AvatarFallback className="bg-transparent text-white font-semibold text-sm">
-                    {getUserInitials(user.name)}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-gray-900 truncate">
-                    {user.name}
-                  </p>
-                  <p className="text-xs text-gray-500 truncate">
-                    {user.role.toLowerCase()}
-                  </p>
-                </div>
-              </Link>
+              <div className="space-y-3">
+                <Link
+                  href="/dashboard/profile"
+                  className="flex items-center gap-3 p-2 rounded-xl hover:bg-gray-100 transition-all duration-300 group"
+                >
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full blur-md opacity-50 group-hover:opacity-75 transition-opacity" />
+                    <Avatar className="h-11 w-11 bg-gradient-to-br from-green-500 to-emerald-600 border-2 border-white shadow-lg relative">
+                      <AvatarFallback className="bg-transparent text-white font-semibold text-sm">
+                        {getUserInitials(user.name)}
+                      </AvatarFallback>
+                    </Avatar>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-gray-900 truncate">
+                      {user.name}
+                    </p>
+                    <p className="text-xs text-gray-500 truncate capitalize">
+                      {user.role.toLowerCase()}
+                    </p>
+                  </div>
+                  <ChevronRight className="h-4 w-4 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </Link>
+
+                <Button
+                  onClick={handleLogout}
+                  variant="ghost"
+                  className="w-full justify-start text-gray-600 hover:text-red-600 hover:bg-red-50 transition-all duration-300 group"
+                >
+                  <LogOut className="h-4 w-4 mr-2 group-hover:translate-x-1 transition-transform" />
+                  Logout
+                </Button>
+              </div>
             ) : (
-              <div className="text-red-600">Failed to load user</div>
+              <div className="text-red-600 text-sm text-center p-2">
+                Failed to load user
+              </div>
             )}
-            <button
-              onClick={handleLogout}
-              className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-red-50 hover:text-red-600 transition-colors"
-            >
-              <LogOut className="h-4 w-4" />
-              Logout
-            </button>
           </div>
         </div>
       </aside>
 
-      <main className="flex-1 overflow-y-auto">{children}</main>
+      {/* Main Content */}
+      <main
+        className={`flex-1 overflow-y-auto custom-scrollbar transition-all duration-700 ${
+          mounted ? "translate-x-0 opacity-100" : "translate-x-8 opacity-0"
+        }`}
+      >
+        {children}
+      </main>
+
+      {/* Custom Styles */}
+      <style jsx global>{`
+        @keyframes shimmer {
+          0% {
+            transform: translateX(-100%);
+          }
+          100% {
+            transform: translateX(100%);
+          }
+        }
+
+        .animate-shimmer {
+          animation: shimmer 2s infinite;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #d1d5db;
+          border-radius: 3px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #9ca3af;
+        }
+      `}</style>
     </div>
   );
 }
