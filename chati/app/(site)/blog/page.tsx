@@ -39,12 +39,22 @@ interface PageProps {
 // Server-side data fetching
 async function getBlogPosts(): Promise<BlogPost[]> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+    // Determine the correct base URL
+    const baseUrl =
+      process.env.NEXT_PUBLIC_BASE_URL || process.env.VERCEL_URL
+        ? `https://${process.env.VERCEL_URL}`
+        : "http://localhost:3000";
+
     const response = await fetch(`${baseUrl}/api/blog?limit=100`, {
-      next: { revalidate: 60 }, // Revalidate every 60 seconds
+      cache: "no-store", // Changed from revalidate to no-store for production
     });
 
     if (!response.ok) {
+      console.error(
+        "Failed to fetch blogs:",
+        response.status,
+        response.statusText
+      );
       throw new Error("Failed to fetch blogs");
     }
 
@@ -116,7 +126,11 @@ export async function generateMetadata({
   if (category) {
     title = `${category} Articles - WhatsApp Business Blog | Chati`;
     description = `Explore ${category} articles about WhatsApp Business API, automation, and customer engagement strategies. Expert tips and best practices for ${category}.`;
-    keywords.push(category.toLowerCase(), `${category} tips`, `${category} guide`);
+    keywords.push(
+      category.toLowerCase(),
+      `${category} tips`,
+      `${category} guide`
+    );
   } else if (search) {
     title = `Search Results for "${search}" - WhatsApp Business Blog | Chati`;
     description = `Find articles and guides about "${search}" on WhatsApp Business, chatbots, and customer engagement. Expert insights and practical tips.`;
@@ -124,7 +138,9 @@ export async function generateMetadata({
   }
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://chati.chat";
-  const blogUrl = `${baseUrl}/blog${category ? `?category=${encodeURIComponent(category)}` : ""}${search ? `?search=${encodeURIComponent(search)}` : ""}`;
+  const blogUrl = `${baseUrl}/blog${
+    category ? `?category=${encodeURIComponent(category)}` : ""
+  }${search ? `?search=${encodeURIComponent(search)}` : ""}`;
 
   return {
     title,
@@ -223,13 +239,17 @@ export default async function BlogPage({ searchParams }: PageProps) {
             name: "Chati Blog",
             description:
               "Expert insights on WhatsApp Business API, customer engagement, and automation strategies",
-            url: `${process.env.NEXT_PUBLIC_BASE_URL || "https://chati.chat"}/blog`,
+            url: `${
+              process.env.NEXT_PUBLIC_BASE_URL || "https://chati.chat"
+            }/blog`,
             publisher: {
               "@type": "Organization",
               name: "Chati",
               logo: {
                 "@type": "ImageObject",
-                url: `${process.env.NEXT_PUBLIC_BASE_URL || "https://chati.chat"}/logo.png`,
+                url: `${
+                  process.env.NEXT_PUBLIC_BASE_URL || "https://chati.chat"
+                }/logo.png`,
               },
             },
             blogPost: filteredPosts.slice(0, 10).map((post) => ({
@@ -251,12 +271,16 @@ export default async function BlogPage({ searchParams }: PageProps) {
                 name: "Chati",
                 logo: {
                   "@type": "ImageObject",
-                  url: `${process.env.NEXT_PUBLIC_BASE_URL || "https://chati.chat"}/logo.png`,
+                  url: `${
+                    process.env.NEXT_PUBLIC_BASE_URL || "https://chati.chat"
+                  }/logo.png`,
                 },
               },
               mainEntityOfPage: {
                 "@type": "WebPage",
-                "@id": `${process.env.NEXT_PUBLIC_BASE_URL || "https://chati.chat"}/blog/${post.slug}`,
+                "@id": `${
+                  process.env.NEXT_PUBLIC_BASE_URL || "https://chati.chat"
+                }/blog/${post.slug}`,
               },
             })),
           }),
@@ -275,13 +299,17 @@ export default async function BlogPage({ searchParams }: PageProps) {
                 "@type": "ListItem",
                 position: 1,
                 name: "Home",
-                item: `${process.env.NEXT_PUBLIC_BASE_URL || "https://chati.chat"}`,
+                item: `${
+                  process.env.NEXT_PUBLIC_BASE_URL || "https://chati.chat"
+                }`,
               },
               {
                 "@type": "ListItem",
                 position: 2,
                 name: "Blog",
-                item: `${process.env.NEXT_PUBLIC_BASE_URL || "https://chati.chat"}/blog`,
+                item: `${
+                  process.env.NEXT_PUBLIC_BASE_URL || "https://chati.chat"
+                }/blog`,
               },
             ],
           }),
@@ -319,9 +347,13 @@ export default async function BlogPage({ searchParams }: PageProps) {
 
             {/* RSS Feed Link */}
             <div className="mb-4 flex justify-center">
-              <Link href="/blog/rss.xml" target="_blank" rel="noopener noreferrer">
-                <Button 
-                  variant="outline" 
+              <Link
+                href="/blog/rss.xml"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button
+                  variant="outline"
                   size="sm"
                   className="gap-2 hover:bg-orange-50 hover:text-orange-600 hover:border-orange-300 transition-all"
                 >
@@ -424,7 +456,12 @@ export default async function BlogPage({ searchParams }: PageProps) {
                   <article className="p-4 flex flex-col flex-grow">
                     {/* Meta Info */}
                     <div className="flex items-center gap-3 text-xs text-gray-600 mb-2">
-                      <time className="flex items-center gap-1" dateTime={post.date || post.publishedAt || post.createdAt}>
+                      <time
+                        className="flex items-center gap-1"
+                        dateTime={
+                          post.date || post.publishedAt || post.createdAt
+                        }
+                      >
                         <Calendar className="w-3 h-3" aria-hidden="true" />
                         <span>{formatDate(post)}</span>
                       </time>
@@ -447,14 +484,21 @@ export default async function BlogPage({ searchParams }: PageProps) {
                     </p>
 
                     {/* CTA */}
-                    <Link href={`/blog/${post.slug}`} className="mt-auto" aria-label={`Continue reading ${post.title}`}>
+                    <Link
+                      href={`/blog/${post.slug}`}
+                      className="mt-auto"
+                      aria-label={`Continue reading ${post.title}`}
+                    >
                       <Button
                         variant="ghost"
                         size="sm"
                         className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 group/btn w-full justify-center text-sm h-8"
                       >
                         Read More
-                        <ArrowRight className="ml-1 w-3 h-3 group-hover/btn:translate-x-1 transition-transform" aria-hidden="true" />
+                        <ArrowRight
+                          className="ml-1 w-3 h-3 group-hover/btn:translate-x-1 transition-transform"
+                          aria-hidden="true"
+                        />
                       </Button>
                     </Link>
                   </article>

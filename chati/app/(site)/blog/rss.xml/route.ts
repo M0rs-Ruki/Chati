@@ -3,12 +3,16 @@ import { blogPosts } from '@/lib/blog-data'
 // Fetch blog posts for RSS
 async function getBlogPosts() {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 
+                    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 
+                    'http://localhost:3000');
+    
     const response = await fetch(`${baseUrl}/api/blog?limit=100`, {
-      next: { revalidate: 3600 },
+      cache: 'no-store',
     })
 
     if (!response.ok) {
+      console.error('Failed to fetch blogs for RSS:', response.status)
       throw new Error('Failed to fetch blogs')
     }
 
