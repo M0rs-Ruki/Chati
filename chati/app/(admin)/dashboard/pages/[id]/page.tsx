@@ -3,7 +3,15 @@
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Edit, Loader2 } from "lucide-react";
+import Loading from "./loading";
+import {
+  ArrowLeft,
+  Edit,
+  Loader2,
+  FileText,
+  Calendar,
+  User,
+} from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface PageData {
@@ -29,6 +37,11 @@ export default function ViewPagePage() {
   const { toast } = useToast();
   const [page, setPage] = useState<PageData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (params.id) {
@@ -83,61 +96,74 @@ export default function ViewPagePage() {
     }
   };
 
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "PUBLISHED":
+        return "bg-gradient-to-r from-green-100 to-green-200 text-green-700 border-green-300";
+      case "REVIEW":
+        return "bg-gradient-to-r from-blue-100 to-blue-200 text-blue-700 border-blue-300";
+      case "ARCHIVED":
+        return "bg-gradient-to-r from-red-100 to-red-200 text-red-700 border-red-300";
+      default:
+        return "bg-gradient-to-r from-gray-100 to-gray-200 text-gray-600 border-gray-300";
+    }
+  };
+
   if (loading) {
+    return <Loading />;
+  }
+
+  if (!page) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 space-y-4">
-        <Loader2 className="h-12 w-12 animate-spin text-green-600" />
-        <div className="text-center space-y-2">
-          <p className="text-lg font-medium text-gray-900">Loading page...</p>
-          <p className="text-sm text-gray-500">
-            Please wait while we fetch the page details
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center space-y-4">
+          <div className="mx-auto w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center">
+            <FileText className="h-10 w-10 text-gray-400" />
+          </div>
+          <h3 className="text-xl font-semibold text-gray-900">
+            Page not found
+          </h3>
+          <p className="text-gray-600">
+            The page you're looking for doesn't exist
           </p>
+          <Button
+            onClick={() => router.push("/dashboard/pages")}
+            className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Pages
+          </Button>
         </div>
       </div>
     );
   }
 
-  if (!page) {
-    return (
-      <div className="flex flex-col items-center justify-center py-20 space-y-4">
-        <p className="text-lg text-gray-500">Page not found</p>
-        <Button
-          onClick={() => router.push("/dashboard/pages")}
-          variant="outline"
-        >
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Pages
-        </Button>
-      </div>
-    );
-  }
-
   return (
-    <div className="space-y-6 p-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div
+      className={`space-y-8 p-6 max-w-7xl mx-auto transition-all duration-700 ${
+        mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+      }`}
+    >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Button
-            variant="ghost"
+            variant="outline"
             size="icon"
             onClick={() => router.push("/dashboard/pages")}
-            className="hover:bg-gray-100"
+            className="border-gray-200 hover:bg-gray-100 transition-all"
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <div>
-            <h2 className="text-3xl font-bold text-gray-900">{page.title}</h2>
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 bg-clip-text text-transparent">
+              {page.title}
+            </h2>
             <div className="flex items-center gap-3 mt-2">
-              <p className="text-gray-600 font-mono text-sm">/{page.slug}</p>
+              <p className="text-indigo-600 font-mono text-sm">/{page.slug}</p>
               <span
-                className={`text-xs px-3 py-1 rounded-full font-medium ${
-                  page.status === "PUBLISHED"
-                    ? "bg-green-100 text-green-700"
-                    : page.status === "REVIEW"
-                    ? "bg-blue-100 text-blue-700"
-                    : page.status === "ARCHIVED"
-                    ? "bg-red-100 text-red-700"
-                    : "bg-gray-100 text-gray-600"
-                }`}
+                className={`text-xs px-3 py-1 rounded-full font-semibold border shadow-sm ${getStatusColor(
+                  page.status
+                )}`}
               >
                 {page.status}
               </span>
@@ -146,7 +172,7 @@ export default function ViewPagePage() {
         </div>
         <Button
           onClick={() => router.push(`/dashboard/pages/${page.id}/edit`)}
-          className="bg-green-600 hover:bg-green-700 text-white font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"
+          className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-green-600/25 transition-all duration-300 hover:scale-105"
         >
           <Edit className="h-4 w-4 mr-2" />
           Edit Page
@@ -154,37 +180,51 @@ export default function ViewPagePage() {
       </div>
 
       {/* Page Metadata */}
-      <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-          <div>
-            <p className="text-gray-500 font-medium">Created</p>
-            <p className="text-gray-900">
+      <div className="bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-xl p-6 shadow-sm">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-sm">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2 text-gray-500 font-medium">
+              <Calendar className="h-4 w-4" />
+              <p>Created</p>
+            </div>
+            <p className="text-gray-900 font-semibold">
               {new Date(page.createdAt).toLocaleDateString()}
             </p>
           </div>
-          <div>
-            <p className="text-gray-500 font-medium">Updated</p>
-            <p className="text-gray-900">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2 text-gray-500 font-medium">
+              <Calendar className="h-4 w-4" />
+              <p>Updated</p>
+            </div>
+            <p className="text-gray-900 font-semibold">
               {new Date(page.updatedAt).toLocaleDateString()}
             </p>
           </div>
-          <div>
-            <p className="text-gray-500 font-medium">Published</p>
-            <p className="text-gray-900">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2 text-gray-500 font-medium">
+              <Calendar className="h-4 w-4" />
+              <p>Published</p>
+            </div>
+            <p className="text-gray-900 font-semibold">
               {page.publishedAt
                 ? new Date(page.publishedAt).toLocaleDateString()
                 : "Not published"}
             </p>
           </div>
-          <div>
-            <p className="text-gray-500 font-medium">Author</p>
-            <p className="text-gray-900">{page.author?.name || "Unknown"}</p>
+          <div className="space-y-1">
+            <div className="flex items-center gap-2 text-gray-500 font-medium">
+              <User className="h-4 w-4" />
+              <p>Author</p>
+            </div>
+            <p className="text-gray-900 font-semibold">
+              {page.author?.name || "Unknown"}
+            </p>
           </div>
         </div>
       </div>
 
       {/* Page Content */}
-      <div className="bg-white min-h-[500px]">
+      <div className="bg-white min-h-[500px] rounded-lg">
         {page.content?.blocks &&
         Array.isArray(page.content.blocks) &&
         page.content.blocks.length > 0 ? (
@@ -193,7 +233,7 @@ export default function ViewPagePage() {
               <div key={block.id || index}>
                 {/* Text + Image Hero */}
                 {block.type === "text-image" && (
-                  <section className="relative overflow-hidden py-12 md:py-16 bg-gradient-to-br from-blue-50 via-white to-green-50">
+                  <section className="relative overflow-hidden py-12 md:py-16 bg-gradient-to-br from-blue-50 via-white to-green-50 rounded-lg">
                     <div className="container mx-auto px-4">
                       <div className="grid gap-8 lg:grid-cols-2 items-center">
                         <div
@@ -246,7 +286,7 @@ export default function ViewPagePage() {
 
                 {/* Feature Block */}
                 {block.type === "feature-block" && (
-                  <section className="py-12 md:py-16 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+                  <section className="py-12 md:py-16 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 rounded-lg">
                     <div className="container mx-auto px-4">
                       <div className="grid gap-8 lg:grid-cols-2 items-center">
                         <div
@@ -305,7 +345,7 @@ export default function ViewPagePage() {
 
                 {/* Features Grid */}
                 {block.type === "features-grid" && (
-                  <section className="py-12 md:py-16 bg-white">
+                  <section className="py-12 md:py-16 bg-white rounded-lg">
                     <div className="container mx-auto px-4">
                       <div className="text-center mb-10">
                         <h2 className="text-3xl font-bold mb-3">
@@ -349,7 +389,7 @@ export default function ViewPagePage() {
 
                 {/* Use Cases */}
                 {block.type === "use-cases" && (
-                  <section className="py-12 md:py-16 bg-white">
+                  <section className="py-12 md:py-16 bg-white rounded-lg">
                     <div className="container mx-auto px-4">
                       <div className="text-center mb-10">
                         <h2 className="text-3xl font-bold mb-3">
@@ -397,7 +437,7 @@ export default function ViewPagePage() {
 
                 {/* Brand Slider */}
                 {block.type === "brand-slider" && (
-                  <section className="py-12 md:py-16 bg-white border-b">
+                  <section className="py-12 md:py-16 bg-white border-b rounded-lg">
                     <div className="container mx-auto px-4">
                       <div className="text-center mb-8">
                         <h2 className="text-2xl font-bold">
@@ -441,7 +481,7 @@ export default function ViewPagePage() {
 
                 {/* FAQ */}
                 {block.type === "faq" && (
-                  <section className="py-12 md:py-16 bg-gradient-to-br from-gray-50 to-white">
+                  <section className="py-12 md:py-16 bg-gradient-to-br from-gray-50 to-white rounded-lg">
                     <div className="container mx-auto px-4">
                       <div className="text-center mb-10">
                         <h2 className="text-3xl font-bold mb-3">
@@ -472,7 +512,7 @@ export default function ViewPagePage() {
 
                 {/* CTA */}
                 {block.type === "cta" && (
-                  <section className="py-12 md:py-16 bg-gradient-to-br from-blue-600 to-purple-700 text-white">
+                  <section className="py-12 md:py-16 bg-gradient-to-br from-blue-600 to-purple-700 text-white rounded-lg">
                     <div className="container mx-auto px-4 text-center">
                       <h2 className="text-3xl font-bold mb-4">
                         {block.data?.title || "CTA Title"}
@@ -503,13 +543,17 @@ export default function ViewPagePage() {
             ))}
           </div>
         ) : (
-          <div className="text-center py-12 border border-gray-200 rounded-lg">
-            <p className="text-gray-500 text-lg">
+          <div className="text-center py-16 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50">
+            <FileText className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+            <p className="text-gray-500 text-lg mb-2">
               No content added to this page yet.
+            </p>
+            <p className="text-gray-400 text-sm mb-6">
+              Start building your page with drag-and-drop blocks
             </p>
             <Button
               onClick={() => router.push(`/dashboard/pages/${page.id}/edit`)}
-              className="mt-4 bg-green-600 hover:bg-green-700"
+              className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700"
             >
               <Edit className="h-4 w-4 mr-2" />
               Add Content
