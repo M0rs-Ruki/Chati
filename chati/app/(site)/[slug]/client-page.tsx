@@ -364,7 +364,7 @@ export default function PageClient({ page }: PageClientProps) {
   return (
     <div className="min-h-screen bg-white">
       {/* Page Header */}
-      <header className="bg-white border-b">
+      {/* <header className="bg-white border-b">
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-6xl mx-auto">
             <div className="flex items-center gap-3 mb-4">
@@ -382,7 +382,6 @@ export default function PageClient({ page }: PageClientProps) {
               {page.title}
             </h1>
 
-            {/* Meta Information */}
             <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
               {page.author && (
                 <div className="flex items-center gap-2">
@@ -405,7 +404,7 @@ export default function PageClient({ page }: PageClientProps) {
             </div>
           </div>
         </div>
-      </header>
+      </header> */}
 
       {/* Page Content */}
       <main>{renderContent()}</main>
