@@ -1,142 +1,168 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
-import { useToast } from "@/hooks/use-toast"
-import { User, Mail, Shield, Key, Save, Loader2 } from "lucide-react"
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { useToast } from "@/hooks/use-toast";
+import {
+  User,
+  Mail,
+  Shield,
+  Key,
+  Save,
+  Loader2,
+  Calendar,
+  Clock,
+  CheckCircle,
+  Lock,
+} from "lucide-react";
 
 interface UserProfile {
-  id: string
-  email: string
-  name: string
-  role: "ADMIN" | "EDITOR"
-  status: "ACTIVE" | "DISABLED"
-  createdAt: string
-  updatedAt: string
+  id: string;
+  email: string;
+  name: string;
+  role: "ADMIN" | "EDITOR";
+  status: "ACTIVE" | "DISABLED";
+  createdAt: string;
+  updatedAt: string;
 }
 
 export default function ProfilePage() {
-  const [profile, setProfile] = useState<UserProfile | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [submitting, setSubmitting] = useState(false)
-  const { toast } = useToast()
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const { toast } = useToast();
 
-  // Profile form
   const [profileForm, setProfileForm] = useState({
     name: "",
     email: "",
-  })
+  });
 
-  // Password form
   const [passwordForm, setPasswordForm] = useState({
     oldPassword: "",
     newPassword: "",
     confirmPassword: "",
-  })
+  });
 
   useEffect(() => {
-    fetchProfile()
-  }, [])
+    setMounted(true);
+    fetchProfile();
+  }, []);
 
   const fetchProfile = async () => {
     try {
-      const response = await fetch("/api/auth/me")
+      const token = localStorage.getItem("token");
+      const response = await fetch("/api/auth/me", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (!response.ok) {
-        throw new Error("Failed to fetch profile")
+        throw new Error("Failed to fetch profile");
       }
-      const data = await response.json()
-      setProfile(data.user)
+      const data = await response.json();
+      setProfile(data.user);
       setProfileForm({
         name: data.user.name,
         email: data.user.email,
-      })
+      });
     } catch (error) {
-      console.error("Error fetching profile:", error)
+      console.error("Error fetching profile:", error);
       toast({
         title: "Error",
         description: "Failed to load profile. Please try again.",
         variant: "destructive",
-      })
+      });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleUpdateProfile = async () => {
-    if (!profile) return
+    if (!profile) return;
 
     if (!profileForm.name || !profileForm.email) {
       toast({
         title: "Validation Error",
         description: "Name and email are required",
         variant: "destructive",
-      })
-      return
+      });
+      return;
     }
 
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(profileForm.email)) {
       toast({
         title: "Validation Error",
         description: "Please enter a valid email address",
         variant: "destructive",
-      })
-      return
+      });
+      return;
     }
 
-    setSubmitting(true)
+    setSubmitting(true);
     try {
+      const token = localStorage.getItem("token");
       const response = await fetch(`/api/user/${profile.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           name: profileForm.name,
           email: profileForm.email,
         }),
-      })
+      });
 
-      const data = await response.json()
+      const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Failed to update profile")
+        throw new Error(data.message || "Failed to update profile");
       }
 
-      // Refresh profile
-      await fetchProfile()
+      await fetchProfile();
 
       toast({
         title: "Success",
         description: "Profile updated successfully",
-      })
+      });
     } catch (error: any) {
       toast({
         title: "Error",
         description: error.message || "Failed to update profile",
         variant: "destructive",
-      })
+      });
     } finally {
-      setSubmitting(false)
+      setSubmitting(false);
     }
-  }
+  };
 
   const handleChangePassword = async () => {
-    if (!profile) return
+    if (!profile) return;
 
-    if (!passwordForm.oldPassword || !passwordForm.newPassword || !passwordForm.confirmPassword) {
+    if (
+      !passwordForm.oldPassword ||
+      !passwordForm.newPassword ||
+      !passwordForm.confirmPassword
+    ) {
       toast({
         title: "Validation Error",
         description: "All password fields are required",
         variant: "destructive",
-      })
-      return
+      });
+      return;
     }
 
     if (passwordForm.newPassword !== passwordForm.confirmPassword) {
@@ -144,8 +170,8 @@ export default function ProfilePage() {
         title: "Validation Error",
         description: "New passwords do not match",
         variant: "destructive",
-      })
-      return
+      });
+      return;
     }
 
     if (passwordForm.newPassword.length < 8) {
@@ -153,77 +179,79 @@ export default function ProfilePage() {
         title: "Validation Error",
         description: "Password must be at least 8 characters long",
         variant: "destructive",
-      })
-      return
+      });
+      return;
     }
 
-    // Check for password strength
-    const hasUpperCase = /[A-Z]/.test(passwordForm.newPassword)
-    const hasLowerCase = /[a-z]/.test(passwordForm.newPassword)
-    const hasNumber = /[0-9]/.test(passwordForm.newPassword)
-    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(passwordForm.newPassword)
+    const hasUpperCase = /[A-Z]/.test(passwordForm.newPassword);
+    const hasLowerCase = /[a-z]/.test(passwordForm.newPassword);
+    const hasNumber = /[0-9]/.test(passwordForm.newPassword);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(
+      passwordForm.newPassword
+    );
 
     if (!hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecialChar) {
       toast({
         title: "Validation Error",
         description:
-          "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+          "Password must contain uppercase, lowercase, number, and special character",
         variant: "destructive",
-      })
-      return
+      });
+      return;
     }
 
-    setSubmitting(true)
+    setSubmitting(true);
     try {
+      const token = localStorage.getItem("token");
       const response = await fetch(`/api/user/${profile.id}/password`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           oldPassword: passwordForm.oldPassword,
           newPassword: passwordForm.newPassword,
           confirmPassword: passwordForm.confirmPassword,
         }),
-      })
+      });
 
-      const data = await response.json()
+      const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Failed to change password")
+        throw new Error(data.message || "Failed to change password");
       }
 
-      // Clear password form
       setPasswordForm({
         oldPassword: "",
         newPassword: "",
         confirmPassword: "",
-      })
+      });
 
       toast({
         title: "Success",
         description: "Password changed successfully",
-      })
+      });
     } catch (error: any) {
       toast({
         title: "Error",
         description: error.message || "Failed to change password",
         variant: "destructive",
-      })
+      });
     } finally {
-      setSubmitting(false)
+      setSubmitting(false);
     }
-  }
+  };
 
   if (loading) {
     return (
       <div className="pt-8 px-6 flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <Loader2 className="h-8 w-8 animate-spin mx-auto text-green-500" />
-          <p className="text-gray-600 mt-4">Loading profile...</p>
+        <div className="text-center space-y-4">
+          <Loader2 className="h-12 w-12 animate-spin mx-auto text-green-600" />
+          <p className="text-gray-600">Loading profile...</p>
         </div>
       </div>
-    )
+    );
   }
 
   if (!profile) {
@@ -233,82 +261,99 @@ export default function ProfilePage() {
           <p className="text-gray-600">Failed to load profile</p>
         </div>
       </div>
-    )
+    );
   }
 
   return (
-    <div className="pt-8 px-6 space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700 max-w-4xl mx-auto">
-      <div className="space-y-2">
-        <h2 className="text-4xl font-bold text-gray-900 tracking-tight">My Profile</h2>
-        <p className="text-lg text-gray-600">Manage your account settings and preferences</p>
+    <div
+      className={`pt-8 px-6 pb-12 space-y-8 max-w-4xl mx-auto transition-all duration-700 ${
+        mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+      }`}
+    >
+      {/* Header */}
+      <div className="space-y-3">
+        <h2 className="text-4xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 bg-clip-text text-transparent">
+          My Profile ⚙️
+        </h2>
+        <p className="text-lg text-gray-600">
+          Manage your account settings and preferences
+        </p>
       </div>
 
       {/* Profile Information Card */}
-      <Card className="bg-white border-gray-200 shadow-sm hover:shadow-md transition-all duration-300">
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle className="text-2xl text-gray-900 flex items-center gap-2">
-                <User className="h-6 w-6 text-green-600" />
+      <Card className="relative overflow-hidden bg-white border-gray-200 shadow-lg hover:shadow-xl transition-all duration-500 group">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-green-500/5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-700" />
+        <CardHeader className="relative z-10">
+          <div className="flex items-start justify-between">
+            <div className="flex-1">
+              <CardTitle className="text-2xl text-gray-900 flex items-center gap-3 mb-2">
+                <div className="p-2 bg-green-100 rounded-xl">
+                  <User className="h-6 w-6 text-green-600" />
+                </div>
                 Profile Information
               </CardTitle>
-              <CardDescription className="text-gray-600 mt-1">
+              <CardDescription className="text-gray-600">
                 Update your personal information and email address
               </CardDescription>
             </div>
-            <div className="flex items-center gap-2">
-              <Badge
-                className={`${
-                  profile.role === "ADMIN"
-                    ? "bg-purple-100 text-purple-700 border-purple-200"
-                    : "bg-blue-100 text-blue-700 border-blue-200"
-                } border`}
-              >
+            <div className="flex flex-col gap-2">
+              <Badge className="bg-gradient-to-r from-purple-100 to-purple-200 text-purple-700 border-purple-300 shadow-sm">
                 <Shield className="h-3 w-3 mr-1" />
                 {profile.role}
               </Badge>
               <Badge
                 className={`${
                   profile.status === "ACTIVE"
-                    ? "bg-green-100 text-green-700 border-green-200"
-                    : "bg-red-100 text-red-700 border-red-200"
-                } border`}
+                    ? "bg-gradient-to-r from-green-100 to-green-200 text-green-700 border-green-300"
+                    : "bg-gradient-to-r from-red-100 to-red-200 text-red-700 border-red-300"
+                } shadow-sm`}
               >
+                <CheckCircle className="h-3 w-3 mr-1" />
                 {profile.status}
               </Badge>
             </div>
           </div>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-6 relative z-10">
           <div className="space-y-2">
-            <Label htmlFor="name" className="text-gray-700">
+            <Label
+              htmlFor="name"
+              className="text-gray-700 font-medium flex items-center gap-2"
+            >
               Full Name <span className="text-red-500">*</span>
             </Label>
-            <div className="relative">
-              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <div className="relative group">
+              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 group-focus-within:text-green-600 transition-colors" />
               <Input
                 id="name"
                 value={profileForm.name}
-                onChange={(e) => setProfileForm({ ...profileForm, name: e.target.value })}
+                onChange={(e) =>
+                  setProfileForm({ ...profileForm, name: e.target.value })
+                }
                 placeholder="John Doe"
-                className="pl-10"
+                className="pl-10 focus:border-green-500 focus:ring-green-500/20 transition-all"
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-gray-700">
+            <Label
+              htmlFor="email"
+              className="text-gray-700 font-medium flex items-center gap-2"
+            >
               Email Address <span className="text-red-500">*</span>
             </Label>
-            <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <div className="relative group">
+              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 group-focus-within:text-green-600 transition-colors" />
               <Input
                 id="email"
                 type="email"
                 value={profileForm.email}
-                onChange={(e) => setProfileForm({ ...profileForm, email: e.target.value })}
+                onChange={(e) =>
+                  setProfileForm({ ...profileForm, email: e.target.value })
+                }
                 placeholder="john@example.com"
-                className="pl-10"
+                className="pl-10 focus:border-green-500 focus:ring-green-500/20 transition-all"
               />
             </div>
           </div>
@@ -317,7 +362,7 @@ export default function ProfilePage() {
             <Button
               onClick={handleUpdateProfile}
               disabled={submitting}
-              className="bg-green-500 hover:bg-green-600 text-white transition-all duration-300 hover:scale-105"
+              className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-green-600/25 transition-all duration-300 hover:scale-105"
             >
               {submitting ? (
                 <>
@@ -333,83 +378,150 @@ export default function ProfilePage() {
             </Button>
           </div>
 
-          <Separator className="my-4" />
+          <Separator className="my-6" />
 
-          <div className="text-sm text-gray-600 space-y-1">
-            <p>
-              <strong>Account ID:</strong> {profile.id}
-            </p>
-            <p>
-              <strong>Created:</strong> {new Date(profile.createdAt).toLocaleDateString()} at{" "}
-              {new Date(profile.createdAt).toLocaleTimeString()}
-            </p>
-            <p>
-              <strong>Last Updated:</strong> {new Date(profile.updatedAt).toLocaleDateString()} at{" "}
-              {new Date(profile.updatedAt).toLocaleTimeString()}
-            </p>
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="p-4 bg-gray-50 rounded-xl border border-gray-200 hover:border-green-300 transition-colors">
+              <div className="flex items-center gap-2 text-gray-500 mb-1">
+                <User className="h-4 w-4" />
+                <span className="text-xs font-medium">Account ID</span>
+              </div>
+              <p className="text-sm font-mono text-gray-900 truncate">
+                {profile.id}
+              </p>
+            </div>
+
+            <div className="p-4 bg-gray-50 rounded-xl border border-gray-200 hover:border-green-300 transition-colors">
+              <div className="flex items-center gap-2 text-gray-500 mb-1">
+                <Calendar className="h-4 w-4" />
+                <span className="text-xs font-medium">Created</span>
+              </div>
+              <p className="text-sm text-gray-900">
+                {new Date(profile.createdAt).toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
+                })}
+              </p>
+            </div>
+
+            <div className="p-4 bg-gray-50 rounded-xl border border-gray-200 hover:border-green-300 transition-colors">
+              <div className="flex items-center gap-2 text-gray-500 mb-1">
+                <Clock className="h-4 w-4" />
+                <span className="text-xs font-medium">Last Updated</span>
+              </div>
+              <p className="text-sm text-gray-900">
+                {new Date(profile.updatedAt).toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
+                })}
+              </p>
+            </div>
           </div>
         </CardContent>
       </Card>
 
       {/* Change Password Card */}
-      <Card className="bg-white border-gray-200 shadow-sm hover:shadow-md transition-all duration-300">
-        <CardHeader>
-          <CardTitle className="text-2xl text-gray-900 flex items-center gap-2">
-            <Key className="h-6 w-6 text-green-600" />
+      <Card className="relative overflow-hidden bg-white border-gray-200 shadow-lg hover:shadow-xl transition-all duration-500 group">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-700" />
+        <CardHeader className="relative z-10">
+          <CardTitle className="text-2xl text-gray-900 flex items-center gap-3">
+            <div className="p-2 bg-blue-100 rounded-xl">
+              <Key className="h-6 w-6 text-blue-600" />
+            </div>
             Change Password
           </CardTitle>
-          <CardDescription className="text-gray-600 mt-1">
+          <CardDescription className="text-gray-600">
             Update your password to keep your account secure
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-6 relative z-10">
           <div className="space-y-2">
-            <Label htmlFor="old-password" className="text-gray-700">
+            <Label
+              htmlFor="old-password"
+              className="text-gray-700 font-medium flex items-center gap-2"
+            >
               Current Password <span className="text-red-500">*</span>
             </Label>
-            <Input
-              id="old-password"
-              type="password"
-              value={passwordForm.oldPassword}
-              onChange={(e) => setPasswordForm({ ...passwordForm, oldPassword: e.target.value })}
-              placeholder="••••••••"
-            />
+            <div className="relative group">
+              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 group-focus-within:text-blue-600 transition-colors" />
+              <Input
+                id="old-password"
+                type="password"
+                value={passwordForm.oldPassword}
+                onChange={(e) =>
+                  setPasswordForm({
+                    ...passwordForm,
+                    oldPassword: e.target.value,
+                  })
+                }
+                placeholder="••••••••"
+                className="pl-10 focus:border-blue-500 focus:ring-blue-500/20 transition-all"
+              />
+            </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="new-password" className="text-gray-700">
+            <Label
+              htmlFor="new-password"
+              className="text-gray-700 font-medium flex items-center gap-2"
+            >
               New Password <span className="text-red-500">*</span>
             </Label>
-            <Input
-              id="new-password"
-              type="password"
-              value={passwordForm.newPassword}
-              onChange={(e) => setPasswordForm({ ...passwordForm, newPassword: e.target.value })}
-              placeholder="••••••••"
-            />
-            <p className="text-xs text-gray-500">
-              Must be at least 8 characters with uppercase, lowercase, number, and special character
+            <div className="relative group">
+              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 group-focus-within:text-blue-600 transition-colors" />
+              <Input
+                id="new-password"
+                type="password"
+                value={passwordForm.newPassword}
+                onChange={(e) =>
+                  setPasswordForm({
+                    ...passwordForm,
+                    newPassword: e.target.value,
+                  })
+                }
+                placeholder="••••••••"
+                className="pl-10 focus:border-blue-500 focus:ring-blue-500/20 transition-all"
+              />
+            </div>
+            <p className="text-xs text-gray-500 flex items-center gap-1">
+              <CheckCircle className="h-3 w-3" />
+              Must be 8+ characters with uppercase, lowercase, number, and
+              special character
             </p>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="confirm-password" className="text-gray-700">
+            <Label
+              htmlFor="confirm-password"
+              className="text-gray-700 font-medium flex items-center gap-2"
+            >
               Confirm New Password <span className="text-red-500">*</span>
             </Label>
-            <Input
-              id="confirm-password"
-              type="password"
-              value={passwordForm.confirmPassword}
-              onChange={(e) => setPasswordForm({ ...passwordForm, confirmPassword: e.target.value })}
-              placeholder="••••••••"
-            />
+            <div className="relative group">
+              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 group-focus-within:text-blue-600 transition-colors" />
+              <Input
+                id="confirm-password"
+                type="password"
+                value={passwordForm.confirmPassword}
+                onChange={(e) =>
+                  setPasswordForm({
+                    ...passwordForm,
+                    confirmPassword: e.target.value,
+                  })
+                }
+                placeholder="••••••••"
+                className="pl-10 focus:border-blue-500 focus:ring-blue-500/20 transition-all"
+              />
+            </div>
           </div>
 
           <div className="pt-2">
             <Button
               onClick={handleChangePassword}
               disabled={submitting}
-              className="bg-green-500 hover:bg-green-600 text-white transition-all duration-300 hover:scale-105"
+              className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg hover:shadow-blue-600/25 transition-all duration-300 hover:scale-105"
             >
               {submitting ? (
                 <>
@@ -427,5 +539,5 @@ export default function ProfilePage() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

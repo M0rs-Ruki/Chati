@@ -13,7 +13,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Palette, Save, Loader2, Plus, Trash2, Check } from "lucide-react";
+import {
+  Palette,
+  Save,
+  Loader2,
+  Plus,
+  Trash2,
+  Check,
+  Sparkles,
+  Eye,
+  Image as ImageIcon,
+} from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 
@@ -36,26 +46,26 @@ export default function ThemeEditor() {
   const router = useRouter();
   const [themes, setThemes] = useState<Theme[]>([]);
   const [activeThemeId, setActiveThemeId] = useState<string | null>(null);
-  const [isCreating, setIsCreating] = useState(false);
   const [editingTheme, setEditingTheme] = useState<Theme | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
   const [isActivating, setIsActivating] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  // New theme form data
   const [newTheme, setNewTheme] = useState({
     name: "",
-    primaryColor: "#00D856",
-    secondaryColor: "#0A2540",
-    accentColor: "#7C3AED",
+    primaryColor: "#10B981",
+    secondaryColor: "#059669",
+    accentColor: "#34D399",
     logoUrl: "",
     faviconUrl: "",
     typography: "inter",
   });
 
   useEffect(() => {
+    setMounted(true);
     fetchThemes();
   }, []);
 
@@ -85,7 +95,6 @@ export default function ThemeEditor() {
       const themesData = result.data || [];
       setThemes(themesData);
 
-      // Find and set the active (default) theme
       const defaultTheme = themesData.find((t: Theme) => t.isDefault);
       if (defaultTheme) {
         setActiveThemeId(defaultTheme.id);
@@ -122,7 +131,6 @@ export default function ThemeEditor() {
         return;
       }
 
-      // Convert typography string to JSON format
       const typographyJSON = JSON.stringify({
         heading: { fontFamily: newTheme.typography, weight: 700 },
         body: { fontFamily: newTheme.typography, weight: 400 },
@@ -150,19 +158,16 @@ export default function ThemeEditor() {
         throw new Error(error.message || "Failed to create theme");
       }
 
-      const result = await response.json();
-
       toast({
         title: "Success",
         description: "Theme created successfully and set as active",
       });
 
-      // Reset form and refresh themes
       setNewTheme({
         name: "",
-        primaryColor: "#00D856",
-        secondaryColor: "#0A2540",
-        accentColor: "#7C3AED",
+        primaryColor: "#10B981",
+        secondaryColor: "#059669",
+        accentColor: "#34D399",
         logoUrl: "",
         faviconUrl: "",
         typography: "inter",
@@ -221,7 +226,6 @@ export default function ThemeEditor() {
         description: "Theme updated successfully",
       });
 
-      // Apply theme to CSS if it's active
       if (editingTheme.isDefault) {
         document.documentElement.style.setProperty(
           "--primary",
@@ -291,13 +295,17 @@ export default function ThemeEditor() {
     }
   };
 
-    const deleteTheme = async (id: string) => {
+  const deleteTheme = async (id: string) => {
     if (!confirm("Are you sure you want to delete this theme?")) return;
 
     setIsDeleting(id);
     try {
+      const token = localStorage.getItem("token");
       const response = await fetch(`/api/themes/${id}/delete`, {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const data = await response.json();
@@ -323,7 +331,6 @@ export default function ThemeEditor() {
     }
   };
 
-  // Extract current font family from the JSON string to use as Select value
   const currentFontFamily = (() => {
     try {
       if (editingTheme?.typography) {
@@ -336,10 +343,9 @@ export default function ThemeEditor() {
     }
   })();
 
-  // Change handler: update typography JSON string in editingTheme
   const handleFontFamilyChange = (newFontFamily: string) => {
     if (!editingTheme) return;
-    
+
     try {
       const parsed = editingTheme.typography
         ? JSON.parse(editingTheme.typography)
@@ -354,7 +360,6 @@ export default function ThemeEditor() {
         typography: JSON.stringify(parsed),
       });
     } catch {
-      // fallback simple stringify
       setEditingTheme({
         ...editingTheme,
         typography: JSON.stringify({
@@ -367,61 +372,78 @@ export default function ThemeEditor() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="h-8 w-8 animate-spin text-green-500" />
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center space-y-4">
+          <Loader2 className="h-12 w-12 animate-spin text-green-600 mx-auto" />
+          <p className="text-gray-600">Loading themes...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="p-6 lg:p-8 max-w-6xl mx-auto animate-in fade-in duration-500">
+    <div
+      className={`p-6 lg:p-8 pb-12 max-w-6xl mx-auto transition-all duration-700 ${
+        mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+      }`}
+    >
+      {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Theme Settings</h1>
-          <p className="text-gray-600 mt-1">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 bg-clip-text text-transparent">
+            Theme Settings 🎨
+          </h1>
+          <p className="text-lg text-gray-600 mt-2">
             Manage your site's appearance and branding
           </p>
         </div>
         <Button
           onClick={() => setShowCreateForm(!showCreateForm)}
-          className="bg-green-500 hover:bg-green-600 text-white shadow-lg hover:shadow-xl transition-all"
+          className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-green-600/25 transition-all duration-300 hover:scale-105"
         >
           <Plus className="w-4 h-4 mr-2" />
-          Create New Theme
+          {showCreateForm ? "Cancel" : "Create New Theme"}
         </Button>
       </div>
 
       {/* Create Theme Form */}
       {showCreateForm && (
-        <Card className="border-gray-200 shadow-sm mb-6">
-          <CardHeader>
-            <CardTitle className="text-gray-900">Create New Theme</CardTitle>
+        <Card className="border-gray-200 shadow-lg mb-8 animate-in slide-in-from-top duration-500">
+          <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50">
+            <CardTitle className="text-gray-900 flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-green-600" />
+              Create New Theme
+            </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-6 p-6">
             <div>
-              <Label htmlFor="theme-name">Theme Name</Label>
+              <Label htmlFor="theme-name" className="text-gray-700 font-medium">
+                Theme Name
+              </Label>
               <Input
                 id="theme-name"
                 value={newTheme.name}
                 onChange={(e) =>
                   setNewTheme({ ...newTheme, name: e.target.value })
                 }
-                placeholder="My Custom Theme"
-                className="mt-2"
+                placeholder="My Awesome Theme"
+                className="mt-2 focus:border-green-500 focus:ring-green-500/20"
               />
             </div>
 
-            <div className="grid md:grid-cols-3 gap-4">
+            <div className="grid md:grid-cols-3 gap-6">
               <div>
-                <Label>Primary Color</Label>
-                <div className="flex gap-2 mt-2">
+                <Label className="text-gray-700 font-medium">
+                  Primary Color
+                </Label>
+                <div className="flex gap-3 mt-2">
                   <input
                     type="color"
                     value={newTheme.primaryColor}
                     onChange={(e) =>
                       setNewTheme({ ...newTheme, primaryColor: e.target.value })
                     }
-                    className="w-16 h-10 rounded cursor-pointer"
+                    className="w-16 h-12 rounded-lg cursor-pointer border-2 border-gray-200 hover:border-green-500 transition-colors"
                   />
                   <Input
                     value={newTheme.primaryColor}
@@ -433,8 +455,10 @@ export default function ThemeEditor() {
                 </div>
               </div>
               <div>
-                <Label>Secondary Color</Label>
-                <div className="flex gap-2 mt-2">
+                <Label className="text-gray-700 font-medium">
+                  Secondary Color
+                </Label>
+                <div className="flex gap-3 mt-2">
                   <input
                     type="color"
                     value={newTheme.secondaryColor}
@@ -444,7 +468,7 @@ export default function ThemeEditor() {
                         secondaryColor: e.target.value,
                       })
                     }
-                    className="w-16 h-10 rounded cursor-pointer"
+                    className="w-16 h-12 rounded-lg cursor-pointer border-2 border-gray-200 hover:border-green-500 transition-colors"
                   />
                   <Input
                     value={newTheme.secondaryColor}
@@ -459,15 +483,17 @@ export default function ThemeEditor() {
                 </div>
               </div>
               <div>
-                <Label>Accent Color</Label>
-                <div className="flex gap-2 mt-2">
+                <Label className="text-gray-700 font-medium">
+                  Accent Color
+                </Label>
+                <div className="flex gap-3 mt-2">
                   <input
                     type="color"
                     value={newTheme.accentColor}
                     onChange={(e) =>
                       setNewTheme({ ...newTheme, accentColor: e.target.value })
                     }
-                    className="w-16 h-10 rounded cursor-pointer"
+                    className="w-16 h-12 rounded-lg cursor-pointer border-2 border-gray-200 hover:border-green-500 transition-colors"
                   />
                   <Input
                     value={newTheme.accentColor}
@@ -480,9 +506,33 @@ export default function ThemeEditor() {
               </div>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-4">
+            {/* Color Preview */}
+            <div className="p-6 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border-2 border-gray-200">
+              <p className="text-sm font-semibold text-gray-700 mb-4 flex items-center gap-2">
+                <Eye className="w-4 h-4" />
+                Color Preview
+              </p>
+              <div className="flex gap-4">
+                <div
+                  className="flex-1 h-24 rounded-lg shadow-lg transition-transform hover:scale-105"
+                  style={{ backgroundColor: newTheme.primaryColor }}
+                />
+                <div
+                  className="flex-1 h-24 rounded-lg shadow-lg transition-transform hover:scale-105"
+                  style={{ backgroundColor: newTheme.secondaryColor }}
+                />
+                <div
+                  className="flex-1 h-24 rounded-lg shadow-lg transition-transform hover:scale-105"
+                  style={{ backgroundColor: newTheme.accentColor }}
+                />
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <Label htmlFor="logo-url">Logo URL (Optional)</Label>
+                <Label htmlFor="logo-url" className="text-gray-700 font-medium">
+                  Logo URL (Optional)
+                </Label>
                 <Input
                   id="logo-url"
                   value={newTheme.logoUrl}
@@ -494,7 +544,12 @@ export default function ThemeEditor() {
                 />
               </div>
               <div>
-                <Label htmlFor="favicon-url">Favicon URL (Optional)</Label>
+                <Label
+                  htmlFor="favicon-url"
+                  className="text-gray-700 font-medium"
+                >
+                  Favicon URL (Optional)
+                </Label>
                 <Input
                   id="favicon-url"
                   value={newTheme.faviconUrl}
@@ -508,7 +563,12 @@ export default function ThemeEditor() {
             </div>
 
             <div>
-              <Label htmlFor="font-family">Font Family</Label>
+              <Label
+                htmlFor="font-family"
+                className="text-gray-700 font-medium"
+              >
+                Font Family
+              </Label>
               <Select
                 value={newTheme.typography}
                 onValueChange={(value) =>
@@ -519,32 +579,40 @@ export default function ThemeEditor() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="inter">Inter</SelectItem>
-                  <SelectItem value="roboto">Roboto</SelectItem>
-                  <SelectItem value="open-sans">Open Sans</SelectItem>
-                  <SelectItem value="lato">Lato</SelectItem>
-                  <SelectItem value="montserrat">Montserrat</SelectItem>
-                  <SelectItem value="poppins">Poppins</SelectItem>
+                  <SelectItem value="inter">Inter (Modern & Clean)</SelectItem>
+                  <SelectItem value="roboto">Roboto (Classic)</SelectItem>
+                  <SelectItem value="open-sans">
+                    Open Sans (Readable)
+                  </SelectItem>
+                  <SelectItem value="lato">Lato (Friendly)</SelectItem>
+                  <SelectItem value="montserrat">Montserrat (Bold)</SelectItem>
+                  <SelectItem value="poppins">Poppins (Geometric)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex gap-4 pt-4">
               <Button
                 onClick={createTheme}
                 disabled={isLoading}
-                className="bg-green-500 hover:bg-green-600"
+                className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 shadow-lg hover:scale-105 transition-all"
               >
                 {isLoading ? (
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Creating...
+                  </>
                 ) : (
-                  <Save className="w-4 h-4 mr-2" />
+                  <>
+                    <Save className="w-4 h-4 mr-2" />
+                    Create Theme
+                  </>
                 )}
-                Create Theme
               </Button>
               <Button
                 variant="outline"
                 onClick={() => setShowCreateForm(false)}
+                className="border-gray-300 hover:bg-gray-50"
               >
                 Cancel
               </Button>
@@ -555,21 +623,25 @@ export default function ThemeEditor() {
 
       {/* Themes List */}
       <div className="grid md:grid-cols-2 gap-6 mb-8">
-        {themes.map((theme) => (
+        {themes.map((theme, index) => (
           <Card
             key={theme.id}
-            className={`border-gray-200 shadow-sm hover:shadow-md transition-shadow ${
+            className={`relative overflow-hidden border-gray-200 shadow-lg hover:shadow-xl transition-all duration-500 hover:scale-[1.02] ${
               theme.isDefault ? "ring-2 ring-green-500" : ""
             }`}
+            style={{ animationDelay: `${index * 100}ms` }}
           >
-            <CardContent className="p-6">
+            {theme.isDefault && (
+              <div className="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-full -mr-16 -mt-16" />
+            )}
+            <CardContent className="p-6 relative z-10">
               <div className="flex items-start justify-between mb-4">
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">
+                  <h3 className="text-xl font-bold text-gray-900">
                     {theme.name}
                   </h3>
                   {theme.isDefault && (
-                    <span className="inline-flex items-center gap-1 text-xs bg-green-100 text-green-700 px-2 py-1 rounded mt-1">
+                    <span className="inline-flex items-center gap-1 text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full mt-2 font-medium">
                       <Check className="w-3 h-3" />
                       Active Theme
                     </span>
@@ -582,15 +654,12 @@ export default function ThemeEditor() {
                       variant="outline"
                       onClick={() => setAsActive(theme.id)}
                       disabled={isActivating === theme.id}
-                      className="border-blue-200 hover:bg-blue-50"
+                      className="border-green-200 hover:bg-green-50 hover:text-green-700 transition-all"
                     >
                       {isActivating === theme.id ? (
-                        <>
-                          <Loader2 className="w-4 h-4 mr-1 animate-spin" />
-                          Activating...
-                        </>
+                        <Loader2 className="w-4 h-4 animate-spin" />
                       ) : (
-                        "Set Active"
+                        "Activate"
                       )}
                     </Button>
                   )}
@@ -598,7 +667,7 @@ export default function ThemeEditor() {
                     size="sm"
                     variant="outline"
                     onClick={() => setEditingTheme(theme)}
-                    className="border-green-200 hover:bg-green-50"
+                    className="border-blue-200 hover:bg-blue-50 hover:text-blue-700 transition-all"
                   >
                     Edit
                   </Button>
@@ -608,7 +677,7 @@ export default function ThemeEditor() {
                       variant="outline"
                       onClick={() => deleteTheme(theme.id)}
                       disabled={isDeleting === theme.id}
-                      className="border-red-200 hover:bg-red-50"
+                      className="border-red-200 hover:bg-red-50 transition-all"
                     >
                       {isDeleting === theme.id ? (
                         <Loader2 className="w-4 h-4 text-red-600 animate-spin" />
@@ -622,17 +691,17 @@ export default function ThemeEditor() {
 
               <div className="flex gap-2">
                 <div
-                  className="flex-1 h-12 rounded"
+                  className="flex-1 h-16 rounded-lg shadow-md transition-transform hover:scale-105"
                   style={{ backgroundColor: theme.primaryColor }}
                   title="Primary"
                 />
                 <div
-                  className="flex-1 h-12 rounded"
+                  className="flex-1 h-16 rounded-lg shadow-md transition-transform hover:scale-105"
                   style={{ backgroundColor: theme.secondaryColor || "#ccc" }}
                   title="Secondary"
                 />
                 <div
-                  className="flex-1 h-12 rounded"
+                  className="flex-1 h-16 rounded-lg shadow-md transition-transform hover:scale-105"
                   style={{ backgroundColor: theme.accentColor || "#ccc" }}
                   title="Accent"
                 />
@@ -644,18 +713,23 @@ export default function ThemeEditor() {
 
       {/* Edit Theme Section */}
       {editingTheme && (
-        <div className="space-y-6">
-          <Card className="border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-            <CardHeader>
+        <div className="space-y-6 animate-in slide-in-from-bottom duration-500">
+          <Card className="border-gray-200 shadow-lg hover:shadow-xl transition-shadow">
+            <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50">
               <CardTitle className="flex items-center gap-2 text-gray-900">
-                <Palette className="w-5 h-5 text-green-500" />
+                <Palette className="w-5 h-5 text-blue-600" />
                 Editing: {editingTheme.name}
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-6 p-6">
               <div className="grid md:grid-cols-3 gap-6">
                 <div>
-                  <Label htmlFor="primary_color">Primary Color</Label>
+                  <Label
+                    htmlFor="primary_color"
+                    className="text-gray-700 font-medium"
+                  >
+                    Primary Color
+                  </Label>
                   <div className="flex gap-3 mt-2">
                     <input
                       type="color"
@@ -667,7 +741,7 @@ export default function ThemeEditor() {
                           primaryColor: e.target.value,
                         })
                       }
-                      className="w-16 h-16 rounded-lg cursor-pointer border-2 border-gray-200"
+                      className="w-16 h-16 rounded-lg cursor-pointer border-2 border-gray-200 hover:border-blue-500 transition-colors"
                     />
                     <div className="flex-1">
                       <Input
@@ -688,7 +762,12 @@ export default function ThemeEditor() {
                 </div>
 
                 <div>
-                  <Label htmlFor="secondary_color">Secondary Color</Label>
+                  <Label
+                    htmlFor="secondary_color"
+                    className="text-gray-700 font-medium"
+                  >
+                    Secondary Color
+                  </Label>
                   <div className="flex gap-3 mt-2">
                     <input
                       type="color"
@@ -700,7 +779,7 @@ export default function ThemeEditor() {
                           secondaryColor: e.target.value,
                         })
                       }
-                      className="w-16 h-16 rounded-lg cursor-pointer border-2 border-gray-200"
+                      className="w-16 h-16 rounded-lg cursor-pointer border-2 border-gray-200 hover:border-blue-500 transition-colors"
                     />
                     <div className="flex-1">
                       <Input
@@ -721,7 +800,12 @@ export default function ThemeEditor() {
                 </div>
 
                 <div>
-                  <Label htmlFor="accent_color">Accent Color</Label>
+                  <Label
+                    htmlFor="accent_color"
+                    className="text-gray-700 font-medium"
+                  >
+                    Accent Color
+                  </Label>
                   <div className="flex gap-3 mt-2">
                     <input
                       type="color"
@@ -733,7 +817,7 @@ export default function ThemeEditor() {
                           accentColor: e.target.value,
                         })
                       }
-                      className="w-16 h-16 rounded-lg cursor-pointer border-2 border-gray-200"
+                      className="w-16 h-16 rounded-lg cursor-pointer border-2 border-gray-200 hover:border-blue-500 transition-colors"
                     />
                     <div className="flex-1">
                       <Input
@@ -754,23 +838,24 @@ export default function ThemeEditor() {
                 </div>
               </div>
 
-              <div className="p-6 bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border">
-                <p className="text-sm font-medium text-gray-700 mb-4">
+              <div className="p-6 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border-2 border-gray-200">
+                <p className="text-sm font-semibold text-gray-700 mb-4 flex items-center gap-2">
+                  <Eye className="w-4 h-4" />
                   Color Preview
                 </p>
                 <div className="flex gap-4">
                   <div
-                    className="flex-1 h-20 rounded-lg shadow-md"
+                    className="flex-1 h-20 rounded-lg shadow-md transition-transform hover:scale-105"
                     style={{ backgroundColor: editingTheme.primaryColor }}
                   />
                   <div
-                    className="flex-1 h-20 rounded-lg shadow-md"
+                    className="flex-1 h-20 rounded-lg shadow-md transition-transform hover:scale-105"
                     style={{
                       backgroundColor: editingTheme.secondaryColor || "#ccc",
                     }}
                   />
                   <div
-                    className="flex-1 h-20 rounded-lg shadow-md"
+                    className="flex-1 h-20 rounded-lg shadow-md transition-transform hover:scale-105"
                     style={{
                       backgroundColor: editingTheme.accentColor || "#ccc",
                     }}
@@ -780,13 +865,18 @@ export default function ThemeEditor() {
             </CardContent>
           </Card>
 
-          <Card className="border-gray-200 shadow-sm">
-            <CardHeader>
-              <CardTitle>Brand Assets</CardTitle>
+          <Card className="border-gray-200 shadow-lg">
+            <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50">
+              <CardTitle className="flex items-center gap-2">
+                <ImageIcon className="w-5 h-5 text-purple-600" />
+                Brand Assets
+              </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-6 p-6">
               <div>
-                <Label htmlFor="logo_url">Logo URL</Label>
+                <Label htmlFor="logo_url" className="text-gray-700 font-medium">
+                  Logo URL
+                </Label>
                 <Input
                   id="logo_url"
                   value={editingTheme.logoUrl || ""}
@@ -800,8 +890,10 @@ export default function ThemeEditor() {
                   className="mt-2"
                 />
                 {editingTheme.logoUrl && (
-                  <div className="mt-3 p-4 bg-gray-50 rounded-lg border inline-block">
-                    <p className="text-xs text-gray-600 mb-2">Logo Preview:</p>
+                  <div className="mt-4 p-4 bg-gray-50 rounded-lg border inline-block">
+                    <p className="text-xs text-gray-600 mb-2 font-medium">
+                      Logo Preview:
+                    </p>
                     <Image
                       src={editingTheme.logoUrl}
                       alt="Logo"
@@ -814,7 +906,12 @@ export default function ThemeEditor() {
               </div>
 
               <div>
-                <Label htmlFor="favicon_url">Favicon URL</Label>
+                <Label
+                  htmlFor="favicon_url"
+                  className="text-gray-700 font-medium"
+                >
+                  Favicon URL
+                </Label>
                 <Input
                   id="favicon_url"
                   value={editingTheme.faviconUrl || ""}
@@ -828,8 +925,8 @@ export default function ThemeEditor() {
                   className="mt-2"
                 />
                 {editingTheme.faviconUrl && (
-                  <div className="mt-3 p-4 bg-gray-50 rounded-lg border inline-block">
-                    <p className="text-xs text-gray-600 mb-2">
+                  <div className="mt-4 p-4 bg-gray-50 rounded-lg border inline-block">
+                    <p className="text-xs text-gray-600 mb-2 font-medium">
                       Favicon Preview:
                     </p>
                     <Image
@@ -845,12 +942,17 @@ export default function ThemeEditor() {
             </CardContent>
           </Card>
 
-          <Card className="border-gray-200 shadow-sm">
-            <CardHeader>
-              <CardTitle>Typography</CardTitle>
+          <Card className="border-gray-200 shadow-lg">
+            <CardHeader className="bg-gradient-to-r from-orange-50 to-yellow-50">
+              <CardTitle className="flex items-center gap-2">
+                <span className="text-2xl">Aa</span>
+                Typography
+              </CardTitle>
             </CardHeader>
-            <CardContent>
-              <Label htmlFor="typography">Font Family</Label>
+            <CardContent className="p-6">
+              <Label htmlFor="typography" className="text-gray-700 font-medium">
+                Font Family
+              </Label>
               <Select
                 value={currentFontFamily}
                 onValueChange={(value) => handleFontFamilyChange(value)}
@@ -875,16 +977,16 @@ export default function ThemeEditor() {
           <Button
             onClick={updateTheme}
             disabled={isLoading}
-            className="w-full bg-green-500 hover:bg-green-600 text-white shadow-lg"
+            className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-green-600/25 transition-all duration-300 hover:scale-[1.02] h-12"
           >
             {isLoading ? (
               <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Saving...
+                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                Saving Changes...
               </>
             ) : (
               <>
-                <Save className="w-4 h-4 mr-2" />
+                <Save className="w-5 h-5 mr-2" />
                 Save Theme
               </>
             )}
