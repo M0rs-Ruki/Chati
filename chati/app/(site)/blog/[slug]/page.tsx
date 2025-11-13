@@ -46,26 +46,74 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const title = post.title
   const description = post.excerpt || post.metadata?.description || ''
   const tags = post.tags || post.metadata?.tags || []
-  const author = typeof post.author === 'object' ? post.author?.name : post.author
+  const author = typeof post.author === 'object' ? post.author?.name : post.author || 'Chati Team'
   const date = post.date || post.publishedAt || post.createdAt
+  const imageUrl = post.thumbnail || post.imageUrl || '/og-blog.png'
+  const category = post.category || post.metadata?.category || 'General'
+  
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://chati.chat'
+  const postUrl = `${baseUrl}/blog/${slug}`
+
+  // Generate comprehensive keywords
+  const keywords = [
+    ...tags,
+    'WhatsApp Business',
+    'customer engagement',
+    'business automation',
+    category,
+    'Chati blog',
+  ].filter(Boolean)
 
   return {
     title: `${title} | Chati Blog`,
     description,
-    keywords: Array.isArray(tags) ? tags.join(", ") : '',
+    keywords: keywords.join(", "),
+    authors: [{ name: author }],
+    creator: author,
+    publisher: "Chati",
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
     openGraph: {
       title,
       description,
       type: "article",
       publishedTime: date,
-      authors: author ? [author] : [],
-      url: `https://chati.chat/blog/${post.slug}`,
+      modifiedTime: date,
+      authors: [author],
+      tags: Array.isArray(tags) ? tags : [],
+      url: postUrl,
+      siteName: "Chati",
+      locale: "en_US",
+      images: [
+        {
+          url: imageUrl.startsWith('http') ? imageUrl : `${baseUrl}${imageUrl}`,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      site: "@chati",
+      creator: "@chati",
+      images: [imageUrl.startsWith('http') ? imageUrl : `${baseUrl}${imageUrl}`],
     },
+    alternates: {
+      canonical: postUrl,
+    },
+    category,
   }
 }
 

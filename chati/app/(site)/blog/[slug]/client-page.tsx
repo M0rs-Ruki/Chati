@@ -157,6 +157,72 @@ export default function BlogPostPage({ post: rawPost }: BlogPostPageProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      {/* Structured Data for SEO - Article Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            headline: post.title,
+            description: post.excerpt,
+            image: post.thumbnail,
+            datePublished: post.date,
+            dateModified: post.date,
+            author: {
+              "@type": "Person",
+              name: post.author,
+            },
+            publisher: {
+              "@type": "Organization",
+              name: "Chati",
+              logo: {
+                "@type": "ImageObject",
+                url: `${process.env.NEXT_PUBLIC_BASE_URL || "https://chati.chat"}/logo.png`,
+              },
+            },
+            mainEntityOfPage: {
+              "@type": "WebPage",
+              "@id": `${process.env.NEXT_PUBLIC_BASE_URL || "https://chati.chat"}/blog/${rawPost.slug}`,
+            },
+            articleSection: post.category,
+            keywords: Array.isArray(post.tags) ? post.tags.join(", ") : "",
+            wordCount: typeof post.content === "string" ? post.content.split(" ").length : 0,
+          }),
+        }}
+      />
+
+      {/* Breadcrumb Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: `${process.env.NEXT_PUBLIC_BASE_URL || "https://chati.chat"}`,
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Blog",
+                item: `${process.env.NEXT_PUBLIC_BASE_URL || "https://chati.chat"}/blog`,
+              },
+              {
+                "@type": "ListItem",
+                position: 3,
+                name: post.title,
+                item: `${process.env.NEXT_PUBLIC_BASE_URL || "https://chati.chat"}/blog/${rawPost.slug}`,
+              },
+            ],
+          }),
+        }}
+      />
+
       {/* Hero Section with Parallax Effect */}
       <section className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
         {/* Animated Background Pattern */}
@@ -213,13 +279,15 @@ export default function BlogPostPage({ post: rawPost }: BlogPostPageProps) {
 
               <div className="flex flex-wrap items-center gap-6 text-gray-200 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-500">
                 <div className="flex items-center gap-2 hover:text-white transition-colors duration-200">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center" aria-hidden="true">
                     <User className="w-4 h-4 text-white" />
                   </div>
-                  <span className="font-medium">{post.author}</span>
+                  <span className="font-medium" itemProp="author" itemScope itemType="https://schema.org/Person">
+                    <span itemProp="name">{post.author}</span>
+                  </span>
                 </div>
-                <div className="flex items-center gap-2 hover:text-white transition-colors duration-200">
-                  <Calendar className="w-4 h-4" />
+                <time className="flex items-center gap-2 hover:text-white transition-colors duration-200" dateTime={post.date} itemProp="datePublished">
+                  <Calendar className="w-4 h-4" aria-hidden="true" />
                   <span>
                     {new Date(post.date).toLocaleDateString("en-US", {
                       month: "long",
@@ -227,9 +295,9 @@ export default function BlogPostPage({ post: rawPost }: BlogPostPageProps) {
                       year: "numeric",
                     })}
                   </span>
-                </div>
+                </time>
                 <div className="flex items-center gap-2 hover:text-white transition-colors duration-200">
-                  <Clock className="w-4 h-4" />
+                  <Clock className="w-4 h-4" aria-hidden="true" />
                   <span>{post.readTime}</span>
                 </div>
 
@@ -285,7 +353,12 @@ export default function BlogPostPage({ post: rawPost }: BlogPostPageProps) {
       </section>
 
       {/* Article Content - Enhanced with better spacing and visual hierarchy */}
-      <section className="py-16 md:py-24 bg-white">
+      <article className="py-16 md:py-24 bg-white" itemScope itemType="https://schema.org/BlogPosting">
+        <meta itemProp="headline" content={post.title} />
+        <meta itemProp="image" content={post.thumbnail} />
+        <meta itemProp="datePublished" content={post.date} />
+        <meta itemProp="dateModified" content={post.date} />
+        
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto">
             {/* Reading Progress Bar */}
@@ -301,7 +374,7 @@ export default function BlogPostPage({ post: rawPost }: BlogPostPageProps) {
             {/* Enhanced Excerpt */}
             {post.excerpt && (
               <div className="mb-12 p-6 border-l-4 border-blue-600 bg-gradient-to-r from-blue-50 to-transparent rounded-r-lg animate-in fade-in slide-in-from-left duration-700">
-                <p className="text-xl text-gray-700 leading-relaxed font-medium italic">
+                <p className="text-xl text-gray-700 leading-relaxed font-medium italic" itemProp="description">
                   {post.excerpt}
                 </p>
               </div>
@@ -321,6 +394,7 @@ export default function BlogPostPage({ post: rawPost }: BlogPostPageProps) {
                 prose-blockquote:border-l-4 prose-blockquote:border-blue-600 prose-blockquote:bg-gray-50 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:rounded-r-lg
                 prose-code:bg-gray-100 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm prose-code:text-blue-600
                 prose-img:rounded-xl prose-img:shadow-lg animate-in fade-in duration-1000"
+              itemProp="articleBody"
             >
               {renderContent()}
             </div>
@@ -374,7 +448,7 @@ export default function BlogPostPage({ post: rawPost }: BlogPostPageProps) {
             </div>
           </div>
         </div>
-      </section>
+      </article>
 
       {/* Related Posts - Enhanced cards */}
       <section className="py-16 bg-gradient-to-b from-gray-50 to-white border-t border-gray-200">

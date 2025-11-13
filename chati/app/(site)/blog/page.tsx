@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { BookOpen, Clock, ArrowRight, Calendar } from "lucide-react";
+import { BookOpen, Clock, ArrowRight, Calendar, Rss } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { blogPosts as staticBlogPosts } from "@/lib/blog-data";
@@ -88,7 +88,7 @@ function formatDate(post: BlogPost) {
   });
 }
 
-// Dynamic metadata generation
+// Dynamic metadata generation with enhanced SEO
 export async function generateMetadata({
   searchParams,
 }: PageProps): Promise<Metadata> {
@@ -98,33 +98,80 @@ export async function generateMetadata({
   let title = "Blog - WhatsApp Business Tips, Guides & Best Practices | Chati";
   let description =
     "Discover expert insights on WhatsApp Business API, customer engagement strategies, automation tips, and e-commerce best practices. Stay updated with the latest trends in conversational commerce.";
+  let keywords = [
+    "WhatsApp Business blog",
+    "WhatsApp Business API",
+    "customer engagement tips",
+    "chatbot automation",
+    "e-commerce strategies",
+    "WhatsApp marketing",
+    "business messaging",
+    "conversational commerce",
+    "customer support automation",
+    "WhatsApp integration",
+    "business communication",
+    "messaging API",
+  ];
 
   if (category) {
     title = `${category} Articles - WhatsApp Business Blog | Chati`;
-    description = `Explore ${category} articles about WhatsApp Business API, automation, and customer engagement strategies.`;
+    description = `Explore ${category} articles about WhatsApp Business API, automation, and customer engagement strategies. Expert tips and best practices for ${category}.`;
+    keywords.push(category.toLowerCase(), `${category} tips`, `${category} guide`);
   } else if (search) {
     title = `Search Results for "${search}" - WhatsApp Business Blog | Chati`;
-    description = `Find articles and guides about "${search}" on WhatsApp Business, chatbots, and customer engagement.`;
+    description = `Find articles and guides about "${search}" on WhatsApp Business, chatbots, and customer engagement. Expert insights and practical tips.`;
+    keywords.push(search.toLowerCase());
   }
+
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://chati.chat";
+  const blogUrl = `${baseUrl}/blog${category ? `?category=${encodeURIComponent(category)}` : ""}${search ? `?search=${encodeURIComponent(search)}` : ""}`;
 
   return {
     title,
     description,
-    keywords:
-      "WhatsApp Business blog, customer engagement tips, chatbot automation, e-commerce strategies, WhatsApp marketing, business messaging",
+    keywords: keywords.join(", "),
+    authors: [{ name: "Chati Team" }],
+    creator: "Chati",
+    publisher: "Chati",
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
     openGraph: {
       title,
       description,
       type: "website",
-      url: `https://chati.chat/blog${category ? `?category=${category}` : ""}${
-        search ? `?search=${search}` : ""
-      }`,
+      url: blogUrl,
+      siteName: "Chati",
+      locale: "en_US",
+      images: [
+        {
+          url: `${baseUrl}/og-blog.png`,
+          width: 1200,
+          height: 630,
+          alt: "Chati Blog - WhatsApp Business Insights",
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      site: "@chati",
+      creator: "@chati",
+      images: [`${baseUrl}/og-blog.png`],
     },
+    alternates: {
+      canonical: blogUrl,
+    },
+    category: "Technology",
   };
 }
 
@@ -166,6 +213,81 @@ export default async function BlogPage({ searchParams }: PageProps) {
 
   return (
     <div className="min-h-screen">
+      {/* Structured Data for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Blog",
+            name: "Chati Blog",
+            description:
+              "Expert insights on WhatsApp Business API, customer engagement, and automation strategies",
+            url: `${process.env.NEXT_PUBLIC_BASE_URL || "https://chati.chat"}/blog`,
+            publisher: {
+              "@type": "Organization",
+              name: "Chati",
+              logo: {
+                "@type": "ImageObject",
+                url: `${process.env.NEXT_PUBLIC_BASE_URL || "https://chati.chat"}/logo.png`,
+              },
+            },
+            blogPost: filteredPosts.slice(0, 10).map((post) => ({
+              "@type": "BlogPosting",
+              headline: post.title,
+              description: post.excerpt || post.metadata?.description || "",
+              image: post.thumbnail || post.imageUrl || "",
+              datePublished: post.date || post.publishedAt || post.createdAt,
+              dateModified: post.date || post.publishedAt || post.createdAt,
+              author: {
+                "@type": "Person",
+                name:
+                  typeof post.author === "object"
+                    ? post.author?.name
+                    : post.author || "Chati Team",
+              },
+              publisher: {
+                "@type": "Organization",
+                name: "Chati",
+                logo: {
+                  "@type": "ImageObject",
+                  url: `${process.env.NEXT_PUBLIC_BASE_URL || "https://chati.chat"}/logo.png`,
+                },
+              },
+              mainEntityOfPage: {
+                "@type": "WebPage",
+                "@id": `${process.env.NEXT_PUBLIC_BASE_URL || "https://chati.chat"}/blog/${post.slug}`,
+              },
+            })),
+          }),
+        }}
+      />
+
+      {/* Breadcrumb Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: `${process.env.NEXT_PUBLIC_BASE_URL || "https://chati.chat"}`,
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Blog",
+                item: `${process.env.NEXT_PUBLIC_BASE_URL || "https://chati.chat"}/blog`,
+              },
+            ],
+          }),
+        }}
+      />
+
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50/30 py-12 md:py-14">
         <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-gradient-to-br from-blue-400/20 to-transparent rounded-full blur-3xl" />
@@ -194,6 +316,20 @@ export default async function BlogPage({ searchParams }: PageProps) {
               Expert tips, guides, and strategies to help you master WhatsApp
               Business API, automation, and customer engagement.
             </p>
+
+            {/* RSS Feed Link */}
+            <div className="mb-4 flex justify-center">
+              <Link href="/blog/rss.xml" target="_blank" rel="noopener noreferrer">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  className="gap-2 hover:bg-orange-50 hover:text-orange-600 hover:border-orange-300 transition-all"
+                >
+                  <Rss className="w-4 h-4" />
+                  Subscribe to RSS Feed
+                </Button>
+              </Link>
+            </div>
 
             <SearchAndFilter initialSearch={searchQuery} />
           </div>
@@ -267,6 +403,7 @@ export default async function BlogPage({ searchParams }: PageProps) {
                   <Link
                     href={`/blog/${post.slug}`}
                     className="relative overflow-hidden"
+                    aria-label={`Read article: ${post.title}`}
                   >
                     <div className="aspect-[16/9] relative bg-gray-100">
                       <Image
@@ -276,6 +413,7 @@ export default async function BlogPage({ searchParams }: PageProps) {
                         alt={post.title}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        loading="lazy"
                       />
                     </div>
                     <Badge className="absolute top-3 left-3 bg-blue-600 text-white border-none shadow-lg text-xs px-2 py-0.5">
@@ -283,24 +421,24 @@ export default async function BlogPage({ searchParams }: PageProps) {
                     </Badge>
                   </Link>
 
-                  <div className="p-4 flex flex-col flex-grow">
+                  <article className="p-4 flex flex-col flex-grow">
                     {/* Meta Info */}
                     <div className="flex items-center gap-3 text-xs text-gray-600 mb-2">
-                      <div className="flex items-center gap-1">
-                        <Calendar className="w-3 h-3" />
+                      <time className="flex items-center gap-1" dateTime={post.date || post.publishedAt || post.createdAt}>
+                        <Calendar className="w-3 h-3" aria-hidden="true" />
                         <span>{formatDate(post)}</span>
-                      </div>
+                      </time>
                       <div className="flex items-center gap-1">
-                        <Clock className="w-3 h-3" />
+                        <Clock className="w-3 h-3" aria-hidden="true" />
                         <span>{post.readTime || "5 min read"}</span>
                       </div>
                     </div>
 
                     {/* Title */}
                     <Link href={`/blog/${post.slug}`}>
-                      <h3 className="text-base font-bold mb-2 group-hover:text-blue-600 transition-colors line-clamp-2 leading-snug">
+                      <h2 className="text-base font-bold mb-2 group-hover:text-blue-600 transition-colors line-clamp-2 leading-snug">
                         {post.title}
-                      </h3>
+                      </h2>
                     </Link>
 
                     {/* Excerpt */}
@@ -309,17 +447,17 @@ export default async function BlogPage({ searchParams }: PageProps) {
                     </p>
 
                     {/* CTA */}
-                    <Link href={`/blog/${post.slug}`} className="mt-auto">
+                    <Link href={`/blog/${post.slug}`} className="mt-auto" aria-label={`Continue reading ${post.title}`}>
                       <Button
                         variant="ghost"
                         size="sm"
                         className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 group/btn w-full justify-center text-sm h-8"
                       >
                         Read More
-                        <ArrowRight className="ml-1 w-3 h-3 group-hover/btn:translate-x-1 transition-transform" />
+                        <ArrowRight className="ml-1 w-3 h-3 group-hover/btn:translate-x-1 transition-transform" aria-hidden="true" />
                       </Button>
                     </Link>
-                  </div>
+                  </article>
                 </Card>
               ))}
             </div>
