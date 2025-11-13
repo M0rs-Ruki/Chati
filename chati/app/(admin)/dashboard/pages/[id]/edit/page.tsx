@@ -713,7 +713,7 @@ export default function EditPagePage() {
           </Button>
           <div>
             <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 bg-clip-text text-transparent">
-              Edit Page ✏️
+              Edit Page
             </h2>
             <p className="text-gray-600 mt-1">
               Update your page content and settings
