@@ -2,6 +2,10 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { getArticleBySlug, getAllArticles } from "@/lib/docs-data"
 import DocArticleClient from "./client-page"
+import { prisma } from "@/lib/prisma"
+
+// Force dynamic rendering
+export const dynamic = "force-dynamic";
 
 export async function generateStaticParams() {
   const articles = getAllArticles()
@@ -17,18 +21,26 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params
   
-  // Try to fetch from database first
+  // Try to fetch from DATABASE first
   let article = null
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/public/doc/slug/${slug}`, {
-      next: { revalidate: 60 }
-    })
-    if (response.ok) {
-      const result = await response.json()
-      article = result.data
+    const doc = await prisma.documentation.findUnique({
+      where: { slug },
+      include: {
+        author: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+      },
+    });
+    if (doc) {
+      article = doc;
     }
   } catch (error) {
-    console.error('Error fetching doc from API:', error)
+    console.error('Error fetching doc from database:', error)
   }
   
   // Fallback to static data
@@ -42,13 +54,16 @@ export async function generateMetadata({
     }
   }
 
+  // Handle both database and static article types
+  const articleData = article as any;
+
   return {
     title: `${article.title} | WhatsApp Business API Documentation`,
-    description: article.metadata?.description || article.description,
-    keywords: article.metadata?.tags?.join(", ") || article.tags?.join(", "),
+    description: articleData.metadata?.description || articleData.description || "",
+    keywords: articleData.metadata?.tags?.join(", ") || articleData.tags?.join(", ") || "",
     openGraph: {
       title: article.title,
-      description: article.metadata?.description || article.description,
+      description: articleData.metadata?.description || articleData.description || "",
       type: "article",
     },
   }
@@ -61,18 +76,26 @@ export default async function DocArticlePage({
 }) {
   const { slug } = await params
   
-  // Try to fetch from database first
+  // Try to fetch from DATABASE first
   let article = null
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/public/doc/slug/${slug}`, {
-      next: { revalidate: 60 }
-    })
-    if (response.ok) {
-      const result = await response.json()
-      article = result.data
+    const doc = await prisma.documentation.findUnique({
+      where: { slug },
+      include: {
+        author: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+      },
+    });
+    if (doc) {
+      article = doc;
     }
   } catch (error) {
-    console.error('Error fetching doc from API:', error)
+    console.error('Error fetching doc from database:', error)
   }
   
   // Fallback to static data

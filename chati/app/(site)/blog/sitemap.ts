@@ -1,25 +1,20 @@
 import { MetadataRoute } from "next";
+import { prisma } from "@/lib/prisma";
 
-// Fetch blog posts for sitemap
+// Fetch blog posts DIRECTLY from database for sitemap
 async function getBlogPosts() {
   try {
-    const baseUrl =
-      process.env.NEXT_PUBLIC_BASE_URL ||
-      (process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
-        : "http://localhost:3000");
-
-    const response = await fetch(`${baseUrl}/api/blog?limit=100`, {
-      cache: "no-store",
+    const posts = await prisma.blogPost.findMany({
+      where: { status: "PUBLISHED" },
+      select: {
+        slug: true,
+        updatedAt: true,
+        createdAt: true,
+      },
+      orderBy: { publishedAt: "desc" },
     });
 
-    if (!response.ok) {
-      console.error("Failed to fetch blogs for sitemap:", response.status);
-      throw new Error("Failed to fetch blogs");
-    }
-
-    const result = await response.json();
-    return result.data || [];
+    return posts;
   } catch (err) {
     console.error("Error fetching blogs for sitemap:", err);
     return [];

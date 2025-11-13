@@ -17,6 +17,7 @@ import {
 import Link from "next/link"
 import { docCategories } from "@/lib/docs-data"
 import SearchAndSidebar from "@/components/docs/SearchAndSidebar"
+import { prisma } from "@/lib/prisma"
 
 const iconMap: Record<string, any> = {
   Rocket,
@@ -47,22 +48,27 @@ interface PageProps {
   searchParams: { [key: string]: string | string[] | undefined }
 }
 
-// Server-side data fetching
+// Server-side data fetching - DIRECT DATABASE QUERY
 async function getDocumentation(): Promise<DbDoc[]> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
-    const response = await fetch(`${baseUrl}/api/public/doc?limit=100`, {
-      next: { revalidate: 60 }
-    })
+    const docs = await prisma.documentation.findMany({
+      where: { status: "PUBLISHED" },
+      include: {
+        author: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+      },
+      orderBy: { createdAt: "desc" },
+      take: 100,
+    });
 
-    if (!response.ok) {
-      throw new Error('Failed to fetch docs')
-    }
-
-    const result = await response.json()
-    return result.data || []
+    return docs as any;
   } catch (error) {
-    console.error('Error fetching docs:', error)
+    console.error('Error fetching docs from database:', error)
     return []
   }
 }
