@@ -4,7 +4,18 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Plus, Edit, Trash2, Eye, Search } from "lucide-react";
+import LoadingBlog from "./loading";
+import {
+  Plus,
+  Edit,
+  Trash2,
+  Eye,
+  Search,
+  Loader2,
+  Newspaper,
+  Tag,
+  AlertCircle,
+} from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import {
@@ -45,6 +56,7 @@ export default function BlogsPage() {
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [mounted, setMounted] = useState(false);
   const [pagination, setPagination] = useState({
     total: 0,
     page: 1,
@@ -60,6 +72,7 @@ export default function BlogsPage() {
   });
 
   useEffect(() => {
+    setMounted(true);
     fetchBlogs();
   }, []);
 
@@ -73,7 +86,6 @@ export default function BlogsPage() {
         return;
       }
 
-      // Fetch with pagination support
       const response = await fetch("/api/blog?page=1&limit=100", {
         method: "GET",
         headers: {
@@ -88,8 +100,7 @@ export default function BlogsPage() {
 
       const result = await response.json();
       setBlogs(result.data || []);
-      
-      // Update pagination info if available
+
       if (result.pagination) {
         setPagination(result.pagination);
       }
@@ -117,7 +128,6 @@ export default function BlogsPage() {
         return;
       }
 
-      // Fixed: Use the correct delete endpoint path
       const response = await fetch(`/api/blog/${deleteDialog.blogId}/delete`, {
         method: "DELETE",
         headers: {
@@ -131,7 +141,6 @@ export default function BlogsPage() {
         throw new Error(errorData.message || "Failed to delete blog");
       }
 
-      // Remove blog from local state
       setBlogs((prev) => prev.filter((b) => b.id !== deleteDialog.blogId));
       setDeleteDialog({ open: false, blogId: null });
 
@@ -143,7 +152,8 @@ export default function BlogsPage() {
       console.error("Error deleting blog:", error);
       toast({
         title: "Error",
-        description: error instanceof Error ? error.message : "Failed to delete blog post",
+        description:
+          error instanceof Error ? error.message : "Failed to delete blog post",
         variant: "destructive",
       });
     } finally {
@@ -158,29 +168,39 @@ export default function BlogsPage() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "PUBLISHED":
-        return "bg-green-100 text-green-700";
+        return "bg-gradient-to-r from-green-100 to-green-200 text-green-700 border-green-300";
       case "DRAFT":
-        return "bg-yellow-100 text-yellow-700";
+        return "bg-gradient-to-r from-yellow-100 to-yellow-200 text-yellow-700 border-yellow-300";
       case "REVIEW":
-        return "bg-blue-100 text-blue-700";
+        return "bg-gradient-to-r from-blue-100 to-blue-200 text-blue-700 border-blue-300";
       case "ARCHIVED":
-        return "bg-gray-100 text-gray-600";
+        return "bg-gradient-to-r from-gray-100 to-gray-200 text-gray-600 border-gray-300";
       default:
-        return "bg-gray-100 text-gray-600";
+        return "bg-gradient-to-r from-gray-100 to-gray-200 text-gray-600 border-gray-300";
     }
   };
 
+  if (loading) {
+    return <LoadingBlog />;
+  }
+
   return (
-    <div className="pt-8 px-6 space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div
+      className={`pt-8 px-6 pb-12 space-y-8 max-w-7xl mx-auto transition-all duration-700 ${
+        mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+      }`}
+    >
+      {/* Header */}
       <div className="flex items-center justify-between">
-        <div className="space-y-2">
-          <h2 className="text-4xl font-bold text-gray-900 tracking-tight">
-            Blog Posts
+        <div className="space-y-3">
+          <h2 className="text-4xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 bg-clip-text text-transparent flex items-center gap-3">
+            <Newspaper className="w-10 h-10 text-orange-600" />
+            Blog Posts 
           </h2>
           <p className="text-lg text-gray-600">
             Manage your blog posts and articles
             {!loading && pagination.total > 0 && (
-              <span className="ml-2 text-sm font-medium text-green-600">
+              <span className="ml-2 text-sm font-semibold text-orange-600">
                 ({pagination.total} total)
               </span>
             )}
@@ -188,36 +208,47 @@ export default function BlogsPage() {
         </div>
         <Button
           onClick={() => router.push("/dashboard/blogs/create")}
-          className="bg-green-600 hover:bg-green-700 text-white font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"
+          className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white shadow-lg hover:shadow-orange-600/25 transition-all duration-300 hover:scale-105"
         >
           <Plus className="h-4 w-4 mr-2" />
           Create Blog Post
         </Button>
       </div>
 
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 transition-colors" />
+      {/* Search */}
+      <div className="relative group">
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 group-focus-within:text-orange-600 transition-colors" />
         <Input
           placeholder="Search blog posts..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="pl-10 bg-white border-gray-200 focus:ring-2 focus:ring-green-500 transition-all"
+          className="pl-10 bg-white border-gray-200 focus:border-orange-500 focus:ring-orange-500/20 transition-all h-12"
         />
       </div>
 
-      {loading ? (
-        <div className="text-center py-12">
-          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-green-600 border-r-transparent" />
-          <p className="mt-4 text-gray-600">Loading blog posts...</p>
-        </div>
-      ) : filteredBlogs.length === 0 ? (
-        <Card className="bg-white border-gray-200">
-          <CardContent className="py-12 text-center">
-            <p className="text-gray-500">
+      {filteredBlogs.length === 0 ? (
+        <Card className="bg-white border-gray-200 shadow-lg">
+          <CardContent className="py-16 text-center">
+            <div className="mx-auto w-20 h-20 bg-gradient-to-br from-orange-100 to-red-100 rounded-2xl flex items-center justify-center mb-4">
+              <Newspaper className="h-10 w-10 text-orange-600" />
+            </div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              {searchQuery ? "No blog posts found" : "No blog posts yet"}
+            </h3>
+            <p className="text-gray-500 mb-6">
               {searchQuery
-                ? "No blog posts found matching your search"
-                : "No blog posts yet. Create your first blog post to get started!"}
+                ? "Try adjusting your search query"
+                : "Create your first blog post to get started!"}
             </p>
+            {!searchQuery && (
+              <Button
+                onClick={() => router.push("/dashboard/blogs/create")}
+                className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Create Blog Post
+              </Button>
+            )}
           </CardContent>
         </Card>
       ) : (
@@ -225,27 +256,30 @@ export default function BlogsPage() {
           {filteredBlogs.map((blog, index) => (
             <Card
               key={blog.id}
-              className="bg-white border-gray-200 hover:shadow-xl transition-all duration-300 hover:scale-105 animate-in fade-in slide-in-from-bottom-4"
-              style={{ animationDelay: `${index * 100}ms` }}
+              className="relative overflow-hidden bg-white border-gray-200 hover:shadow-xl transition-all duration-500 hover:scale-[1.02] group"
+              style={{ animationDelay: `${index * 50}ms` }}
             >
-              <CardContent className="p-6">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-orange-500/5 rounded-full -mr-12 -mt-12 group-hover:scale-150 transition-transform duration-700" />
+              <CardContent className="p-6 relative z-10">
                 {blog.imageUrl && (
-                  <img
-                    src={blog.imageUrl}
-                    alt={blog.title}
-                    className="w-full h-40 object-cover rounded-lg mb-4"
-                  />
+                  <div className="relative mb-4 rounded-lg overflow-hidden group-hover:shadow-lg transition-shadow">
+                    <img
+                      src={blog.imageUrl}
+                      alt={blog.title}
+                      className="w-full h-40 object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                  </div>
                 )}
                 <div className="flex items-start justify-between mb-3">
                   <span
-                    className={`text-xs px-3 py-1 rounded-full font-medium ${getStatusColor(
+                    className={`text-xs px-3 py-1 rounded-full font-semibold border shadow-sm ${getStatusColor(
                       blog.status
                     )}`}
                   >
                     {blog.status}
                   </span>
                 </div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-900 line-clamp-2">
+                <h3 className="text-lg font-bold text-gray-900 line-clamp-2 mb-2 leading-tight">
                   {blog.title}
                 </h3>
                 <p className="text-sm text-gray-600 mb-4 line-clamp-2">
@@ -260,8 +294,9 @@ export default function BlogsPage() {
                     {blog.metadata.tags.slice(0, 3).map((tag, idx) => (
                       <span
                         key={`${blog.id}-${tag}-${idx}`}
-                        className="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded-md"
+                        className="inline-flex items-center gap-1 text-xs px-2 py-1 bg-orange-50 text-orange-700 rounded-md"
                       >
+                        <Tag className="w-3 h-3" />
                         {tag}
                       </span>
                     ))}
@@ -271,11 +306,9 @@ export default function BlogsPage() {
                   <Button
                     size="sm"
                     variant="outline"
-                    onClick={() =>
-                      router.push(`/dashboard/blogs/${blog.id}`)
-                    }
+                    onClick={() => router.push(`/dashboard/blogs/${blog.id}`)}
                     disabled={deleting}
-                    className="flex-1 border-gray-200 hover:bg-blue-50 hover:border-blue-300 disabled:opacity-50"
+                    className="flex-1 border-blue-200 hover:bg-blue-50 transition-all"
                   >
                     <Eye className="h-4 w-4 mr-1" />
                     View
@@ -287,7 +320,7 @@ export default function BlogsPage() {
                       router.push(`/dashboard/blogs/${blog.id}/edit`)
                     }
                     disabled={deleting}
-                    className="flex-1 border-gray-200 hover:bg-green-50 hover:border-green-300 disabled:opacity-50"
+                    className="flex-1 border-green-200 hover:bg-green-50 transition-all"
                   >
                     <Edit className="h-4 w-4 mr-1" />
                     Edit
@@ -299,7 +332,7 @@ export default function BlogsPage() {
                       setDeleteDialog({ open: true, blogId: blog.id })
                     }
                     disabled={deleting}
-                    className="border-gray-200 hover:bg-red-50 hover:border-red-300 px-2 disabled:opacity-50"
+                    className="border-red-200 hover:bg-red-50 px-2 transition-all"
                   >
                     <Trash2 className="h-4 w-4 text-red-600" />
                   </Button>
@@ -310,32 +343,47 @@ export default function BlogsPage() {
         </div>
       )}
 
+      {/* Delete Dialog */}
       <AlertDialog
         open={deleteDialog.open}
         onOpenChange={(open) => setDeleteDialog({ open, blogId: null })}
       >
         <AlertDialogContent className="bg-white">
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete Blog Post</AlertDialogTitle>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <Trash2 className="w-5 h-5 text-red-600" />
+              Delete Blog Post
+            </AlertDialogTitle>
             <AlertDialogDescription>
               Are you sure you want to delete this blog post? This action cannot
               be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
+          <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-sm text-red-700 flex items-start gap-2">
+              <AlertCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
+              <span>
+                <strong>Warning:</strong> This will permanently delete the blog
+                post.
+              </span>
+            </p>
+          </div>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={deleting}>Cancel</AlertDialogCancel>
+            <AlertDialogCancel disabled={deleting} className="border-gray-200">
+              Cancel
+            </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               disabled={deleting}
-              className="bg-red-600 hover:bg-red-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white"
             >
               {deleting ? (
                 <>
-                  <div className="inline-block h-4 w-4 mr-2 animate-spin rounded-full border-2 border-white border-r-transparent" />
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                   Deleting...
                 </>
               ) : (
-                "Delete"
+                "Delete Forever"
               )}
             </AlertDialogAction>
           </AlertDialogFooter>

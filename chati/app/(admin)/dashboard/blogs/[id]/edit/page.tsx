@@ -1,20 +1,33 @@
-"use client"
+"use client";
 
-import type React from "react"
-
-import { useEffect, useState } from "react"
-import { useParams, useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Textarea } from "@/components/ui/textarea"
-import { ArrowLeft, Upload, X } from "lucide-react"
-import Link from "next/link"
-import { WYSIWYGEditor } from "@/components/wysiwyg-editor"
-import { useToast } from "@/hooks/use-toast"
+import type React from "react";
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  ArrowLeft,
+  Upload,
+  X,
+  Loader2,
+  Newspaper,
+  Save,
+  ImageIcon,
+} from "lucide-react";
+import Link from "next/link";
+import { WYSIWYGEditor } from "@/components/wysiwyg-editor";
+import { useToast } from "@/hooks/use-toast";
 import {
   Dialog,
   DialogContent,
@@ -22,7 +35,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 
 interface MediaFile {
   id: string;
@@ -51,11 +64,11 @@ interface Blog {
 }
 
 export default function EditBlogPage() {
-  const params = useParams()
-  const router = useRouter()
-  const { toast } = useToast()
-  const [loading, setLoading] = useState(false)
-  const [fetching, setFetching] = useState(true)
+  const params = useParams();
+  const router = useRouter();
+  const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
+  const [fetching, setFetching] = useState(true);
   const [formData, setFormData] = useState({
     title: "",
     content: "",
@@ -66,49 +79,56 @@ export default function EditBlogPage() {
       description: "",
       tags: "",
     },
-  })
+  });
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Media Upload Dialog state
-  const [uploadDialogOpen, setUploadDialogOpen] = useState(false)
-  const [uploadSelectedFile, setUploadSelectedFile] = useState<File | null>(null)
-  const [uploadPreviewUrl, setUploadPreviewUrl] = useState<string | null>(null)
-  const [uploadAltText, setUploadAltText] = useState("")
-  const [uploading, setUploading] = useState(false)
+  const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
+  const [uploadSelectedFile, setUploadSelectedFile] = useState<File | null>(
+    null
+  );
+  const [uploadPreviewUrl, setUploadPreviewUrl] = useState<string | null>(null);
+  const [uploadAltText, setUploadAltText] = useState("");
+  const [uploading, setUploading] = useState(false);
 
   // Media Picker State
-  const [mediaPickerOpen, setMediaPickerOpen] = useState(false)
-  const [mediaFiles, setMediaFiles] = useState<MediaFile[]>([])
-  const [mediaLoading, setMediaLoading] = useState(false)
+  const [mediaPickerOpen, setMediaPickerOpen] = useState(false);
+  const [mediaFiles, setMediaFiles] = useState<MediaFile[]>([]);
+  const [mediaLoading, setMediaLoading] = useState(false);
 
   // Fetch media files when media picker opens
   useEffect(() => {
-    if (!mediaPickerOpen) return
+    if (!mediaPickerOpen) return;
     const fetchMedia = async () => {
-      setMediaLoading(true)
+      setMediaLoading(true);
       try {
-        const token = localStorage.getItem("token")
+        const token = localStorage.getItem("token");
         const res = await fetch("/api/media", {
           headers: { Authorization: `Bearer ${token ?? ""}` },
-        })
-        const result = await res.json()
-        setMediaFiles(result.data || [])
+        });
+        const result = await res.json();
+        setMediaFiles(result.data || []);
       } catch (error) {
         toast({
           title: "Error",
           description: "Failed to load media",
           variant: "destructive",
-        })
-        setMediaFiles([])
+        });
+        setMediaFiles([]);
       } finally {
-        setMediaLoading(false)
+        setMediaLoading(false);
       }
-    }
-    fetchMedia()
-  }, [mediaPickerOpen, toast])
+    };
+    fetchMedia();
+  }, [mediaPickerOpen, toast]);
 
   const handleUploadFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
+    const file = e.target.files?.[0];
+    if (!file) return;
 
     // Validate file size (5MB max)
     if (file.size > 5 * 1024 * 1024) {
@@ -116,17 +136,17 @@ export default function EditBlogPage() {
         title: "Error",
         description: "File size must be less than 5MB",
         variant: "destructive",
-      })
-      return
+      });
+      return;
     }
 
-    setUploadSelectedFile(file)
+    setUploadSelectedFile(file);
 
     // Create preview url
-    const reader = new FileReader()
-    reader.onloadend = () => setUploadPreviewUrl(reader.result as string)
-    reader.readAsDataURL(file)
-  }
+    const reader = new FileReader();
+    reader.onloadend = () => setUploadPreviewUrl(reader.result as string);
+    reader.readAsDataURL(file);
+  };
 
   const handleUploadSubmit = async () => {
     if (!uploadSelectedFile || !uploadAltText.trim()) {
@@ -134,16 +154,16 @@ export default function EditBlogPage() {
         title: "Error",
         description: "Please select a file and enter alt text",
         variant: "destructive",
-      })
-      return
+      });
+      return;
     }
-    setUploading(true)
+    setUploading(true);
 
     try {
-      const token = localStorage.getItem("token")
-      const formDataUpload = new FormData()
-      formDataUpload.append("file", uploadSelectedFile)
-      formDataUpload.append("alt", uploadAltText.trim())
+      const token = localStorage.getItem("token");
+      const formDataUpload = new FormData();
+      formDataUpload.append("file", uploadSelectedFile);
+      formDataUpload.append("alt", uploadAltText.trim());
 
       const res = await fetch("/api/media/upload", {
         method: "POST",
@@ -151,50 +171,50 @@ export default function EditBlogPage() {
           Authorization: `Bearer ${token || ""}`,
         },
         body: formDataUpload,
-      })
+      });
 
-      const result = await res.json()
+      const result = await res.json();
 
-      if (!res.ok) throw new Error(result.message || "Failed to upload")
+      if (!res.ok) throw new Error(result.message || "Failed to upload");
 
       // Set uploaded image URL in your main form
-      setFormData((prev) => ({ ...prev, imageUrl: result.data.url }))
+      setFormData((prev) => ({ ...prev, imageUrl: result.data.url }));
 
       toast({
         title: "Success",
         description: "Image uploaded successfully",
-      })
+      });
 
       // Close modal and reset upload fields
-      setUploadDialogOpen(false)
-      setUploadSelectedFile(null)
-      setUploadPreviewUrl(null)
-      setUploadAltText("")
+      setUploadDialogOpen(false);
+      setUploadSelectedFile(null);
+      setUploadPreviewUrl(null);
+      setUploadAltText("");
     } catch (error) {
       toast({
         title: "Error",
         description: error instanceof Error ? error.message : "Upload failed",
         variant: "destructive",
-      })
+      });
     } finally {
-      setUploading(false)
+      setUploading(false);
     }
-  }
+  };
 
   useEffect(() => {
     if (params.id) {
-      fetchBlog()
+      fetchBlog();
     }
-  }, [params.id])
+  }, [params.id]);
 
   const fetchBlog = async () => {
     try {
-      setFetching(true)
-      const token = localStorage.getItem("token")
+      setFetching(true);
+      const token = localStorage.getItem("token");
 
       if (!token) {
-        router.push("/admin")
-        return
+        router.push("/admin");
+        return;
       }
 
       const response = await fetch(`/api/blog/${params.id}`, {
@@ -203,28 +223,28 @@ export default function EditBlogPage() {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-      })
+      });
 
       if (!response.ok) {
-        throw new Error("Failed to fetch blog post")
+        throw new Error("Failed to fetch blog post");
       }
 
-      const result = await response.json()
-      const blog = result.data
+      const result = await response.json();
+      const blog = result.data;
 
       // Extract content from the blog object
-      let contentText = ""
+      let contentText = "";
       if (blog.content) {
         if (typeof blog.content === "string") {
-          contentText = blog.content
+          contentText = blog.content;
         } else if (blog.content.html) {
-          contentText = blog.content.html
+          contentText = blog.content.html;
         } else if (blog.content.markdown) {
-          contentText = blog.content.markdown
+          contentText = blog.content.markdown;
         } else if (blog.content.content) {
-          contentText = blog.content.content
+          contentText = blog.content.content;
         } else {
-          contentText = JSON.stringify(blog.content)
+          contentText = JSON.stringify(blog.content);
         }
       }
 
@@ -238,61 +258,61 @@ export default function EditBlogPage() {
           description: blog.metadata?.description || "",
           tags: blog.metadata?.tags?.join(", ") || "",
         },
-      })
+      });
     } catch (error) {
-      console.error("Error fetching blog:", error)
+      console.error("Error fetching blog:", error);
       toast({
         title: "Error",
         description: "Failed to load blog post",
         variant: "destructive",
-      })
-      router.push("/dashboard/blogs")
+      });
+      router.push("/dashboard/blogs");
     } finally {
-      setFetching(false)
+      setFetching(false);
     }
-  }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     // Validate that at least title and either content or customHtml is provided
     if (!formData.title) {
-      toast({ 
-        title: "Error", 
-        description: "Title is required", 
-        variant: "destructive" 
-      })
-      return
+      toast({
+        title: "Error",
+        description: "Title is required",
+        variant: "destructive",
+      });
+      return;
     }
 
     if (!formData.content && !formData.customHtml) {
-      toast({ 
-        title: "Error", 
-        description: "Either content or custom HTML is required", 
-        variant: "destructive" 
-      })
-      return
+      toast({
+        title: "Error",
+        description: "Either content or custom HTML is required",
+        variant: "destructive",
+      });
+      return;
     }
 
-    setLoading(true)
+    setLoading(true);
 
     try {
-      const token = localStorage.getItem("token")
+      const token = localStorage.getItem("token");
 
       if (!token) {
-        router.push("/admin")
-        return
+        router.push("/admin");
+        return;
       }
 
       // Combine content and customHtml if both are provided
-      let finalContent = formData.content
+      let finalContent = formData.content;
       if (formData.customHtml) {
         // If both content and customHtml exist, combine them
         if (formData.content) {
-          finalContent = `${formData.content}\n\n${formData.customHtml}`
+          finalContent = `${formData.content}\n\n${formData.customHtml}`;
         } else {
           // If only customHtml exists, use it as content
-          finalContent = formData.customHtml
+          finalContent = formData.customHtml;
         }
       }
 
@@ -311,7 +331,7 @@ export default function EditBlogPage() {
                 .filter(Boolean)
             : [],
         },
-      }
+      };
 
       const response = await fetch(`/api/blog/${params.id}`, {
         method: "PUT",
@@ -320,33 +340,31 @@ export default function EditBlogPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(updateData),
-      })
+      });
 
       if (!response.ok) {
-        const error = await response.json()
-        throw new Error(error.message || "Failed to update blog post")
+        const error = await response.json();
+        throw new Error(error.message || "Failed to update blog post");
       }
 
       toast({
         title: "Success",
         description: "Blog post updated successfully",
-      })
+      });
 
-      router.push("/dashboard/blogs")
+      router.push("/dashboard/blogs");
     } catch (error) {
-      console.error("Error updating blog:", error)
+      console.error("Error updating blog:", error);
       toast({
         title: "Error",
         description:
-          error instanceof Error
-            ? error.message
-            : "Failed to update blog post",
+          error instanceof Error ? error.message : "Failed to update blog post",
         variant: "destructive",
-      })
+      });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   if (fetching) {
     return (
@@ -354,7 +372,7 @@ export default function EditBlogPage() {
         <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-[var(--primary-green)] border-r-transparent" />
         <p className="mt-4 text-gray-600">Loading blog post...</p>
       </div>
-    )
+    );
   }
 
   return (
@@ -362,13 +380,21 @@ export default function EditBlogPage() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Link href="/dashboard/blogs">
-            <Button variant="outline" size="icon" className="border-[var(--border)] bg-transparent">
+            <Button
+              variant="outline"
+              size="icon"
+              className="border-[var(--border)] bg-transparent"
+            >
               <ArrowLeft className="h-4 w-4" />
             </Button>
           </Link>
           <div className="space-y-1">
-            <h2 className="text-3xl font-bold text-[var(--text-primary)]">Edit Blog Post</h2>
-            <p className="text-[var(--text-secondary)] mt-2">Update your blog post</p>
+            <h2 className="text-3xl font-bold text-[var(--text-primary)]">
+              Edit Blog Post
+            </h2>
+            <p className="text-[var(--text-secondary)] mt-2">
+              Update your blog post
+            </p>
           </div>
         </div>
       </div>
@@ -376,7 +402,9 @@ export default function EditBlogPage() {
       <form onSubmit={handleSubmit}>
         <Card className="bg-white border-[var(--border)]">
           <CardHeader>
-            <CardTitle className="text-[var(--text-primary)]">Blog Post Details</CardTitle>
+            <CardTitle className="text-[var(--text-primary)]">
+              Blog Post Details
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-2">
@@ -386,7 +414,9 @@ export default function EditBlogPage() {
               <Input
                 id="title"
                 value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, title: e.target.value })
+                }
                 placeholder="Enter blog post title"
                 required
                 className="bg-white border-[var(--border)]"
@@ -402,25 +432,28 @@ export default function EditBlogPage() {
 
               <TabsContent value="content" className="space-y-4 mt-6">
                 <div className="space-y-2">
-                  <Label htmlFor="imageUrl" className="text-[var(--text-secondary)]">
+                  <Label
+                    htmlFor="imageUrl"
+                    className="text-[var(--text-secondary)]"
+                  >
                     Hero Image
                   </Label>
                   <div className="space-y-2">
                     <div className="flex gap-2">
-                      <Button 
-                        type="button" 
-                        variant="outline" 
-                        size="sm" 
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
                         className="flex-1 bg-transparent"
                         onClick={() => setUploadDialogOpen(true)}
                       >
                         <Upload className="h-4 w-4 mr-2" />
                         Create New
                       </Button>
-                      <Button 
-                        type="button" 
-                        variant="outline" 
-                        size="sm" 
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
                         className="flex-1 bg-transparent"
                         onClick={() => setMediaPickerOpen(true)}
                       >
@@ -430,7 +463,9 @@ export default function EditBlogPage() {
                     <Input
                       id="imageUrl"
                       value={formData.imageUrl}
-                      onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, imageUrl: e.target.value })
+                      }
                       placeholder="Or enter image URL"
                       className="bg-white border-[var(--border)]"
                     />
@@ -451,18 +486,24 @@ export default function EditBlogPage() {
                     Content
                   </Label>
                   <p className="text-xs text-gray-500 mb-2">
-                    Use the visual editor for content or switch to Custom HTML tab
+                    Use the visual editor for content or switch to Custom HTML
+                    tab
                   </p>
                   <WYSIWYGEditor
                     value={formData.content}
-                    onChange={(content: string) => setFormData({ ...formData, content })}
+                    onChange={(content: string) =>
+                      setFormData({ ...formData, content })
+                    }
                   />
                 </div>
               </TabsContent>
 
               <TabsContent value="meta" className="space-y-4 mt-6">
                 <div className="space-y-2">
-                  <Label htmlFor="description" className="text-[var(--text-secondary)]">
+                  <Label
+                    htmlFor="description"
+                    className="text-[var(--text-secondary)]"
+                  >
                     Description
                   </Label>
                   <Input
@@ -471,7 +512,10 @@ export default function EditBlogPage() {
                     onChange={(e) =>
                       setFormData({
                         ...formData,
-                        metadata: { ...formData.metadata, description: e.target.value },
+                        metadata: {
+                          ...formData.metadata,
+                          description: e.target.value,
+                        },
                       })
                     }
                     placeholder="Brief description"
@@ -480,7 +524,10 @@ export default function EditBlogPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="tags" className="text-[var(--text-secondary)]">
+                  <Label
+                    htmlFor="tags"
+                    className="text-[var(--text-secondary)]"
+                  >
                     Tags (comma-separated)
                   </Label>
                   <Input
@@ -489,7 +536,10 @@ export default function EditBlogPage() {
                     onChange={(e) =>
                       setFormData({
                         ...formData,
-                        metadata: { ...formData.metadata, tags: e.target.value },
+                        metadata: {
+                          ...formData.metadata,
+                          tags: e.target.value,
+                        },
                       })
                     }
                     placeholder="tutorial, guide, tips"
@@ -498,12 +548,20 @@ export default function EditBlogPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="status" className="text-[var(--text-secondary)]">
+                  <Label
+                    htmlFor="status"
+                    className="text-[var(--text-secondary)]"
+                  >
                     Status
                   </Label>
                   <Select
                     value={formData.status}
-                    onValueChange={(value) => setFormData({ ...formData, status: value as Blog["status"] })}
+                    onValueChange={(value) =>
+                      setFormData({
+                        ...formData,
+                        status: value as Blog["status"],
+                      })
+                    }
                   >
                     <SelectTrigger className="bg-white border-[var(--border)]">
                       <SelectValue />
@@ -528,8 +586,9 @@ export default function EditBlogPage() {
                     Custom HTML Code
                   </Label>
                   <p className="text-sm text-gray-500">
-                    Add custom HTML that will be rendered as your content. Use this for special widgets, embeds,
-                    or custom styling. You can use this instead of or in addition to the visual editor.
+                    Add custom HTML that will be rendered as your content. Use
+                    this for special widgets, embeds, or custom styling. You can
+                    use this instead of or in addition to the visual editor.
                   </p>
                   <Textarea
                     id="customHtml"
@@ -543,7 +602,10 @@ export default function EditBlogPage() {
                   {formData.customHtml && (
                     <div className="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-md">
                       <p className="text-xs text-blue-700">
-                        ✓ Custom HTML will be {formData.content ? 'combined with your content' : 'used as content'}
+                        ✓ Custom HTML will be{" "}
+                        {formData.content
+                          ? "combined with your content"
+                          : "used as content"}
                       </p>
                     </div>
                   )}
@@ -567,9 +629,9 @@ export default function EditBlogPage() {
                 )}
               </Button>
               <Link href="/dashboard/blogs">
-                <Button 
-                  type="button" 
-                  variant="outline" 
+                <Button
+                  type="button"
+                  variant="outline"
                   className="border-[var(--border)] bg-transparent"
                   disabled={loading}
                 >
@@ -606,9 +668,9 @@ export default function EditBlogPage() {
                         variant="destructive"
                         className="absolute top-2 right-2"
                         onClick={(e) => {
-                          e.stopPropagation()
-                          setUploadSelectedFile(null)
-                          setUploadPreviewUrl(null)
+                          e.stopPropagation();
+                          setUploadSelectedFile(null);
+                          setUploadPreviewUrl(null);
                         }}
                       >
                         <X className="w-4 h-4" />
@@ -704,12 +766,12 @@ export default function EditBlogPage() {
                   variant="ghost"
                   className="flex flex-col items-center p-1 border border-gray-200 rounded-md hover:border-green-500 transition-colors"
                   onClick={() => {
-                    setFormData((prev) => ({ ...prev, imageUrl: file.url }))
-                    setMediaPickerOpen(false)
+                    setFormData((prev) => ({ ...prev, imageUrl: file.url }));
+                    setMediaPickerOpen(false);
                     toast({
                       title: "Success",
                       description: "Image selected successfully",
-                    })
+                    });
                   }}
                 >
                   <img
@@ -732,5 +794,5 @@ export default function EditBlogPage() {
         </DialogContent>
       </Dialog>
     </div>
-  )
+  );
 }
