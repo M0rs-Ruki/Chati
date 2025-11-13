@@ -8,6 +8,10 @@ import Image from "next/image";
 import { blogPosts as staticBlogPosts } from "@/lib/blog-data";
 import SearchAndFilter from "@/components/blog/SearchAndFilter";
 
+// Force dynamic rendering to ensure API calls work on production
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 interface BlogPost {
   id?: string;
   slug: string;
@@ -39,26 +43,43 @@ interface PageProps {
 // Server-side data fetching
 async function getBlogPosts(): Promise<BlogPost[]> {
   try {
-    // Determine the correct base URL
-    const baseUrl =
-      process.env.NEXT_PUBLIC_BASE_URL || process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
-        : "http://localhost:3000";
-
-    const response = await fetch(`${baseUrl}/api/blog?limit=100`, {
-      cache: "no-store", // Changed from revalidate to no-store for production
+    // Use relative URL for API calls - works on both local and production
+    const apiUrl = '/api/blog?limit=100';
+    
+    // For server-side rendering, we need to use absolute URL
+    let baseUrl = '';
+    if (typeof window === 'undefined') {
+      // Server-side: construct the full URL
+      baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 
+                (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 
+                'http://localhost:3000');
+    }
+    
+    const fullUrl = baseUrl + apiUrl;
+    
+    const response = await fetch(fullUrl, {
+      cache: "no-store",
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
 
     if (!response.ok) {
       console.error(
         "Failed to fetch blogs:",
         response.status,
-        response.statusText
+        response.statusText,
+        "URL:", fullUrl
       );
       throw new Error("Failed to fetch blogs");
     }
 
     const result = await response.json();
+
+    if (!result.data || !Array.isArray(result.data)) {
+      console.error("Invalid API response:", result);
+      return [];
+    }
 
     const transformedPosts = result.data.map((post: any) => ({
       id: post.id,
@@ -80,6 +101,7 @@ async function getBlogPosts(): Promise<BlogPost[]> {
       status: post.status,
     }));
 
+    console.log(`Successfully fetched ${transformedPosts.length} blog posts`);
     return transformedPosts;
   } catch (err) {
     console.error("Error fetching blogs:", err);
