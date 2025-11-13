@@ -7,6 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { blogPosts as staticBlogPosts } from "@/lib/blog-data";
 import SearchAndFilter from "@/components/blog/SearchAndFilter";
+import { prisma } from "@/lib/prisma";
 
 // Force dynamic rendering to ensure API calls work on production
 export const dynamic = "force-dynamic";
@@ -40,62 +41,39 @@ interface PageProps {
   searchParams: { [key: string]: string | string[] | undefined };
 }
 
-// Server-side data fetching
+// Server-side data fetching - DIRECTLY from database (no API calls)
 async function getBlogPosts(): Promise<BlogPost[]> {
   try {
-    // Use relative URL for API calls - works on both local and production
-    const apiUrl = "/api/blog?limit=100";
+    console.log('🔍 Fetching blog posts directly from database');
 
-    // For server-side rendering, we need to use absolute URL
-    let baseUrl = "";
-    if (typeof window === "undefined") {
-      // Server-side: construct the full URL
-      baseUrl =
-        process.env.NEXT_PUBLIC_BASE_URL ||
-        (process.env.VERCEL_URL
-          ? `https://${process.env.VERCEL_URL}`
-          : "http://localhost:3000");
-    }
-
-    const fullUrl = baseUrl + apiUrl;
-    
-    console.log('🔍 Fetching blog posts from:', fullUrl);
-
-    const response = await fetch(fullUrl, {
-      cache: "no-store",
-      headers: {
-        "Content-Type": "application/json",
+    // Fetch directly from database instead of using API
+    const blogs = await prisma.blogPost.findMany({
+      select: {
+        id: true,
+        slug: true,
+        title: true,
+        imageUrl: true,
+        status: true,
+        metadata: true,
+        publishedAt: true,
+        author: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+        createdAt: true,
+        updatedAt: true,
+        content: true,
       },
+      orderBy: { createdAt: "desc" },
+      take: 100,
     });
 
-    if (!response.ok) {
-      console.error(
-        "❌ Failed to fetch blogs:",
-        response.status,
-        response.statusText,
-        "URL:",
-        fullUrl
-      );
-      const errorText = await response.text();
-      console.error("Error response:", errorText);
-      throw new Error("Failed to fetch blogs");
-    }
+    console.log('✅ Fetched from database:', blogs.length, 'posts');
 
-    const result = await response.json();
-    
-    console.log('✅ API Response:', {
-      hasData: !!result.data,
-      isArray: Array.isArray(result.data),
-      count: result.data?.length || 0,
-      pagination: result.pagination
-    });
-
-    if (!result.data || !Array.isArray(result.data)) {
-      console.error("Invalid API response:", result);
-      return [];
-    }
-
-    const transformedPosts = result.data.map((post: any) => ({
+    const transformedPosts = blogs.map((post: any) => ({
       id: post.id,
       slug: post.slug,
       title: post.title,
@@ -118,8 +96,9 @@ async function getBlogPosts(): Promise<BlogPost[]> {
     console.log(`✅ Successfully transformed ${transformedPosts.length} blog posts`);
     return transformedPosts;
   } catch (err) {
-    console.error("❌ Error fetching blogs:", err);
+    console.error("❌ Error fetching blogs from database:", err);
     console.error("Stack trace:", err instanceof Error ? err.stack : 'No stack trace');
+    // Return empty array on error, static posts will be used
     return [];
   }
 }

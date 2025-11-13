@@ -1,47 +1,45 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { blogPosts } from "@/lib/blog-data";
+import type { BlogPost } from "@/lib/blog-data";
 import BlogPostPage from "./client-page";
+import { prisma } from "@/lib/prisma";
 
 // Force dynamic rendering
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-// Fetch blog post from API or fallback to static data
+// Fetch blog post DIRECTLY from database (no API calls)
 async function getBlogPost(slug: string) {
   try {
-    // Construct base URL for server-side fetch
-    const baseUrl =
-      process.env.NEXT_PUBLIC_BASE_URL ||
-      process.env.NEXT_PUBLIC_APP_URL ||
-      (process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
-        : "http://localhost:3000");
+    console.log("🔍 Fetching blog post from database for slug:", slug);
 
-    const fullUrl = `${baseUrl}/api/public/blog/slug/${slug}`;
-
-    console.log("Fetching blog post from:", fullUrl);
-
-    const response = await fetch(fullUrl, {
-      cache: "no-store",
-      headers: {
-        "Content-Type": "application/json",
+    // Fetch directly from database
+    const post = await prisma.blogPost.findUnique({
+      where: { slug },
+      include: {
+        author: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
       },
     });
 
-    if (response.ok) {
-      const result = await response.json();
-      console.log("Successfully fetched blog post:", result.data?.title);
-      return result.data;
+    if (post) {
+      console.log("✅ Successfully fetched blog post:", post.title);
+      return post;
     } else {
-      console.error("API fetch failed:", response.status, response.statusText);
+      console.log("⚠️ Post not found in database, checking static posts");
     }
   } catch (error) {
-    console.error("Error fetching blog post from API:", error);
+    console.error("❌ Error fetching blog post from database:", error);
   }
 
   // Fallback to static data
-  console.log("Falling back to static data for slug:", slug);
+  console.log("📚 Falling back to static data for slug:", slug);
   return blogPosts.find((p) => p.slug === slug);
 }
 
@@ -67,16 +65,22 @@ export async function generateMetadata({
   }
 
   // Handle both API format and static data format
+  const postData = post as any;
   const title = post.title;
-  const description = post.excerpt || post.metadata?.description || "";
-  const tags = post.tags || post.metadata?.tags || [];
+  const description = postData.excerpt || postData.metadata?.description || "";
+  const tags = postData.tags || postData.metadata?.tags || [];
   const author =
-    typeof post.author === "object"
-      ? post.author?.name
+    typeof post.author === "object" && post.author
+      ? post.author.name || "Chati Team"
       : post.author || "Chati Team";
-  const date = post.date || post.publishedAt || post.createdAt;
-  const imageUrl = post.thumbnail || post.imageUrl || "/og-blog.png";
-  const category = post.category || post.metadata?.category || "General";
+  const date =
+    postData.date ||
+    postData.publishedAt ||
+    postData.createdAt ||
+    new Date().toISOString();
+  const imageUrl = postData.thumbnail || postData.imageUrl || "/og-blog.png";
+  const category =
+    postData.category || postData.metadata?.category || "General";
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://chati.chat";
   const postUrl = `${baseUrl}/blog/${slug}`;
@@ -158,5 +162,18 @@ export default async function BlogPost({
     notFound();
   }
 
-  return <BlogPostPage post={post} />;
+  // Transform Prisma post to match BlogPost interface
+  const transformedPost: BlogPost = {
+    ...(post as any),
+    author:
+      typeof post.author === "object" && post.author
+        ? {
+            id: post.author.id,
+            name: post.author.name || "Chati Team",
+            email: post.author.email,
+          }
+        : undefined,
+  };
+
+  return <BlogPostPage post={transformedPost} />;
 }
