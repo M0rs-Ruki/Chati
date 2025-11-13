@@ -4,7 +4,16 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Plus, Eye, Pencil, Trash2, Loader2 } from "lucide-react";
+import Loading from "./loading";
+import {
+  Plus,
+  Eye,
+  Pencil,
+  Trash2,
+  Loader2,
+  FileText,
+  AlertCircle,
+} from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
   AlertDialog,
@@ -39,6 +48,7 @@ export default function PagesPage() {
   const [pages, setPages] = useState<Page[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const [deleteModal, setDeleteModal] = useState<{
     open: boolean;
     pageId: string | null;
@@ -48,6 +58,7 @@ export default function PagesPage() {
   });
 
   useEffect(() => {
+    setMounted(true);
     fetchPages();
   }, []);
 
@@ -113,7 +124,6 @@ export default function PagesPage() {
         throw new Error(result.message || "Failed to delete page");
       }
 
-      // Remove page from local state
       setPages((prev) => prev.filter((p) => p.id !== deleteModal.pageId));
       setDeleteModal({ open: false, pageId: null });
 
@@ -125,7 +135,8 @@ export default function PagesPage() {
       console.error("Error deleting page:", error);
       toast({
         title: "Error",
-        description: error instanceof Error ? error.message : "Failed to delete page",
+        description:
+          error instanceof Error ? error.message : "Failed to delete page",
         variant: "destructive",
       });
     } finally {
@@ -133,11 +144,34 @@ export default function PagesPage() {
     }
   };
 
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "PUBLISHED":
+        return "bg-gradient-to-r from-green-100 to-green-200 text-green-700 border-green-300";
+      case "REVIEW":
+        return "bg-gradient-to-r from-blue-100 to-blue-200 text-blue-700 border-blue-300";
+      case "ARCHIVED":
+        return "bg-gradient-to-r from-red-100 to-red-200 text-red-700 border-red-300";
+      default:
+        return "bg-gradient-to-r from-gray-100 to-gray-200 text-gray-600 border-gray-300";
+    }
+  };
+
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
-    <div className="pt-8 px-6 space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div
+      className={`pt-8 px-6 pb-12 space-y-8 max-w-7xl mx-auto transition-all duration-700 ${
+        mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+      }`}
+    >
+      {/* Header */}
       <div className="flex items-center justify-between">
-        <div className="space-y-2">
-          <h2 className="text-4xl font-bold text-gray-900 tracking-tight">
+        <div className="space-y-3">
+          <h2 className="text-4xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 bg-clip-text text-transparent flex items-center gap-3">
+            <FileText className="w-10 h-10 text-indigo-600" />
             Pages
           </h2>
           <p className="text-lg text-gray-600">
@@ -146,7 +180,7 @@ export default function PagesPage() {
         </div>
         <Button
           onClick={() => router.push("/dashboard/pages/create")}
-          className="bg-green-600 hover:bg-green-700 text-white font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"
+          className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white shadow-lg hover:shadow-indigo-600/25 transition-all duration-300 hover:scale-105"
         >
           <Plus className="h-4 w-4 mr-2" />
           Create Page
@@ -154,23 +188,21 @@ export default function PagesPage() {
       </div>
 
       {/* Pages List */}
-      {loading ? (
-        <div className="flex flex-col items-center justify-center py-20 space-y-4">
-          <Loader2 className="h-12 w-12 animate-spin text-green-600" />
-          <div className="text-center space-y-2">
-            <p className="text-lg font-medium text-gray-900">Loading pages...</p>
-            <p className="text-sm text-gray-500">Please wait while we fetch your pages</p>
-          </div>
-        </div>
-      ) : pages.length === 0 ? (
-        <Card className="bg-white border-gray-200">
-          <CardContent className="py-12 text-center">
-            <p className="text-gray-500">
-              No pages found. Create your first page to get started!
+      {pages.length === 0 ? (
+        <Card className="bg-white border-gray-200 shadow-lg">
+          <CardContent className="py-16 text-center">
+            <div className="mx-auto w-20 h-20 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-2xl flex items-center justify-center mb-4">
+              <FileText className="h-10 w-10 text-indigo-600" />
+            </div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              No pages yet
+            </h3>
+            <p className="text-gray-500 mb-6">
+              Create your first page to get started!
             </p>
             <Button
               onClick={() => router.push("/dashboard/pages/create")}
-              className="mt-4 bg-green-600 hover:bg-green-700"
+              className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700"
             >
               <Plus className="h-4 w-4 mr-2" />
               Create Your First Page
@@ -182,29 +214,24 @@ export default function PagesPage() {
           {pages.map((page, index) => (
             <Card
               key={page.id}
-              className="bg-white border-gray-200 hover:shadow-lg transition-all duration-300 hover:scale-[1.01] animate-in slide-in-from-left"
-              style={{ animationDelay: `${index * 100}ms` }}
+              className="relative overflow-hidden bg-white border-gray-200 hover:shadow-xl transition-all duration-500 hover:scale-[1.01] group"
+              style={{ animationDelay: `${index * 50}ms` }}
             >
-              <CardContent className="p-6">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/5 rounded-full -mr-12 -mt-12 group-hover:scale-150 transition-transform duration-700" />
+              <CardContent className="p-6 relative z-10">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-gray-900">
+                    <h3 className="text-lg font-bold text-gray-900 mb-1">
                       {page.title}
                     </h3>
-                    <p className="text-sm text-gray-600 mt-1 font-mono">
+                    <p className="text-sm text-indigo-600 font-mono mb-3">
                       /{page.slug}
                     </p>
-                    <div className="flex items-center gap-3 mt-3">
+                    <div className="flex flex-wrap items-center gap-3">
                       <span
-                        className={`text-xs px-3 py-1 rounded-full font-medium ${
-                          page.status === "PUBLISHED"
-                            ? "bg-green-100 text-green-700"
-                            : page.status === "REVIEW"
-                            ? "bg-blue-100 text-blue-700"
-                            : page.status === "ARCHIVED"
-                            ? "bg-red-100 text-red-700"
-                            : "bg-gray-100 text-gray-600"
-                        }`}
+                        className={`text-xs px-3 py-1 rounded-full font-semibold border shadow-sm ${getStatusColor(
+                          page.status
+                        )}`}
                       >
                         {page.status}
                       </span>
@@ -229,7 +256,7 @@ export default function PagesPage() {
                       variant="outline"
                       size="sm"
                       onClick={() => router.push(`/dashboard/pages/${page.id}`)}
-                      className="border-gray-200 hover:bg-blue-50 hover:border-blue-300"
+                      className="border-blue-200 hover:bg-blue-50 transition-all"
                     >
                       <Eye className="h-4 w-4 mr-1 text-blue-600" />
                       View
@@ -240,7 +267,7 @@ export default function PagesPage() {
                       onClick={() =>
                         router.push(`/dashboard/pages/${page.id}/edit`)
                       }
-                      className="border-gray-200 hover:bg-green-50 hover:border-green-300"
+                      className="border-green-200 hover:bg-green-50 transition-all"
                     >
                       <Pencil className="h-4 w-4 mr-1 text-green-600" />
                       Edit
@@ -251,7 +278,7 @@ export default function PagesPage() {
                       onClick={() =>
                         setDeleteModal({ open: true, pageId: page.id })
                       }
-                      className="border-gray-200 hover:bg-red-50 hover:border-red-300 h-9 w-9"
+                      className="border-red-200 hover:bg-red-50 h-9 w-9 transition-all"
                     >
                       <Trash2 className="h-4 w-4 text-red-600" />
                     </Button>
@@ -264,20 +291,39 @@ export default function PagesPage() {
       )}
 
       {/* Delete Confirmation Dialog */}
-      <AlertDialog open={deleteModal.open} onOpenChange={(open) => !deleting && setDeleteModal({ open, pageId: null })}>
-        <AlertDialogContent>
+      <AlertDialog
+        open={deleteModal.open}
+        onOpenChange={(open) =>
+          !deleting && setDeleteModal({ open, pageId: null })
+        }
+      >
+        <AlertDialogContent className="bg-white">
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete Page</AlertDialogTitle>
-            <AlertDialogDescription>
-              Are you sure you want to delete this page? This action cannot be undone and will permanently remove the page from your website.
+            <AlertDialogTitle className="text-gray-900 flex items-center gap-2">
+              <Trash2 className="w-5 h-5 text-red-600" />
+              Delete Page
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-gray-600">
+              Are you sure you want to delete this page? This action cannot be
+              undone and will permanently remove the page from your website.
             </AlertDialogDescription>
           </AlertDialogHeader>
+          <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-sm text-red-700 flex items-start gap-2">
+              <AlertCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
+              <span>
+                <strong>Warning:</strong> This will permanently delete the page.
+              </span>
+            </p>
+          </div>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={deleting}>Cancel</AlertDialogCancel>
+            <AlertDialogCancel disabled={deleting} className="border-gray-200">
+              Cancel
+            </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               disabled={deleting}
-              className="bg-red-600 hover:bg-red-700 text-white disabled:opacity-50"
+              className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white"
             >
               {deleting ? (
                 <>
@@ -285,7 +331,7 @@ export default function PagesPage() {
                   Deleting...
                 </>
               ) : (
-                "Delete Page"
+                "Delete Forever"
               )}
             </AlertDialogAction>
           </AlertDialogFooter>
