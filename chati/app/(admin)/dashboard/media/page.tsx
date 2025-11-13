@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
+import LoadingMedia from "./loading";
 import {
   Dialog,
   DialogContent,
@@ -24,6 +25,8 @@ import {
   Check,
   Loader2,
   X,
+  Sparkles,
+  Image as ImageLucide,
 } from "lucide-react";
 
 interface MediaFile {
@@ -55,15 +58,24 @@ export default function MediaPage() {
     open: false,
     mediaId: null,
   });
+  const [mounted, setMounted] = useState(false);
 
-  // Upload form state
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [altText, setAltText] = useState("");
 
   useEffect(() => {
+    setMounted(true);
     fetchMedia();
   }, []);
+
+  const [previewDialog, setPreviewDialog] = useState<{
+    open: boolean;
+    file: MediaFile | null;
+  }>({
+    open: false,
+    file: null,
+  });
 
   const fetchMedia = async () => {
     try {
@@ -88,7 +100,6 @@ export default function MediaPage() {
       }
 
       const result = await response.json();
-      // Handle both old and new response formats
       setMedia(result.data || []);
     } catch (error) {
       console.error("Error fetching media:", error);
@@ -106,7 +117,6 @@ export default function MediaPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Check file size (5MB)
     if (file.size > 5 * 1024 * 1024) {
       toast({
         title: "Error",
@@ -116,7 +126,6 @@ export default function MediaPage() {
       return;
     }
 
-    // Check file type - updated to match API validation
     const allowedTypes = [
       "image/jpeg",
       "image/jpg",
@@ -136,7 +145,6 @@ export default function MediaPage() {
 
     setSelectedFile(file);
 
-    // Create preview
     const reader = new FileReader();
     reader.onloadend = () => {
       setPreviewUrl(reader.result as string);
@@ -154,7 +162,6 @@ export default function MediaPage() {
       return;
     }
 
-    // Additional validation for alt text length
     if (altText.trim().length > 500) {
       toast({
         title: "Validation Error",
@@ -196,13 +203,11 @@ export default function MediaPage() {
         description: result.message || "Media uploaded successfully",
       });
 
-      // Reset form
       setSelectedFile(null);
       setPreviewUrl(null);
       setAltText("");
       setUploadDialog(false);
 
-      // Refresh media list
       fetchMedia();
     } catch (error: any) {
       console.error("Error uploading media:", error);
@@ -234,7 +239,6 @@ export default function MediaPage() {
         return;
       }
 
-      // FIXED: Updated endpoint from /api/media/[id]/delete to /api/media/[id]
       const response = await fetch(`/api/media/${deleteDialog.mediaId}`, {
         method: "DELETE",
         headers: {
@@ -272,12 +276,22 @@ export default function MediaPage() {
     return (bytes / (1024 * 1024)).toFixed(1) + " MB";
   };
 
+  if (loading) {
+    return <LoadingMedia />;
+  }
+
   return (
-    <div className="pt-8 px-6 space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div
+      className={`pt-8 px-6 pb-12 space-y-8 max-w-7xl mx-auto transition-all duration-700 ${
+        mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+      }`}
+    >
+      {/* Header */}
       <div className="flex items-center justify-between">
-        <div className="space-y-2">
-          <h2 className="text-4xl font-bold text-gray-900 tracking-tight">
-            Media Library
+        <div className="space-y-3">
+          <h2 className="text-4xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 bg-clip-text text-transparent flex items-center gap-3">
+            <ImageLucide className="w-10 h-10 text-purple-600" />
+            Media Library 🖼️
           </h2>
           <p className="text-lg text-gray-600">
             Manage your uploaded images and files
@@ -286,73 +300,88 @@ export default function MediaPage() {
         <Button
           onClick={() => setUploadDialog(true)}
           disabled={uploading}
-          className="bg-green-600 hover:bg-green-700 text-white font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"
+          className="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white shadow-lg hover:shadow-purple-600/25 transition-all duration-300 hover:scale-105"
         >
           <Upload className="h-4 w-4 mr-2" />
           Upload Media
         </Button>
       </div>
 
-      {loading ? (
-        <div className="text-center py-12">
-          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-green-600 border-r-transparent" />
-        </div>
-      ) : media.length === 0 ? (
-        <Card className="bg-white border-gray-200">
-          <CardContent className="py-12 text-center">
-            <ImageIcon className="h-12 w-12 text-gray-400 mx-auto mb-3" />
-            <p className="text-gray-500">No media files uploaded yet</p>
+      {media.length === 0 ? (
+        <Card className="bg-white border-gray-200 shadow-lg">
+          <CardContent className="py-16 text-center">
+            <div className="mx-auto w-20 h-20 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-2xl flex items-center justify-center mb-4">
+              <ImageIcon className="h-10 w-10 text-purple-600" />
+            </div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              No media files yet
+            </h3>
+            <p className="text-gray-500 mb-6">
+              Upload your first image to get started
+            </p>
             <Button
               onClick={() => setUploadDialog(true)}
-              className="mt-4 bg-green-600 hover:bg-green-700"
+              className="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700"
             >
+              <Upload className="w-4 h-4 mr-2" />
               Upload Your First Image
             </Button>
           </CardContent>
         </Card>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
           {media.map((file, index) => (
             <Card
               key={file.id}
-              className="bg-white border-gray-200 hover:shadow-xl transition-all duration-300 hover:scale-105 animate-in fade-in slide-in-from-bottom-4"
-              style={{ animationDelay: `${index * 100}ms` }}
+              className="relative overflow-hidden bg-white border-gray-200 hover:shadow-xl transition-all duration-500 hover:scale-105 group"
+              style={{ animationDelay: `${index * 50}ms` }}
             >
-              <CardContent className="p-3">
-                <div className="aspect-square bg-gray-100 rounded-lg mb-2 overflow-hidden">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-purple-500/5 rounded-full -mr-12 -mt-12 group-hover:scale-150 transition-transform duration-700" />
+              <CardContent className="p-3 relative z-10">
+                <div
+                  className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg mb-3 overflow-hidden group-hover:shadow-lg transition-shadow cursor-pointer"
+                  onClick={() => setPreviewDialog({ open: true, file })}
+                >
                   <img
                     src={file.url}
                     alt={file.alt}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                 </div>
+
                 <div className="space-y-2">
                   <h3
-                    className="font-medium text-xs text-gray-900 truncate"
+                    className="font-semibold text-sm text-gray-900 truncate"
                     title={file.alt}
                   >
                     {file.alt}
                   </h3>
-                  <p className="text-xs text-gray-500">
-                    {formatFileSize(file.size)} •{" "}
-                    {new Date(file.uploadedAt).toLocaleDateString()}
-                  </p>
+                  <div className="flex items-center gap-2 text-xs text-gray-500">
+                    <span className="bg-gray-100 px-2 py-1 rounded">
+                      {formatFileSize(file.size)}
+                    </span>
+                    <span>•</span>
+                    <span>
+                      {new Date(file.uploadedAt).toLocaleDateString()}
+                    </span>
+                  </div>
                   {file.createdBy && (
-                    <p className="text-xs text-gray-400">
-                      by {file.createdBy.name}
+                    <p className="text-xs text-gray-400 flex items-center gap-1">
+                      <span>by</span>
+                      <span className="font-medium">{file.createdBy.name}</span>
                     </p>
                   )}
                   <div className="flex items-center gap-2 pt-2">
                     <Input
                       value={file.url}
                       readOnly
-                      className="text-xs bg-gray-50 border-gray-200 font-mono"
+                      className="text-xs bg-gray-50 border-gray-200 font-mono flex-1"
                     />
                     <Button
                       size="icon"
                       variant="outline"
                       onClick={() => handleCopy(file.url, file.id)}
-                      className="border-gray-200 hover:bg-green-50 h-8 w-8 flex-shrink-0"
+                      className="border-green-200 hover:bg-green-50 h-8 w-8 flex-shrink-0 transition-all"
                     >
                       {copiedId === file.id ? (
                         <Check className="h-3 w-3 text-green-600" />
@@ -366,7 +395,7 @@ export default function MediaPage() {
                       onClick={() =>
                         setDeleteDialog({ open: true, mediaId: file.id })
                       }
-                      className="border-gray-200 hover:bg-red-50 h-8 w-8 flex-shrink-0"
+                      className="border-red-200 hover:bg-red-50 h-8 w-8 flex-shrink-0 transition-all"
                     >
                       <Trash2 className="h-3 w-3 text-red-600" />
                     </Button>
@@ -382,26 +411,29 @@ export default function MediaPage() {
       <Dialog open={uploadDialog} onOpenChange={setUploadDialog}>
         <DialogContent className="bg-white">
           <DialogHeader>
-            <DialogTitle>Upload Image</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-gray-900 flex items-center gap-2">
+              <Upload className="w-5 h-5 text-purple-600" />
+              Upload Image
+            </DialogTitle>
+            <DialogDescription className="text-gray-600">
               Upload an image to your media library (max 5MB)
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div>
               <Label htmlFor="file-upload" className="cursor-pointer">
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-green-500 transition-colors">
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-purple-500 hover:bg-purple-50/50 transition-all duration-300">
                   {previewUrl ? (
                     <div className="relative">
                       <img
                         src={previewUrl}
                         alt="Preview"
-                        className="max-h-64 mx-auto rounded"
+                        className="max-h-64 mx-auto rounded-lg shadow-lg"
                       />
                       <Button
                         size="sm"
                         variant="destructive"
-                        className="absolute top-2 right-2"
+                        className="absolute top-2 right-2 h-8 w-8 p-0 rounded-full shadow-lg"
                         onClick={(e) => {
                           e.stopPropagation();
                           setSelectedFile(null);
@@ -413,11 +445,13 @@ export default function MediaPage() {
                     </div>
                   ) : (
                     <>
-                      <Upload className="w-12 h-12 mx-auto text-gray-400 mb-2" />
-                      <p className="text-sm text-gray-600">
+                      <div className="mx-auto w-16 h-16 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-xl flex items-center justify-center mb-3">
+                        <Upload className="w-8 h-8 text-purple-600" />
+                      </div>
+                      <p className="text-sm font-medium text-gray-700 mb-1">
                         Click to select an image
                       </p>
-                      <p className="text-xs text-gray-400 mt-1">
+                      <p className="text-xs text-gray-500">
                         JPG, PNG, GIF, WEBP, SVG (max 5MB)
                       </p>
                     </>
@@ -434,7 +468,9 @@ export default function MediaPage() {
             </div>
 
             <div>
-              <Label htmlFor="alt-text">Alt Text (Required)</Label>
+              <Label htmlFor="alt-text" className="text-gray-700 font-medium">
+                Alt Text <span className="text-red-500">*</span>
+              </Label>
               <Input
                 id="alt-text"
                 value={altText}
@@ -442,16 +478,23 @@ export default function MediaPage() {
                 placeholder="Describe the image..."
                 className="mt-2"
               />
+              <p className="text-xs text-gray-500 mt-1">
+                Required for accessibility (max 500 characters)
+              </p>
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setUploadDialog(false)}>
+            <Button
+              variant="outline"
+              onClick={() => setUploadDialog(false)}
+              className="border-gray-200"
+            >
               Cancel
             </Button>
             <Button
               onClick={handleUpload}
               disabled={uploading || !selectedFile || !altText.trim()}
-              className="bg-green-600 hover:bg-green-700"
+              className="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700"
             >
               {uploading ? (
                 <>
@@ -476,25 +519,174 @@ export default function MediaPage() {
       >
         <DialogContent className="bg-white">
           <DialogHeader>
-            <DialogTitle>Delete Media</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-gray-900 flex items-center gap-2">
+              <Trash2 className="w-5 h-5 text-red-600" />
+              Delete Media
+            </DialogTitle>
+            <DialogDescription className="text-gray-600">
               Are you sure you want to delete this media? This action cannot be
               undone and will also delete the file from Cloudinary.
             </DialogDescription>
           </DialogHeader>
+          <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-sm text-red-700 flex items-start gap-2">
+              <X className="h-4 w-4 mt-0.5 flex-shrink-0" />
+              <span>
+                <strong>Warning:</strong> This will permanently delete the file.
+              </span>
+            </p>
+          </div>
           <DialogFooter>
             <Button
               variant="outline"
               onClick={() => setDeleteDialog({ open: false, mediaId: null })}
+              className="border-gray-200"
             >
               Cancel
             </Button>
             <Button
               onClick={handleDelete}
-              className="bg-red-600 hover:bg-red-700 text-white"
+              className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white"
             >
-              Delete
+              Delete Forever
             </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      {/* Image Preview Dialog */}
+      <Dialog
+        open={previewDialog.open}
+        onOpenChange={(open) => setPreviewDialog({ open, file: null })}
+      >
+        <DialogContent className="bg-white max-w-4xl">
+          <DialogHeader>
+            <DialogTitle className="text-gray-900 flex items-center gap-2">
+              <ImageIcon className="w-5 h-5 text-purple-600" />
+              Image Preview
+            </DialogTitle>
+          </DialogHeader>
+
+          {previewDialog.file && (
+            <div className="space-y-4">
+              {/* Large Image */}
+              <div className="relative bg-gray-100 rounded-lg overflow-hidden">
+                <img
+                  src={previewDialog.file.url}
+                  alt={previewDialog.file.alt}
+                  className="w-full h-auto max-h-[70vh] object-contain"
+                />
+              </div>
+
+              {/* Image Details */}
+              <div className="grid md:grid-cols-2 gap-4 p-4 bg-gray-50 rounded-lg">
+                <div>
+                  <Label className="text-gray-700 font-medium text-sm">
+                    Alt Text
+                  </Label>
+                  <p className="text-gray-900 mt-1">{previewDialog.file.alt}</p>
+                </div>
+
+                <div>
+                  <Label className="text-gray-700 font-medium text-sm">
+                    File Size
+                  </Label>
+                  <p className="text-gray-900 mt-1">
+                    {formatFileSize(previewDialog.file.size)}
+                  </p>
+                </div>
+
+                <div>
+                  <Label className="text-gray-700 font-medium text-sm">
+                    Uploaded
+                  </Label>
+                  <p className="text-gray-900 mt-1">
+                    {new Date(previewDialog.file.uploadedAt).toLocaleDateString(
+                      "en-US",
+                      {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      }
+                    )}
+                  </p>
+                </div>
+
+                {previewDialog.file.createdBy && (
+                  <div>
+                    <Label className="text-gray-700 font-medium text-sm">
+                      Uploaded By
+                    </Label>
+                    <p className="text-gray-900 mt-1">
+                      {previewDialog.file.createdBy.name}
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* URL Copy Field */}
+              <div className="space-y-2">
+                <Label className="text-gray-700 font-medium text-sm">
+                  Image URL
+                </Label>
+                <div className="flex gap-2">
+                  <Input
+                    value={previewDialog.file.url}
+                    readOnly
+                    className="text-sm bg-gray-50 border-gray-200 font-mono"
+                  />
+                  <Button
+                    variant="outline"
+                    onClick={() =>
+                      handleCopy(
+                        previewDialog.file!.url,
+                        previewDialog.file!.id
+                      )
+                    }
+                    className="border-green-200 hover:bg-green-50"
+                  >
+                    {copiedId === previewDialog.file.id ? (
+                      <>
+                        <Check className="h-4 w-4 mr-2 text-green-600" />
+                        Copied
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="h-4 w-4 mr-2" />
+                        Copy
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setPreviewDialog({ open: false, file: null })}
+              className="border-gray-200"
+            >
+              Close
+            </Button>
+            {previewDialog.file && (
+              <Button
+                variant="destructive"
+                onClick={() => {
+                  setPreviewDialog({ open: false, file: null });
+                  setDeleteDialog({
+                    open: true,
+                    mediaId: previewDialog.file!.id,
+                  });
+                }}
+                className="bg-red-600 hover:bg-red-700"
+              >
+                <Trash2 className="h-4 w-4 mr-2" />
+                Delete
+              </Button>
+            )}
           </DialogFooter>
         </DialogContent>
       </Dialog>
