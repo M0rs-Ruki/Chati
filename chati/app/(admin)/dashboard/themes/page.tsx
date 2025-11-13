@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
+import ThemesLoading from "./loading";
 import { MediaPicker } from "@/components/media-picker";
 import {
   Select,
@@ -409,14 +410,7 @@ export default function ThemeEditor() {
   };
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center space-y-4">
-          <Loader2 className="h-12 w-12 animate-spin text-green-600 mx-auto" />
-          <p className="text-gray-600">Loading themes...</p>
-        </div>
-      </div>
-    );
+    return <ThemesLoading />;
   }
 
   return (
