@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { useTheme } from "@/components/theme-provider-global";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -156,6 +157,7 @@ const resources = [
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { theme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -178,14 +180,25 @@ export function Header() {
         <div className="flex h-20 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2 group">
-            <Image
-              src="/chati-logo-full.png"
-              alt="Chati - Create, Connect, Converse"
-              width={120}
-              height={40}
-              className="h-10 w-auto transition-transform group-hover:scale-105 duration-300"
-              priority
-            />
+            {theme?.logoUrl ? (
+              <Image
+                src={theme.logoUrl}
+                alt="Logo"
+                width={120}
+                height={40}
+                className="h-10 w-auto transition-transform group-hover:scale-105 duration-300"
+                priority
+              />
+            ) : (
+              <Image
+                src="/chati-logo-full.png"
+                alt="Chati - Create, Connect, Converse"
+                width={120}
+                height={40}
+                className="h-10 w-auto transition-transform group-hover:scale-105 duration-300"
+                priority
+              />
+            )}
           </Link>
 
           {/* Desktop Navigation */}

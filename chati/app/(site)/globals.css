@@ -13,6 +13,12 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  /* Theme variables (dynamically set by ThemeProvider) */
+  --theme-primary: #2563eb;
+  --theme-secondary: #7c3aed;
+  --theme-accent: #10b981;
+  --theme-font: "Inter";
+
   /* Updated color palette with blue, dark green, and pink for social media platforms */
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
