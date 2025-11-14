@@ -1,40 +1,3 @@
-import Link from "next/link";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
-import {
-  Home,
-  Sparkles,
-  Building2,
-  ShoppingCart,
-  Heart,
-  GraduationCap,
-  Plane,
-  Utensils,
-  DollarSign,
-  Menu,
-  Bell,
-  BookOpen,
-  FileText,
-  Lightbulb,
-  Video,
-  MessageSquare,
-  Bot,
-  Users,
-  Database,
-  Palette,
-  Calendar,
-  HelpCircle,
-  Radio,
-  Workflow,
-} from "lucide-react";
-import { cn } from "@/lib/utils";
 import { HeaderClient } from "./header-client";
 
 const features = [
@@ -63,10 +26,16 @@ const features = [
     description: "Automate repetitive tasks and processes",
   },
   {
-    name: "Team Collaboration",
-    icon: "Users" as const,
-    href: "/features/collaboration",
-    description: "Work together seamlessly",
+    name: "Drip Marketing",
+    icon: "Repeat" as const,
+    href: "/features/drip-marketing",
+    description: "Automated multi-channel sequence campaigns",
+  },
+  {
+    name: "RCS Messaging",
+    icon: "Smartphone" as const,
+    href: "/features/rcs-messaging",
+    description: "Rich interactive messages with WhatsApp fallback",
   },
   {
     name: "Customer Data Platform",
@@ -75,10 +44,22 @@ const features = [
     description: "Unified customer data, analytics & integrations",
   },
   {
-    name: "Customization",
-    icon: "Palette" as const,
-    href: "/features/customization",
-    description: "Tailor to your brand",
+    name: "WhatsApp Blue Tick",
+    icon: "ShieldCheck" as const,
+    href: "/features/whatsapp-blue-tick",
+    description: "Get verified business badge",
+  },
+  {
+    name: "WhatsApp WebViews",
+    icon: "Globe" as const,
+    href: "/features/whatsapp-webviews",
+    description: "Open web pages inside WhatsApp chat",
+  },
+  {
+    name: "Click Tracking",
+    icon: "MousePointerClick" as const,
+    href: "/features/click-tracking",
+    description: "Track clicks & retarget engaged users",
   },
 ];
 
@@ -98,11 +79,31 @@ const industries = [
     icon: "GraduationCap" as const,
     href: "/industries/education",
   },
-  { name: "Travel & Hospitality", icon: "Plane" as const, href: "/industries/travel" },
-  { name: "Food & Beverage", icon: "Utensils" as const, href: "/industries/food" },
-  { name: "Real Estate", icon: "Building2" as const, href: "/industries/real-estate" },
-  { name: "Financial Services", icon: "DollarSign" as const, href: "/industries/finance" },
-  { name: "Technology & SaaS", icon: "Sparkles" as const, href: "/industries/technology" },
+  {
+    name: "Travel & Hospitality",
+    icon: "Plane" as const,
+    href: "/industries/travel",
+  },
+  {
+    name: "Food & Beverage",
+    icon: "Utensils" as const,
+    href: "/industries/food",
+  },
+  {
+    name: "Real Estate",
+    icon: "Building2" as const,
+    href: "/industries/real-estate",
+  },
+  {
+    name: "Financial Services",
+    icon: "DollarSign" as const,
+    href: "/industries/finance",
+  },
+  {
+    name: "Technology & SaaS",
+    icon: "Sparkles" as const,
+    href: "/industries/technology",
+  },
 ];
 
 const resources = [
@@ -145,5 +146,11 @@ const resources = [
 ];
 
 export function Header() {
-  return <HeaderClient features={features} industries={industries} resources={resources} />;
+  return (
+    <HeaderClient
+      features={features}
+      industries={industries}
+      resources={resources}
+    />
+  );
 }
