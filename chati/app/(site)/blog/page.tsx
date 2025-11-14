@@ -237,9 +237,6 @@ export async function generateMetadata({
       creator: "@chati",
       images: [`${baseUrl}/og-blog.png`],
     },
-    alternates: {
-      canonical: blogUrl,
-    },
     category: "Technology",
   };
 }
