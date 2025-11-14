@@ -1,6 +1,42 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import PageClient from "./client-page"
+import { prisma } from "@/lib/prisma"
+
+// Force dynamic rendering
+export const dynamic = "force-dynamic"
+export const revalidate = 0
+
+// Fetch page directly from database
+async function getPage(slug: string) {
+  try {
+    console.log("🔍 Fetching page from database for slug:", slug)
+
+    const page = await prisma.page.findUnique({
+      where: { slug },
+      include: {
+        author: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+      },
+    })
+
+    if (page) {
+      console.log("✅ Successfully fetched page:", page.title)
+      return page
+    } else {
+      console.log("⚠️ Page not found in database for slug:", slug)
+    }
+  } catch (error) {
+    console.error("❌ Error fetching page from database:", error)
+  }
+
+  return null
+}
 
 export async function generateMetadata({ 
   params 
@@ -8,35 +44,25 @@ export async function generateMetadata({
   params: Promise<{ slug: string }> 
 }): Promise<Metadata> {
   const { slug } = await params
+  const page = await getPage(slug)
   
-  // Try to fetch from database
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/public/page/slug/${slug}`,
-      { next: { revalidate: 60 } }
-    )
-    
-    if (response.ok) {
-      const result = await response.json()
-      const page = result.data
-
-      return {
-        title: page.title,
-        description: page.metadata?.description || `${page.title} - WhatsApp Business API`,
-        keywords: page.metadata?.keywords?.join(", ") || "",
-        openGraph: {
-          title: page.title,
-          description: page.metadata?.description || `${page.title} - WhatsApp Business API`,
-          type: "website",
-        },
-      }
+  if (!page) {
+    return {
+      title: "Page Not Found",
     }
-  } catch (error) {
-    console.error('Error fetching page metadata:', error)
   }
 
+  const pageData = page as any
+
   return {
-    title: "Page Not Found",
+    title: page.title,
+    description: pageData.metadata?.description || `${page.title} - WhatsApp Business API`,
+    keywords: pageData.metadata?.keywords?.join(", ") || "",
+    openGraph: {
+      title: page.title,
+      description: pageData.metadata?.description || `${page.title} - WhatsApp Business API`,
+      type: "website",
+    },
   }
 }
 
@@ -46,21 +72,11 @@ export default async function PageRoute({
   params: Promise<{ slug: string }> 
 }) {
   const { slug } = await params
-  
-  // Fetch page from database
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/public/page/slug/${slug}`,
-      { next: { revalidate: 60 } }
-    )
-    
-    if (response.ok) {
-      const result = await response.json()
-      return <PageClient page={result.data} />
-    }
-  } catch (error) {
-    console.error('Error fetching page:', error)
+  const page = await getPage(slug)
+
+  if (!page) {
+    notFound()
   }
 
-  notFound()
+  return <PageClient page={page} />
 }
