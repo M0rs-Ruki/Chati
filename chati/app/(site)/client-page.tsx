@@ -1,46 +1,71 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import Link from "next/link"
-import { ArrowRight, Zap, Shield, TrendingUp, Users, Brain, CheckCircle2, BarChart3, Bell } from "lucide-react"
-import { useEffect, useRef, useState } from "react"
-import { TypingAnimation } from "@/components/typing-animation"
-import { BrandSlider } from "@/components/brand-slider"
-import { FloatingSocialIcons } from "@/components/floating-social-icons"
-import { FloatingCDPElements } from "@/components/floating-cdp-elements"
-import dynamic from "next/dynamic"
-import { CounterAnimation } from "@/components/counter-animation"
-import { BackToTop } from "@/components/back-to-top"
-import Image from "next/image"
-import { StructuredData } from "@/components/structured-data"
-import { useIntersectionObserver } from "@/hooks/use-intersection-observer"
-import { throttle } from "@/lib/performance-utils"
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import Link from "next/link";
+import {
+  ArrowRight,
+  Zap,
+  Shield,
+  TrendingUp,
+  Users,
+  Brain,
+  CheckCircle2,
+  BarChart3,
+  Bell,
+} from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { TypingAnimation } from "@/components/typing-animation";
+import { BrandSlider } from "@/components/brand-slider";
+import { FloatingSocialIcons } from "@/components/floating-social-icons";
+import { FloatingCDPElements } from "@/components/floating-cdp-elements";
+import dynamic from "next/dynamic";
+import { CounterAnimation } from "@/components/counter-animation";
+import { BackToTop } from "@/components/back-to-top";
+import Image from "next/image";
+import { StructuredData } from "@/components/structured-data";
+import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
+import { throttle } from "@/lib/performance-utils";
 
 const MultiChannelHero = dynamic(
-  () => import("@/components/multi-channel-hero").then((mod) => ({ default: mod.MultiChannelHero })),
+  () =>
+    import("@/components/multi-channel-hero").then((mod) => ({
+      default: mod.MultiChannelHero,
+    })),
   {
     loading: () => <div className="h-96 bg-gray-50 animate-pulse" />,
-  },
-)
+  }
+);
 
 export default function ClientPage() {
-  const heroRef = useRef<HTMLDivElement>(null)
-  const [scrollY, setScrollY] = useState(0)
+  const heroRef = useRef<HTMLDivElement>(null);
+  const [scrollY, setScrollY] = useState(0);
 
-  const { ref: cdpSectionRef, isVisible: isCDPVisible } = useIntersectionObserver()
-  const { ref: whatsappSectionRef, isVisible: isWhatsAppVisible } = useIntersectionObserver()
+  const { ref: cdpSectionRef, isVisible: isCDPVisible } =
+    useIntersectionObserver();
+  const { ref: whatsappSectionRef, isVisible: isWhatsAppVisible } =
+    useIntersectionObserver();
 
   useEffect(() => {
     const handleScroll = throttle(() => {
-      setScrollY(window.scrollY)
-    }, 100) // Only update every 100ms
+      setScrollY(window.scrollY);
+    }, 100); // Only update every 100ms
 
-    window.addEventListener("scroll", handleScroll, { passive: true })
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <div className="flex flex-col">
@@ -52,7 +77,10 @@ export default function ClientPage() {
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-green-400/20 to-transparent rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-blue-400/15 to-transparent rounded-full blur-3xl" />
 
-        <div ref={heroRef} className="container relative mx-auto px-4 pr-0 md:pr-4 py-8 md:py-10 z-10">
+        <div
+          ref={heroRef}
+          className="container relative mx-auto px-4 pr-0 md:pr-4 py-8 md:py-10 z-10"
+        >
           <div className="grid gap-6 lg:grid-cols-2 lg:gap-8 items-center">
             {/* Left Content */}
             <div className="flex flex-col justify-center">
@@ -68,15 +96,21 @@ export default function ClientPage() {
                 <span className="block text-2xl md:text-3xl lg:text-4xl font-bold">
                   <span className="text-foreground">with </span>
                   <TypingAnimation
-                    words={["WhatsApp API", "Instagram Messaging", "Facebook Messenger", "Multi-Channel Chat"]}
+                    words={[
+                      "WhatsApp API",
+                      "Instagram Messaging",
+                      "Facebook Messenger",
+                      "Multi-Channel Chat",
+                    ]}
                     className="inline-block"
                   />
                 </span>
               </h1>
 
               <p className="mb-4 text-sm text-muted-foreground md:text-base max-w-xl leading-relaxed">
-                Connect with customers on their favorite platforms. Send promotional offers, automate conversations, and
-                grow your business with verified messaging solutions.
+                Connect with customers on their favorite platforms. Send
+                promotional offers, automate conversations, and grow your
+                business with verified messaging solutions.
               </p>
 
               <div className="flex flex-col gap-2.5 sm:flex-row mb-4">
@@ -85,7 +119,11 @@ export default function ClientPage() {
                   className="bg-green-600 hover:bg-green-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all group"
                   asChild
                 >
-                  <Link href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""}`}>
+                  <Link
+                    href={`https://wa.me/${
+                      process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""
+                    }`}
+                  >
                     <Bell className="mr-2 h-4 w-4 group-hover:animate-pulse" />
                     Book a Meeting
                   </Link>
@@ -96,7 +134,12 @@ export default function ClientPage() {
                   className="border-2 bg-white hover:bg-gray-50 font-medium shadow-sm"
                   asChild
                 >
-                  <Link href={process.env.NEXT_PUBLIC_APP_URL || "https://app.chati.chat"}>
+                  <Link
+                    href={
+                      process.env.NEXT_PUBLIC_APP_URL ||
+                      "https://app.chati.chat"
+                    }
+                  >
                     Get Started Free
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
@@ -151,75 +194,93 @@ export default function ClientPage() {
         <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-gradient-to-br from-purple-400/20 to-transparent rounded-full blur-3xl" />
         <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-gradient-to-tr from-blue-400/15 to-transparent rounded-full blur-3xl" />
 
-        <div className="container relative mx-auto px-4 pr-0 md:pr-4 py-8 md:py-10 z-10">
+        <div className="container relative mx-auto px-4 py-8 md:py-10 z-10">
           <div className="grid gap-6 lg:grid-cols-2 lg:gap-8 items-center">
             {/* Left Content */}
             <div
-              className={`flex flex-col justify-center transition-all duration-1000 delay-300 ${
-                isCDPVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              className={`flex flex-col justify-center transition-all duration-1000 ${
+                isCDPVisible
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-8"
               }`}
             >
-              <Badge className="mb-3 shadow-sm bg-purple-100 text-purple-700 border-purple-200 w-fit" variant="outline">
+              <Badge
+                className="mb-3 shadow-sm bg-purple-100 text-purple-700 border-purple-200 w-fit"
+                variant="outline"
+              >
                 Customer Data Platform
               </Badge>
 
-              <h2 className="mb-3 text-balance text-3xl font-bold md:text-4xl lg:text-5xl leading-tight">
+              <h2 className="mb-3 text-balance text-2xl md:text-3xl lg:text-4xl font-bold leading-tight">
                 Unify Customer Data for Smarter Campaigns
               </h2>
 
-              <p className="mb-5 text-pretty text-muted-foreground text-base md:text-lg leading-relaxed max-w-xl">
-                Connect every touchpoint into one powerful platform. Deliver personalized WhatsApp, RCS, and Messenger
-                campaigns powered by real-time insights and behavioral data.
+              <p className="mb-4 text-pretty text-muted-foreground text-sm md:text-base leading-relaxed max-w-xl">
+                Connect every touchpoint into one powerful platform. Deliver
+                personalized WhatsApp, RCS, and Messenger campaigns powered by
+                real-time insights and behavioral data.
               </p>
 
-              <div className="space-y-3 mb-5">
-                <div className="flex gap-3 items-start group">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-green-100 to-green-50 group-hover:from-green-200 group-hover:to-green-100 transition-all shadow-sm">
-                    <CheckCircle2 className="h-5 w-5 text-green-600" />
+              <div className="space-y-2.5 mb-4">
+                <div className="flex gap-2.5 items-start group">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-green-100 to-green-50 group-hover:from-green-200 group-hover:to-green-100 transition-all shadow-sm">
+                    <CheckCircle2 className="h-4 w-4 text-green-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">Unified Customer Profiles</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Aggregate data from CRM, e-commerce, and analytics into a single view for targeted messaging
-                      campaigns.
+                    <h3 className="font-semibold text-foreground mb-0.5 text-sm">
+                      Unified Customer Profiles
+                    </h3>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      Aggregate data from CRM, e-commerce, and analytics into a
+                      single view for targeted messaging campaigns.
                     </p>
                   </div>
                 </div>
 
-                <div className="flex gap-3 items-start group">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 group-hover:from-blue-200 group-hover:to-blue-100 transition-all shadow-sm">
-                    <CheckCircle2 className="h-5 w-5 text-blue-600" />
+                <div className="flex gap-2.5 items-start group">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 group-hover:from-blue-200 group-hover:to-blue-100 transition-all shadow-sm">
+                    <CheckCircle2 className="h-4 w-4 text-blue-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">Smart Automation</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Trigger personalized messages based on customer actions—purchases, cart activity, and engagement
+                    <h3 className="font-semibold text-foreground mb-0.5 text-sm">
+                      Smart Automation
+                    </h3>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      Trigger personalized messages based on customer
+                      actions—purchases, cart activity, and engagement
                       milestones.
                     </p>
                   </div>
                 </div>
 
-                <div className="flex gap-3 items-start group">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-purple-100 to-purple-50 group-hover:from-purple-200 group-hover:to-purple-100 transition-all shadow-sm">
-                    <CheckCircle2 className="h-5 w-5 text-purple-600" />
+                <div className="flex gap-2.5 items-start group">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-purple-100 to-purple-50 group-hover:from-purple-200 group-hover:to-purple-100 transition-all shadow-sm">
+                    <CheckCircle2 className="h-4 w-4 text-purple-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">Omnichannel Orchestration</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Design seamless experiences across WhatsApp, RCS, Messenger, email, and SMS with consistent
-                      messaging.
+                    <h3 className="font-semibold text-foreground mb-0.5 text-sm">
+                      Omnichannel Orchestration
+                    </h3>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      Design seamless experiences across WhatsApp, RCS,
+                      Messenger, email, and SMS with consistent messaging.
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-3">
+              <div className="flex flex-col sm:flex-row gap-2.5">
                 <Button
                   size="default"
                   className="bg-purple-600 hover:bg-purple-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all group"
                   asChild
                 >
-                  <Link href={process.env.NEXT_PUBLIC_APP_URL || "https://app.chati.chat"}>
+                  <Link
+                    href={
+                      process.env.NEXT_PUBLIC_APP_URL ||
+                      "https://app.chati.chat"
+                    }
+                  >
                     Explore CDP Features
                     <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                   </Link>
@@ -227,21 +288,29 @@ export default function ClientPage() {
                 <Button
                   size="default"
                   variant="outline"
-                  className="border-2 bg-white hover:bg-gray-50 font-medium shadow-sm"
+                  className="border-2 bg-white hover:bg-gray-50 hover:border-purple-500 hover:text-purple-600 font-medium shadow-sm transition-all"
                   asChild
                 >
-                  <Link href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""}`}>Talk to Expert</Link>
+                  <Link
+                    href={`https://wa.me/${
+                      process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""
+                    }`}
+                  >
+                    Talk to Expert
+                  </Link>
                 </Button>
               </div>
             </div>
 
-            {/* Right Image - Full-section background treatment with floating elements */}
+            {/* Right Image */}
             <div
-              className={`relative flex items-end justify-end lg:absolute lg:right-0 lg:top-0 lg:bottom-0 lg:w-1/2 -mr-4 md:mr-0 transition-all duration-1000 ${
-                isCDPVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
+              className={`relative flex items-center justify-center order-2 transition-all duration-1000 delay-300 ${
+                isCDPVisible
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 translate-x-8"
               }`}
             >
-              <div className="relative w-full h-full flex items-end justify-end">
+              <div className="relative w-full max-w-[450px] lg:max-w-full">
                 {/* Decorative gradient blob behind image */}
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-400/20 via-blue-400/15 to-pink-400/20 blur-3xl rounded-full transform scale-110" />
 
@@ -252,7 +321,7 @@ export default function ClientPage() {
                   alt="Customer Data Platform showing unified customer journey with real-time analytics, CRM integration, location intelligence, weather-based targeting, purchase tracking, and omnichannel messaging"
                   width={500}
                   height={600}
-                  className="relative z-10 h-auto w-full sm:w-auto max-h-[380px] sm:max-h-[400px] lg:max-h-[450px] object-contain object-bottom drop-shadow-2xl lg:ml-auto"
+                  className="relative z-10 h-auto w-full max-h-[380px] sm:max-h-[400px] lg:max-h-[450px] object-contain drop-shadow-2xl"
                   loading="lazy"
                   priority={false}
                 />
@@ -277,7 +346,9 @@ export default function ClientPage() {
             {/* Left Side - Image with scroll animations */}
             <div
               className={`flex items-center justify-center lg:justify-start transition-all duration-1000 ${
-                isWhatsAppVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"
+                isWhatsAppVisible
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 -translate-x-8"
               }`}
             >
               <div className="relative">
@@ -299,18 +370,24 @@ export default function ClientPage() {
             {/* Right Side - Content with scroll animations */}
             <div
               className={`transition-all duration-1000 delay-300 ${
-                isWhatsAppVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                isWhatsAppVisible
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-8"
               }`}
             >
-              <Badge className="mb-3 shadow-sm bg-green-100 text-green-700 border-green-200" variant="outline">
+              <Badge
+                className="mb-3 shadow-sm bg-green-100 text-green-700 border-green-200"
+                variant="outline"
+              >
                 WhatsApp Business API
               </Badge>
               <h2 className="mb-3 text-balance text-3xl font-bold md:text-4xl lg:text-5xl">
                 Scale Your Business with WhatsApp
               </h2>
               <p className="mb-5 text-pretty text-muted-foreground text-base md:text-lg leading-relaxed">
-                Connect with 2+ billion WhatsApp users worldwide. Automate customer conversations, send instant
-                notifications, and deliver personalized experiences that drive engagement and revenue.
+                Connect with 2+ billion WhatsApp users worldwide. Automate
+                customer conversations, send instant notifications, and deliver
+                personalized experiences that drive engagement and revenue.
               </p>
 
               <div className="space-y-3">
@@ -319,10 +396,13 @@ export default function ClientPage() {
                     <Brain className="h-5 w-5 text-green-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">AI-Powered Chatbots</h3>
+                    <h3 className="font-semibold text-foreground mb-1 text-base">
+                      AI-Powered Chatbots
+                    </h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      Deploy intelligent chatbots that understand context, handle complex queries, and provide instant
-                      support 24/7 across multiple languages.
+                      Deploy intelligent chatbots that understand context,
+                      handle complex queries, and provide instant support 24/7
+                      across multiple languages.
                     </p>
                   </div>
                 </div>
@@ -332,10 +412,13 @@ export default function ClientPage() {
                     <Bell className="h-5 w-5 text-blue-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">Smart Notifications</h3>
+                    <h3 className="font-semibold text-foreground mb-1 text-base">
+                      Smart Notifications
+                    </h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      Send order updates, shipping alerts, appointment reminders, and promotional offers with rich
-                      media, buttons, and interactive elements.
+                      Send order updates, shipping alerts, appointment
+                      reminders, and promotional offers with rich media,
+                      buttons, and interactive elements.
                     </p>
                   </div>
                 </div>
@@ -345,10 +428,13 @@ export default function ClientPage() {
                     <BarChart3 className="h-5 w-5 text-purple-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">Advanced Analytics</h3>
+                    <h3 className="font-semibold text-foreground mb-1 text-base">
+                      Advanced Analytics
+                    </h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      Track message delivery, read rates, response times, and customer engagement with comprehensive
-                      analytics and real-time dashboards.
+                      Track message delivery, read rates, response times, and
+                      customer engagement with comprehensive analytics and
+                      real-time dashboards.
                     </p>
                   </div>
                 </div>
@@ -360,7 +446,11 @@ export default function ClientPage() {
                   className="bg-green-600 hover:bg-green-700 shadow-lg hover:shadow-xl transition-all group"
                   asChild
                 >
-                  <Link href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""}`}>
+                  <Link
+                    href={`https://wa.me/${
+                      process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""
+                    }`}
+                  >
                     Start Free Trial
                     <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                   </Link>
@@ -388,14 +478,18 @@ export default function ClientPage() {
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-8">
-            <Badge className="mb-4 shadow-sm bg-blue-100 text-blue-700 border-blue-200" variant="outline">
+            <Badge
+              className="mb-4 shadow-sm bg-blue-100 text-blue-700 border-blue-200"
+              variant="outline"
+            >
               Trusted Worldwide
             </Badge>
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
               Powering Global Business Communication
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Join thousands of companies using our platform to transform their customer communication
+              Join thousands of companies using our platform to transform their
+              customer communication
             </p>
           </div>
 
@@ -407,7 +501,9 @@ export default function ClientPage() {
                 className="text-4xl md:text-5xl font-bold bg-gradient-to-br from-green-600 to-green-700 bg-clip-text text-transparent mb-2"
                 duration={2500}
               />
-              <p className="text-muted-foreground text-sm md:text-base font-medium">Messages Delivered</p>
+              <p className="text-muted-foreground text-sm md:text-base font-medium">
+                Messages Delivered
+              </p>
             </div>
 
             <div className="text-center p-5 rounded-2xl bg-white/60 backdrop-blur-sm border border-white/80 shadow-lg hover:shadow-xl transition-all hover:scale-105">
@@ -417,7 +513,9 @@ export default function ClientPage() {
                 className="text-4xl md:text-5xl font-bold bg-gradient-to-br from-blue-600 to-blue-700 bg-clip-text text-transparent mb-2"
                 duration={2500}
               />
-              <p className="text-muted-foreground text-sm md:text-base font-medium">Active Businesses</p>
+              <p className="text-muted-foreground text-sm md:text-base font-medium">
+                Active Businesses
+              </p>
             </div>
 
             <div className="text-center p-5 rounded-2xl bg-white/60 backdrop-blur-sm border border-white/80 shadow-lg hover:shadow-xl transition-all hover:scale-105">
@@ -427,7 +525,9 @@ export default function ClientPage() {
                 className="text-4xl md:text-5xl font-bold bg-gradient-to-br from-purple-600 to-purple-700 bg-clip-text text-transparent mb-2"
                 duration={2500}
               />
-              <p className="text-muted-foreground text-sm md:text-base font-medium">Customer Satisfaction</p>
+              <p className="text-muted-foreground text-sm md:text-base font-medium">
+                Customer Satisfaction
+              </p>
             </div>
 
             <div className="text-center p-5 rounded-2xl bg-white/60 backdrop-blur-sm border border-white/80 shadow-lg hover:shadow-xl transition-all hover:scale-105">
@@ -437,7 +537,9 @@ export default function ClientPage() {
                 className="text-4xl md:text-5xl font-bold bg-gradient-to-br from-orange-600 to-orange-700 bg-clip-text text-transparent mb-2"
                 duration={2500}
               />
-              <p className="text-muted-foreground text-sm md:text-base font-medium">Faster Response Time</p>
+              <p className="text-muted-foreground text-sm md:text-base font-medium">
+                Faster Response Time
+              </p>
             </div>
           </div>
         </div>
@@ -454,10 +556,12 @@ export default function ClientPage() {
             <Badge className="mb-3 shadow-sm" variant="outline">
               Features
             </Badge>
-            <h2 className="mb-4 text-balance text-3xl font-bold md:text-5xl">Everything You Need to Succeed</h2>
+            <h2 className="mb-4 text-balance text-3xl font-bold md:text-5xl">
+              Everything You Need to Succeed
+            </h2>
             <p className="mx-auto max-w-2xl text-pretty text-muted-foreground">
-              Our comprehensive AI platform provides all the tools you need to automate, analyze, and optimize your
-              business operations.
+              Our comprehensive AI platform provides all the tools you need to
+              automate, analyze, and optimize your business operations.
             </p>
           </div>
 
@@ -469,7 +573,8 @@ export default function ClientPage() {
                 </div>
                 <CardTitle>Advanced AI Models</CardTitle>
                 <CardDescription>
-                  Leverage state-of-the-art machine learning models trained on billions of data points.
+                  Leverage state-of-the-art machine learning models trained on
+                  billions of data points.
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -481,7 +586,8 @@ export default function ClientPage() {
                 </div>
                 <CardTitle>Lightning Fast</CardTitle>
                 <CardDescription>
-                  Process millions of requests per second with our optimized infrastructure.
+                  Process millions of requests per second with our optimized
+                  infrastructure.
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -493,7 +599,8 @@ export default function ClientPage() {
                 </div>
                 <CardTitle>Enterprise Security</CardTitle>
                 <CardDescription>
-                  Bank-level encryption and compliance with SOC 2, GDPR, and HIPAA standards.
+                  Bank-level encryption and compliance with SOC 2, GDPR, and
+                  HIPAA standards.
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -505,7 +612,8 @@ export default function ClientPage() {
                 </div>
                 <CardTitle>Predictive Analytics</CardTitle>
                 <CardDescription>
-                  Forecast trends and make data-driven decisions with powerful analytics tools.
+                  Forecast trends and make data-driven decisions with powerful
+                  analytics tools.
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -516,7 +624,10 @@ export default function ClientPage() {
                   <Users className="h-6 w-6 text-secondary" />
                 </div>
                 <CardTitle>Team Collaboration</CardTitle>
-                <CardDescription>Work seamlessly with your team with real-time collaboration features.</CardDescription>
+                <CardDescription>
+                  Work seamlessly with your team with real-time collaboration
+                  features.
+                </CardDescription>
               </CardHeader>
             </Card>
 
@@ -527,7 +638,8 @@ export default function ClientPage() {
                 </div>
                 <CardTitle>Custom Dashboards</CardTitle>
                 <CardDescription>
-                  Build personalized dashboards to track the metrics that matter most to you.
+                  Build personalized dashboards to track the metrics that matter
+                  most to you.
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -557,7 +669,9 @@ export default function ClientPage() {
               <Badge className="mb-3 shadow-sm" variant="outline">
                 FAQ
               </Badge>
-              <h2 className="mb-3 text-balance text-3xl font-bold md:text-4xl">Frequently Asked Questions</h2>
+              <h2 className="mb-3 text-balance text-3xl font-bold md:text-4xl">
+                Frequently Asked Questions
+              </h2>
               <p className="text-muted-foreground text-base">
                 Quick answers to common questions about our messaging platform
               </p>
@@ -566,18 +680,25 @@ export default function ClientPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
               {/* Left Column */}
               <div className="space-y-3">
-                <Accordion type="single" collapsible className="w-full space-y-3">
+                <Accordion
+                  type="single"
+                  collapsible
+                  className="w-full space-y-3"
+                >
                   <AccordionItem
                     value="item-1"
                     className="border rounded-lg px-6 bg-white shadow-sm hover:shadow-md transition-all duration-300"
                   >
                     <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
-                      What is WhatsApp Business API and how does it differ from WhatsApp Business App?
+                      What is WhatsApp Business API and how does it differ from
+                      WhatsApp Business App?
                     </AccordionTrigger>
                     <AccordionContent className="text-muted-foreground leading-relaxed pb-4 animate-in fade-in slide-in-from-top-2 duration-300">
-                      WhatsApp Business API is designed for medium to large businesses to communicate with customers at
-                      scale. Unlike the WhatsApp Business App, the API allows multiple users, automation, integration
-                      with CRM systems, and can handle unlimited conversations simultaneously.
+                      WhatsApp Business API is designed for medium to large
+                      businesses to communicate with customers at scale. Unlike
+                      the WhatsApp Business App, the API allows multiple users,
+                      automation, integration with CRM systems, and can handle
+                      unlimited conversations simultaneously.
                     </AccordionContent>
                   </AccordionItem>
 
@@ -589,9 +710,10 @@ export default function ClientPage() {
                       How quickly can I get started with the platform?
                     </AccordionTrigger>
                     <AccordionContent className="text-muted-foreground leading-relaxed pb-4 animate-in fade-in slide-in-from-top-2 duration-300">
-                      You can start sending messages within 24-48 hours. Our team will help you with account setup,
-                      WhatsApp Business verification, and integration. Most businesses are fully operational within 3-5
-                      business days.
+                      You can start sending messages within 24-48 hours. Our
+                      team will help you with account setup, WhatsApp Business
+                      verification, and integration. Most businesses are fully
+                      operational within 3-5 business days.
                     </AccordionContent>
                   </AccordionItem>
 
@@ -603,9 +725,10 @@ export default function ClientPage() {
                       What messaging channels do you support?
                     </AccordionTrigger>
                     <AccordionContent className="text-muted-foreground leading-relaxed pb-4 animate-in fade-in slide-in-from-top-2 duration-300">
-                      We support WhatsApp Business API, Instagram Messaging, Facebook Messenger, RCS (Rich Communication
-                      Services), SMS, and email. All channels can be managed from a single unified inbox with consistent
-                      automation and analytics.
+                      We support WhatsApp Business API, Instagram Messaging,
+                      Facebook Messenger, RCS (Rich Communication Services),
+                      SMS, and email. All channels can be managed from a single
+                      unified inbox with consistent automation and analytics.
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>
@@ -613,7 +736,11 @@ export default function ClientPage() {
 
               {/* Right Column */}
               <div className="space-y-3">
-                <Accordion type="single" collapsible className="w-full space-y-3">
+                <Accordion
+                  type="single"
+                  collapsible
+                  className="w-full space-y-3"
+                >
                   <AccordionItem
                     value="item-4"
                     className="border rounded-lg px-6 bg-white shadow-sm hover:shadow-md transition-all duration-300"
@@ -622,9 +749,11 @@ export default function ClientPage() {
                       Is my customer data secure and compliant?
                     </AccordionTrigger>
                     <AccordionContent className="text-muted-foreground leading-relaxed pb-4 animate-in fade-in slide-in-from-top-2 duration-300">
-                      Yes, we are fully GDPR compliant and follow industry-standard security practices. All data is
-                      encrypted in transit and at rest. We are also SOC 2 certified and regularly undergo security
-                      audits to ensure your data remains protected.
+                      Yes, we are fully GDPR compliant and follow
+                      industry-standard security practices. All data is
+                      encrypted in transit and at rest. We are also SOC 2
+                      certified and regularly undergo security audits to ensure
+                      your data remains protected.
                     </AccordionContent>
                   </AccordionItem>
 
@@ -633,11 +762,14 @@ export default function ClientPage() {
                     className="border rounded-lg px-6 bg-white shadow-sm hover:shadow-md transition-all duration-300"
                   >
                     <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
-                      Can I integrate with my existing CRM or e-commerce platform?
+                      Can I integrate with my existing CRM or e-commerce
+                      platform?
                     </AccordionTrigger>
                     <AccordionContent className="text-muted-foreground leading-relaxed pb-4 animate-in fade-in slide-in-from-top-2 duration-300">
-                      We offer native integrations with popular platforms like Shopify, WooCommerce, Salesforce,
-                      HubSpot, and more. We also provide REST APIs and webhooks for custom integrations with any system.
+                      We offer native integrations with popular platforms like
+                      Shopify, WooCommerce, Salesforce, HubSpot, and more. We
+                      also provide REST APIs and webhooks for custom
+                      integrations with any system.
                     </AccordionContent>
                   </AccordionItem>
 
@@ -649,9 +781,11 @@ export default function ClientPage() {
                       What kind of support do you provide?
                     </AccordionTrigger>
                     <AccordionContent className="text-muted-foreground leading-relaxed pb-4 animate-in fade-in slide-in-from-top-2 duration-300">
-                      We offer 24/7 customer support via WhatsApp, email, and live chat. Enterprise customers get
-                      dedicated account managers, priority support, and custom onboarding. Our technical team is always
-                      available to help with integrations and troubleshooting.
+                      We offer 24/7 customer support via WhatsApp, email, and
+                      live chat. Enterprise customers get dedicated account
+                      managers, priority support, and custom onboarding. Our
+                      technical team is always available to help with
+                      integrations and troubleshooting.
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>
@@ -675,8 +809,9 @@ export default function ClientPage() {
             </h2>
 
             <p className="text-base md:text-lg text-white/90 mb-5 max-w-2xl mx-auto text-pretty leading-relaxed">
-              Join thousands of businesses transforming their customer communication. Start your free trial and see
-              results in days, not months.
+              Join thousands of businesses transforming their customer
+              communication. Start your free trial and see results in days, not
+              months.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
@@ -685,7 +820,11 @@ export default function ClientPage() {
                 className="bg-white text-green-600 hover:bg-gray-50 font-semibold shadow-xl hover:shadow-2xl transition-all px-6 group"
                 asChild
               >
-                <Link href={process.env.NEXT_PUBLIC_APP_URL || "https://app.chati.chat"}>
+                <Link
+                  href={
+                    process.env.NEXT_PUBLIC_APP_URL || "https://app.chati.chat"
+                  }
+                >
                   Start Free Trial
                   <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
@@ -696,14 +835,20 @@ export default function ClientPage() {
                 className="border-2 border-white text-white hover:bg-white/10 font-medium shadow-lg backdrop-blur-sm px-6 bg-transparent"
                 asChild
               >
-                <Link href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""}`}>
+                <Link
+                  href={`https://wa.me/${
+                    process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""
+                  }`}
+                >
                   <Bell className="mr-2 h-4 w-4" />
                   Talk to Sales
                 </Link>
               </Button>
             </div>
 
-            <p className="mt-4 text-xs text-white/80">No credit card required • Free 14-day trial • Cancel anytime</p>
+            <p className="mt-4 text-xs text-white/80">
+              No credit card required • Free 14-day trial • Cancel anytime
+            </p>
           </div>
         </div>
       </section>
@@ -711,5 +856,5 @@ export default function ClientPage() {
       {/* BackToTop Component */}
       <BackToTop />
     </div>
-  )
+  );
 }
