@@ -227,11 +227,11 @@ export function Header() {
                         href={feature.href}
                         className="group flex items-center gap-3 rounded-lg p-3 transition-all duration-200 hover:bg-green-50 hover:shadow-md border border-transparent hover:border-green-200"
                       >
-                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-100 to-teal-50 group-hover:from-emerald-200 group-hover:to-teal-100 transition-all duration-200">
-                          <feature.icon className="h-5 w-5 text-emerald-600" />
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-green-100 to-green-50 group-hover:from-green-200 group-hover:to-green-100 transition-all duration-200">
+                          <feature.icon className="h-5 w-5 text-green-600" />
                         </div>
                         <div className="flex-1">
-                          <div className="text-sm font-semibold text-foreground group-hover:text-emerald-600 transition-colors duration-200">
+                          <div className="text-sm font-semibold text-foreground group-hover:text-green-600 transition-colors duration-200">
                             {feature.name}
                           </div>
                           <p className="text-xs text-muted-foreground line-clamp-2">
@@ -257,11 +257,11 @@ export function Header() {
                         href={industry.href}
                         className="group flex items-center gap-3 rounded-lg p-3 transition-all duration-200 hover:bg-green-50 hover:shadow-md border border-transparent hover:border-green-200"
                       >
-                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-100 to-teal-50 group-hover:from-emerald-200 group-hover:to-teal-100 transition-all duration-200">
-                          <industry.icon className="h-5 w-5 text-emerald-600" />
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-green-100 to-green-50 group-hover:from-green-200 group-hover:to-green-100 transition-all duration-200">
+                          <industry.icon className="h-5 w-5 text-green-600" />
                         </div>
                         <div className="flex-1">
-                          <div className="text-sm font-semibold text-foreground group-hover:text-emerald-600 transition-colors duration-200">
+                          <div className="text-sm font-semibold text-foreground group-hover:text-green-600 transition-colors duration-200">
                             {industry.name}
                           </div>
                           <p className="text-xs text-muted-foreground line-clamp-2">
@@ -287,11 +287,11 @@ export function Header() {
                         href={resource.href}
                         className="group flex items-center gap-3 rounded-lg p-3 transition-all duration-200 hover:bg-green-50 hover:shadow-md border border-transparent hover:border-green-200"
                       >
-                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-100 to-teal-50 group-hover:from-emerald-200 group-hover:to-teal-100 transition-all duration-200">
-                          <resource.icon className="h-5 w-5 text-emerald-600" />
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-green-100 to-green-50 group-hover:from-green-200 group-hover:to-green-100 transition-all duration-200">
+                          <resource.icon className="h-5 w-5 text-green-600" />
                         </div>
                         <div className="flex-1">
-                          <div className="text-sm font-semibold text-foreground group-hover:text-emerald-600 transition-colors duration-200">
+                          <div className="text-sm font-semibold text-foreground group-hover:text-green-600 transition-colors duration-200">
                             {resource.name}
                           </div>
                           <p className="text-xs text-muted-foreground line-clamp-2">
@@ -330,7 +330,7 @@ export function Header() {
           <div className="hidden lg:flex items-center gap-3">
             <Button
               variant="outline"
-              className="border-2 hover:bg-gray-50 bg-transparent transition-all duration-200"
+              className="w-full sm:w-auto border-2 hover:bg-gray-50 hover:text-green-600 transition-all duration-300 hover:scale-105"
               asChild
             >
               <Link
