@@ -304,7 +304,7 @@ export default function ClientPage() {
 
             {/* Right Image */}
             <div
-              className={`relative flex items-center justify-center order-2 transition-all duration-1000 delay-300 ${
+              className={`relative flex items-end justify-end lg:absolute lg:right-0 lg:top-0 lg:bottom-0 lg:w-1/2 -mr-4 md:mr-0 transition-all duration-1000 ${
                 isCDPVisible
                   ? "opacity-100 translate-x-0"
                   : "opacity-0 translate-x-8"
@@ -336,14 +336,14 @@ export default function ClientPage() {
         ref={whatsappSectionRef}
         className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-green-50/40 to-purple-50/30 py-8 md:py-10"
       >
-        {/* Decorative gradient orbs matching Stats section */}
+        {/* Decorative gradient orbs */}
         <div className="absolute top-10 right-20 w-96 h-96 bg-gradient-to-br from-green-400/15 to-transparent rounded-full blur-3xl" />
         <div className="absolute bottom-10 left-20 w-96 h-96 bg-gradient-to-tr from-blue-400/15 to-transparent rounded-full blur-3xl" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-br from-purple-400/10 to-transparent rounded-full blur-3xl" />
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="grid gap-6 lg:grid-cols-[55%_45%] items-center">
-            {/* Left Side - Image with scroll animations */}
+          <div className="grid gap-6 lg:grid-cols-2 lg:gap-8 items-center">
+            {/* Left Side - Image */}
             <div
               className={`flex items-center justify-center lg:justify-start transition-all duration-1000 ${
                 isWhatsAppVisible
@@ -351,23 +351,23 @@ export default function ClientPage() {
                   : "opacity-0 -translate-x-8"
               }`}
             >
-              <div className="relative">
-                {/* Decorative gradient behind image for depth */}
+              <div className="relative w-full max-w-[500px] lg:max-w-[550px]">
+                {/* Decorative gradient behind image */}
                 <div className="absolute inset-0 bg-gradient-to-br from-green-400/20 via-blue-400/15 to-pink-400/20 blur-2xl rounded-3xl transform scale-105" />
 
                 <Image
                   src="/WhatsApp-Business-API-chati.png"
                   alt="WhatsApp Business API features including 24/7 AI chatbot support, automated reminders and updates on WhatsApp, payment collection, and invoice downloads for seamless customer engagement"
-                  width={700}
+                  width={600}
                   height={600}
-                  className="relative z-10 w-full h-auto max-w-2xl max-h-[450px] object-contain drop-shadow-2xl hover:scale-[1.02] transition-transform duration-500"
+                  className="relative z-10 w-full h-auto max-h-[380px] sm:max-h-[420px] lg:max-h-[440px] object-contain drop-shadow-2xl hover:scale-[1.02] transition-transform duration-500 block"
                   loading="lazy"
                   priority={false}
                 />
               </div>
             </div>
 
-            {/* Right Side - Content with scroll animations */}
+            {/* Right Side - Content */}
             <div
               className={`transition-all duration-1000 delay-300 ${
                 isWhatsAppVisible
@@ -376,30 +376,32 @@ export default function ClientPage() {
               }`}
             >
               <Badge
-                className="mb-3 shadow-sm bg-green-100 text-green-700 border-green-200"
+                className="mb-3 shadow-sm bg-green-100 text-green-700 border-green-200 w-fit"
                 variant="outline"
               >
                 WhatsApp Business API
               </Badge>
-              <h2 className="mb-3 text-balance text-3xl font-bold md:text-4xl lg:text-5xl">
+
+              <h2 className="mb-3 text-balance text-2xl md:text-3xl lg:text-4xl font-bold leading-tight">
                 Scale Your Business with WhatsApp
               </h2>
-              <p className="mb-5 text-pretty text-muted-foreground text-base md:text-lg leading-relaxed">
+
+              <p className="mb-4 text-pretty text-muted-foreground text-sm md:text-base leading-relaxed max-w-xl">
                 Connect with 2+ billion WhatsApp users worldwide. Automate
                 customer conversations, send instant notifications, and deliver
                 personalized experiences that drive engagement and revenue.
               </p>
 
-              <div className="space-y-3">
-                <div className="flex gap-3 items-start group">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-green-100 to-green-50 group-hover:from-green-200 group-hover:to-green-100 transition-all shadow-sm">
-                    <Brain className="h-5 w-5 text-green-600" />
+              <div className="space-y-2.5 mb-4">
+                <div className="flex gap-2.5 items-start group">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-green-100 to-green-50 group-hover:from-green-200 group-hover:to-green-100 transition-all shadow-sm">
+                    <Brain className="h-4 w-4 text-green-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">
+                    <h3 className="font-semibold text-foreground mb-0.5 text-sm">
                       AI-Powered Chatbots
                     </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
+                    <p className="text-xs text-muted-foreground leading-relaxed">
                       Deploy intelligent chatbots that understand context,
                       handle complex queries, and provide instant support 24/7
                       across multiple languages.
@@ -407,15 +409,15 @@ export default function ClientPage() {
                   </div>
                 </div>
 
-                <div className="flex gap-3 items-start group">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 group-hover:from-blue-200 group-hover:to-blue-100 transition-all shadow-sm">
-                    <Bell className="h-5 w-5 text-blue-600" />
+                <div className="flex gap-2.5 items-start group">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 group-hover:from-blue-200 group-hover:to-blue-100 transition-all shadow-sm">
+                    <Bell className="h-4 w-4 text-blue-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">
+                    <h3 className="font-semibold text-foreground mb-0.5 text-sm">
                       Smart Notifications
                     </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
+                    <p className="text-xs text-muted-foreground leading-relaxed">
                       Send order updates, shipping alerts, appointment
                       reminders, and promotional offers with rich media,
                       buttons, and interactive elements.
@@ -423,15 +425,15 @@ export default function ClientPage() {
                   </div>
                 </div>
 
-                <div className="flex gap-3 items-start group">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-purple-100 to-purple-50 group-hover:from-purple-200 group-hover:to-purple-100 transition-all shadow-sm">
-                    <BarChart3 className="h-5 w-5 text-purple-600" />
+                <div className="flex gap-2.5 items-start group">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-purple-100 to-purple-50 group-hover:from-purple-200 group-hover:to-purple-100 transition-all shadow-sm">
+                    <BarChart3 className="h-4 w-4 text-purple-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">
+                    <h3 className="font-semibold text-foreground mb-0.5 text-sm">
                       Advanced Analytics
                     </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
+                    <p className="text-xs text-muted-foreground leading-relaxed">
                       Track message delivery, read rates, response times, and
                       customer engagement with comprehensive analytics and
                       real-time dashboards.
@@ -440,9 +442,9 @@ export default function ClientPage() {
                 </div>
               </div>
 
-              <div className="mt-6 flex flex-col sm:flex-row gap-3">
+              <div className="flex flex-col sm:flex-row gap-2.5">
                 <Button
-                  size="lg"
+                  size="default"
                   className="bg-green-600 hover:bg-green-700 shadow-lg hover:shadow-xl transition-all group"
                   asChild
                 >
@@ -456,9 +458,9 @@ export default function ClientPage() {
                   </Link>
                 </Button>
                 <Button
-                  size="lg"
+                  size="default"
                   variant="outline"
-                  className="shadow-sm bg-white/80 backdrop-blur-sm hover:bg-white transition-all"
+                  className="shadow-sm bg-white/80 backdrop-blur-sm hover:bg-white hover:border-green-500 hover:text-green-600 transition-all"
                   asChild
                 >
                   <Link href="/features">View Features</Link>
