@@ -1,21 +1,30 @@
-import type React from "react"
-import type { Metadata } from "next"
-import { Inter } from "next/font/google"
-import "./globals.css"
-import { Header } from "@/components/header"
-import { ThemeProvider } from "@/components/theme-provider-global"
-import dynamic from "next/dynamic"
+import type React from "react";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import { Header } from "@/components/header";
+import { ThemeProvider } from "@/components/theme-provider-global";
+import dynamic from "next/dynamic";
 
-const Footer = dynamic(() => import("@/components/footer").then((mod) => ({ default: mod.Footer })), {
-  loading: () => <div className="h-96 bg-gray-50 animate-pulse" />,
-})
+const Footer = dynamic(
+  () => import("@/components/footer").then((mod) => ({ default: mod.Footer })),
+  {
+    loading: () => <div className="h-96 bg-gray-50 animate-pulse" />,
+  }
+);
 
-const inter = Inter({ subsets: ["latin"], display: "swap", preload: true, variable: "--font-inter" })
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  preload: true,
+  variable: "--font-inter",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://chati.ai"),
   title: {
-    default: "Chati - Verified WhatsApp Business API Provider | Automate Customer Communication",
+    default:
+      "Chati - Verified WhatsApp Business API Provider | Automate Customer Communication",
     template: "%s | Chati - WhatsApp Business API",
   },
   description:
@@ -46,7 +55,8 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://chati.ai",
     siteName: "Chati",
-    title: "Chati - Verified WhatsApp Business API Provider | Automate Customer Communication",
+    title:
+      "Chati - Verified WhatsApp Business API Provider | Automate Customer Communication",
     description:
       "Automate sales, service, and CRM on WhatsApp. Verified WhatsApp Business API provider with bulk messaging, AI chatbots, and team inbox.",
     images: [
@@ -61,7 +71,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Chati - Verified WhatsApp Business API Provider",
-    description: "Automate sales, service, and CRM on WhatsApp with AI chatbots and omnichannel messaging",
+    description:
+      "Automate sales, service, and CRM on WhatsApp with AI chatbots and omnichannel messaging",
     images: ["https://chati.ai/twitter-image.jpg"],
     creator: "@chati",
   },
@@ -81,27 +92,36 @@ export const metadata: Metadata = {
     yandex: "your-yandex-verification-code",
   },
   category: "technology",
-    generator: 'v0.app'
-}
+  generator: "v0.app",
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=5"
+        />
         <meta name="theme-color" content="#16a34a" />
         <meta name="format-detection" content="telephone=no" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
         <link rel="preload" as="image" href="/hero-woman-thinking.webp" />
-        <link rel="preload" as="image" href="/images/design-mode/Frame%2028493.webp" />
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link
+          rel="preload"
+          as="image"
+          href="/images/design-mode/Frame%2028493.webp"
+        />
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body className={inter.className}>
@@ -118,5 +138,5 @@ export default function RootLayout({
         </ThemeProvider>
       </body>
     </html>
-  )
+  );
 }
