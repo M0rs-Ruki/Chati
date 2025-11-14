@@ -303,7 +303,7 @@ export default function WhatsAppBroadcastPage() {
                 <div className="absolute inset-0 bg-gradient-to-br from-green-400/20 via-blue-400/15 to-purple-400/20 blur-3xl rounded-full transform scale-110" />
 
                 <Image
-                  src="/wp-broadcast.webp"
+                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/wp-broadcast-xj8pDcUVcczA1H2ptj6ksB3KWsZYO3.webp"
                   alt="WhatsApp Business broadcast messaging interface showing Brand zone verified account sending promotional campaign to multiple customers with delivery status tracking, read receipts, and reply indicators"
                   width={600}
                   height={700}
@@ -338,7 +338,7 @@ export default function WhatsAppBroadcastPage() {
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-green-400/20 via-blue-400/15 to-pink-400/20 blur-2xl rounded-3xl transform scale-105" />
                 <Image
-                  src="/whatsapp-broadcasting.webp"
+                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/whatsapp-broadcasting-W3sDUdPsfRSghw7BgDSb1ttSc9S8X7.webp"
                   alt="WhatsApp broadcast messaging dashboard showing 992 customers reached with 95% read rate and 76% reply rate, featuring real-time analytics and customer engagement metrics"
                   width={800}
                   height={600}

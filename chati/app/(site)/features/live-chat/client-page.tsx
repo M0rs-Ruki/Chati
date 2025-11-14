@@ -315,7 +315,7 @@ export default function LiveChatPage() {
                 <FloatingChatIcons />
 
                 <Image
-                  src="/omini-channel-inbox.webp"
+                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/omini%20channel%20inbox-hfzkqKY66U3gLqXvC7VBg1FO8eBEfM.webp"
                   alt="Omnichannel inbox showing woman managing customer conversations across WhatsApp, Instagram, Facebook Messenger, and other channels with business growth analytics"
                   width={600}
                   height={700}
