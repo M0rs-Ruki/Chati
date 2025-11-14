@@ -82,10 +82,12 @@ export async function generateMetadata({
   const category =
     postData.category || postData.metadata?.category || "General";
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://chati.chat";
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://chati.ai";
   const postUrl = `${baseUrl}/blog/${slug}`;
+  const readTime = postData.readTime || postData.metadata?.readTime || "5 min read";
+  const modifiedDate = postData.updatedAt || date;
 
-  // Generate comprehensive keywords
+  // Generate comprehensive keywords from metadata
   const keywords = [
     ...tags,
     "WhatsApp Business",
@@ -93,15 +95,21 @@ export async function generateMetadata({
     "business automation",
     category,
     "Chati blog",
+    "WhatsApp API",
+    "messaging platform",
   ].filter(Boolean);
 
   return {
-    title: `${title} | Chati Blog`,
+    title: `${title} | Chati Blog - WhatsApp Business Insights`,
     description,
     keywords: keywords.join(", "),
     authors: [{ name: author }],
     creator: author,
     publisher: "Chati",
+    metadataBase: new URL(baseUrl),
+    alternates: {
+      canonical: postUrl,
+    },
     robots: {
       index: true,
       follow: true,
@@ -118,11 +126,12 @@ export async function generateMetadata({
       description,
       type: "article",
       publishedTime: date,
-      modifiedTime: date,
+      modifiedTime: modifiedDate,
       authors: [author],
       tags: Array.isArray(tags) ? tags : [],
+      section: category,
       url: postUrl,
-      siteName: "Chati",
+      siteName: "Chati - WhatsApp Business API Platform",
       locale: "en_US",
       images: [
         {
@@ -143,10 +152,11 @@ export async function generateMetadata({
         imageUrl.startsWith("http") ? imageUrl : `${baseUrl}${imageUrl}`,
       ],
     },
-    alternates: {
-      canonical: postUrl,
-    },
     category,
+    other: {
+      "article:read-time": readTime,
+      "article:author": author,
+    },
   };
 }
 

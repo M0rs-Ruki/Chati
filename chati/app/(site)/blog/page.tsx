@@ -121,9 +121,26 @@ export async function generateMetadata({
   const category = searchParams.category as string;
   const search = searchParams.search as string;
 
-  let title = "Blog - WhatsApp Business Tips, Guides & Best Practices | Chati";
-  let description =
-    "Discover expert insights on WhatsApp Business API, customer engagement strategies, automation tips, and e-commerce best practices. Stay updated with the latest trends in conversational commerce.";
+  // Fetch blog posts for dynamic metadata
+  const posts = await getBlogPosts();
+  const postCount = posts.length;
+
+  // Collect all unique tags and categories from published posts
+  const allTags = new Set<string>();
+  const allCategories = new Set<string>();
+  
+  posts.forEach(post => {
+    if (post.metadata?.tags && Array.isArray(post.metadata.tags)) {
+      post.metadata.tags.forEach((tag: string) => allTags.add(tag));
+    }
+    if (post.tags && Array.isArray(post.tags)) {
+      post.tags.forEach((tag: string) => allTags.add(tag));
+    }
+    if (post.category) allCategories.add(post.category);
+    if (post.metadata?.category) allCategories.add(post.metadata.category);
+  });
+
+  // Base keywords + dynamic tags from your blog posts
   let keywords = [
     "WhatsApp Business blog",
     "WhatsApp Business API",
@@ -137,23 +154,36 @@ export async function generateMetadata({
     "WhatsApp integration",
     "business communication",
     "messaging API",
+    ...Array.from(allTags).slice(0, 10), // Add top 10 dynamic tags
   ];
 
+  // Get latest post excerpt for dynamic description
+  const latestPost = posts[0];
+  const latestExcerpt = latestPost?.excerpt || latestPost?.metadata?.description || '';
+
+  let title = "Blog - WhatsApp Business Tips, Guides & Best Practices | Chati";
+  let description = postCount > 0
+    ? `Explore ${postCount}+ articles on WhatsApp Business API, customer engagement, and automation. Latest: ${latestExcerpt.substring(0, 100)}${latestExcerpt.length > 100 ? '...' : ''}`
+    : "Discover expert insights on WhatsApp Business API, customer engagement strategies, automation tips, and e-commerce best practices. Stay updated with the latest trends in conversational commerce.";
+
   if (category) {
+    const categoryPosts = posts.filter(p => 
+      p.category === category || p.metadata?.category === category
+    );
     title = `${category} Articles - WhatsApp Business Blog | Chati`;
-    description = `Explore ${category} articles about WhatsApp Business API, automation, and customer engagement strategies. Expert tips and best practices for ${category}.`;
+    description = `Explore ${categoryPosts.length} ${category} articles about WhatsApp Business API, automation, and customer engagement strategies. Expert tips and best practices for ${category}.`;
     keywords.push(
       category.toLowerCase(),
       `${category} tips`,
       `${category} guide`
     );
   } else if (search) {
-    title = `Search Results for "${search}" - WhatsApp Business Blog | Chati`;
+    title = `Search: "${search}" - WhatsApp Business Blog | Chati`;
     description = `Find articles and guides about "${search}" on WhatsApp Business, chatbots, and customer engagement. Expert insights and practical tips.`;
     keywords.push(search.toLowerCase());
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://chati.chat";
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://chati.ai";
   const blogUrl = `${baseUrl}/blog${
     category ? `?category=${encodeURIComponent(category)}` : ""
   }${search ? `?search=${encodeURIComponent(search)}` : ""}`;
@@ -165,6 +195,13 @@ export async function generateMetadata({
     authors: [{ name: "Chati Team" }],
     creator: "Chati",
     publisher: "Chati",
+    metadataBase: new URL(baseUrl),
+    alternates: {
+      canonical: blogUrl,
+      types: {
+        'application/rss+xml': `${baseUrl}/blog/rss.xml`,
+      },
+    },
     robots: {
       index: true,
       follow: true,
@@ -181,7 +218,7 @@ export async function generateMetadata({
       description,
       type: "website",
       url: blogUrl,
-      siteName: "Chati",
+      siteName: "Chati - WhatsApp Business API Platform",
       locale: "en_US",
       images: [
         {
