@@ -80,45 +80,120 @@ export async function generateMetadata({
   const category = searchParams.category as string;
   const search = searchParams.search as string;
 
+  // Fetch latest docs for dynamic metadata
+  const docs = await getDocumentation();
+  const docCount = docs.length;
+
+  // Collect all tags from published docs for dynamic keywords
+  const allTags = new Set<string>();
+  docs.forEach(doc => {
+    if (doc.metadata?.tags && Array.isArray(doc.metadata.tags)) {
+      doc.metadata.tags.forEach((tag: string) => allTags.add(tag));
+    }
+  });
+
+  // Base keywords + dynamic tags from your docs
+  const baseKeywords = [
+    "WhatsApp Business API",
+    "WhatsApp API documentation",
+    "WhatsApp integration guide",
+    "message templates WhatsApp",
+    "WhatsApp automation",
+    "WhatsApp webhook",
+    "API security",
+    "developer documentation",
+    "WhatsApp Business Platform",
+    "WhatsApp chatbot",
+    "bulk messaging API",
+    "customer engagement API",
+    "omnichannel messaging",
+  ];
+  
+  // Merge base keywords with your dynamic tags
+  const keywords = [...baseKeywords, ...Array.from(allTags)];
+
+  // Collect descriptions from recent docs
+  const recentDescriptions = docs
+    .slice(0, 3)
+    .map(doc => doc.metadata?.description || doc.metadata?.excerpt)
+    .filter(Boolean);
+
   let title =
     "WhatsApp Business API Documentation | Complete Integration Guide - Chati";
   let description =
-    "Comprehensive WhatsApp Business API documentation with integration guides, message templates, automation workflows, security best practices, and code examples for developers.";
+    `Explore ${docCount}+ comprehensive WhatsApp Business API guides. ${
+      recentDescriptions.length > 0 
+        ? 'Latest: ' + recentDescriptions[0] 
+        : 'Learn message templates, chatbot automation, webhook integration, security best practices, and API implementation with code examples.'
+    }`;
+  
+  let ogImage = "https://chati.ai/og-docs.jpg";
 
   if (category) {
     const cat = docCategories.find((c) => c.id === category);
     if (cat) {
       title = `${cat.title} Documentation - WhatsApp Business API | Chati`;
-      description = `${
-        cat.description
-      } Learn more about ${cat.title.toLowerCase()} with detailed guides and examples.`;
+      description = `${cat.description} Comprehensive ${cat.title.toLowerCase()} guides with step-by-step tutorials, code examples, and best practices for WhatsApp Business API integration.`;
     }
   } else if (search) {
-    title = `Search Results for "${search}" - WhatsApp Business API Documentation`;
-    description = `Find documentation and guides about "${search}" for WhatsApp Business API integration.`;
+    title = `Search: "${search}" - WhatsApp Business API Documentation | Chati`;
+    description = `Find detailed documentation and developer guides about "${search}" for WhatsApp Business API integration, implementation, and best practices.`;
   }
+
+  const baseUrl = "https://chati.ai";
+  const docsUrl = `${baseUrl}/docs${category ? `?category=${category}` : ""}${
+    search ? `?search=${search}` : ""
+  }`;
 
   return {
     title,
     description,
-    keywords:
-      "WhatsApp Business API, WhatsApp API documentation, WhatsApp integration guide, message templates, WhatsApp automation, API security, developer documentation, WhatsApp Business Platform",
+    keywords: keywords.join(", "),
+    authors: [{ name: "Chati", url: "https://chati.ai" }],
+    creator: "Chati",
+    publisher: "Chati",
+    metadataBase: new URL(baseUrl),
+    alternates: {
+      canonical: docsUrl,
+    },
     openGraph: {
       title,
       description,
       type: "website",
-      url: `https://chati.chat/docs${category ? `?category=${category}` : ""}${
-        search ? `?search=${search}` : ""
-      }`,
+      url: docsUrl,
+      siteName: "Chati - WhatsApp Business API Platform",
+      locale: "en_US",
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: "Chati WhatsApp Business API Documentation",
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      creator: "@chati",
+      images: [ogImage],
     },
-    alternates: {
-      canonical: "https://chati.chat/docs",
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
     },
+    verification: {
+      google: "your-google-verification-code",
+    },
+    category: "Technology",
   };
 }
 
@@ -173,10 +248,69 @@ export default async function DocsPage({ searchParams }: PageProps) {
     ? docCategories.filter((cat) => cat.id === selectedCategory)
     : docCategories;
 
+  // Structured Data for SEO
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "WhatsApp Business API Documentation",
+    description: "Comprehensive WhatsApp Business API documentation and developer guides",
+    url: "https://chati.ai/docs",
+    publisher: {
+      "@type": "Organization",
+      name: "Chati",
+      url: "https://chati.ai",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://chati.ai/logo.png",
+      },
+    },
+    breadcrumb: {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: "https://chati.ai",
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Documentation",
+          item: "https://chati.ai/docs",
+        },
+      ],
+    },
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: dbDocs.length,
+      itemListElement: dbDocs.slice(0, 10).map((doc, index) => ({
+        "@type": "Article",
+        position: index + 1,
+        name: doc.title,
+        description: doc.metadata?.description || doc.metadata?.excerpt,
+        url: `https://chati.ai/docs/${doc.slug}`,
+        datePublished: doc.createdAt,
+        dateModified: doc.updatedAt,
+        author: {
+          "@type": "Person",
+          name: doc.author?.name || "Chati Team",
+        },
+      })),
+    },
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white via-blue-50/30 to-white">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-purple-700 text-white py-16 md:py-20">
+    <>
+      {/* Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+      
+      <div className="min-h-screen bg-gradient-to-b from-white via-blue-50/30 to-white">
+        {/* Hero Section */}
+        <section className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-purple-700 text-white py-16 md:py-20">
         <div className="absolute inset-0 bg-grid-white/10" />
         <div className="container relative mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
@@ -515,6 +649,7 @@ export default async function DocsPage({ searchParams }: PageProps) {
           </div>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   );
 }

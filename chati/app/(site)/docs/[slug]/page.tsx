@@ -56,15 +56,72 @@ export async function generateMetadata({
 
   // Handle both database and static article types
   const articleData = article as any;
+  const title = article.title;
+  const description = articleData.metadata?.description || articleData.description || "WhatsApp Business API documentation and integration guide";
+  const tags = articleData.metadata?.tags || articleData.tags || [];
+  const imageUrl = articleData.imageUrl || "https://chati.ai/og-docs.jpg";
+  const author = articleData.author?.name || "Chati Team";
+  const publishedDate = articleData.createdAt || new Date().toISOString();
+  const modifiedDate = articleData.updatedAt || publishedDate;
+  const category = articleData.metadata?.category || articleData.category || "Documentation";
+  const readTime = articleData.metadata?.readTime || articleData.readTime || "5 min read";
+
+  const baseUrl = "https://chati.ai";
+  const articleUrl = `${baseUrl}/docs/${slug}`;
 
   return {
-    title: `${article.title} | WhatsApp Business API Documentation`,
-    description: articleData.metadata?.description || articleData.description || "",
-    keywords: articleData.metadata?.tags?.join(", ") || articleData.tags?.join(", ") || "",
+    title: `${title} | WhatsApp Business API Documentation - Chati`,
+    description,
+    keywords: tags.join(", "),
+    authors: [{ name: author }],
+    creator: author,
+    publisher: "Chati",
+    metadataBase: new URL(baseUrl),
+    alternates: {
+      canonical: articleUrl,
+    },
     openGraph: {
-      title: article.title,
-      description: articleData.metadata?.description || articleData.description || "",
+      title,
+      description,
       type: "article",
+      url: articleUrl,
+      siteName: "Chati - WhatsApp Business API Platform",
+      locale: "en_US",
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+      publishedTime: publishedDate,
+      modifiedTime: modifiedDate,
+      authors: [author],
+      section: category,
+      tags: tags,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      creator: "@chati",
+      images: [imageUrl],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
+    category,
+    other: {
+      "article:read-time": readTime,
     },
   }
 }
