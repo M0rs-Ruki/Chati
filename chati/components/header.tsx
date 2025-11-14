@@ -215,7 +215,7 @@ export function Header() {
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <NavigationMenuTrigger className="h-10 inline-flex items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-all duration-200 hover:!bg-green-50 hover:!text-green-600 data-[state=open]:!bg-transparent data-[state=open]:!text-green-600">
+                <NavigationMenuTrigger className="h-10 inline-flex items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-all duration-200 hover:!bg-green-50 hover:!text-green-600">
                   <Sparkles className="mr-2 h-4 w-4" />
                   Features
                 </NavigationMenuTrigger>
@@ -227,7 +227,7 @@ export function Header() {
                         href={feature.href}
                         className="group flex items-center gap-3 rounded-lg p-3 transition-all duration-200 hover:bg-green-50 hover:shadow-md border border-transparent hover:border-green-200"
                       >
-                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-green-100 to-green-50 group-hover:from-green-200 group-hover:to-green-100 transition-all duration-200">
+                        <div className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-all duration-200 hover:bg-green-50 hover:text-green-600 focus:bg-green-50 focus:text-green-600 focus:outline-none">
                           <feature.icon className="h-5 w-5 text-green-600" />
                         </div>
                         <div className="flex-1">
@@ -245,7 +245,7 @@ export function Header() {
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <NavigationMenuTrigger className="h-10 inline-flex items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-all duration-200 hover:!bg-green-50 hover:!text-green-600 data-[state=open]:!bg-transparent data-[state=open]:!text-green-600">
+                <NavigationMenuTrigger className="h-10 inline-flex items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-all duration-200 hover:!bg-green-50 hover:!text-green-600">
                   <Building2 className="mr-2 h-4 w-4" />
                   Industry
                 </NavigationMenuTrigger>
@@ -275,7 +275,7 @@ export function Header() {
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <NavigationMenuTrigger className="h-10 inline-flex items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-all duration-200 hover:!bg-green-50 hover:!text-green-600 data-[state=open]:!bg-transparent data-[state=open]:!text-green-600">
+                <NavigationMenuTrigger className="h-10 inline-flex items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-all duration-200 hover:!bg-green-50 hover:!text-green-600">
                   <BookOpen className="mr-2 h-4 w-4" />
                   Resources
                 </NavigationMenuTrigger>
