@@ -1,10 +1,15 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { BrandSlider } from "@/components/brand-slider"
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { BrandSlider } from "@/components/brand-slider";
 import {
   Bot,
   Brain,
@@ -32,10 +37,10 @@ import {
   MessageCircle,
   Send,
   ThumbsUp,
-} from "lucide-react"
-import Link from "next/link"
-import Image from "next/image"
-import { useIntersectionObserver } from "@/hooks/use-intersection-observer"
+} from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
+import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 
 const FloatingAIIcons = () => {
   return (
@@ -65,18 +70,29 @@ const FloatingAIIcons = () => {
         <Zap className="w-6 h-6 text-white" />
       </div>
     </>
-  )
-}
+  );
+};
 
 export default function ChatbotsAIPage() {
-  const { ref: heroRef, isVisible: heroInView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: aiPowerRef, isVisible: aiPowerInView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: conversationalRef, isVisible: conversationalInView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: intelligentRef, isVisible: intelligentInView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: featuresRef, isVisible: featuresInView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: benefitsRef, isVisible: benefitsInView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: useCasesRef, isVisible: useCasesInView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: faqRef, isVisible: faqInView } = useIntersectionObserver({ threshold: 0.1 })
+  const { ref: heroRef, isVisible: heroInView } = useIntersectionObserver({
+    threshold: 0.1,
+  });
+  const { ref: aiPowerRef, isVisible: aiPowerInView } = useIntersectionObserver(
+    { threshold: 0.1 }
+  );
+  const { ref: conversationalRef, isVisible: conversationalInView } =
+    useIntersectionObserver({ threshold: 0.1 });
+  const { ref: intelligentRef, isVisible: intelligentInView } =
+    useIntersectionObserver({ threshold: 0.1 });
+  const { ref: featuresRef, isVisible: featuresInView } =
+    useIntersectionObserver({ threshold: 0.1 });
+  const { ref: benefitsRef, isVisible: benefitsInView } =
+    useIntersectionObserver({ threshold: 0.1 });
+  const { ref: useCasesRef, isVisible: useCasesInView } =
+    useIntersectionObserver({ threshold: 0.1 });
+  const { ref: faqRef, isVisible: faqInView } = useIntersectionObserver({
+    threshold: 0.1,
+  });
 
   const features = [
     {
@@ -94,7 +110,8 @@ export default function ChatbotsAIPage() {
     {
       icon: Languages,
       title: "Multi-Language Support",
-      description: "Communicate with customers in 100+ languages with automatic translation and localization.",
+      description:
+        "Communicate with customers in 100+ languages with automatic translation and localization.",
     },
     {
       icon: Smile,
@@ -117,7 +134,8 @@ export default function ChatbotsAIPage() {
     {
       icon: Settings,
       title: "Custom Training",
-      description: "Train AI chatbots on your specific business data, products, and services for personalized support.",
+      description:
+        "Train AI chatbots on your specific business data, products, and services for personalized support.",
     },
     {
       icon: BarChart3,
@@ -125,7 +143,7 @@ export default function ChatbotsAIPage() {
       description:
         "Track chatbot performance, conversation metrics, and customer satisfaction with detailed analytics dashboards.",
     },
-  ]
+  ];
 
   const benefits = [
     {
@@ -143,7 +161,8 @@ export default function ChatbotsAIPage() {
     {
       icon: Users,
       title: "Scale Support",
-      description: "Handle thousands of conversations simultaneously without increasing team size or support costs.",
+      description:
+        "Handle thousands of conversations simultaneously without increasing team size or support costs.",
     },
     {
       icon: Target,
@@ -151,7 +170,7 @@ export default function ChatbotsAIPage() {
       description:
         "Deliver personalized recommendations and responses based on customer history, preferences, and behavior.",
     },
-  ]
+  ];
 
   const useCases = [
     {
@@ -190,7 +209,7 @@ export default function ChatbotsAIPage() {
         "Help employees find information, submit IT tickets, and access HR resources through internal AI chatbots.",
       icon: Building2,
     },
-  ]
+  ];
 
   const faqsColumn1 = [
     {
@@ -208,7 +227,7 @@ export default function ChatbotsAIPage() {
       answer:
         "Yes! Our AI chatbots support 100+ languages with automatic translation and localization. The AI understands customer messages in any language and responds in the same language, making it perfect for global businesses serving diverse customer bases.",
     },
-  ]
+  ];
 
   const faqsColumn2 = [
     {
@@ -226,7 +245,7 @@ export default function ChatbotsAIPage() {
       answer:
         "Our AI chatbots work across all major messaging platforms including WhatsApp Business API, RCS (Rich Communication Services), Instagram Direct Messages, Facebook Messenger, website live chat, and mobile apps. Deploy once and engage customers everywhere they are.",
     },
-  ]
+  ];
 
   return (
     <div className="min-h-screen">
@@ -235,11 +254,16 @@ export default function ChatbotsAIPage() {
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-purple-400/20 to-transparent rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-blue-400/15 to-transparent rounded-full blur-3xl" />
 
-        <div ref={heroRef} className="container relative mx-auto px-4 pr-0 md:pr-4 py-12 md:py-14 lg:py-16 z-10">
+        <div
+          ref={heroRef}
+          className="container relative mx-auto px-4 pr-0 md:pr-4 py-12 md:py-14 lg:py-16 z-10"
+        >
           <div className="grid gap-6 lg:grid-cols-2 lg:gap-10 items-center">
             <div
               className={`flex flex-col justify-center transition-all duration-1000 ${
-                heroInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                heroInView
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-8"
               }`}
             >
               <Badge
@@ -260,9 +284,11 @@ export default function ChatbotsAIPage() {
               </h1>
 
               <p className="mb-6 text-base text-muted-foreground md:text-lg max-w-xl leading-relaxed">
-                Deploy AI-powered chatbots with advanced natural language processing and machine learning to automate
-                customer support, provide instant responses 24/7, and enhance engagement across WhatsApp, RCS,
-                Instagram, and Facebook Messenger. Transform conversations into conversions with intelligent automation.
+                Deploy AI-powered chatbots with advanced natural language
+                processing and machine learning to automate customer support,
+                provide instant responses 24/7, and enhance engagement across
+                WhatsApp, RCS, Instagram, and Facebook Messenger. Transform
+                conversations into conversions with intelligent automation.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 mb-6">
@@ -288,32 +314,42 @@ export default function ChatbotsAIPage() {
                   <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mb-2">
                     <Brain className="w-5 h-5 text-purple-600" />
                   </div>
-                  <div className="text-xs text-muted-foreground text-center">AI-Powered</div>
+                  <div className="text-xs text-muted-foreground text-center">
+                    AI-Powered
+                  </div>
                 </div>
                 <div className="flex flex-col items-center">
                   <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mb-2">
                     <Clock className="w-5 h-5 text-blue-600" />
                   </div>
-                  <div className="text-xs text-muted-foreground text-center">24/7 Support</div>
+                  <div className="text-xs text-muted-foreground text-center">
+                    24/7 Support
+                  </div>
                 </div>
                 <div className="flex flex-col items-center">
                   <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mb-2">
                     <Globe className="w-5 h-5 text-green-600" />
                   </div>
-                  <div className="text-xs text-muted-foreground text-center">100+ Languages</div>
+                  <div className="text-xs text-muted-foreground text-center">
+                    100+ Languages
+                  </div>
                 </div>
                 <div className="flex flex-col items-center">
                   <div className="w-10 h-10 bg-pink-100 rounded-lg flex items-center justify-center mb-2">
                     <Sparkles className="w-5 h-5 text-pink-600" />
                   </div>
-                  <div className="text-xs text-muted-foreground text-center">Smart Learning</div>
+                  <div className="text-xs text-muted-foreground text-center">
+                    Smart Learning
+                  </div>
                 </div>
               </div>
             </div>
 
             <div
               className={`relative flex items-center justify-center lg:justify-end transition-all duration-1000 delay-300 ${
-                heroInView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
+                heroInView
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 translate-x-8"
               }`}
             >
               <div className="relative w-full max-w-lg">
@@ -338,86 +374,112 @@ export default function ChatbotsAIPage() {
       {/* AI-Powered Intelligence Section */}
       <section
         ref={aiPowerRef}
-        className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50/30 py-16 md:py-20"
+        className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50/30 py-10 sm:py-12 md:py-16 lg:py-20"
       >
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-bl from-blue-400/10 to-transparent rounded-full blur-3xl" />
+        <div className="absolute top-0 right-0 w-[400px] h-[400px] sm:w-[600px] sm:h-[600px] bg-gradient-to-bl from-blue-400/10 to-transparent rounded-full blur-3xl" />
 
-        <div className="container relative mx-auto px-4 z-10">
-          <div className="grid gap-8 lg:grid-cols-2 lg:gap-12 items-center">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid gap-6 lg:gap-8 xl:gap-12 lg:grid-cols-2 items-center">
+            {/* Left Side - Image */}
             <div
-              className={`relative transition-all duration-1000 ${
-                aiPowerInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"
+              className={`order-1 lg:order-1 relative transition-all duration-1000 ${
+                aiPowerInView
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 -translate-x-8"
               }`}
             >
-              <Image
-                src="/ai-brain-neural-network-showing-machine-learning-a.jpg"
-                alt="AI brain neural network visualization showing machine learning and natural language processing capabilities for intelligent chatbot responses"
-                width={600}
-                height={600}
-                className="w-full h-auto object-contain rounded-2xl shadow-2xl"
-              />
+              <div className="relative w-full max-w-xl sm:max-w-2xl lg:max-w-3xl mx-auto lg:mx-0">
+                <div className="relative z-10 w-full aspect-square">
+                  <Image
+                    src="/ai-brain-neural-network-showing-machine-learning-a.jpg"
+                    alt="AI brain neural network visualization showing machine learning and natural language processing capabilities for intelligent chatbot responses"
+                    fill
+                    sizes="(max-width: 640px) 95vw, (max-width: 1024px) 85vw, 50vw"
+                    className="object-contain rounded-2xl shadow-2xl"
+                  />
+                </div>
+              </div>
             </div>
 
+            {/* Right Side - Content */}
             <div
-              className={`transition-all duration-1000 delay-300 ${
-                aiPowerInView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
+              className={`order-2 lg:order-2 transition-all duration-1000 delay-300 ${
+                aiPowerInView
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 translate-x-8"
               }`}
             >
-              <Badge variant="secondary" className="mb-4 bg-blue-100 text-blue-700 hover:bg-blue-200 w-fit shadow-sm">
-                <Brain className="w-3.5 h-3.5 mr-1.5" />
+              <Badge
+                variant="secondary"
+                className="mb-3 md:mb-4 bg-blue-100 text-blue-700 hover:bg-blue-200 w-fit shadow-sm"
+              >
+                <Brain className="w-3 h-3 md:w-3.5 md:h-3.5 mr-1.5" />
                 AI-Powered Intelligence
               </Badge>
 
-              <h2 className="mb-4 text-3xl md:text-4xl lg:text-5xl font-bold">
-                <span className="block text-foreground mb-2">Advanced Natural Language</span>
+              <h2 className="mb-4 md:mb-5 text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl font-bold leading-tight">
+                <span className="block text-foreground mb-2">
+                  Advanced Natural Language
+                </span>
                 <span className="block bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
                   Processing & Machine Learning
                 </span>
               </h2>
 
-              <p className="mb-6 text-base text-muted-foreground md:text-lg leading-relaxed">
-                Our AI chatbots leverage cutting-edge natural language processing (NLP) and machine learning algorithms
-                to understand customer intent, context, and sentiment. Unlike basic rule-based bots, our conversational
-                AI learns from every interaction, continuously improving accuracy and providing increasingly
-                sophisticated, human-like responses that delight customers and drive business results.
+              <p className="mb-6 md:mb-8 text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed">
+                Our AI chatbots leverage cutting-edge natural language
+                processing (NLP) and machine learning algorithms to understand
+                customer intent, context, and sentiment. Unlike basic rule-based
+                bots, our conversational AI learns from every interaction,
+                continuously improving accuracy and providing increasingly
+                sophisticated, human-like responses that delight customers and
+                drive business results.
               </p>
 
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Brain className="w-5 h-5 text-purple-600" />
+              <div className="space-y-4 md:space-y-5">
+                <div className="flex items-start gap-3 md:gap-4">
+                  <div className="w-9 h-9 md:w-10 md:h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Brain className="w-4 h-4 md:w-5 md:h-5 text-purple-600" />
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1">Context-Aware Conversations</h3>
-                    <p className="text-sm text-muted-foreground">
-                      AI remembers conversation history and context to provide relevant, personalized responses
-                      throughout the customer journey.
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-foreground mb-1 text-sm md:text-base">
+                      Context-Aware Conversations
+                    </h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                      AI remembers conversation history and context to provide
+                      relevant, personalized responses throughout the customer
+                      journey.
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Lightbulb className="w-5 h-5 text-blue-600" />
+                <div className="flex items-start gap-3 md:gap-4">
+                  <div className="w-9 h-9 md:w-10 md:h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Lightbulb className="w-4 h-4 md:w-5 md:h-5 text-blue-600" />
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1">Intent Recognition</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Advanced NLP identifies customer intent even with typos, slang, or complex phrasing to deliver
-                      accurate answers.
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-foreground mb-1 text-sm md:text-base">
+                      Intent Recognition
+                    </h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                      Advanced NLP identifies customer intent even with typos,
+                      slang, or complex phrasing to deliver accurate answers.
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 bg-pink-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Sparkles className="w-5 h-5 text-pink-600" />
+                <div className="flex items-start gap-3 md:gap-4">
+                  <div className="w-9 h-9 md:w-10 md:h-10 bg-pink-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Sparkles className="w-4 h-4 md:w-5 md:h-5 text-pink-600" />
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1">Continuous Learning</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Machine learning algorithms analyze conversations to improve response quality and accuracy over
-                      time automatically.
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-foreground mb-1 text-sm md:text-base">
+                      Continuous Learning
+                    </h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                      Machine learning algorithms analyze conversations to
+                      improve response quality and accuracy over time
+                      automatically.
                     </p>
                   </div>
                 </div>
@@ -430,86 +492,117 @@ export default function ChatbotsAIPage() {
       {/* Conversational AI Across Platforms Section */}
       <section
         ref={conversationalRef}
-        className="relative overflow-hidden bg-gradient-to-br from-white via-green-50/30 to-blue-50/20 py-16 md:py-20"
+        className="relative overflow-hidden bg-gradient-to-br from-white via-green-50/30 to-blue-50/20 py-10 sm:py-12 md:py-16 lg:py-20"
       >
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-gradient-to-tr from-green-400/10 to-transparent rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] sm:w-[600px] sm:h-[600px] bg-gradient-to-tr from-green-400/10 to-transparent rounded-full blur-3xl" />
 
-        <div className="container relative mx-auto px-4 z-10">
-          <div className="grid gap-8 lg:grid-cols-2 lg:gap-12 items-center">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid gap-6 lg:gap-8 xl:gap-10 lg:grid-cols-2 items-center">
+            {/* Left Side - Content */}
             <div
               className={`order-2 lg:order-1 transition-all duration-1000 ${
-                conversationalInView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
+                conversationalInView
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 translate-x-8"
               }`}
             >
               <Badge
                 variant="secondary"
-                className="mb-4 bg-green-100 text-green-700 hover:bg-green-200 w-fit shadow-sm"
+                className="mb-3 md:mb-4 bg-green-100 text-green-700 hover:bg-green-200 w-fit shadow-sm"
               >
-                <Globe className="w-3.5 h-3.5 mr-1.5" />
+                <Globe className="w-3 h-3 md:w-3.5 md:h-3.5 mr-1.5" />
                 Multi-Platform Support
               </Badge>
 
-              <h2 className="mb-4 text-3xl md:text-4xl lg:text-5xl font-bold">
-                <span className="block text-foreground mb-2">Deploy AI Chatbots</span>
+              <h2 className="mb-4 md:mb-5 text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl font-bold leading-tight">
+                <span className="block text-foreground mb-2">
+                  Deploy AI Chatbots
+                </span>
                 <span className="block bg-gradient-to-r from-green-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">
                   Across All Channels
                 </span>
               </h2>
 
-              <p className="mb-6 text-base text-muted-foreground md:text-lg leading-relaxed">
-                Meet customers where they are with AI chatbots that work seamlessly across WhatsApp Business API, RCS
-                (Rich Communication Services), Instagram Direct Messages, Facebook Messenger, website live chat, and
-                mobile apps. One AI chatbot, unlimited reach—provide consistent, intelligent automated support across
-                every customer touchpoint with unified conversation management and analytics.
+              <p className="mb-6 md:mb-8 text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed">
+                Meet customers where they are with AI chatbots that work
+                seamlessly across WhatsApp Business API, RCS (Rich Communication
+                Services), Instagram Direct Messages, Facebook Messenger,
+                website live chat, and mobile apps. One AI chatbot, unlimited
+                reach—provide consistent, intelligent automated support across
+                every customer touchpoint with unified conversation management
+                and analytics.
               </p>
 
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <Card className="p-4 bg-white border-2 border-green-100 hover:border-green-300 transition-colors">
-                  <MessageSquare className="w-8 h-8 text-green-600 mb-2" />
-                  <div className="font-semibold text-foreground mb-1">WhatsApp Business</div>
-                  <p className="text-xs text-muted-foreground">2B+ active users worldwide</p>
+              <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-6 md:mb-8">
+                <Card className="p-3 sm:p-4 bg-white border-2 border-green-100 hover:border-green-300 transition-colors">
+                  <MessageSquare className="w-6 h-6 sm:w-8 sm:h-8 text-green-600 mb-2" />
+                  <div className="font-semibold text-foreground mb-1 text-sm sm:text-base">
+                    WhatsApp Business
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    2B+ active users worldwide
+                  </p>
                 </Card>
 
-                <Card className="p-4 bg-white border-2 border-blue-100 hover:border-blue-300 transition-colors">
-                  <MessageCircle className="w-8 h-8 text-blue-600 mb-2" />
-                  <div className="font-semibold text-foreground mb-1">RCS Messaging</div>
-                  <p className="text-xs text-muted-foreground">Rich interactive experiences</p>
+                <Card className="p-3 sm:p-4 bg-white border-2 border-blue-100 hover:border-blue-300 transition-colors">
+                  <MessageCircle className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600 mb-2" />
+                  <div className="font-semibold text-foreground mb-1 text-sm sm:text-base">
+                    RCS Messaging
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Rich interactive experiences
+                  </p>
                 </Card>
 
-                <Card className="p-4 bg-white border-2 border-pink-100 hover:border-pink-300 transition-colors">
-                  <Send className="w-8 h-8 text-pink-600 mb-2" />
-                  <div className="font-semibold text-foreground mb-1">Instagram DM</div>
-                  <p className="text-xs text-muted-foreground">Visual-first engagement</p>
+                <Card className="p-3 sm:p-4 bg-white border-2 border-pink-100 hover:border-pink-300 transition-colors">
+                  <Send className="w-6 h-6 sm:w-8 sm:h-8 text-pink-600 mb-2" />
+                  <div className="font-semibold text-foreground mb-1 text-sm sm:text-base">
+                    Instagram DM
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Visual-first engagement
+                  </p>
                 </Card>
 
-                <Card className="p-4 bg-white border-2 border-purple-100 hover:border-purple-300 transition-colors">
-                  <ThumbsUp className="w-8 h-8 text-purple-600 mb-2" />
-                  <div className="font-semibold text-foreground mb-1">Facebook Messenger</div>
-                  <p className="text-xs text-muted-foreground">1.3B+ monthly users</p>
+                <Card className="p-3 sm:p-4 bg-white border-2 border-purple-100 hover:border-purple-300 transition-colors">
+                  <ThumbsUp className="w-6 h-6 sm:w-8 sm:h-8 text-purple-600 mb-2" />
+                  <div className="font-semibold text-foreground mb-1 text-sm sm:text-base">
+                    Facebook Messenger
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    1.3B+ monthly users
+                  </p>
                 </Card>
               </div>
 
               <Button
                 size="lg"
-                className="bg-green-600 hover:bg-green-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all group"
+                className="bg-green-600 hover:bg-green-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all group text-sm sm:text-base"
               >
                 Explore Integrations
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </div>
 
+            {/* Right Side - Image */}
             <div
               className={`order-1 lg:order-2 relative transition-all duration-1000 delay-300 ${
-                conversationalInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"
+                conversationalInView
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 -translate-x-8"
               }`}
             >
-              <Image
-                src="/multi-platform-chatbot-interface-showing-whatsapp-.jpg"
-                alt="Multi-platform AI chatbot interface showing unified conversations across WhatsApp, Instagram, Facebook Messenger, and RCS messaging"
-                width={600}
-                height={600}
-                className="w-full h-auto object-contain rounded-2xl shadow-2xl"
-              />
+              <div className="relative w-full max-w-xl sm:max-w-2xl lg:max-w-3xl mx-auto lg:mx-0">
+                <div className="relative z-10 w-full aspect-square">
+                  <Image
+                    src="/multi-platform-chatbot-interface-showing-whatsapp-.jpg"
+                    alt="Multi-platform AI chatbot interface showing unified conversations across WhatsApp, Instagram, Facebook Messenger, and RCS messaging"
+                    fill
+                    sizes="(max-width: 640px) 95vw, (max-width: 1024px) 85vw, 50vw"
+                    className="object-contain rounded-2xl shadow-2xl"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -518,88 +611,109 @@ export default function ChatbotsAIPage() {
       {/* Intelligent Automation Section */}
       <section
         ref={intelligentRef}
-        className="relative overflow-hidden bg-gradient-to-br from-purple-50/40 via-white to-blue-50/30 py-16 md:py-20"
+        className="relative overflow-hidden bg-gradient-to-br from-purple-50/40 via-white to-blue-50/30 py-10 sm:py-12 md:py-16 lg:py-20"
       >
-        <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-gradient-to-br from-purple-400/10 to-transparent rounded-full blur-3xl" />
+        <div className="absolute top-0 left-0 w-[400px] h-[400px] sm:w-[600px] sm:h-[600px] bg-gradient-to-br from-purple-400/10 to-transparent rounded-full blur-3xl" />
 
-        <div className="container relative mx-auto px-4 z-10">
-          <div className="grid gap-8 lg:grid-cols-2 lg:gap-12 items-center">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid gap-6 lg:gap-8 xl:gap-10 lg:grid-cols-2 items-center">
+            {/* Left Side - Image */}
             <div
-              className={`relative transition-all duration-1000 ${
-                intelligentInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"
+              className={`order-1 lg:order-1 relative transition-all duration-1000 ${
+                intelligentInView
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 -translate-x-8"
               }`}
             >
-              <Image
-                src="/ai-chatbot-conversation-flow-showing-automated-res.jpg"
-                alt="AI chatbot conversation flow diagram showing automated responses, sentiment analysis, and intelligent routing to human agents"
-                width={600}
-                height={600}
-                className="w-full h-auto object-contain rounded-2xl shadow-2xl"
-              />
+              <div className="relative w-full max-w-xl sm:max-w-2xl lg:max-w-3xl mx-auto lg:mx-0">
+                <div className="relative z-10 w-full aspect-square">
+                  <Image
+                    src="/ai-chatbot-conversation-flow-showing-automated-res.jpg"
+                    alt="AI chatbot conversation flow diagram showing automated responses, sentiment analysis, and intelligent routing to human agents"
+                    fill
+                    sizes="(max-width: 640px) 95vw, (max-width: 1024px) 85vw, 50vw"
+                    className="object-contain rounded-2xl shadow-2xl"
+                  />
+                </div>
+              </div>
             </div>
 
+            {/* Right Side - Content */}
             <div
-              className={`transition-all duration-1000 delay-300 ${
-                intelligentInView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
+              className={`order-2 lg:order-2 transition-all duration-1000 delay-300 ${
+                intelligentInView
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 translate-x-8"
               }`}
             >
               <Badge
                 variant="secondary"
-                className="mb-4 bg-purple-100 text-purple-700 hover:bg-purple-200 w-fit shadow-sm"
+                className="mb-3 md:mb-4 bg-purple-100 text-purple-700 hover:bg-purple-200 w-fit shadow-sm"
               >
-                <Zap className="w-3.5 h-3.5 mr-1.5" />
+                <Zap className="w-3 h-3 md:w-3.5 md:h-3.5 mr-1.5" />
                 Intelligent Automation
               </Badge>
 
-              <h2 className="mb-4 text-3xl md:text-4xl lg:text-5xl font-bold">
-                <span className="block text-foreground mb-2">Automate Customer Support</span>
+              <h2 className="mb-4 md:mb-5 text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl font-bold leading-tight">
+                <span className="block text-foreground mb-2">
+                  Automate Customer Support
+                </span>
                 <span className="block bg-gradient-to-r from-purple-600 via-blue-600 to-pink-600 bg-clip-text text-transparent">
                   With Human-Like Intelligence
                 </span>
               </h2>
 
-              <p className="mb-6 text-base text-muted-foreground md:text-lg leading-relaxed">
-                Transform customer support with AI chatbots that handle routine queries automatically while seamlessly
-                escalating complex issues to human agents. Our intelligent automation combines the efficiency of AI with
-                the empathy of human support, delivering exceptional customer experiences at scale while reducing
-                support costs by up to 60%.
+              <p className="mb-6 md:mb-8 text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed">
+                Transform customer support with AI chatbots that handle routine
+                queries automatically while seamlessly escalating complex issues
+                to human agents. Our intelligent automation combines the
+                efficiency of AI with the empathy of human support, delivering
+                exceptional customer experiences at scale while reducing support
+                costs by up to 60%.
               </p>
 
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <CheckCircle2 className="w-5 h-5 text-green-600" />
+              <div className="space-y-4 md:space-y-5">
+                <div className="flex items-start gap-3 md:gap-4">
+                  <div className="w-9 h-9 md:w-10 md:h-10 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <CheckCircle2 className="w-4 h-4 md:w-5 md:h-5 text-green-600" />
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1">Instant Response Times</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Respond to customer queries in milliseconds, 24/7, eliminating wait times and improving
-                      satisfaction.
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-foreground mb-1 text-sm md:text-base">
+                      Instant Response Times
+                    </h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                      Respond to customer queries in milliseconds, 24/7,
+                      eliminating wait times and improving satisfaction.
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Smile className="w-5 h-5 text-blue-600" />
+                <div className="flex items-start gap-3 md:gap-4">
+                  <div className="w-9 h-9 md:w-10 md:h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Smile className="w-4 h-4 md:w-5 md:h-5 text-blue-600" />
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1">Sentiment-Based Routing</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Detect frustrated customers and automatically escalate to human agents with full conversation
-                      context.
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-foreground mb-1 text-sm md:text-base">
+                      Sentiment-Based Routing
+                    </h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                      Detect frustrated customers and automatically escalate to
+                      human agents with full conversation context.
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Target className="w-5 h-5 text-purple-600" />
+                <div className="flex items-start gap-3 md:gap-4">
+                  <div className="w-9 h-9 md:w-10 md:h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Target className="w-4 h-4 md:w-5 md:h-5 text-purple-600" />
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1">Personalized Recommendations</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Leverage customer data and AI to provide personalized product recommendations and solutions.
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-foreground mb-1 text-sm md:text-base">
+                      Personalized Recommendations
+                    </h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                      Leverage customer data and AI to provide personalized
+                      product recommendations and solutions.
                     </p>
                   </div>
                 </div>
@@ -610,20 +724,31 @@ export default function ChatbotsAIPage() {
       </section>
 
       {/* Key Features */}
-      <section ref={featuresRef} className="py-12 md:py-14 bg-gradient-to-b from-white via-purple-50/20 to-white">
+      <section
+        ref={featuresRef}
+        className="py-12 md:py-14 bg-gradient-to-b from-white via-purple-50/20 to-white"
+      >
         <div className="container mx-auto px-4">
           <div
             className={`text-center mb-12 transition-all duration-700 ${
-              featuresInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              featuresInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
             }`}
           >
-            <Badge className="mb-4 bg-purple-100 text-purple-700 border-purple-200" variant="outline">
+            <Badge
+              className="mb-4 bg-purple-100 text-purple-700 border-purple-200"
+              variant="outline"
+            >
               <Sparkles className="w-3.5 h-3.5 mr-1.5" />
               AI Capabilities
             </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Powerful AI Chatbot Features</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Powerful AI Chatbot Features
+            </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Advanced conversational AI capabilities that deliver exceptional customer experiences
+              Advanced conversational AI capabilities that deliver exceptional
+              customer experiences
             </p>
           </div>
 
@@ -632,7 +757,9 @@ export default function ChatbotsAIPage() {
               <Card
                 key={index}
                 className={`p-6 hover:shadow-lg transition-all duration-300 border-gray-200 ${
-                  featuresInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  featuresInView
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
                 }`}
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
@@ -640,7 +767,9 @@ export default function ChatbotsAIPage() {
                   <feature.icon className="w-6 h-6 text-purple-600" />
                 </div>
                 <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed">{feature.description}</p>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  {feature.description}
+                </p>
               </Card>
             ))}
           </div>
@@ -648,16 +777,24 @@ export default function ChatbotsAIPage() {
       </section>
 
       {/* Benefits */}
-      <section ref={benefitsRef} className="py-12 md:py-14 bg-gradient-to-br from-blue-50/40 via-white to-purple-50/30">
+      <section
+        ref={benefitsRef}
+        className="py-12 md:py-14 bg-gradient-to-br from-blue-50/40 via-white to-purple-50/30"
+      >
         <div className="container mx-auto px-4">
           <div
             className={`text-center mb-12 transition-all duration-700 ${
-              benefitsInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              benefitsInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
             }`}
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Choose AI Chatbots?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Why Choose AI Chatbots?
+            </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Transform customer engagement with intelligent automation that works around the clock
+              Transform customer engagement with intelligent automation that
+              works around the clock
             </p>
           </div>
 
@@ -666,7 +803,9 @@ export default function ChatbotsAIPage() {
               <div
                 key={index}
                 className={`text-center transition-all duration-700 ${
-                  benefitsInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  benefitsInView
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
                 }`}
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
@@ -682,16 +821,24 @@ export default function ChatbotsAIPage() {
       </section>
 
       {/* Use Cases */}
-      <section ref={useCasesRef} className="py-12 md:py-14 bg-gradient-to-br from-white via-green-50/20 to-blue-50/10">
+      <section
+        ref={useCasesRef}
+        className="py-12 md:py-14 bg-gradient-to-br from-white via-green-50/20 to-blue-50/10"
+      >
         <div className="container mx-auto px-4">
           <div
             className={`text-center mb-12 transition-all duration-700 ${
-              useCasesInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              useCasesInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
             }`}
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">AI Chatbot Use Cases</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              AI Chatbot Use Cases
+            </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              See how businesses leverage AI chatbots to automate support and drive growth
+              See how businesses leverage AI chatbots to automate support and
+              drive growth
             </p>
           </div>
 
@@ -700,7 +847,9 @@ export default function ChatbotsAIPage() {
               <Card
                 key={index}
                 className={`p-6 hover:shadow-lg transition-all duration-300 border-gray-200 group ${
-                  useCasesInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  useCasesInView
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
                 }`}
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
@@ -709,8 +858,12 @@ export default function ChatbotsAIPage() {
                     <useCase.icon className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold mb-2">{useCase.title}</h3>
-                    <p className="text-gray-600 text-sm leading-relaxed">{useCase.description}</p>
+                    <h3 className="text-lg font-semibold mb-2">
+                      {useCase.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">
+                      {useCase.description}
+                    </p>
                   </div>
                 </div>
               </Card>
@@ -720,16 +873,24 @@ export default function ChatbotsAIPage() {
       </section>
 
       {/* FAQ Section */}
-      <section ref={faqRef} className="py-12 md:py-14 bg-gradient-to-br from-gray-50 to-white">
+      <section
+        ref={faqRef}
+        className="py-12 md:py-14 bg-gradient-to-br from-gray-50 to-white"
+      >
         <div className="container mx-auto px-4">
           <div
             className={`text-center mb-10 transition-all duration-700 ${
-              faqInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              faqInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
             }`}
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-3">Frequently Asked Questions</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-3">
+              Frequently Asked Questions
+            </h2>
             <p className="text-base text-gray-600 max-w-2xl mx-auto">
-              Everything you need to know about AI chatbots and conversational AI
+              Everything you need to know about AI chatbots and conversational
+              AI
             </p>
           </div>
 
@@ -737,7 +898,9 @@ export default function ChatbotsAIPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
               <div
                 className={`transition-all duration-700 ${
-                  faqInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  faqInView
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
                 }`}
               >
                 <Accordion type="single" collapsible className="space-y-3">
@@ -750,7 +913,9 @@ export default function ChatbotsAIPage() {
                       <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
                         {faq.question}
                       </AccordionTrigger>
-                      <AccordionContent className="text-gray-600 pb-4 leading-relaxed">{faq.answer}</AccordionContent>
+                      <AccordionContent className="text-gray-600 pb-4 leading-relaxed">
+                        {faq.answer}
+                      </AccordionContent>
                     </AccordionItem>
                   ))}
                 </Accordion>
@@ -758,7 +923,9 @@ export default function ChatbotsAIPage() {
 
               <div
                 className={`transition-all duration-700 delay-200 ${
-                  faqInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  faqInView
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
                 }`}
               >
                 <Accordion type="single" collapsible className="space-y-3">
@@ -771,7 +938,9 @@ export default function ChatbotsAIPage() {
                       <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
                         {faq.question}
                       </AccordionTrigger>
-                      <AccordionContent className="text-gray-600 pb-4 leading-relaxed">{faq.answer}</AccordionContent>
+                      <AccordionContent className="text-gray-600 pb-4 leading-relaxed">
+                        {faq.answer}
+                      </AccordionContent>
                     </AccordionItem>
                   ))}
                 </Accordion>
@@ -784,12 +953,19 @@ export default function ChatbotsAIPage() {
       {/* CTA Section */}
       <section className="py-12 md:py-14 bg-gradient-to-br from-purple-600 to-blue-700 text-white">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Deploy AI Chatbots?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Ready to Deploy AI Chatbots?
+          </h2>
           <p className="text-lg text-purple-100 mb-8 max-w-2xl mx-auto">
-            Start automating customer support with intelligent AI chatbots powered by conversational AI
+            Start automating customer support with intelligent AI chatbots
+            powered by conversational AI
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" variant="secondary" className="bg-white text-purple-600 hover:bg-gray-100">
+            <Button
+              size="lg"
+              variant="secondary"
+              className="bg-white text-purple-600 hover:bg-gray-100"
+            >
               Start Free Trial
             </Button>
             <Button
@@ -804,5 +980,5 @@ export default function ChatbotsAIPage() {
         </div>
       </section>
     </div>
-  )
+  );
 }
