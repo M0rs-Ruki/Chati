@@ -367,110 +367,116 @@ export default function WhatsAppBroadcastPage() {
 
       {/* Block 1: Image Left, Content Right - Broadcast Messaging Power */}
       <section
-        ref={block1Ref}
-        className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-green-50/40 to-purple-50/30 py-12 md:py-14"
+        ref={block2Ref}
+        className="relative overflow-hidden bg-gradient-to-br from-purple-50/30 via-white to-blue-50/40 py-12 md:py-16 lg:py-20"
       >
-        <div className="absolute top-10 right-20 w-96 h-96 bg-gradient-to-br from-green-400/15 to-transparent rounded-full blur-3xl" />
-        <div className="absolute bottom-10 left-20 w-96 h-96 bg-gradient-to-tr from-blue-400/15 to-transparent rounded-full blur-3xl" />
+        {/* Background Effects */}
+        <div className="absolute top-10 left-20 w-72 h-72 md:w-96 md:h-96 bg-gradient-to-br from-purple-400/15 to-transparent rounded-full blur-3xl" />
+        <div className="absolute bottom-10 right-20 w-72 h-72 md:w-96 md:h-96 bg-gradient-to-tr from-blue-400/15 to-transparent rounded-full blur-3xl" />
 
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="grid gap-8 lg:grid-cols-[55%_45%] items-center">
-            {/* Left Side - Image */}
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid gap-6 lg:gap-8 xl:gap-5 lg:grid-cols-2 items-center">
+            {/* Left Side - Content */}
             <div
-              className={`flex items-center justify-center lg:justify-start transition-all duration-1000 ${
-                block1InView
-                  ? "opacity-100 translate-x-0"
-                  : "opacity-0 -translate-x-8"
-              }`}
-            >
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-green-400/20 via-blue-400/15 to-pink-400/20 blur-2xl rounded-3xl transform scale-105" />
-                <Image
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/whatsapp-broadcasting-W3sDUdPsfRSghw7BgDSb1ttSc9S8X7.webp"
-                  alt="WhatsApp broadcast messaging dashboard showing 992 customers reached with 95% read rate and 76% reply rate, featuring real-time analytics and customer engagement metrics"
-                  width={800}
-                  height={600}
-                  className="relative z-10 w-full h-auto max-w-2xl object-contain drop-shadow-2xl hover:scale-[1.02] transition-transform duration-500"
-                  loading="lazy"
-                />
-              </div>
-            </div>
-
-            {/* Right Side - Content */}
-            <div
-              className={`transition-all duration-1000 delay-300 ${
-                block1InView
+              className={`transition-all duration-1000 ${
+                block2InView
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 translate-y-8"
               }`}
             >
               <Badge
-                className="mb-3 shadow-sm bg-green-100 text-green-700 border-green-200"
+                className="mb-3 md:mb-4 shadow-sm bg-purple-100 text-purple-700 border-purple-200"
                 variant="outline"
               >
-                Broadcast Messaging Power
+                Smart Audience Targeting
               </Badge>
-              <h2 className="mb-4 text-balance text-3xl font-bold md:text-4xl lg:text-5xl">
-                Send Thousands of Messages in Seconds
+              <h2 className="mb-4 md:mb-5 text-balance text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl font-bold leading-tight">
+                Target the Right Customers Every Time
               </h2>
-              <p className="mb-6 text-pretty text-muted-foreground text-base md:text-lg leading-relaxed">
-                Reach your entire customer base instantly with WhatsApp
-                broadcast messaging. Send promotional campaigns, product
-                updates, and important announcements to thousands of contacts
-                simultaneously while maintaining the personal touch of
-                one-to-one messaging.
+              <p className="mb-6 md:mb-8 text-pretty text-muted-foreground text-sm sm:text-base md:text-lg leading-relaxed">
+                Create highly targeted broadcast campaigns using advanced
+                segmentation and filtering. Send personalized messages to
+                specific customer groups based on behavior, demographics,
+                purchase history, and engagement levels for maximum impact and
+                conversion.
               </p>
 
-              <div className="space-y-4">
-                <div className="flex gap-3 items-start group">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-green-100 to-green-50 group-hover:from-green-200 group-hover:to-green-100 transition-all shadow-sm">
-                    <Radio className="h-5 w-5 text-green-600" />
+              <div className="space-y-4 md:space-y-5">
+                <div className="flex gap-3 md:gap-4 items-start group">
+                  <div className="flex h-9 w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-purple-100 to-purple-50 group-hover:from-purple-200 group-hover:to-purple-100 transition-all shadow-sm">
+                    <Users className="h-4 w-4 md:h-5 md:w-5 text-purple-600" />
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">
-                      Mass Messaging at Scale
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-foreground mb-1 text-sm md:text-base">
+                      Advanced Customer Segmentation
                     </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Send up to 10,000 messages per minute with our
-                      high-performance infrastructure. Queue unlimited messages
-                      and let our system handle delivery optimization
-                      automatically.
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                      Create unlimited segments based on tags, custom fields,
+                      location, language, purchase behavior, and engagement
+                      history. Target VIP customers, cart abandoners, or
+                      inactive users with precision.
                     </p>
                   </div>
                 </div>
 
-                <div className="flex gap-3 items-start group">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 group-hover:from-blue-200 group-hover:to-blue-100 transition-all shadow-sm">
-                    <BarChart3 className="h-5 w-5 text-blue-600" />
+                <div className="flex gap-3 md:gap-4 items-start group">
+                  <div className="flex h-9 w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 group-hover:from-blue-200 group-hover:to-blue-100 transition-all shadow-sm">
+                    <Target className="h-4 w-4 md:h-5 md:w-5 text-blue-600" />
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">
-                      Real-Time Performance Tracking
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-foreground mb-1 text-sm md:text-base">
+                      Dynamic Personalization
                     </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Monitor delivery rates, read receipts, and customer
-                      responses in real-time. Track campaign performance with
-                      detailed analytics showing 95%+ read rates and 76% average
-                      reply rates.
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                      Personalize every message with customer names, order
+                      details, loyalty points, and custom variables. Make each
+                      broadcast feel like a personal conversation, not mass
+                      marketing.
                     </p>
                   </div>
                 </div>
 
-                <div className="flex gap-3 items-start group">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-purple-100 to-purple-50 group-hover:from-purple-200 group-hover:to-purple-100 transition-all shadow-sm">
-                    <FileText className="h-5 w-5 text-purple-600" />
+                <div className="flex gap-3 md:gap-4 items-start group">
+                  <div className="flex h-9 w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-green-100 to-green-50 group-hover:from-green-200 group-hover:to-green-100 transition-all shadow-sm">
+                    <Filter className="h-4 w-4 md:h-5 md:w-5 text-green-600" />
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">
-                      Rich Media Broadcasting
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-foreground mb-1 text-sm md:text-base">
+                      Smart Filtering & Exclusions
                     </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Send images, videos, PDFs, and interactive buttons in your
-                      broadcasts. Create engaging campaigns with product
-                      catalogs, promotional banners, and clickable
-                      call-to-action buttons.
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                      Apply multiple filters simultaneously and exclude specific
+                      groups. Prevent message fatigue by automatically excluding
+                      customers who recently received broadcasts or opted out.
                     </p>
                   </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Side - Image */}
+            <div
+              className={`flex items-center justify-center lg:justify-end transition-all duration-1000 delay-300 ${
+                block2InView
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 translate-x-8"
+              }`}
+            >
+              {/* INCREASED IMAGE SIZE: Changed from max-w-xl lg:max-w-2xl to max-w-2xl lg:max-w-3xl */}
+              <div className="relative w-full max-w-2xl lg:max-w-3xl">
+                {/* Glow Effect */}
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-400/20 via-blue-400/15 to-green-400/20 blur-2xl rounded-3xl transform scale-105" />
+
+                {/* Image Container with Fixed Aspect Ratio */}
+                <div className="relative z-10 w-full aspect-[4/3]">
+                  <Image
+                    src="/whatsapp-audience-segmentation-dashboard-showing-c.jpg"
+                    alt="WhatsApp audience segmentation dashboard showing customer groups, filters, tags, and targeted broadcast campaigns with personalization options"
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 60vw"
+                    className="object-contain drop-shadow-2xl hover:scale-[1.02] transition-transform duration-500 rounded-lg"
+                    loading="lazy"
+                  />
                 </div>
               </div>
             </div>
