@@ -72,7 +72,8 @@ export default function ClientPage() {
       <StructuredData />
 
       {/* Hero Section with Elegant Gradient Background */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-green-50/30">
+      {/* Desktop Hero Section - Hidden on Mobile */}
+      <section className="hidden md:block relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-green-50/30">
         {/* Decorative gradient orbs */}
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-green-400/20 to-transparent rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-blue-400/15 to-transparent rounded-full blur-3xl" />
@@ -113,7 +114,7 @@ export default function ClientPage() {
                 business with verified messaging solutions.
               </p>
 
-              <div className="flex flex-col gap-2.5 sm:flex-row mb-4">
+              <div className="flex flex-row gap-2.5 mb-4">
                 <Button
                   size="default"
                   className="bg-green-600 hover:bg-green-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all group"
@@ -131,17 +132,7 @@ export default function ClientPage() {
                 <Button
                   size="default"
                   variant="outline"
-                  className="
-              border-2 
-              bg-white 
-              text-gray-800 
-              hover:bg-green-50 
-              hover:border-green-500 
-              hover:text-green-600 
-              font-medium 
-              shadow-sm 
-              transition-all
-            "
+                  className="border-2 bg-white text-gray-800 hover:bg-green-50 hover:border-green-500 hover:text-green-600 font-medium shadow-sm transition-all"
                   asChild
                 >
                   <Link
@@ -185,6 +176,106 @@ export default function ClientPage() {
                 />
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Mobile Hero Section - Hidden on Desktop */}
+      <section className="block md:hidden relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-green-50/30">
+        {/* Decorative gradient orbs */}
+        <div className="absolute top-0 right-0 w-[200px] h-[200px] bg-gradient-to-br from-green-400/20 to-transparent rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-[150px] h-[150px] bg-gradient-to-tr from-blue-400/15 to-transparent rounded-full blur-3xl" />
+
+        <div className="container relative mx-auto px-4 py-8 z-10">
+          {/* Badge */}
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-green-100 px-3 py-1.5 text-xs font-medium text-green-700 w-fit shadow-sm">
+            <Bell className="h-3 w-3 animate-pulse" />
+            <span>Official WhatsApp Partner</span>
+          </div>
+
+          {/* Heading */}
+          <h1 className="mb-3 leading-tight tracking-tight">
+            <span className="block text-3xl font-bold text-foreground mb-1">
+              Transform Your Business
+            </span>
+            <span className="block text-3xl font-bold">
+              <span className="text-foreground">with </span>
+              <TypingAnimation
+                words={[
+                  "WhatsApp API",
+                  "Instagram",
+                  "Facebook",
+                  "Multi-Channel",
+                ]}
+                className="inline-block bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent"
+              />
+            </span>
+          </h1>
+
+          {/* Description */}
+          <p className="mb-4 text-sm text-muted-foreground leading-relaxed">
+            Connect with customers on their favorite platforms. Send promotional
+            offers, automate conversations, and grow your business with verified
+            messaging solutions.
+          </p>
+
+          {/* Image */}
+          <div className="relative w-full h-[280px] mb-6 flex items-center justify-center">
+            <div className="absolute inset-0 bg-gradient-to-br from-green-400/20 via-blue-400/15 to-pink-400/20 blur-2xl rounded-full" />
+
+            <Image
+              src="/whatsapp-API-with-Chati.png"
+              alt="Professional using WhatsApp Business API"
+              width={400}
+              height={400}
+              className="relative z-10 w-auto h-full max-w-full object-contain drop-shadow-xl"
+              priority
+            />
+          </div>
+
+          {/* Buttons */}
+          <div className="flex flex-col gap-3 mb-6">
+            <Button
+              size="lg"
+              className="bg-green-600 hover:bg-green-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all group w-full"
+              asChild
+            >
+              <Link
+                href={`https://wa.me/${
+                  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""
+                }`}
+              >
+                <Bell className="mr-2 h-4 w-4 group-hover:animate-pulse" />
+                Book a Meeting
+              </Link>
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="border-2 bg-white text-gray-800 hover:bg-green-50 hover:border-green-500 hover:text-green-600 font-medium shadow-sm transition-all w-full"
+              asChild
+            >
+              <Link
+                href={
+                  process.env.NEXT_PUBLIC_APP_URL || "https://app.chati.chat"
+                }
+              >
+                Get Started Free
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+
+          {/* Trust Badges */}
+          <div className="pt-4 border-t border-gray-200 flex items-center justify-center">
+            <Image
+              src="/chati-gdpr.webp"
+              alt="GDPR Compliant, Meta Business Partner, 500+ Global Businesses"
+              width={500}
+              height={60}
+              className="h-10 w-auto opacity-100"
+              priority
+            />
           </div>
         </div>
       </section>

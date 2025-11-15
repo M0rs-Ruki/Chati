@@ -1,27 +1,27 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 
 export function FloatingSocialIcons() {
-  const [mounted, setMounted] = useState(false)
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
-  if (!mounted) return null
+  if (!mounted) return null;
 
   return (
-    <div className="absolute inset-0 pointer-events-none hidden lg:block">
+    <div className="absolute inset-0 pointer-events-none">
       {/* WhatsApp Icon - Top Left */}
       <div
-        className="absolute top-[15%] left-[15%] animate-float opacity-80 hover:opacity-100 transition-opacity"
+        className="absolute top-[15%] left-[5%] md:left-[15%] animate-float opacity-60 md:opacity-80 hover:opacity-100 transition-opacity"
         style={{ animationDelay: "0s", animationDuration: "3s" }}
       >
         <div className="relative group">
           <div className="absolute inset-0 bg-green-400/20 rounded-full blur-xl group-hover:blur-2xl transition-all" />
           <svg
-            className="relative w-12 h-12 drop-shadow-lg"
+            className="relative w-8 h-8 md:w-12 md:h-12 drop-shadow-lg"
             viewBox="0 0 48 48"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -37,41 +37,70 @@ export function FloatingSocialIcons() {
 
       {/* Instagram Icon - Top Right */}
       <div
-        className="absolute top-[20%] right-[12%] animate-float opacity-80 hover:opacity-100 transition-opacity"
+        className="absolute top-[20%] right-[5%] md:right-[12%] animate-float opacity-60 md:opacity-80 hover:opacity-100 transition-opacity"
         style={{ animationDelay: "0.5s", animationDuration: "3.5s" }}
       >
         <div className="relative group">
           <div className="absolute inset-0 bg-pink-400/20 rounded-full blur-xl group-hover:blur-2xl transition-all" />
           <svg
-            className="relative w-12 h-12 drop-shadow-lg"
+            className="relative w-8 h-8 md:w-12 md:h-12 drop-shadow-lg"
             viewBox="0 0 48 48"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
             <defs>
-              <linearGradient id="instagram-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
+              <linearGradient
+                id="instagram-gradient"
+                x1="0%"
+                y1="100%"
+                x2="100%"
+                y2="0%"
+              >
                 <stop offset="0%" stopColor="#FD5949" />
                 <stop offset="50%" stopColor="#D6249F" />
                 <stop offset="100%" stopColor="#285AEB" />
               </linearGradient>
             </defs>
-            <rect x="4" y="4" width="40" height="40" rx="12" fill="url(#instagram-gradient)" />
-            <circle cx="24" cy="24" r="7" stroke="white" strokeWidth="2.5" fill="none" />
+            <rect
+              x="4"
+              y="4"
+              width="40"
+              height="40"
+              rx="12"
+              fill="url(#instagram-gradient)"
+            />
+            <circle
+              cx="24"
+              cy="24"
+              r="7"
+              stroke="white"
+              strokeWidth="2.5"
+              fill="none"
+            />
             <circle cx="33" cy="15" r="2" fill="white" />
-            <rect x="10" y="10" width="28" height="28" rx="7" stroke="white" strokeWidth="2.5" fill="none" />
+            <rect
+              x="10"
+              y="10"
+              width="28"
+              height="28"
+              rx="7"
+              stroke="white"
+              strokeWidth="2.5"
+              fill="none"
+            />
           </svg>
         </div>
       </div>
 
       {/* Facebook Icon - Middle Left */}
       <div
-        className="absolute top-[45%] left-[12%] animate-float opacity-80 hover:opacity-100 transition-opacity"
+        className="absolute top-[45%] left-[8%] md:left-[12%] animate-float opacity-60 md:opacity-80 hover:opacity-100 transition-opacity"
         style={{ animationDelay: "1s", animationDuration: "4s" }}
       >
         <div className="relative group">
           <div className="absolute inset-0 bg-blue-400/20 rounded-full blur-xl group-hover:blur-2xl transition-all" />
           <svg
-            className="relative w-12 h-12 drop-shadow-lg"
+            className="relative w-8 h-8 md:w-12 md:h-12 drop-shadow-lg"
             viewBox="0 0 48 48"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -87,19 +116,25 @@ export function FloatingSocialIcons() {
 
       {/* RCS Icon - Middle Right */}
       <div
-        className="absolute top-[50%] right-[8%] animate-float opacity-80 hover:opacity-100 transition-opacity"
+        className="absolute top-[50%] right-[3%] md:right-[8%] animate-float opacity-60 md:opacity-80 hover:opacity-100 transition-opacity"
         style={{ animationDelay: "1.5s", animationDuration: "3.8s" }}
       >
         <div className="relative group">
           <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-xl group-hover:blur-2xl transition-all" />
           <svg
-            className="relative w-12 h-12 drop-shadow-lg"
+            className="relative w-8 h-8 md:w-12 md:h-12 drop-shadow-lg"
             viewBox="0 0 48 48"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
             <defs>
-              <linearGradient id="rcs-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <linearGradient
+                id="rcs-gradient"
+                x1="0%"
+                y1="0%"
+                x2="100%"
+                y2="100%"
+              >
                 <stop offset="0%" stopColor="#00B4D8" />
                 <stop offset="100%" stopColor="#0077B6" />
               </linearGradient>
@@ -116,13 +151,13 @@ export function FloatingSocialIcons() {
 
       {/* WhatsApp Icon - Bottom Left (smaller) */}
       <div
-        className="absolute bottom-[15%] left-[18%] animate-float opacity-70 hover:opacity-100 transition-opacity"
+        className="absolute bottom-[15%] left-[10%] md:left-[18%] animate-float opacity-50 md:opacity-70 hover:opacity-100 transition-opacity"
         style={{ animationDelay: "2s", animationDuration: "3.2s" }}
       >
         <div className="relative group">
           <div className="absolute inset-0 bg-green-400/15 rounded-full blur-lg group-hover:blur-xl transition-all" />
           <svg
-            className="relative w-9 h-9 drop-shadow-lg"
+            className="relative w-6 h-6 md:w-9 md:h-9 drop-shadow-lg"
             viewBox="0 0 48 48"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -139,29 +174,49 @@ export function FloatingSocialIcons() {
 
       {/* Instagram Icon - Bottom Right (smaller) */}
       <div
-        className="absolute bottom-[20%] right-[15%] animate-float opacity-70 hover:opacity-100 transition-opacity"
+        className="absolute bottom-[20%] right-[8%] md:right-[15%] animate-float opacity-50 md:opacity-70 hover:opacity-100 transition-opacity"
         style={{ animationDelay: "2.5s", animationDuration: "3.6s" }}
       >
         <div className="relative group">
           <div className="absolute inset-0 bg-pink-400/15 rounded-full blur-lg group-hover:blur-xl transition-all" />
           <svg
-            className="relative w-9 h-9 drop-shadow-lg"
+            className="relative w-6 h-6 md:w-9 md:h-9 drop-shadow-lg"
             viewBox="0 0 48 48"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
             <defs>
-              <linearGradient id="instagram-gradient-small" x1="0%" y1="100%" x2="100%" y2="0%">
+              <linearGradient
+                id="instagram-gradient-small"
+                x1="0%"
+                y1="100%"
+                x2="100%"
+                y2="0%"
+              >
                 <stop offset="0%" stopColor="#FD5949" />
                 <stop offset="50%" stopColor="#D6249F" />
                 <stop offset="100%" stopColor="#285AEB" />
               </linearGradient>
             </defs>
-            <rect x="6" y="6" width="36" height="36" rx="10" fill="url(#instagram-gradient-small)" />
-            <circle cx="24" cy="24" r="6" stroke="white" strokeWidth="2" fill="none" />
+            <rect
+              x="6"
+              y="6"
+              width="36"
+              height="36"
+              rx="10"
+              fill="url(#instagram-gradient-small)"
+            />
+            <circle
+              cx="24"
+              cy="24"
+              r="6"
+              stroke="white"
+              strokeWidth="2"
+              fill="none"
+            />
           </svg>
         </div>
       </div>
     </div>
-  )
+  );
 }
