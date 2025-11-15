@@ -249,18 +249,18 @@ export default function WhatsAppBroadcastPage() {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-green-50/30">
-        {/* Decorative gradient orbs */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-green-400/20 to-transparent rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-blue-400/15 to-transparent rounded-full blur-3xl" />
+        {/* Decorative gradient orbs - Responsive sizes */}
+        <div className="absolute top-0 right-0 w-[200px] h-[200px] sm:w-[300px] sm:h-[300px] lg:w-[500px] lg:h-[500px] bg-gradient-to-br from-green-400/20 to-transparent rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-[150px] h-[150px] sm:w-[250px] sm:h-[250px] lg:w-[400px] lg:h-[400px] bg-gradient-to-tr from-blue-400/15 to-transparent rounded-full blur-3xl" />
 
         <div
           ref={heroRef}
-          className="container relative mx-auto px-4 pr-0 md:pr-4 py-12 md:py-14 lg:py-16 z-10"
+          className="container relative mx-auto px-4 sm:px-6 py-10 sm:py-12 md:py-14 lg:py-16 xl:py-20 z-10"
         >
-          <div className="grid gap-6 lg:grid-cols-2 lg:gap-10 items-center">
+          <div className="grid gap-8 lg:grid-cols-2 lg:gap-10 xl:gap-12 items-center">
             {/* Left Content */}
             <div
-              className={`flex flex-col justify-center transition-all duration-1000 ${
+              className={`flex flex-col justify-center order-2 lg:order-1 transition-all duration-1000 ${
                 heroInView
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 translate-y-8"
@@ -268,31 +268,31 @@ export default function WhatsAppBroadcastPage() {
             >
               <Badge
                 variant="secondary"
-                className="mb-4 bg-green-100 text-green-700 hover:bg-green-200 w-fit shadow-sm"
+                className="mb-4 sm:mb-5 bg-green-100 text-green-700 hover:bg-green-200 w-fit shadow-sm text-xs sm:text-sm"
               >
-                <Radio className="w-3.5 h-3.5 mr-1.5" />
+                <Radio className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1.5" />
                 WhatsApp Broadcast Messaging
               </Badge>
 
-              <h1 className="mb-4 text-balance leading-tight tracking-tight">
-                <span className="block text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-2">
+              <h1 className="mb-4 sm:mb-5 text-balance leading-tight tracking-tight">
+                <span className="block text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-foreground mb-2 sm:mb-3">
                   Reach Thousands of Customers
                 </span>
-                <span className="block text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-green-600 via-green-700 to-green-800 bg-clip-text text-transparent">
+                <span className="block text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold bg-gradient-to-r from-green-600 via-green-700 to-green-800 bg-clip-text text-transparent">
                   With One Click
                 </span>
               </h1>
 
-              <p className="mb-6 text-base text-muted-foreground md:text-lg max-w-xl leading-relaxed">
+              <p className="mb-6 sm:mb-7 text-sm sm:text-base md:text-lg text-muted-foreground max-w-xl leading-relaxed">
                 Send personalized WhatsApp broadcasts to your entire customer
                 base instantly. Schedule campaigns, segment audiences, and track
                 engagement with our powerful broadcast messaging platform.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-3 mb-6">
+              <div className="flex flex-col sm:flex-row gap-3 mb-6 sm:mb-8 w-full sm:w-auto">
                 <Button
                   size="lg"
-                  className="bg-green-600 hover:bg-green-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all group"
+                  className="bg-green-600 hover:bg-green-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all group w-full sm:w-auto"
                 >
                   Start Broadcasting Free
                   <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -300,70 +300,60 @@ export default function WhatsAppBroadcastPage() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="
-              border-2 
-              bg-white 
-              text-gray-800 
-              hover:bg-green-50 
-              hover:border-green-500 
-              hover:text-green-600 
-              font-medium 
-              shadow-sm 
-              transition-all
-            "
+                  className="border-2 bg-white text-gray-800 hover:bg-green-50 hover:border-green-500 hover:text-green-600 font-medium shadow-sm transition-all w-full sm:w-auto"
                   asChild
                 >
                   <Link href="/pricing/calculator">Calculate Costs</Link>
                 </Button>
               </div>
 
-              {/* Key Stats */}
-              <div className="grid grid-cols-3 gap-4 pt-4 border-t border-gray-200">
-                <div>
-                  <div className="text-2xl md:text-3xl font-bold text-green-600">
+              {/* Key Stats - Responsive */}
+              <div className="grid grid-cols-3 gap-3 sm:gap-4 md:gap-6 pt-4 sm:pt-5 border-t border-gray-200">
+                <div className="text-center sm:text-left">
+                  <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-green-600">
                     98%
                   </div>
-                  <div className="text-xs md:text-sm text-muted-foreground">
+                  <div className="text-xs sm:text-sm md:text-base text-muted-foreground mt-1">
                     Open Rate
                   </div>
                 </div>
-                <div>
-                  <div className="text-2xl md:text-3xl font-bold text-blue-600">
+                <div className="text-center sm:text-left">
+                  <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-blue-600">
                     10K+
                   </div>
-                  <div className="text-xs md:text-sm text-muted-foreground">
+                  <div className="text-xs sm:text-sm md:text-base text-muted-foreground mt-1">
                     Messages/Min
                   </div>
                 </div>
-                <div>
-                  <div className="text-2xl md:text-3xl font-bold text-purple-600">
+                <div className="text-center sm:text-left">
+                  <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-purple-600">
                     24/7
                   </div>
-                  <div className="text-xs md:text-sm text-muted-foreground">
+                  <div className="text-xs sm:text-sm md:text-base text-muted-foreground mt-1">
                     Automation
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Right Image - Replaced with new stable image with border, removed floating animation */}
+            {/* Right Image - Responsive */}
             <div
-              className={`relative flex items-center justify-center lg:justify-end transition-all duration-1000 delay-300 ${
+              className={`relative flex items-center justify-center order-1 lg:order-2 transition-all duration-1000 delay-300 ${
                 heroInView
                   ? "opacity-100 translate-x-0"
                   : "opacity-0 translate-x-8"
               }`}
             >
-              <div className="relative w-full max-w-lg">
+              <div className="relative w-full max-w-[400px] sm:max-w-[450px] md:max-w-[500px] lg:max-w-lg">
                 {/* Decorative gradient blob behind image */}
-                <div className="absolute inset-0 bg-gradient-to-br from-green-400/20 via-blue-400/15 to-purple-400/20 blur-3xl rounded-full transform scale-110" />
+                <div className="absolute inset-0 bg-gradient-to-br from-green-400/20 via-blue-400/15 to-purple-400/20 blur-2xl sm:blur-3xl rounded-full transform scale-110" />
 
                 <Image
                   src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/wp-broadcast-xj8pDcUVcczA1H2ptj6ksB3KWsZYO3.webp"
                   alt="WhatsApp Business broadcast messaging interface showing Brand zone verified account sending promotional campaign to multiple customers with delivery status tracking, read receipts, and reply indicators"
                   width={600}
                   height={700}
-                  className="relative z-10 w-full h-auto object-contain rounded-2xl shadow-2xl"
+                  className="relative z-10 w-full h-auto object-contain rounded-xl sm:rounded-2xl shadow-xl sm:shadow-2xl"
                   priority
                 />
               </div>

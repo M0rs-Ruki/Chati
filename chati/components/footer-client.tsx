@@ -19,7 +19,7 @@ import {
 import { useTheme } from "@/components/theme-provider-global";
 
 export function FooterClient() {
-  const { theme } = useTheme();
+  const { theme, loading } = useTheme();
 
   return (
     <footer className="relative bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950 border-t border-slate-800">
@@ -32,7 +32,7 @@ export function FooterClient() {
           <div className="lg:pr-8">
             <div className="mb-4">
               <Link href="/" className="flex items-center space-x-2 group">
-                {theme?.logoUrl ? (
+                {!loading && theme?.logoUrl ? (
                   <Image
                     src={theme.logoUrl}
                     alt="Logo"

@@ -106,7 +106,7 @@ export function HeaderClient({
 }: HeaderClientProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { theme } = useTheme();
+  const { theme, loading } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -129,7 +129,7 @@ export function HeaderClient({
         <div className="flex h-20 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2 group">
-            {theme?.logoUrl ? (
+            {!loading && theme?.logoUrl ? (
               <Image
                 src={theme.logoUrl}
                 alt="Logo"
