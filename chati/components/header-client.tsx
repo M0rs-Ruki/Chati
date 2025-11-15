@@ -289,7 +289,17 @@ export function HeaderClient({
           <div className="hidden lg:flex items-center gap-3">
             <Button
               variant="outline"
-              className="w-full sm:w-auto border-2 hover:bg-gray-50 hover:text-green-600 transition-all duration-300 hover:scale-105"
+              className="
+              border-2 
+              bg-white 
+              text-gray-800 
+              hover:bg-green-50 
+              hover:border-green-500 
+              hover:text-green-600 
+              font-medium 
+              shadow-sm 
+              transition-all
+            "
               asChild
             >
               <Link
