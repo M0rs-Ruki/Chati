@@ -1,21 +1,59 @@
-"use client"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { BrandSlider } from "@/components/brand-slider"
-import { CheckCircle2, ShieldCheck, TrendingUp, Users, Award, ArrowRight, ShoppingCart, DollarSign, GraduationCap, Heart, Plane, Target, Film, Calendar, Building2, FileText, Key, MessageSquare, Star, Zap, Globe, Lock, Clock } from 'lucide-react'
-import Link from "next/link"
-import Image from "next/image"
-import { useIntersectionObserver } from "@/hooks/use-intersection-observer"
+"use client";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { BrandSlider } from "@/components/brand-slider";
+import {
+  CheckCircle2,
+  ShieldCheck,
+  TrendingUp,
+  Users,
+  Award,
+  ArrowRight,
+  ShoppingCart,
+  DollarSign,
+  GraduationCap,
+  Heart,
+  Plane,
+  Target,
+  Film,
+  Calendar,
+  Building2,
+  FileText,
+  Key,
+  MessageSquare,
+  Star,
+  Zap,
+  Globe,
+  Lock,
+  Clock,
+} from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
+import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 
 export default function WhatsAppBlueTickPage() {
-  const { ref: heroRef, isVisible: heroInView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: benefitsRef, isVisible: benefitsInView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: whoShouldApplyRef, isVisible: whoShouldApplyInView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: requirementsRef, isVisible: requirementsInView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: processRef, isVisible: processInView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: faqRef, isVisible: faqInView } = useIntersectionObserver({ threshold: 0.1 })
+  const { ref: heroRef, isVisible: heroInView } = useIntersectionObserver({
+    threshold: 0.1,
+  });
+  const { ref: benefitsRef, isVisible: benefitsInView } =
+    useIntersectionObserver({ threshold: 0.1 });
+  const { ref: whoShouldApplyRef, isVisible: whoShouldApplyInView } =
+    useIntersectionObserver({ threshold: 0.1 });
+  const { ref: requirementsRef, isVisible: requirementsInView } =
+    useIntersectionObserver({ threshold: 0.1 });
+  const { ref: processRef, isVisible: processInView } = useIntersectionObserver(
+    { threshold: 0.1 }
+  );
+  const { ref: faqRef, isVisible: faqInView } = useIntersectionObserver({
+    threshold: 0.1,
+  });
 
   const benefits = [
     {
@@ -42,7 +80,7 @@ export default function WhatsAppBlueTickPage() {
       description:
         "In crowded industries, credibility is everything. A verified badge differentiates your brand from competitors, builds immediate trust, and enhances your professional reputation.",
     },
-  ]
+  ];
 
   const industries = [
     {
@@ -93,7 +131,7 @@ export default function WhatsAppBlueTickPage() {
       description:
         "Build trust with clients by showcasing your verified status, leading to increased bookings, better attendance, and higher satisfaction.",
     },
-  ]
+  ];
 
   const requirements = [
     {
@@ -132,7 +170,7 @@ export default function WhatsAppBlueTickPage() {
       description:
         "Your business must be well-established, notable, and have a strong reputation in your industry to qualify for official WhatsApp verification.",
     },
-  ]
+  ];
 
   const applicationSteps = [
     {
@@ -163,7 +201,7 @@ export default function WhatsAppBlueTickPage() {
         "Meta will review your application within 7-10 business days. You'll receive a response directly from WhatsApp via email about your verification status.",
       icon: Clock,
     },
-  ]
+  ];
 
   const faqsColumn1 = [
     {
@@ -186,7 +224,7 @@ export default function WhatsAppBlueTickPage() {
       answer:
         "No, applying for the WhatsApp Blue Tick is completely FREE. There are no charges from WhatsApp or Meta for the verification process itself. However, you need an active WhatsApp Business API account to apply.",
     },
-  ]
+  ];
 
   const faqsColumn2 = [
     {
@@ -209,33 +247,36 @@ export default function WhatsAppBlueTickPage() {
       answer:
         "Yes, absolutely! All WhatsApp Business API features—broadcasts, automation, chatbots, analytics—work perfectly without the blue tick. Verification simply adds the trust badge to enhance your brand credibility.",
     },
-  ]
+  ];
 
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-green-50/30">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-blue-400/20 to-transparent rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-green-400/15 to-transparent rounded-full blur-3xl" />
+      <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-green-50/30 py-8 md:py-10 lg:py-12">
+        {/* Background Orbs */}
+        <div className="absolute top-0 right-0 w-[260px] h-[260px] bg-gradient-to-br from-blue-400/20 to-transparent rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-[220px] h-[220px] bg-gradient-to-tr from-green-400/15 to-transparent rounded-full blur-3xl" />
 
-        <div ref={heroRef} className="container relative mx-auto px-4 py-16 md:py-20 lg:py-24 z-10">
-          <div className="grid gap-8 lg:grid-cols-2 lg:gap-12 items-center">
-            {/* Left Content */}
+        <div ref={heroRef} className="container relative mx-auto px-4 z-10">
+          <div className="grid gap-8 lg:grid-cols-2 items-center">
+            {/* LEFT CONTENT */}
             <div
-              className={`flex flex-col justify-center transition-all duration-1000 ${
-                heroInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              className={`flex flex-col justify-center transition-all duration-700 ${
+                heroInView
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-8"
               }`}
             >
               <Badge
                 variant="secondary"
-                className="mb-4 bg-blue-100 text-blue-700 hover:bg-blue-200 w-fit shadow-sm"
+                className="mb-3 bg-blue-100 text-blue-700 hover:bg-blue-200 w-fit shadow-sm"
               >
                 <ShieldCheck className="w-3.5 h-3.5 mr-1.5" />
                 Official WhatsApp Verification
               </Badge>
 
-              <h1 className="mb-4 text-balance leading-tight tracking-tight">
-                <span className="block text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-2">
+              <h1 className="mb-3 text-balance leading-tight tracking-tight">
+                <span className="block text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-1">
                   Get Your WhatsApp
                 </span>
                 <span className="block text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-blue-600 via-blue-700 to-green-600 bg-clip-text text-transparent">
@@ -243,12 +284,14 @@ export default function WhatsAppBlueTickPage() {
                 </span>
               </h1>
 
-              <p className="mb-6 text-lg text-muted-foreground md:text-xl max-w-xl leading-relaxed">
-                Build instant trust with customers. Get the official WhatsApp Blue Tick badge and increase your message
-                open rates by up to 70%. Stand out from competitors with verified business status.
+              <p className="mb-5 text-lg text-muted-foreground md:text-xl max-w-xl leading-relaxed">
+                Build instant trust with customers. Get the official WhatsApp
+                Blue Tick and increase your message open rates by up to 70%.
+                Stand out from the competition with verified business status.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-3 mb-6">
+              {/* BUTTONS */}
+              <div className="flex flex-col sm:flex-row gap-3 mb-4">
                 <Button
                   size="lg"
                   className="bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all group"
@@ -256,47 +299,69 @@ export default function WhatsAppBlueTickPage() {
                   Apply for Verification
                   <CheckCircle2 className="ml-2 h-5 w-5 group-hover:scale-110 transition-transform" />
                 </Button>
+
                 <Button
                   size="lg"
                   variant="outline"
-                  className="border-2 bg-white hover:bg-gray-50 font-medium shadow-sm"
+                  className="
+              border-2 bg-white text-gray-800
+              hover:bg-green-50 hover:border-green-500 hover:text-green-600
+              font-medium shadow-sm transition-all
+            "
                   asChild
                 >
                   <Link href="#requirements">Check Requirements</Link>
                 </Button>
               </div>
 
-              {/* Trust Indicators */}
+              {/* TRUST INDICATORS */}
               <div className="grid grid-cols-3 gap-4 pt-4 border-t border-gray-200">
                 <div>
-                  <div className="text-3xl font-bold text-blue-600">FREE</div>
-                  <div className="text-sm text-muted-foreground">Verification</div>
+                  <div className="text-2xl md:text-3xl font-bold text-blue-600">
+                    FREE
+                  </div>
+                  <div className="text-xs md:text-sm text-muted-foreground">
+                    Verification
+                  </div>
                 </div>
+
                 <div>
-                  <div className="text-3xl font-bold text-green-600">7-10</div>
-                  <div className="text-sm text-muted-foreground">Days Process</div>
+                  <div className="text-2xl md:text-3xl font-bold text-green-600">
+                    7–10
+                  </div>
+                  <div className="text-xs md:text-sm text-muted-foreground">
+                    Days Process
+                  </div>
                 </div>
+
                 <div>
-                  <div className="text-3xl font-bold text-purple-600">70%</div>
-                  <div className="text-sm text-muted-foreground">Higher Opens</div>
+                  <div className="text-2xl md:text-3xl font-bold text-purple-600">
+                    70%
+                  </div>
+                  <div className="text-xs md:text-sm text-muted-foreground">
+                    Higher Opens
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Right Image */}
+            {/* RIGHT IMAGE */}
             <div
-              className={`relative flex items-center justify-center lg:justify-end transition-all duration-1000 delay-300 ${
-                heroInView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
+              className={`relative flex justify-center lg:justify-end transition-all duration-700 delay-150 ${
+                heroInView
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 translate-x-8"
               }`}
             >
-              <div className="relative w-full max-w-lg">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 via-green-400/15 to-purple-400/20 blur-3xl rounded-full transform scale-110" />
+              <div className="relative w-full max-w-sm sm:max-w-md lg:max-w-lg">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 via-green-400/15 to-purple-400/20 blur-3xl rounded-3xl scale-105" />
+
                 <Image
                   src="/whatsapp-blue-tick-verified-business-account-sho.jpg"
-                  alt="WhatsApp Blue Tick verified business account showing official verification badge next to company name in customer chat with enhanced trust and credibility"
-                  width={600}
-                  height={700}
-                  className="relative z-10 w-full h-auto object-contain rounded-2xl shadow-2xl"
+                  alt="WhatsApp Blue Tick verified business account"
+                  width={550}
+                  height={450}
+                  className="relative z-10 w-full h-auto rounded-2xl shadow-2xl object-contain"
                   priority
                 />
               </div>
@@ -316,10 +381,15 @@ export default function WhatsAppBlueTickPage() {
         <div className="container mx-auto px-4">
           <div
             className={`text-center mb-12 transition-all duration-1000 ${
-              benefitsInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              benefitsInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
             }`}
           >
-            <Badge className="mb-4 shadow-sm bg-blue-100 text-blue-700 border-blue-200" variant="outline">
+            <Badge
+              className="mb-4 shadow-sm bg-blue-100 text-blue-700 border-blue-200"
+              variant="outline"
+            >
               Verification Benefits
             </Badge>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-balance">
@@ -329,8 +399,9 @@ export default function WhatsAppBlueTickPage() {
               </span>
             </h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              The WhatsApp Blue Tick is more than just a badge—it's a powerful trust signal that transforms how
-              customers perceive and engage with your business
+              The WhatsApp Blue Tick is more than just a badge—it's a powerful
+              trust signal that transforms how customers perceive and engage
+              with your business
             </p>
           </div>
 
@@ -339,7 +410,9 @@ export default function WhatsAppBlueTickPage() {
               <Card
                 key={index}
                 className={`p-6 hover:shadow-xl transition-all duration-500 border-2 hover:border-blue-300 ${
-                  benefitsInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  benefitsInView
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
                 }`}
                 style={{ transitionDelay: `${index * 150}ms` }}
               >
@@ -348,8 +421,12 @@ export default function WhatsAppBlueTickPage() {
                     <benefit.icon className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold mb-2 text-foreground">{benefit.title}</h3>
-                    <p className="text-muted-foreground leading-relaxed">{benefit.description}</p>
+                    <h3 className="text-xl font-bold mb-2 text-foreground">
+                      {benefit.title}
+                    </h3>
+                    <p className="text-muted-foreground leading-relaxed">
+                      {benefit.description}
+                    </p>
                   </div>
                 </div>
               </Card>
@@ -366,18 +443,23 @@ export default function WhatsAppBlueTickPage() {
         <div className="container mx-auto px-4">
           <div
             className={`text-center mb-12 transition-all duration-1000 ${
-              whoShouldApplyInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              whoShouldApplyInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
             }`}
           >
-            <Badge className="mb-4 shadow-sm bg-green-100 text-green-700 border-green-200" variant="outline">
+            <Badge
+              className="mb-4 shadow-sm bg-green-100 text-green-700 border-green-200"
+              variant="outline"
+            >
               Industry Applications
             </Badge>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-balance">
               Who Should Apply for WhatsApp Verification?
             </h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Businesses across all industries benefit from verified status. See how the blue tick can transform
-              customer trust in your sector
+              Businesses across all industries benefit from verified status. See
+              how the blue tick can transform customer trust in your sector
             </p>
           </div>
 
@@ -386,22 +468,29 @@ export default function WhatsAppBlueTickPage() {
               <Card
                 key={index}
                 className={`p-6 hover:shadow-lg transition-all duration-500 border hover:border-green-300 group ${
-                  whoShouldApplyInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  whoShouldApplyInView
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
                 }`}
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
                 <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-md">
                   <industry.icon className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-lg font-bold mb-2 text-foreground">{industry.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{industry.description}</p>
+                <h3 className="text-lg font-bold mb-2 text-foreground">
+                  {industry.title}
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {industry.description}
+                </p>
               </Card>
             ))}
           </div>
 
           <div className="text-center mt-8">
             <p className="text-muted-foreground mb-4">
-              Don't see your industry listed? No worries! Verification is available for all business types.
+              Don't see your industry listed? No worries! Verification is
+              available for all business types.
             </p>
             <Button variant="outline" className="border-2" size="lg">
               Contact Support
@@ -420,17 +509,23 @@ export default function WhatsAppBlueTickPage() {
         <div className="container mx-auto px-4">
           <div
             className={`text-center mb-12 transition-all duration-1000 ${
-              requirementsInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              requirementsInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
             }`}
           >
-            <Badge className="mb-4 shadow-sm bg-purple-100 text-purple-700 border-purple-200" variant="outline">
+            <Badge
+              className="mb-4 shadow-sm bg-purple-100 text-purple-700 border-purple-200"
+              variant="outline"
+            >
               Prerequisites
             </Badge>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-balance">
               Verification Requirements
             </h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Ensure your business meets all these criteria before applying for the WhatsApp Blue Tick
+              Ensure your business meets all these criteria before applying for
+              the WhatsApp Blue Tick
             </p>
           </div>
 
@@ -439,15 +534,21 @@ export default function WhatsAppBlueTickPage() {
               <Card
                 key={index}
                 className={`p-6 hover:shadow-lg transition-all duration-500 ${
-                  requirementsInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  requirementsInView
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
                 }`}
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
                 <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center mb-4 shadow-md">
                   <requirement.icon className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-lg font-bold mb-2 text-foreground">{requirement.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{requirement.description}</p>
+                <h3 className="text-lg font-bold mb-2 text-foreground">
+                  {requirement.title}
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {requirement.description}
+                </p>
               </Card>
             ))}
           </div>
@@ -459,10 +560,14 @@ export default function WhatsAppBlueTickPage() {
                   <Zap className="w-5 h-5 text-white" />
                 </div>
                 <div className="text-left">
-                  <h4 className="font-bold text-foreground mb-2">Important Note</h4>
+                  <h4 className="font-bold text-foreground mb-2">
+                    Important Note
+                  </h4>
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    Paid PR or promotional articles do NOT count toward the 5 organic news requirement. Only genuine
-                    press coverage from reputable media outlets qualifies for verification eligibility.
+                    Paid PR or promotional articles do NOT count toward the 5
+                    organic news requirement. Only genuine press coverage from
+                    reputable media outlets qualifies for verification
+                    eligibility.
                   </p>
                 </div>
               </div>
@@ -479,17 +584,23 @@ export default function WhatsAppBlueTickPage() {
         <div className="container mx-auto px-4">
           <div
             className={`text-center mb-12 transition-all duration-1000 ${
-              processInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              processInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
             }`}
           >
-            <Badge className="mb-4 shadow-sm bg-green-100 text-green-700 border-green-200" variant="outline">
+            <Badge
+              className="mb-4 shadow-sm bg-green-100 text-green-700 border-green-200"
+              variant="outline"
+            >
               Simple Process
             </Badge>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-balance">
               How to Apply for WhatsApp Blue Tick
             </h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Follow these four simple steps to submit your verification application
+              Follow these four simple steps to submit your verification
+              application
             </p>
           </div>
 
@@ -498,22 +609,30 @@ export default function WhatsAppBlueTickPage() {
               <Card
                 key={index}
                 className={`p-6 hover:shadow-lg transition-all duration-500 border-2 hover:border-green-300 ${
-                  processInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"
+                  processInView
+                    ? "opacity-100 translate-x-0"
+                    : "opacity-0 -translate-x-8"
                 }`}
                 style={{ transitionDelay: `${index * 150}ms` }}
               >
                 <div className="flex gap-6 items-start">
                   <div className="flex-shrink-0">
                     <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center shadow-lg">
-                      <span className="text-2xl font-bold text-white">{step.step}</span>
+                      <span className="text-2xl font-bold text-white">
+                        {step.step}
+                      </span>
                     </div>
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
                       <step.icon className="w-6 h-6 text-green-600" />
-                      <h3 className="text-xl font-bold text-foreground">{step.title}</h3>
+                      <h3 className="text-xl font-bold text-foreground">
+                        {step.title}
+                      </h3>
                     </div>
-                    <p className="text-muted-foreground leading-relaxed">{step.description}</p>
+                    <p className="text-muted-foreground leading-relaxed">
+                      {step.description}
+                    </p>
                   </div>
                 </div>
               </Card>
@@ -522,12 +641,18 @@ export default function WhatsAppBlueTickPage() {
 
           <div className="mt-12 text-center">
             <Card className="p-8 bg-gradient-to-br from-blue-50 to-green-50 border-2 max-w-3xl mx-auto">
-              <h3 className="text-2xl font-bold mb-4">Ready to Get Verified?</h3>
+              <h3 className="text-2xl font-bold mb-4">
+                Ready to Get Verified?
+              </h3>
               <p className="text-muted-foreground mb-6 leading-relaxed">
-                Start building trust with your customers today. Apply for your official WhatsApp Blue Tick verification
-                and join thousands of verified businesses worldwide.
+                Start building trust with your customers today. Apply for your
+                official WhatsApp Blue Tick verification and join thousands of
+                verified businesses worldwide.
               </p>
-              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-lg">
+              <Button
+                size="lg"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-lg"
+              >
                 Start Application Process
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
@@ -537,17 +662,24 @@ export default function WhatsAppBlueTickPage() {
       </section>
 
       {/* FAQ Section */}
-      <section ref={faqRef} className="py-16 md:py-20 bg-gradient-to-br from-gray-50 to-white">
+      <section
+        ref={faqRef}
+        className="py-16 md:py-20 bg-gradient-to-br from-gray-50 to-white"
+      >
         <div className="container mx-auto px-4">
           <div
             className={`text-center mb-12 transition-all duration-1000 ${
-              faqInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              faqInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
             }`}
           >
             <Badge className="mb-4 shadow-sm" variant="outline">
               Common Questions
             </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Frequently Asked Questions</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Frequently Asked Questions
+            </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Everything you need to know about WhatsApp Blue Tick verification
             </p>
@@ -558,7 +690,9 @@ export default function WhatsAppBlueTickPage() {
               {/* Left Column */}
               <div
                 className={`transition-all duration-1000 ${
-                  faqInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  faqInView
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
                 }`}
               >
                 <Accordion type="single" collapsible className="space-y-3">
@@ -582,7 +716,9 @@ export default function WhatsAppBlueTickPage() {
               {/* Right Column */}
               <div
                 className={`transition-all duration-1000 delay-300 ${
-                  faqInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  faqInView
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
                 }`}
               >
                 <Accordion type="single" collapsible className="space-y-3">
@@ -614,11 +750,16 @@ export default function WhatsAppBlueTickPage() {
             Build Trust. Boost Engagement. Get Verified.
           </h2>
           <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Join thousands of verified businesses using WhatsApp Blue Tick to increase customer trust and drive 70%
-            higher engagement rates. Apply for free today.
+            Join thousands of verified businesses using WhatsApp Blue Tick to
+            increase customer trust and drive 70% higher engagement rates. Apply
+            for free today.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" variant="secondary" className="bg-white text-blue-600 hover:bg-gray-100 font-semibold">
+            <Button
+              size="lg"
+              variant="secondary"
+              className="bg-white text-blue-600 hover:bg-gray-100 font-semibold"
+            >
               Apply for Blue Tick Now
               <CheckCircle2 className="ml-2 h-5 w-5" />
             </Button>
@@ -634,5 +775,5 @@ export default function WhatsAppBlueTickPage() {
         </div>
       </section>
     </div>
-  )
+  );
 }
