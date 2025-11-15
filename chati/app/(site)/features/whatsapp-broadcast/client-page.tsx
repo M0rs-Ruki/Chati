@@ -1,9 +1,14 @@
-"use client"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { BrandSlider } from "@/components/brand-slider"
+"use client";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { BrandSlider } from "@/components/brand-slider";
 import {
   Radio,
   Users,
@@ -26,10 +31,10 @@ import {
   PieChart,
   Activity,
   Layers,
-} from "lucide-react"
-import Link from "next/link"
-import Image from "next/image"
-import { useIntersectionObserver } from "@/hooks/use-intersection-observer"
+} from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
+import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 
 const FloatingBroadcastIcons = () => {
   return (
@@ -59,19 +64,33 @@ const FloatingBroadcastIcons = () => {
         <BarChart3 className="w-6 h-6 text-white" />
       </div>
     </>
-  )
-}
+  );
+};
 
 export default function WhatsAppBroadcastPage() {
-  const { ref: heroRef, isVisible: heroInView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: block1Ref, isVisible: block1InView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: block2Ref, isVisible: block2InView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: block3Ref, isVisible: block3InView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: cdpAnalyticsRef, isVisible: cdpAnalyticsInView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: featuresRef, isVisible: featuresInView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: benefitsRef, isVisible: benefitsInView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: useCasesRef, isVisible: useCasesInView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: faqRef, isVisible: faqInView } = useIntersectionObserver({ threshold: 0.1 })
+  const { ref: heroRef, isVisible: heroInView } = useIntersectionObserver({
+    threshold: 0.1,
+  });
+  const { ref: block1Ref, isVisible: block1InView } = useIntersectionObserver({
+    threshold: 0.1,
+  });
+  const { ref: block2Ref, isVisible: block2InView } = useIntersectionObserver({
+    threshold: 0.1,
+  });
+  const { ref: block3Ref, isVisible: block3InView } = useIntersectionObserver({
+    threshold: 0.1,
+  });
+  const { ref: cdpAnalyticsRef, isVisible: cdpAnalyticsInView } =
+    useIntersectionObserver({ threshold: 0.1 });
+  const { ref: featuresRef, isVisible: featuresInView } =
+    useIntersectionObserver({ threshold: 0.1 });
+  const { ref: benefitsRef, isVisible: benefitsInView } =
+    useIntersectionObserver({ threshold: 0.1 });
+  const { ref: useCasesRef, isVisible: useCasesInView } =
+    useIntersectionObserver({ threshold: 0.1 });
+  const { ref: faqRef, isVisible: faqInView } = useIntersectionObserver({
+    threshold: 0.1,
+  });
 
   const features = [
     {
@@ -89,7 +108,8 @@ export default function WhatsAppBroadcastPage() {
     {
       icon: FileText,
       title: "Rich Media Support",
-      description: "Send images, videos, documents, and interactive buttons to create engaging broadcast campaigns.",
+      description:
+        "Send images, videos, documents, and interactive buttons to create engaging broadcast campaigns.",
     },
     {
       icon: Target,
@@ -121,7 +141,7 @@ export default function WhatsAppBroadcastPage() {
       description:
         "Set up automated drip campaigns to nurture leads and engage customers over time with scheduled sequences.",
     },
-  ]
+  ];
 
   const benefits = [
     {
@@ -148,40 +168,46 @@ export default function WhatsAppBroadcastPage() {
       description:
         "Stay compliant with data protection regulations with built-in consent management and opt-out handling.",
     },
-  ]
+  ];
 
   const useCases = [
     {
       title: "Product Launches",
-      description: "Announce new products and services to your entire customer base with engaging multimedia content.",
+      description:
+        "Announce new products and services to your entire customer base with engaging multimedia content.",
       icon: Sparkles,
     },
     {
       title: "Promotional Campaigns",
-      description: "Drive sales with targeted promotional offers, discount codes, and limited-time deals.",
+      description:
+        "Drive sales with targeted promotional offers, discount codes, and limited-time deals.",
       icon: Target,
     },
     {
       title: "Event Invitations",
-      description: "Invite customers to webinars, workshops, and events with RSVP tracking and reminders.",
+      description:
+        "Invite customers to webinars, workshops, and events with RSVP tracking and reminders.",
       icon: Calendar,
     },
     {
       title: "Order Updates",
-      description: "Keep customers informed about order status, shipping updates, and delivery notifications.",
+      description:
+        "Keep customers informed about order status, shipping updates, and delivery notifications.",
       icon: Send,
     },
     {
       title: "Customer Surveys",
-      description: "Gather feedback and insights with interactive surveys and polls sent via WhatsApp.",
+      description:
+        "Gather feedback and insights with interactive surveys and polls sent via WhatsApp.",
       icon: BarChart3,
     },
     {
       title: "Re-engagement",
-      description: "Win back inactive customers with personalized re-engagement campaigns and special offers.",
+      description:
+        "Win back inactive customers with personalized re-engagement campaigns and special offers.",
       icon: Users,
     },
-  ]
+  ];
 
   const faqsColumn1 = [
     {
@@ -199,7 +225,7 @@ export default function WhatsAppBroadcastPage() {
       answer:
         "Yes, you can schedule broadcasts for any future date and time. Our system will automatically send the messages at the scheduled time, even across different time zones.",
     },
-  ]
+  ];
 
   const faqsColumn2 = [
     {
@@ -217,7 +243,7 @@ export default function WhatsAppBroadcastPage() {
       answer:
         "You can send text, images, videos, documents, PDFs, and interactive buttons. Rich media content helps increase engagement and conversion rates.",
     },
-  ]
+  ];
 
   return (
     <div className="min-h-screen">
@@ -227,12 +253,17 @@ export default function WhatsAppBroadcastPage() {
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-green-400/20 to-transparent rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-blue-400/15 to-transparent rounded-full blur-3xl" />
 
-        <div ref={heroRef} className="container relative mx-auto px-4 pr-0 md:pr-4 py-12 md:py-14 lg:py-16 z-10">
+        <div
+          ref={heroRef}
+          className="container relative mx-auto px-4 pr-0 md:pr-4 py-12 md:py-14 lg:py-16 z-10"
+        >
           <div className="grid gap-6 lg:grid-cols-2 lg:gap-10 items-center">
             {/* Left Content */}
             <div
               className={`flex flex-col justify-center transition-all duration-1000 ${
-                heroInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                heroInView
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-8"
               }`}
             >
               <Badge
@@ -253,8 +284,9 @@ export default function WhatsAppBroadcastPage() {
               </h1>
 
               <p className="mb-6 text-base text-muted-foreground md:text-lg max-w-xl leading-relaxed">
-                Send personalized WhatsApp broadcasts to your entire customer base instantly. Schedule campaigns,
-                segment audiences, and track engagement with our powerful broadcast messaging platform.
+                Send personalized WhatsApp broadcasts to your entire customer
+                base instantly. Schedule campaigns, segment audiences, and track
+                engagement with our powerful broadcast messaging platform.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 mb-6">
@@ -278,16 +310,28 @@ export default function WhatsAppBroadcastPage() {
               {/* Key Stats */}
               <div className="grid grid-cols-3 gap-4 pt-4 border-t border-gray-200">
                 <div>
-                  <div className="text-2xl md:text-3xl font-bold text-green-600">98%</div>
-                  <div className="text-xs md:text-sm text-muted-foreground">Open Rate</div>
+                  <div className="text-2xl md:text-3xl font-bold text-green-600">
+                    98%
+                  </div>
+                  <div className="text-xs md:text-sm text-muted-foreground">
+                    Open Rate
+                  </div>
                 </div>
                 <div>
-                  <div className="text-2xl md:text-3xl font-bold text-blue-600">10K+</div>
-                  <div className="text-xs md:text-sm text-muted-foreground">Messages/Min</div>
+                  <div className="text-2xl md:text-3xl font-bold text-blue-600">
+                    10K+
+                  </div>
+                  <div className="text-xs md:text-sm text-muted-foreground">
+                    Messages/Min
+                  </div>
                 </div>
                 <div>
-                  <div className="text-2xl md:text-3xl font-bold text-purple-600">24/7</div>
-                  <div className="text-xs md:text-sm text-muted-foreground">Automation</div>
+                  <div className="text-2xl md:text-3xl font-bold text-purple-600">
+                    24/7
+                  </div>
+                  <div className="text-xs md:text-sm text-muted-foreground">
+                    Automation
+                  </div>
                 </div>
               </div>
             </div>
@@ -295,7 +339,9 @@ export default function WhatsAppBroadcastPage() {
             {/* Right Image - Replaced with new stable image with border, removed floating animation */}
             <div
               className={`relative flex items-center justify-center lg:justify-end transition-all duration-1000 delay-300 ${
-                heroInView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
+                heroInView
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 translate-x-8"
               }`}
             >
               <div className="relative w-full max-w-lg">
@@ -332,7 +378,9 @@ export default function WhatsAppBroadcastPage() {
             {/* Left Side - Image */}
             <div
               className={`flex items-center justify-center lg:justify-start transition-all duration-1000 ${
-                block1InView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"
+                block1InView
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 -translate-x-8"
               }`}
             >
               <div className="relative">
@@ -351,19 +399,26 @@ export default function WhatsAppBroadcastPage() {
             {/* Right Side - Content */}
             <div
               className={`transition-all duration-1000 delay-300 ${
-                block1InView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                block1InView
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-8"
               }`}
             >
-              <Badge className="mb-3 shadow-sm bg-green-100 text-green-700 border-green-200" variant="outline">
+              <Badge
+                className="mb-3 shadow-sm bg-green-100 text-green-700 border-green-200"
+                variant="outline"
+              >
                 Broadcast Messaging Power
               </Badge>
               <h2 className="mb-4 text-balance text-3xl font-bold md:text-4xl lg:text-5xl">
                 Send Thousands of Messages in Seconds
               </h2>
               <p className="mb-6 text-pretty text-muted-foreground text-base md:text-lg leading-relaxed">
-                Reach your entire customer base instantly with WhatsApp broadcast messaging. Send promotional campaigns,
-                product updates, and important announcements to thousands of contacts simultaneously while maintaining
-                the personal touch of one-to-one messaging.
+                Reach your entire customer base instantly with WhatsApp
+                broadcast messaging. Send promotional campaigns, product
+                updates, and important announcements to thousands of contacts
+                simultaneously while maintaining the personal touch of
+                one-to-one messaging.
               </p>
 
               <div className="space-y-4">
@@ -372,10 +427,14 @@ export default function WhatsAppBroadcastPage() {
                     <Radio className="h-5 w-5 text-green-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">Mass Messaging at Scale</h3>
+                    <h3 className="font-semibold text-foreground mb-1 text-base">
+                      Mass Messaging at Scale
+                    </h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      Send up to 10,000 messages per minute with our high-performance infrastructure. Queue unlimited
-                      messages and let our system handle delivery optimization automatically.
+                      Send up to 10,000 messages per minute with our
+                      high-performance infrastructure. Queue unlimited messages
+                      and let our system handle delivery optimization
+                      automatically.
                     </p>
                   </div>
                 </div>
@@ -385,10 +444,14 @@ export default function WhatsAppBroadcastPage() {
                     <BarChart3 className="h-5 w-5 text-blue-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">Real-Time Performance Tracking</h3>
+                    <h3 className="font-semibold text-foreground mb-1 text-base">
+                      Real-Time Performance Tracking
+                    </h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      Monitor delivery rates, read receipts, and customer responses in real-time. Track campaign
-                      performance with detailed analytics showing 95%+ read rates and 76% average reply rates.
+                      Monitor delivery rates, read receipts, and customer
+                      responses in real-time. Track campaign performance with
+                      detailed analytics showing 95%+ read rates and 76% average
+                      reply rates.
                     </p>
                   </div>
                 </div>
@@ -398,10 +461,14 @@ export default function WhatsAppBroadcastPage() {
                     <FileText className="h-5 w-5 text-purple-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">Rich Media Broadcasting</h3>
+                    <h3 className="font-semibold text-foreground mb-1 text-base">
+                      Rich Media Broadcasting
+                    </h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      Send images, videos, PDFs, and interactive buttons in your broadcasts. Create engaging campaigns
-                      with product catalogs, promotional banners, and clickable call-to-action buttons.
+                      Send images, videos, PDFs, and interactive buttons in your
+                      broadcasts. Create engaging campaigns with product
+                      catalogs, promotional banners, and clickable
+                      call-to-action buttons.
                     </p>
                   </div>
                 </div>
@@ -424,19 +491,26 @@ export default function WhatsAppBroadcastPage() {
             {/* Left Side - Content */}
             <div
               className={`transition-all duration-1000 ${
-                block2InView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                block2InView
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-8"
               }`}
             >
-              <Badge className="mb-3 shadow-sm bg-purple-100 text-purple-700 border-purple-200" variant="outline">
+              <Badge
+                className="mb-3 shadow-sm bg-purple-100 text-purple-700 border-purple-200"
+                variant="outline"
+              >
                 Smart Audience Targeting
               </Badge>
               <h2 className="mb-4 text-balance text-3xl font-bold md:text-4xl lg:text-5xl">
                 Target the Right Customers Every Time
               </h2>
               <p className="mb-6 text-pretty text-muted-foreground text-base md:text-lg leading-relaxed">
-                Create highly targeted broadcast campaigns using advanced segmentation and filtering. Send personalized
-                messages to specific customer groups based on behavior, demographics, purchase history, and engagement
-                levels for maximum impact and conversion.
+                Create highly targeted broadcast campaigns using advanced
+                segmentation and filtering. Send personalized messages to
+                specific customer groups based on behavior, demographics,
+                purchase history, and engagement levels for maximum impact and
+                conversion.
               </p>
 
               <div className="space-y-4">
@@ -445,10 +519,14 @@ export default function WhatsAppBroadcastPage() {
                     <Users className="h-5 w-5 text-purple-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">Advanced Customer Segmentation</h3>
+                    <h3 className="font-semibold text-foreground mb-1 text-base">
+                      Advanced Customer Segmentation
+                    </h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      Create unlimited segments based on tags, custom fields, location, language, purchase behavior, and
-                      engagement history. Target VIP customers, cart abandoners, or inactive users with precision.
+                      Create unlimited segments based on tags, custom fields,
+                      location, language, purchase behavior, and engagement
+                      history. Target VIP customers, cart abandoners, or
+                      inactive users with precision.
                     </p>
                   </div>
                 </div>
@@ -458,10 +536,14 @@ export default function WhatsAppBroadcastPage() {
                     <Target className="h-5 w-5 text-blue-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">Dynamic Personalization</h3>
+                    <h3 className="font-semibold text-foreground mb-1 text-base">
+                      Dynamic Personalization
+                    </h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      Personalize every message with customer names, order details, loyalty points, and custom
-                      variables. Make each broadcast feel like a personal conversation, not mass marketing.
+                      Personalize every message with customer names, order
+                      details, loyalty points, and custom variables. Make each
+                      broadcast feel like a personal conversation, not mass
+                      marketing.
                     </p>
                   </div>
                 </div>
@@ -471,10 +553,13 @@ export default function WhatsAppBroadcastPage() {
                     <Filter className="h-5 w-5 text-green-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">Smart Filtering & Exclusions</h3>
+                    <h3 className="font-semibold text-foreground mb-1 text-base">
+                      Smart Filtering & Exclusions
+                    </h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      Apply multiple filters simultaneously and exclude specific groups. Prevent message fatigue by
-                      automatically excluding customers who recently received broadcasts or opted out.
+                      Apply multiple filters simultaneously and exclude specific
+                      groups. Prevent message fatigue by automatically excluding
+                      customers who recently received broadcasts or opted out.
                     </p>
                   </div>
                 </div>
@@ -484,7 +569,9 @@ export default function WhatsAppBroadcastPage() {
             {/* Right Side - Image */}
             <div
               className={`flex items-center justify-center lg:justify-end transition-all duration-1000 delay-300 ${
-                block2InView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
+                block2InView
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 translate-x-8"
               }`}
             >
               <div className="relative">
@@ -516,7 +603,9 @@ export default function WhatsAppBroadcastPage() {
             {/* Left Side - Image */}
             <div
               className={`flex items-center justify-center lg:justify-start transition-all duration-1000 ${
-                block3InView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"
+                block3InView
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 -translate-x-8"
               }`}
             >
               <div className="relative">
@@ -524,7 +613,7 @@ export default function WhatsAppBroadcastPage() {
                 <Image
                   src="/whatsapp-broadcast-analytics-dashboard-showing-cam.jpg"
                   alt="WhatsApp broadcast analytics dashboard showing campaign performance metrics, delivery rates, read receipts, click-through rates, conversion tracking, and ROI analysis"
-                  width={800}
+                  width={600}
                   height={600}
                   className="relative z-10 w-full h-auto max-w-2xl object-contain drop-shadow-2xl hover:scale-[1.02] transition-transform duration-500"
                   loading="lazy"
@@ -535,19 +624,26 @@ export default function WhatsAppBroadcastPage() {
             {/* Right Side - Content */}
             <div
               className={`transition-all duration-1000 delay-300 ${
-                block3InView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                block3InView
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-8"
               }`}
             >
-              <Badge className="mb-3 shadow-sm bg-blue-100 text-blue-700 border-blue-200" variant="outline">
+              <Badge
+                className="mb-3 shadow-sm bg-blue-100 text-blue-700 border-blue-200"
+                variant="outline"
+              >
                 Campaign Analytics & Insights
               </Badge>
               <h2 className="mb-4 text-balance text-3xl font-bold md:text-4xl lg:text-5xl">
                 Measure What Matters with Deep Analytics
               </h2>
               <p className="mb-6 text-pretty text-muted-foreground text-base md:text-lg leading-relaxed">
-                Track every aspect of your broadcast campaigns with comprehensive analytics and reporting. Understand
-                customer engagement, optimize message timing, and improve campaign performance with data-driven insights
-                that help you make smarter marketing decisions.
+                Track every aspect of your broadcast campaigns with
+                comprehensive analytics and reporting. Understand customer
+                engagement, optimize message timing, and improve campaign
+                performance with data-driven insights that help you make smarter
+                marketing decisions.
               </p>
 
               <div className="space-y-4">
@@ -556,10 +652,14 @@ export default function WhatsAppBroadcastPage() {
                     <BarChart3 className="h-5 w-5 text-blue-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">Comprehensive Campaign Metrics</h3>
+                    <h3 className="font-semibold text-foreground mb-1 text-base">
+                      Comprehensive Campaign Metrics
+                    </h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      Track delivery rates, read receipts, click-through rates, and conversion metrics for every
-                      broadcast. See exactly how many customers opened, read, and acted on your messages in real-time.
+                      Track delivery rates, read receipts, click-through rates,
+                      and conversion metrics for every broadcast. See exactly
+                      how many customers opened, read, and acted on your
+                      messages in real-time.
                     </p>
                   </div>
                 </div>
@@ -569,10 +669,13 @@ export default function WhatsAppBroadcastPage() {
                     <TrendingUp className="h-5 w-5 text-green-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">ROI & Revenue Tracking</h3>
+                    <h3 className="font-semibold text-foreground mb-1 text-base">
+                      ROI & Revenue Tracking
+                    </h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      Connect broadcasts to actual sales and revenue. Track which campaigns drive the most conversions,
-                      calculate ROI, and identify your most profitable messaging strategies.
+                      Connect broadcasts to actual sales and revenue. Track
+                      which campaigns drive the most conversions, calculate ROI,
+                      and identify your most profitable messaging strategies.
                     </p>
                   </div>
                 </div>
@@ -582,10 +685,14 @@ export default function WhatsAppBroadcastPage() {
                     <Clock className="h-5 w-5 text-purple-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">Optimal Timing Insights</h3>
+                    <h3 className="font-semibold text-foreground mb-1 text-base">
+                      Optimal Timing Insights
+                    </h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      Discover the best times to send broadcasts based on historical engagement data. Our AI analyzes
-                      customer behavior patterns to recommend optimal send times for maximum open and response rates.
+                      Discover the best times to send broadcasts based on
+                      historical engagement data. Our AI analyzes customer
+                      behavior patterns to recommend optimal send times for
+                      maximum open and response rates.
                     </p>
                   </div>
                 </div>
@@ -606,10 +713,15 @@ export default function WhatsAppBroadcastPage() {
           {/* Section Header */}
           <div
             className={`text-center mb-12 transition-all duration-1000 ${
-              cdpAnalyticsInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              cdpAnalyticsInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
             }`}
           >
-            <Badge className="mb-4 shadow-sm bg-blue-100 text-blue-700 border-blue-200" variant="outline">
+            <Badge
+              className="mb-4 shadow-sm bg-blue-100 text-blue-700 border-blue-200"
+              variant="outline"
+            >
               Customer Data Platform Integration
             </Badge>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-balance">
@@ -619,8 +731,10 @@ export default function WhatsAppBroadcastPage() {
               </span>
             </h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Consolidate customer data from multiple sources, gain actionable insights, and orchestrate multi-channel
-              campaigns across WhatsApp, RCS, SMS, email, and social media—all from one powerful Customer Data Platform.
+              Consolidate customer data from multiple sources, gain actionable
+              insights, and orchestrate multi-channel campaigns across WhatsApp,
+              RCS, SMS, email, and social media—all from one powerful Customer
+              Data Platform.
             </p>
           </div>
 
@@ -629,7 +743,9 @@ export default function WhatsAppBroadcastPage() {
             {/* Left: Analytics Dashboard Image */}
             <div
               className={`transition-all duration-1000 ${
-                cdpAnalyticsInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"
+                cdpAnalyticsInView
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 -translate-x-8"
               }`}
             >
               <div className="relative">
@@ -648,7 +764,9 @@ export default function WhatsAppBroadcastPage() {
             {/* Right: Key CDP Features */}
             <div
               className={`space-y-6 transition-all duration-1000 delay-300 ${
-                cdpAnalyticsInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                cdpAnalyticsInView
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-8"
               }`}
             >
               <div className="flex gap-4 items-start group">
@@ -656,12 +774,16 @@ export default function WhatsAppBroadcastPage() {
                   <Database className="h-6 w-6 text-blue-600" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-foreground mb-2 text-lg">Unified Customer Data Consolidation</h3>
+                  <h3 className="font-bold text-foreground mb-2 text-lg">
+                    Unified Customer Data Consolidation
+                  </h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    Automatically consolidate customer data from 20+ platforms including Razorpay, Shopify, Facebook
-                    Leads, India Mart, Justdial, Webhooks, PetPooja, 99Acres, and Housing.com. Create unified customer
-                    profiles that combine purchase history, engagement data, and behavioral insights for smarter
-                    targeting.
+                    Automatically consolidate customer data from 20+ platforms
+                    including Razorpay, Shopify, Facebook Leads, India Mart,
+                    Justdial, Webhooks, PetPooja, 99Acres, and Housing.com.
+                    Create unified customer profiles that combine purchase
+                    history, engagement data, and behavioral insights for
+                    smarter targeting.
                   </p>
                 </div>
               </div>
@@ -671,11 +793,15 @@ export default function WhatsAppBroadcastPage() {
                   <Layers className="h-6 w-6 text-purple-600" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-foreground mb-2 text-lg">Multi-Channel Campaign Orchestration</h3>
+                  <h3 className="font-bold text-foreground mb-2 text-lg">
+                    Multi-Channel Campaign Orchestration
+                  </h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    Coordinate campaigns across WhatsApp, RCS, SMS, email, and social media from a single platform.
-                    Track customer journeys across channels, optimize message timing, and ensure consistent messaging
-                    for maximum engagement and conversion rates.
+                    Coordinate campaigns across WhatsApp, RCS, SMS, email, and
+                    social media from a single platform. Track customer journeys
+                    across channels, optimize message timing, and ensure
+                    consistent messaging for maximum engagement and conversion
+                    rates.
                   </p>
                 </div>
               </div>
@@ -685,11 +811,15 @@ export default function WhatsAppBroadcastPage() {
                   <LineChart className="h-6 w-6 text-green-600" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-foreground mb-2 text-lg">Real-Time Analytics & Actionable Insights</h3>
+                  <h3 className="font-bold text-foreground mb-2 text-lg">
+                    Real-Time Analytics & Actionable Insights
+                  </h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    Monitor broadcast performance in real-time with comprehensive dashboards showing delivery rates,
-                    engagement metrics, conversion tracking, and revenue attribution. Get AI-powered recommendations to
-                    optimize campaign timing, messaging, and audience targeting.
+                    Monitor broadcast performance in real-time with
+                    comprehensive dashboards showing delivery rates, engagement
+                    metrics, conversion tracking, and revenue attribution. Get
+                    AI-powered recommendations to optimize campaign timing,
+                    messaging, and audience targeting.
                   </p>
                 </div>
               </div>
@@ -699,11 +829,15 @@ export default function WhatsAppBroadcastPage() {
                   <Target className="h-6 w-6 text-orange-600" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-foreground mb-2 text-lg">Advanced Customer Segmentation</h3>
+                  <h3 className="font-bold text-foreground mb-2 text-lg">
+                    Advanced Customer Segmentation
+                  </h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    Create dynamic segments using attributes, tags, sources, purchase behavior, engagement history, and
-                    custom fields. Build lookalike audiences, identify high-value customers, and personalize every
-                    interaction based on comprehensive customer profiles.
+                    Create dynamic segments using attributes, tags, sources,
+                    purchase behavior, engagement history, and custom fields.
+                    Build lookalike audiences, identify high-value customers,
+                    and personalize every interaction based on comprehensive
+                    customer profiles.
                   </p>
                 </div>
               </div>
@@ -713,14 +847,19 @@ export default function WhatsAppBroadcastPage() {
           {/* Platform Integrations Showcase */}
           <div
             className={`transition-all duration-1000 delay-500 ${
-              cdpAnalyticsInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              cdpAnalyticsInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
             }`}
           >
             <Card className="p-8 bg-white/80 backdrop-blur-sm border-2 shadow-xl">
               <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold mb-3">Seamless Platform Integrations</h3>
+                <h3 className="text-2xl font-bold mb-3">
+                  Seamless Platform Integrations
+                </h3>
                 <p className="text-muted-foreground max-w-2xl mx-auto">
-                  Connect your entire tech stack and consolidate customer data from all your business tools
+                  Connect your entire tech stack and consolidate customer data
+                  from all your business tools
                 </p>
               </div>
 
@@ -741,8 +880,12 @@ export default function WhatsAppBroadcastPage() {
                     key={index}
                     className="flex flex-col items-center justify-center p-4 bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all group"
                   >
-                    <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">{platform.icon}</div>
-                    <div className="text-xs font-medium text-center text-gray-700">{platform.name}</div>
+                    <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">
+                      {platform.icon}
+                    </div>
+                    <div className="text-xs font-medium text-center text-gray-700">
+                      {platform.name}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -765,7 +908,9 @@ export default function WhatsAppBroadcastPage() {
           {/* Key Metrics Cards */}
           <div
             className={`grid md:grid-cols-3 gap-6 mt-12 transition-all duration-1000 delay-700 ${
-              cdpAnalyticsInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              cdpAnalyticsInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
             }`}
           >
             <Card className="p-6 bg-gradient-to-br from-blue-50 to-white border-2 border-blue-100 hover:shadow-lg transition-all">
@@ -774,13 +919,16 @@ export default function WhatsAppBroadcastPage() {
                   <Activity className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-blue-600">Real-Time</div>
+                  <div className="text-3xl font-bold text-blue-600">
+                    Real-Time
+                  </div>
                   <div className="text-sm text-muted-foreground">Data Sync</div>
                 </div>
               </div>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Customer data syncs in real-time across all platforms, ensuring you always have the most up-to-date
-                information for targeting and personalization.
+                Customer data syncs in real-time across all platforms, ensuring
+                you always have the most up-to-date information for targeting
+                and personalization.
               </p>
             </Card>
 
@@ -791,12 +939,14 @@ export default function WhatsAppBroadcastPage() {
                 </div>
                 <div>
                   <div className="text-3xl font-bold text-purple-600">360°</div>
-                  <div className="text-sm text-muted-foreground">Customer View</div>
+                  <div className="text-sm text-muted-foreground">
+                    Customer View
+                  </div>
                 </div>
               </div>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Get a complete 360-degree view of every customer with unified profiles combining data from all
-                touchpoints and interactions.
+                Get a complete 360-degree view of every customer with unified
+                profiles combining data from all touchpoints and interactions.
               </p>
             </Card>
 
@@ -807,12 +957,15 @@ export default function WhatsAppBroadcastPage() {
                 </div>
                 <div>
                   <div className="text-3xl font-bold text-green-600">3.5x</div>
-                  <div className="text-sm text-muted-foreground">Higher ROI</div>
+                  <div className="text-sm text-muted-foreground">
+                    Higher ROI
+                  </div>
                 </div>
               </div>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Businesses using our CDP-powered analytics see 3.5x higher ROI on broadcast campaigns through better
-                targeting and personalization.
+                Businesses using our CDP-powered analytics see 3.5x higher ROI
+                on broadcast campaigns through better targeting and
+                personalization.
               </p>
             </Card>
           </div>
@@ -820,16 +973,24 @@ export default function WhatsAppBroadcastPage() {
       </section>
 
       {/* Key Features */}
-      <section ref={featuresRef} className="py-12 md:py-14 bg-gradient-to-b from-white via-green-50/20 to-white">
+      <section
+        ref={featuresRef}
+        className="py-12 md:py-14 bg-gradient-to-b from-white via-green-50/20 to-white"
+      >
         <div className="container mx-auto px-4">
           <div
             className={`text-center mb-12 transition-all duration-700 ${
-              featuresInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              featuresInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
             }`}
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Powerful Broadcast Features</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Powerful Broadcast Features
+            </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Everything you need to create, manage, and optimize your WhatsApp broadcast campaigns
+              Everything you need to create, manage, and optimize your WhatsApp
+              broadcast campaigns
             </p>
           </div>
 
@@ -838,7 +999,9 @@ export default function WhatsAppBroadcastPage() {
               <Card
                 key={index}
                 className={`p-6 hover:shadow-lg transition-all duration-300 border-gray-200 ${
-                  featuresInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  featuresInView
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
                 }`}
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
@@ -846,7 +1009,9 @@ export default function WhatsAppBroadcastPage() {
                   <feature.icon className="w-6 h-6 text-green-600" />
                 </div>
                 <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed">{feature.description}</p>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  {feature.description}
+                </p>
               </Card>
             ))}
           </div>
@@ -854,16 +1019,24 @@ export default function WhatsAppBroadcastPage() {
       </section>
 
       {/* Benefits */}
-      <section ref={benefitsRef} className="py-12 md:py-14 bg-gradient-to-br from-green-50/40 via-white to-blue-50/30">
+      <section
+        ref={benefitsRef}
+        className="py-12 md:py-14 bg-gradient-to-br from-green-50/40 via-white to-blue-50/30"
+      >
         <div className="container mx-auto px-4">
           <div
             className={`text-center mb-12 transition-all duration-700 ${
-              benefitsInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              benefitsInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
             }`}
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Choose WhatsApp Broadcast?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Why Choose WhatsApp Broadcast?
+            </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Leverage the power of WhatsApp to reach your customers where they are most active
+              Leverage the power of WhatsApp to reach your customers where they
+              are most active
             </p>
           </div>
 
@@ -872,7 +1045,9 @@ export default function WhatsAppBroadcastPage() {
               <div
                 key={index}
                 className={`text-center transition-all duration-700 ${
-                  benefitsInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  benefitsInView
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
                 }`}
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
@@ -888,16 +1063,24 @@ export default function WhatsAppBroadcastPage() {
       </section>
 
       {/* Use Cases */}
-      <section ref={useCasesRef} className="py-12 md:py-14 bg-gradient-to-br from-white via-blue-50/20 to-green-50/10">
+      <section
+        ref={useCasesRef}
+        className="py-12 md:py-14 bg-gradient-to-br from-white via-blue-50/20 to-green-50/10"
+      >
         <div className="container mx-auto px-4">
           <div
             className={`text-center mb-12 transition-all duration-700 ${
-              useCasesInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              useCasesInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
             }`}
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Broadcast Use Cases</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Broadcast Use Cases
+            </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Discover how businesses use WhatsApp broadcasts to drive engagement and growth
+              Discover how businesses use WhatsApp broadcasts to drive
+              engagement and growth
             </p>
           </div>
 
@@ -906,7 +1089,9 @@ export default function WhatsAppBroadcastPage() {
               <Card
                 key={index}
                 className={`p-6 hover:shadow-lg transition-all duration-300 border-gray-200 group ${
-                  useCasesInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  useCasesInView
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
                 }`}
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
@@ -915,8 +1100,12 @@ export default function WhatsAppBroadcastPage() {
                     <useCase.icon className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold mb-2">{useCase.title}</h3>
-                    <p className="text-gray-600 text-sm leading-relaxed">{useCase.description}</p>
+                    <h3 className="text-lg font-semibold mb-2">
+                      {useCase.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">
+                      {useCase.description}
+                    </p>
                   </div>
                 </div>
               </Card>
@@ -926,14 +1115,21 @@ export default function WhatsAppBroadcastPage() {
       </section>
 
       {/* FAQ Section */}
-      <section ref={faqRef} className="py-12 md:py-14 bg-gradient-to-br from-gray-50 to-white">
+      <section
+        ref={faqRef}
+        className="py-12 md:py-14 bg-gradient-to-br from-gray-50 to-white"
+      >
         <div className="container mx-auto px-4">
           <div
             className={`text-center mb-10 transition-all duration-700 ${
-              faqInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              faqInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
             }`}
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-3">Frequently Asked Questions</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-3">
+              Frequently Asked Questions
+            </h2>
             <p className="text-base text-gray-600 max-w-2xl mx-auto">
               Everything you need to know about WhatsApp broadcast messaging
             </p>
@@ -944,7 +1140,9 @@ export default function WhatsAppBroadcastPage() {
               {/* Left Column - 3 FAQs */}
               <div
                 className={`transition-all duration-700 ${
-                  faqInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  faqInView
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
                 }`}
               >
                 <Accordion type="single" collapsible className="space-y-3">
@@ -957,7 +1155,9 @@ export default function WhatsAppBroadcastPage() {
                       <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
                         {faq.question}
                       </AccordionTrigger>
-                      <AccordionContent className="text-gray-600 pb-4 leading-relaxed">{faq.answer}</AccordionContent>
+                      <AccordionContent className="text-gray-600 pb-4 leading-relaxed">
+                        {faq.answer}
+                      </AccordionContent>
                     </AccordionItem>
                   ))}
                 </Accordion>
@@ -966,7 +1166,9 @@ export default function WhatsAppBroadcastPage() {
               {/* Right Column - 3 FAQs */}
               <div
                 className={`transition-all duration-700 delay-200 ${
-                  faqInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  faqInView
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
                 }`}
               >
                 <Accordion type="single" collapsible className="space-y-3">
@@ -979,7 +1181,9 @@ export default function WhatsAppBroadcastPage() {
                       <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
                         {faq.question}
                       </AccordionTrigger>
-                      <AccordionContent className="text-gray-600 pb-4 leading-relaxed">{faq.answer}</AccordionContent>
+                      <AccordionContent className="text-gray-600 pb-4 leading-relaxed">
+                        {faq.answer}
+                      </AccordionContent>
                     </AccordionItem>
                   ))}
                 </Accordion>
@@ -992,12 +1196,19 @@ export default function WhatsAppBroadcastPage() {
       {/* CTA Section */}
       <section className="py-12 md:py-14 bg-gradient-to-br from-green-600 to-green-700 text-white">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Start Broadcasting?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Ready to Start Broadcasting?
+          </h2>
           <p className="text-lg text-green-100 mb-8 max-w-2xl mx-auto">
-            Join thousands of businesses using our platform to reach customers with personalized WhatsApp broadcasts
+            Join thousands of businesses using our platform to reach customers
+            with personalized WhatsApp broadcasts
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" variant="secondary" className="bg-white text-green-600 hover:bg-gray-100">
+            <Button
+              size="lg"
+              variant="secondary"
+              className="bg-white text-green-600 hover:bg-gray-100"
+            >
               Get Started Free
             </Button>
             <Button
@@ -1012,5 +1223,5 @@ export default function WhatsAppBroadcastPage() {
         </div>
       </section>
     </div>
-  )
+  );
 }
