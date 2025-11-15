@@ -298,7 +298,17 @@ export default function LiveChatPage() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="border-2 bg-white hover:bg-gray-50 font-medium shadow-sm"
+                  className="
+              border-2 
+              bg-white 
+              text-gray-800 
+              hover:bg-green-50 
+              hover:border-green-500 
+              hover:text-green-600 
+              font-medium 
+              shadow-sm 
+              transition-all
+            "
                   asChild
                 >
                   <Link href="/pricing">View Pricing</Link>
