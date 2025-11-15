@@ -1,23 +1,65 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { BrandSlider } from "@/components/brand-slider"
-import { Send, Clock, Target, ArrowRight, CheckCircle2, Zap, Users, TrendingUp, RefreshCw, Sparkles, ShoppingCart, Heart, GraduationCap, Plane, Building2, DollarSign, MessageSquare, Mail, Smartphone, Globe, AlertTriangle, CheckCircle, ArrowRightLeft, BarChart3, Calendar, Filter, Repeat } from 'lucide-react'
-import Link from "next/link"
-import Image from "next/image"
-import { useIntersectionObserver } from "@/hooks/use-intersection-observer"
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { BrandSlider } from "@/components/brand-slider";
+import {
+  Send,
+  Clock,
+  Target,
+  ArrowRight,
+  CheckCircle2,
+  Zap,
+  Users,
+  TrendingUp,
+  RefreshCw,
+  Sparkles,
+  ShoppingCart,
+  Heart,
+  GraduationCap,
+  Plane,
+  Building2,
+  DollarSign,
+  MessageSquare,
+  Mail,
+  Smartphone,
+  Globe,
+  AlertTriangle,
+  CheckCircle,
+  ArrowRightLeft,
+  BarChart3,
+  Calendar,
+  Filter,
+  Repeat,
+} from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
+import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 
 export default function DripMarketingPage() {
-  const { ref: heroRef, isVisible: heroInView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: fallbackRef, isVisible: fallbackInView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: featuresRef, isVisible: featuresInView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: howItWorksRef, isVisible: howItWorksInView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: benefitsRef, isVisible: benefitsInView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: useCasesRef, isVisible: useCasesInView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: faqRef, isVisible: faqInView } = useIntersectionObserver({ threshold: 0.1 })
+  const { ref: heroRef, isVisible: heroInView } = useIntersectionObserver({
+    threshold: 0.1,
+  });
+  const { ref: fallbackRef, isVisible: fallbackInView } =
+    useIntersectionObserver({ threshold: 0.1 });
+  const { ref: featuresRef, isVisible: featuresInView } =
+    useIntersectionObserver({ threshold: 0.1 });
+  const { ref: howItWorksRef, isVisible: howItWorksInView } =
+    useIntersectionObserver({ threshold: 0.1 });
+  const { ref: benefitsRef, isVisible: benefitsInView } =
+    useIntersectionObserver({ threshold: 0.1 });
+  const { ref: useCasesRef, isVisible: useCasesInView } =
+    useIntersectionObserver({ threshold: 0.1 });
+  const { ref: faqRef, isVisible: faqInView } = useIntersectionObserver({
+    threshold: 0.1,
+  });
 
   const channels = [
     {
@@ -48,7 +90,7 @@ export default function DripMarketingPage() {
       priority: "Fallback",
       openRate: "20%",
     },
-  ]
+  ];
 
   const keyFeatures = [
     {
@@ -87,7 +129,7 @@ export default function DripMarketingPage() {
       description:
         "Test different message variations, timing, and channel sequences. Use data-driven insights to continuously improve campaign performance and maximize ROI.",
     },
-  ]
+  ];
 
   const howItWorksSteps = [
     {
@@ -118,7 +160,7 @@ export default function DripMarketingPage() {
         "Analyze campaign metrics to see which channels, messages, and timing work best. Adjust your sequences, test variations, and continuously improve conversion rates over time.",
       icon: TrendingUp,
     },
-  ]
+  ];
 
   const benefits = [
     {
@@ -149,7 +191,7 @@ export default function DripMarketingPage() {
         "Intelligent channel routing uses the most cost-effective channel first, then falls back only when needed. Reduce costs while maximizing conversions for 4x better ROI.",
       metric: "4x ROI Boost",
     },
-  ]
+  ];
 
   const useCases = [
     {
@@ -157,7 +199,8 @@ export default function DripMarketingPage() {
       title: "E-commerce Welcome Series",
       description:
         "Send a 5-day welcome sequence: Day 1 WhatsApp intro → Day 2 RCS product catalog → Day 3 SMS first-order discount → Day 5 Email exclusive offers. Fallback ensures delivery.",
-      example: "Boost new customer conversions by 45% with automated onboarding",
+      example:
+        "Boost new customer conversions by 45% with automated onboarding",
     },
     {
       icon: AlertTriangle,
@@ -171,7 +214,8 @@ export default function DripMarketingPage() {
       title: "Course Enrollment Nurture",
       description:
         "Start with WhatsApp course intro → 2 days later RCS student testimonials → 5 days later SMS early-bird discount → 1 week later email enrollment deadline reminder.",
-      example: "Increase course enrollments by 60% with behavior-triggered sequences",
+      example:
+        "Increase course enrollments by 60% with behavior-triggered sequences",
     },
     {
       icon: Heart,
@@ -185,16 +229,18 @@ export default function DripMarketingPage() {
       title: "Travel Booking Follow-Up",
       description:
         "Post-booking: WhatsApp confirmation → 1 week before RCS itinerary → 24 hours before SMS check-in reminder → After trip email review request with incentive.",
-      example: "Increase customer satisfaction scores by 40% with automated touchpoints",
+      example:
+        "Increase customer satisfaction scores by 40% with automated touchpoints",
     },
     {
       icon: Building2,
       title: "Real Estate Lead Nurture",
       description:
         "Property inquiry: WhatsApp instant response → 1 day later RCS virtual tour → 3 days later SMS viewing appointment → 1 week later email similar properties.",
-      example: "Convert 50% more leads with persistent multi-channel follow-ups",
+      example:
+        "Convert 50% more leads with persistent multi-channel follow-ups",
     },
-  ]
+  ];
 
   const faqsColumn1 = [
     {
@@ -212,7 +258,7 @@ export default function DripMarketingPage() {
       answer:
         "Yes! You have complete control over channel priority and fallback logic. Choose which channel to try first (e.g., WhatsApp), set fallback order (RCS → SMS → Email), configure delay between fallback attempts, and even exclude certain channels based on audience segments or campaign goals.",
     },
-  ]
+  ];
 
   const faqsColumn2 = [
     {
@@ -230,33 +276,40 @@ export default function DripMarketingPage() {
       answer:
         "Our analytics dashboard shows exactly which channel each message was delivered on, including fallback paths taken. See delivery rates, open rates, and click rates for each channel, so you can optimize your sequences and understand customer channel preferences.",
     },
-  ]
+  ];
 
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-purple-50 via-white to-pink-50/30">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-purple-400/20 to-transparent rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-pink-400/15 to-transparent rounded-full blur-3xl" />
+        {/* Background Glows */}
+        <div className="absolute top-0 right-0 w-[320px] md:w-[420px] h-[320px] md:h-[420px] bg-gradient-to-br from-purple-400/20 to-transparent rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-[260px] md:w-[340px] h-[260px] md:h-[340px] bg-gradient-to-tr from-pink-400/15 to-transparent rounded-full blur-3xl" />
 
-        <div ref={heroRef} className="container relative mx-auto px-4 py-16 md:py-20 lg:py-24 z-10">
-          <div className="grid gap-8 lg:grid-cols-2 lg:gap-12 items-center">
-            {/* Left Content */}
+        <div
+          ref={heroRef}
+          className="container relative mx-auto px-4 py-8 md:py-10 lg:py-12 z-10"
+        >
+          <div className="grid gap-6 lg:grid-cols-2 lg:gap-10 items-center">
+            {/* LEFT CONTENT */}
             <div
-              className={`flex flex-col justify-center transition-all duration-1000 ${
-                heroInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              className={`flex flex-col justify-center transition-all duration-700 ${
+                heroInView
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-6"
               }`}
             >
               <Badge
                 variant="secondary"
-                className="mb-4 bg-purple-100 text-purple-700 hover:bg-purple-200 w-fit shadow-sm"
+                className="mb-3 bg-purple-100 text-purple-700 hover:bg-purple-200 w-fit shadow-sm"
               >
                 <Repeat className="w-3.5 h-3.5 mr-1.5" />
                 Automated Drip Campaigns
               </Badge>
 
-              <h1 className="mb-4 text-balance leading-tight tracking-tight">
-                <span className="block text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-2">
+              {/* Heading */}
+              <h1 className="mb-3 text-balance leading-tight tracking-tight">
+                <span className="block text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-1">
                   Drip Marketing with
                 </span>
                 <span className="block text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600 bg-clip-text text-transparent">
@@ -264,19 +317,24 @@ export default function DripMarketingPage() {
                 </span>
               </h1>
 
-              <p className="mb-6 text-lg text-muted-foreground md:text-xl max-w-xl leading-relaxed">
-                Create automated sequence campaigns that switch between WhatsApp, RCS, SMS, and email automatically.
-                Ensure 99% delivery, boost engagement 3x, and never lose a customer to failed messages.
+              {/* Description */}
+              <p className="mb-4 text-lg md:text-xl text-muted-foreground max-w-xl leading-relaxed">
+                Create automated sequence campaigns that switch between
+                WhatsApp, RCS, SMS, and email automatically. Ensure 99%
+                delivery, boost engagement, and never lose a customer to failed
+                messages.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-3 mb-6">
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-3 mb-4">
                 <Button
                   size="lg"
-                  className="bg-purple-600 hover:bg-purple-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all group"
+                  className="bg-purple-600 hover:bg-purple-700 text-white font-semibold shadow-md hover:shadow-lg transition-all group"
                 >
                   Create Drip Campaign
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
+
                 <Button
                   size="lg"
                   variant="outline"
@@ -288,36 +346,47 @@ export default function DripMarketingPage() {
               </div>
 
               {/* Trust Indicators */}
-              <div className="grid grid-cols-3 gap-4 pt-4 border-t border-gray-200">
-                <div>
-                  <div className="text-3xl font-bold text-purple-600">99%</div>
-                  <div className="text-sm text-muted-foreground">Delivery Rate</div>
+              <div className="grid grid-cols-3 gap-3 pt-3 border-t border-gray-200">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-purple-600">99%</div>
+                  <div className="text-xs text-muted-foreground">
+                    Delivery Rate
+                  </div>
                 </div>
-                <div>
-                  <div className="text-3xl font-bold text-pink-600">3x</div>
-                  <div className="text-sm text-muted-foreground">More Engagement</div>
+
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-pink-600">3x</div>
+                  <div className="text-xs text-muted-foreground">
+                    More Engagement
+                  </div>
                 </div>
-                <div>
-                  <div className="text-3xl font-bold text-orange-600">4x</div>
-                  <div className="text-sm text-muted-foreground">Better ROI</div>
+
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-orange-600">4x</div>
+                  <div className="text-xs text-muted-foreground">
+                    Better ROI
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Right Image */}
+            {/* RIGHT IMAGE */}
             <div
-              className={`relative flex items-center justify-center lg:justify-end transition-all duration-1000 delay-300 ${
-                heroInView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
+              className={`relative flex items-center justify-center lg:justify-end transition-all duration-700 delay-150 ${
+                heroInView
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 translate-x-6"
               }`}
             >
-              <div className="relative w-full max-w-lg">
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-400/20 via-pink-400/15 to-orange-400/20 blur-3xl rounded-full transform scale-110" />
+              <div className="relative w-full max-w-sm sm:max-w-md lg:max-w-lg">
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-400/20 via-pink-400/15 to-orange-400/20 blur-3xl rounded-full scale-105" />
+
                 <Image
                   src="/drip-marketing-workflow-showing-automated-sequen.jpg"
-                  alt="Drip marketing workflow showing automated sequence campaigns with multi-channel fallback from WhatsApp to RCS to SMS to email"
-                  width={500}
-                  height={600}
-                  className="relative z-10 w-full h-auto object-contain rounded-2xl shadow-2xl"
+                  alt="Drip marketing workflow showing automated multi-channel fallback"
+                  width={460}
+                  height={540}
+                  className="relative z-10 w-full h-auto object-contain rounded-2xl shadow-xl"
                   priority
                 />
               </div>
@@ -337,10 +406,15 @@ export default function DripMarketingPage() {
         <div className="container mx-auto px-4">
           <div
             className={`text-center mb-12 transition-all duration-1000 ${
-              fallbackInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              fallbackInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
             }`}
           >
-            <Badge className="mb-4 shadow-sm bg-purple-100 text-purple-700 border-purple-200" variant="outline">
+            <Badge
+              className="mb-4 shadow-sm bg-purple-100 text-purple-700 border-purple-200"
+              variant="outline"
+            >
               Intelligent Routing
             </Badge>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-balance">
@@ -350,29 +424,25 @@ export default function DripMarketingPage() {
               </span>
             </h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Automatically switch channels to ensure your message always reaches customers
+              Automatically switch channels to ensure your message always
+              reaches customers
             </p>
           </div>
 
           <div className="max-w-5xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            {/* MOBILE = 2x2 | TABLET+DESKTOP = 1x4 */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {channels.map((channel, index) => (
                 <div
                   key={index}
                   className={`transition-all duration-1000 ${
-                    fallbackInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                    fallbackInView
+                      ? "opacity-100 translate-y-0"
+                      : "opacity-0 translate-y-8"
                   }`}
                   style={{ transitionDelay: `${index * 150}ms` }}
                 >
                   <Card className="p-6 hover:shadow-xl transition-all duration-300 border-2 hover:border-purple-300 relative">
-                    {index < 3 && (
-                      <div className="absolute -right-3 top-1/2 -translate-y-1/2 z-10 hidden md:block">
-                        <div className="w-6 h-6 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center shadow-lg">
-                          <ArrowRight className="w-4 h-4 text-white" />
-                        </div>
-                      </div>
-                    )}
-
                     <div
                       className={`w-14 h-14 bg-gradient-to-br ${channel.color} rounded-xl flex items-center justify-center mb-4 shadow-md mx-auto`}
                     >
@@ -383,35 +453,20 @@ export default function DripMarketingPage() {
                       <Badge className="mb-2 text-xs" variant="secondary">
                         {channel.priority}
                       </Badge>
-                      <h3 className="text-lg font-bold mb-1 text-foreground">{channel.name}</h3>
-                      <p className="text-2xl font-bold text-purple-600 mb-1">{channel.openRate}</p>
+
+                      <h3 className="text-lg font-bold mb-1 text-foreground">
+                        {channel.name}
+                      </h3>
+
+                      <p className="text-2xl font-bold text-purple-600 mb-1">
+                        {channel.openRate}
+                      </p>
+
                       <p className="text-xs text-muted-foreground">Open Rate</p>
                     </div>
                   </Card>
                 </div>
               ))}
-            </div>
-
-            <div
-              className={`mt-8 p-6 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl border-2 border-purple-200 transition-all duration-1000 delay-600 ${
-                fallbackInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
-            >
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center shadow-md">
-                    <Zap className="w-6 h-6 text-white" />
-                  </div>
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold mb-2 text-foreground">Instant Automatic Switching</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    If a message fails to deliver on WhatsApp, the system instantly tries RCS. If RCS fails, it
-                    switches to SMS within seconds. If SMS doesn't work, email is used as the final fallback. All
-                    automatic—no manual intervention required. Your message always gets delivered.
-                  </p>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -425,10 +480,15 @@ export default function DripMarketingPage() {
         <div className="container mx-auto px-4">
           <div
             className={`text-center mb-12 transition-all duration-1000 ${
-              featuresInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              featuresInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
             }`}
           >
-            <Badge className="mb-4 shadow-sm bg-pink-100 text-pink-700 border-pink-200" variant="outline">
+            <Badge
+              className="mb-4 shadow-sm bg-pink-100 text-pink-700 border-pink-200"
+              variant="outline"
+            >
               Powerful Features
             </Badge>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-balance">
@@ -438,7 +498,8 @@ export default function DripMarketingPage() {
               </span>
             </h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Build, automate, and optimize multi-channel sequence campaigns that deliver results
+              Build, automate, and optimize multi-channel sequence campaigns
+              that deliver results
             </p>
           </div>
 
@@ -447,15 +508,21 @@ export default function DripMarketingPage() {
               <Card
                 key={index}
                 className={`p-6 hover:shadow-xl transition-all duration-500 border-2 hover:border-pink-300 ${
-                  featuresInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  featuresInView
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
                 }`}
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
                 <div className="w-12 h-12 bg-gradient-to-br from-pink-500 to-purple-600 rounded-xl flex items-center justify-center mb-4 shadow-md">
                   <feature.icon className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-lg font-bold mb-2 text-foreground">{feature.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{feature.description}</p>
+                <h3 className="text-lg font-bold mb-2 text-foreground">
+                  {feature.title}
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {feature.description}
+                </p>
               </Card>
             ))}
           </div>
@@ -471,17 +538,23 @@ export default function DripMarketingPage() {
         <div className="container mx-auto px-4">
           <div
             className={`text-center mb-12 transition-all duration-1000 ${
-              howItWorksInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              howItWorksInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
             }`}
           >
-            <Badge className="mb-4 shadow-sm bg-blue-100 text-blue-700 border-blue-200" variant="outline">
+            <Badge
+              className="mb-4 shadow-sm bg-blue-100 text-blue-700 border-blue-200"
+              variant="outline"
+            >
               Simple Process
             </Badge>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-balance">
               4 Steps to Automated Drip Success
             </h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Set up multi-channel drip campaigns in minutes with our visual workflow builder
+              Set up multi-channel drip campaigns in minutes with our visual
+              workflow builder
             </p>
           </div>
 
@@ -490,22 +563,30 @@ export default function DripMarketingPage() {
               <Card
                 key={index}
                 className={`p-6 border-2 hover:border-blue-300 hover:shadow-lg transition-all duration-500 ${
-                  howItWorksInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"
+                  howItWorksInView
+                    ? "opacity-100 translate-x-0"
+                    : "opacity-0 -translate-x-8"
                 }`}
                 style={{ transitionDelay: `${index * 150}ms` }}
               >
                 <div className="flex items-start gap-6">
                   <div className="flex-shrink-0">
                     <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-green-600 rounded-2xl flex items-center justify-center shadow-lg">
-                      <span className="text-2xl font-bold text-white">{step.step}</span>
+                      <span className="text-2xl font-bold text-white">
+                        {step.step}
+                      </span>
                     </div>
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
                       <step.icon className="w-5 h-5 text-blue-600" />
-                      <h3 className="text-xl font-bold text-foreground">{step.title}</h3>
+                      <h3 className="text-xl font-bold text-foreground">
+                        {step.title}
+                      </h3>
                     </div>
-                    <p className="text-muted-foreground leading-relaxed">{step.description}</p>
+                    <p className="text-muted-foreground leading-relaxed">
+                      {step.description}
+                    </p>
                   </div>
                 </div>
               </Card>
@@ -522,17 +603,23 @@ export default function DripMarketingPage() {
         <div className="container mx-auto px-4">
           <div
             className={`text-center mb-12 transition-all duration-1000 ${
-              benefitsInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              benefitsInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
             }`}
           >
-            <Badge className="mb-4 shadow-sm bg-green-100 text-green-700 border-green-200" variant="outline">
+            <Badge
+              className="mb-4 shadow-sm bg-green-100 text-green-700 border-green-200"
+              variant="outline"
+            >
               Business Impact
             </Badge>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-balance">
               Measurable Results from Day One
             </h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              See dramatic improvements in delivery, engagement, efficiency, and ROI
+              See dramatic improvements in delivery, engagement, efficiency, and
+              ROI
             </p>
           </div>
 
@@ -541,18 +628,27 @@ export default function DripMarketingPage() {
               <Card
                 key={index}
                 className={`p-6 hover:shadow-xl transition-all duration-500 border-2 hover:border-green-300 text-center ${
-                  benefitsInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  benefitsInView
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
                 }`}
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
                 <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center mb-4 shadow-md mx-auto">
                   <benefit.icon className="w-7 h-7 text-white" />
                 </div>
-                <Badge className="mb-3 bg-green-100 text-green-700 border-green-200" variant="outline">
+                <Badge
+                  className="mb-3 bg-green-100 text-green-700 border-green-200"
+                  variant="outline"
+                >
                   {benefit.metric}
                 </Badge>
-                <h3 className="text-lg font-bold mb-2 text-foreground">{benefit.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{benefit.description}</p>
+                <h3 className="text-lg font-bold mb-2 text-foreground">
+                  {benefit.title}
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {benefit.description}
+                </p>
               </Card>
             ))}
           </div>
@@ -567,17 +663,23 @@ export default function DripMarketingPage() {
         <div className="container mx-auto px-4">
           <div
             className={`text-center mb-12 transition-all duration-1000 ${
-              useCasesInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              useCasesInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
             }`}
           >
-            <Badge className="mb-4 shadow-sm bg-orange-100 text-orange-700 border-orange-200" variant="outline">
+            <Badge
+              className="mb-4 shadow-sm bg-orange-100 text-orange-700 border-orange-200"
+              variant="outline"
+            >
               Industry Applications
             </Badge>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-balance">
               Drip Campaigns for Every Business
             </h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              See how businesses use multi-channel drip marketing to drive growth and engagement
+              See how businesses use multi-channel drip marketing to drive
+              growth and engagement
             </p>
           </div>
 
@@ -586,15 +688,21 @@ export default function DripMarketingPage() {
               <Card
                 key={index}
                 className={`p-6 hover:shadow-lg transition-all duration-500 border hover:border-orange-300 group ${
-                  useCasesInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  useCasesInView
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
                 }`}
                 style={{ transitionDelay: `${index * 80}ms` }}
               >
                 <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-yellow-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-md">
                   <useCase.icon className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-lg font-bold mb-2 text-foreground">{useCase.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-3">{useCase.description}</p>
+                <h3 className="text-lg font-bold mb-2 text-foreground">
+                  {useCase.title}
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+                  {useCase.description}
+                </p>
                 <div className="pt-3 border-t border-gray-200">
                   <p className="text-xs text-orange-600 font-medium flex items-start gap-2">
                     <Sparkles className="w-4 h-4 flex-shrink-0 mt-0.5" />
@@ -608,19 +716,27 @@ export default function DripMarketingPage() {
       </section>
 
       {/* FAQ Section */}
-      <section ref={faqRef} className="py-16 md:py-20 bg-gradient-to-br from-gray-50 to-white">
+      <section
+        ref={faqRef}
+        className="py-16 md:py-20 bg-gradient-to-br from-gray-50 to-white"
+      >
         <div className="container mx-auto px-4">
           <div
             className={`text-center mb-12 transition-all duration-1000 ${
-              faqInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              faqInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
             }`}
           >
             <Badge className="mb-4 shadow-sm" variant="outline">
               Common Questions
             </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Frequently Asked Questions</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Frequently Asked Questions
+            </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Everything you need to know about drip marketing and multi-channel fallback
+              Everything you need to know about drip marketing and multi-channel
+              fallback
             </p>
           </div>
 
@@ -629,7 +745,9 @@ export default function DripMarketingPage() {
               {/* Left Column */}
               <div
                 className={`transition-all duration-1000 ${
-                  faqInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  faqInView
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
                 }`}
               >
                 <Accordion type="single" collapsible className="space-y-3">
@@ -653,7 +771,9 @@ export default function DripMarketingPage() {
               {/* Right Column */}
               <div
                 className={`transition-all duration-1000 delay-300 ${
-                  faqInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  faqInView
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
                 }`}
               >
                 <Accordion type="single" collapsible className="space-y-3">
@@ -685,11 +805,17 @@ export default function DripMarketingPage() {
             Never Lose a Customer to Failed Messages
           </h2>
           <p className="text-xl text-purple-100 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Create intelligent drip campaigns with multi-channel fallback. Ensure 99% delivery, boost engagement 3x,
-            and drive 4x better ROI with automated sequence marketing that always reaches your customers.
+            Create intelligent drip campaigns with multi-channel fallback.
+            Ensure 99% delivery, boost engagement 3x, and drive 4x better ROI
+            with automated sequence marketing that always reaches your
+            customers.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" variant="secondary" className="bg-white text-purple-600 hover:bg-gray-100 font-semibold">
+            <Button
+              size="lg"
+              variant="secondary"
+              className="bg-white text-purple-600 hover:bg-gray-100 font-semibold"
+            >
               Start Your First Drip Campaign
               <Repeat className="ml-2 h-5 w-5" />
             </Button>
@@ -705,5 +831,5 @@ export default function DripMarketingPage() {
         </div>
       </section>
     </div>
-  )
+  );
 }

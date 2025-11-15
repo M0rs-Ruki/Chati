@@ -1,10 +1,15 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { BrandSlider } from "@/components/brand-slider"
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { BrandSlider } from "@/components/brand-slider";
 import {
   Workflow,
   Zap,
@@ -38,10 +43,10 @@ import {
   Gauge,
   Lock,
   HeadphonesIcon,
-} from "lucide-react"
-import Link from "next/link"
-import Image from "next/image"
-import { useIntersectionObserver } from "@/hooks/use-intersection-observer"
+} from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
+import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 
 const FloatingWorkflowIcons = () => {
   return (
@@ -71,38 +76,66 @@ const FloatingWorkflowIcons = () => {
         <Repeat className="w-6 h-6 text-white" />
       </div>
     </>
-  )
-}
+  );
+};
 
 export default function AutomationWorkflowPage() {
-  const { ref: heroRef, isVisible: heroInView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: workflowRef, isVisible: workflowInView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: noCodeHeroRef, isVisible: noCodeHeroInView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: enterpriseHeroRef, isVisible: enterpriseHeroInView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: integrationsRef, isVisible: integrationsInView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: featuresRef, isVisible: featuresInView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: benefitsRef, isVisible: benefitsInView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: useCasesRef, isVisible: useCasesInView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: faqRef, isVisible: faqInView } = useIntersectionObserver({ threshold: 0.1 })
+  const { ref: heroRef, isVisible: heroInView } = useIntersectionObserver({
+    threshold: 0.1,
+  });
+  const { ref: workflowRef, isVisible: workflowInView } =
+    useIntersectionObserver({ threshold: 0.1 });
+  const { ref: noCodeHeroRef, isVisible: noCodeHeroInView } =
+    useIntersectionObserver({ threshold: 0.1 });
+  const { ref: enterpriseHeroRef, isVisible: enterpriseHeroInView } =
+    useIntersectionObserver({ threshold: 0.1 });
+  const { ref: integrationsRef, isVisible: integrationsInView } =
+    useIntersectionObserver({ threshold: 0.1 });
+  const { ref: featuresRef, isVisible: featuresInView } =
+    useIntersectionObserver({ threshold: 0.1 });
+  const { ref: benefitsRef, isVisible: benefitsInView } =
+    useIntersectionObserver({ threshold: 0.1 });
+  const { ref: useCasesRef, isVisible: useCasesInView } =
+    useIntersectionObserver({ threshold: 0.1 });
+  const { ref: faqRef, isVisible: faqInView } = useIntersectionObserver({
+    threshold: 0.1,
+  });
 
   const integrations = [
     { name: "Razorpay", icon: CreditCard, color: "from-blue-500 to-blue-600" },
-    { name: "Shopify", icon: ShoppingCart, color: "from-green-500 to-green-600" },
-    { name: "Facebook Leads", icon: Facebook, color: "from-blue-600 to-blue-700" },
-    { name: "India Mart", icon: Building2, color: "from-orange-500 to-orange-600" },
+    {
+      name: "Shopify",
+      icon: ShoppingCart,
+      color: "from-green-500 to-green-600",
+    },
+    {
+      name: "Facebook Leads",
+      icon: Facebook,
+      color: "from-blue-600 to-blue-700",
+    },
+    {
+      name: "India Mart",
+      icon: Building2,
+      color: "from-orange-500 to-orange-600",
+    },
     { name: "Justdial", icon: Phone, color: "from-red-500 to-red-600" },
     { name: "Webhooks", icon: Webhook, color: "from-purple-500 to-purple-600" },
-    { name: "PetPooja", icon: ShoppingCart, color: "from-pink-500 to-pink-600" },
+    {
+      name: "PetPooja",
+      icon: ShoppingCart,
+      color: "from-pink-500 to-pink-600",
+    },
     { name: "99Acres", icon: Home, color: "from-indigo-500 to-indigo-600" },
     { name: "Housing.com", icon: Home, color: "from-teal-500 to-teal-600" },
     { name: "Custom API", icon: Settings, color: "from-gray-500 to-gray-600" },
-  ]
+  ];
 
   const features = [
     {
       icon: Workflow,
       title: "Visual Workflow Builder",
-      description: "Create complex automation workflows with an intuitive drag-and-drop interface. No coding required.",
+      description:
+        "Create complex automation workflows with an intuitive drag-and-drop interface. No coding required.",
     },
     {
       icon: Clock,
@@ -125,12 +158,14 @@ export default function AutomationWorkflowPage() {
     {
       icon: Repeat,
       title: "Recurring Workflows",
-      description: "Set up recurring automation workflows that run daily, weekly, or monthly for ongoing campaigns.",
+      description:
+        "Set up recurring automation workflows that run daily, weekly, or monthly for ongoing campaigns.",
     },
     {
       icon: BarChart3,
       title: "Performance Analytics",
-      description: "Track workflow performance with detailed analytics on delivery rates, engagement, and conversions.",
+      description:
+        "Track workflow performance with detailed analytics on delivery rates, engagement, and conversions.",
     },
     {
       icon: Zap,
@@ -144,7 +179,7 @@ export default function AutomationWorkflowPage() {
       description:
         "Use dynamic variables to personalize messages with customer names, order details, and custom data fields.",
     },
-  ]
+  ];
 
   const benefits = [
     {
@@ -156,7 +191,8 @@ export default function AutomationWorkflowPage() {
     {
       icon: Clock,
       title: "Save Time",
-      description: "Automate repetitive tasks and save 20+ hours per week on manual messaging and follow-ups.",
+      description:
+        "Automate repetitive tasks and save 20+ hours per week on manual messaging and follow-ups.",
     },
     {
       icon: Target,
@@ -167,9 +203,10 @@ export default function AutomationWorkflowPage() {
     {
       icon: Users,
       title: "Scale Effortlessly",
-      description: "Handle thousands of conversations simultaneously without increasing team size or workload.",
+      description:
+        "Handle thousands of conversations simultaneously without increasing team size or workload.",
     },
-  ]
+  ];
 
   const useCases = [
     {
@@ -192,7 +229,8 @@ export default function AutomationWorkflowPage() {
     },
     {
       title: "Drip Campaigns",
-      description: "Create multi-step drip campaigns with delays to educate, engage, and convert prospects over time.",
+      description:
+        "Create multi-step drip campaigns with delays to educate, engage, and convert prospects over time.",
       icon: Repeat,
     },
     {
@@ -207,7 +245,7 @@ export default function AutomationWorkflowPage() {
         "Notify potential buyers instantly via WhatsApp when new properties matching their criteria are listed on 99Acres or Housing.com.",
       icon: Home,
     },
-  ]
+  ];
 
   const faqsColumn1 = [
     {
@@ -225,7 +263,7 @@ export default function AutomationWorkflowPage() {
       answer:
         "Yes! Each workflow can include actions for WhatsApp, RCS, SMS, and email. You can send messages on one or multiple channels, with custom delays between each message for optimal engagement.",
     },
-  ]
+  ];
 
   const faqsColumn2 = [
     {
@@ -243,7 +281,7 @@ export default function AutomationWorkflowPage() {
       answer:
         "Our analytics dashboard shows detailed metrics for each workflow including trigger count, delivery rates, open rates, click rates, and conversions. You can see which workflows perform best and optimize accordingly.",
     },
-  ]
+  ];
 
   return (
     <div className="min-h-screen">
@@ -252,11 +290,16 @@ export default function AutomationWorkflowPage() {
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-purple-400/20 to-transparent rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-blue-400/15 to-transparent rounded-full blur-3xl" />
 
-        <div ref={heroRef} className="container relative mx-auto px-4 pr-0 md:pr-4 py-12 md:py-14 lg:py-16 z-10">
+        <div
+          ref={heroRef}
+          className="container relative mx-auto px-4 pr-0 md:pr-4 py-12 md:py-14 lg:py-16 z-10"
+        >
           <div className="grid gap-6 lg:grid-cols-2 lg:gap-10 items-center">
             <div
               className={`flex flex-col justify-center transition-all duration-1000 ${
-                heroInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                heroInView
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-8"
               }`}
             >
               <Badge
@@ -277,9 +320,10 @@ export default function AutomationWorkflowPage() {
               </h1>
 
               <p className="mb-6 text-base text-muted-foreground md:text-lg max-w-xl leading-relaxed">
-                Create powerful automation workflows that trigger WhatsApp, RCS, SMS, and email campaigns from Facebook
-                Leads, Shopify, Razorpay, and 20+ integrations. Build sophisticated drip campaigns with delays,
-                conditions, and multi-step sequences.
+                Create powerful automation workflows that trigger WhatsApp, RCS,
+                SMS, and email campaigns from Facebook Leads, Shopify, Razorpay,
+                and 20+ integrations. Build sophisticated drip campaigns with
+                delays, conditions, and multi-step sequences.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 mb-6">
@@ -305,32 +349,42 @@ export default function AutomationWorkflowPage() {
                   <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mb-2">
                     <MessageSquare className="w-5 h-5 text-green-600" />
                   </div>
-                  <div className="text-xs text-muted-foreground text-center">WhatsApp</div>
+                  <div className="text-xs text-muted-foreground text-center">
+                    WhatsApp
+                  </div>
                 </div>
                 <div className="flex flex-col items-center">
                   <div className="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center mb-2">
                     <Smartphone className="w-5 h-5 text-indigo-600" />
                   </div>
-                  <div className="text-xs text-muted-foreground text-center">RCS</div>
+                  <div className="text-xs text-muted-foreground text-center">
+                    RCS
+                  </div>
                 </div>
                 <div className="flex flex-col items-center">
                   <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mb-2">
                     <Radio className="w-5 h-5 text-blue-600" />
                   </div>
-                  <div className="text-xs text-muted-foreground text-center">SMS</div>
+                  <div className="text-xs text-muted-foreground text-center">
+                    SMS
+                  </div>
                 </div>
                 <div className="flex flex-col items-center">
                   <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center mb-2">
                     <Mail className="w-5 h-5 text-orange-600" />
                   </div>
-                  <div className="text-xs text-muted-foreground text-center">Email</div>
+                  <div className="text-xs text-muted-foreground text-center">
+                    Email
+                  </div>
                 </div>
               </div>
             </div>
 
             <div
               className={`relative flex items-center justify-center lg:justify-end transition-all duration-1000 delay-300 ${
-                heroInView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
+                heroInView
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 translate-x-8"
               }`}
             >
               <div className="relative w-full max-w-lg">
@@ -352,219 +406,261 @@ export default function AutomationWorkflowPage() {
 
       <BrandSlider />
 
-      {/* Visual Workflow Diagram Section */}
       <section
         ref={workflowRef}
         className="relative overflow-hidden bg-gradient-to-br from-white via-purple-50/30 to-blue-50/20 py-16 md:py-20"
       >
         <div className="container mx-auto px-4">
+          {/* Header */}
           <div
             className={`text-center mb-12 transition-all duration-700 ${
-              workflowInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              workflowInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-6"
             }`}
           >
-            <Badge className="mb-4 bg-purple-100 text-purple-700 border-purple-200" variant="outline">
+            <Badge
+              className="mb-4 bg-purple-100 text-purple-700 border-purple-200"
+              variant="outline"
+            >
               <Sparkles className="w-3.5 h-3.5 mr-1.5" />
               How It Works
             </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Visual Workflow Automation</h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              See how automation workflows trigger multi-channel campaigns with delays, conditions, and personalized
-              messaging
+
+            <h2 className="text-3xl md:text-4xl font-bold mb-3">
+              Visual Workflow Automation
+            </h2>
+
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              See how automation workflows trigger multi-channel campaigns with
+              intelligent delays, conditions, and personalized messaging.
             </p>
           </div>
 
-          {/* Workflow Visualization */}
-          <div className="max-w-5xl mx-auto">
-            <div className="relative">
-              {/* Workflow Steps */}
-              <div className="space-y-8">
-                {/* Step 1: Trigger */}
-                <div
-                  className={`transition-all duration-700 ${
-                    workflowInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"
-                  }`}
-                >
-                  <Card className="p-6 bg-gradient-to-r from-blue-50 to-blue-100/50 border-2 border-blue-200 shadow-lg hover:shadow-xl transition-all">
-                    <div className="flex items-center gap-4">
-                      <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0">
-                        <Play className="w-8 h-8 text-white" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Badge className="bg-blue-600 text-white">Step 1: Trigger</Badge>
-                          <span className="text-sm text-gray-600">Event occurs</span>
-                        </div>
-                        <h3 className="text-xl font-bold mb-1">Facebook Lead Captured</h3>
-                        <p className="text-gray-600">
-                          When a new lead fills out your Facebook Lead Ad form, the workflow is triggered automatically
-                        </p>
-                      </div>
-                      <Facebook className="w-12 h-12 text-blue-600 opacity-50" />
+          {/* Steps Container */}
+          <div className="max-w-4xl mx-auto">
+            <div className="space-y-10 md:space-y-12 relative">
+              {/* STEP 1 */}
+              <div
+                className={`transition-all duration-700 ${
+                  workflowInView
+                    ? "opacity-100 translate-x-0"
+                    : "opacity-0 -translate-x-6"
+                }`}
+              >
+                <Card className="p-5 md:p-6 bg-gradient-to-r from-blue-50 to-blue-100/50 border border-blue-200 shadow-md hover:shadow-xl transition-all">
+                  <div className="flex flex-col md:flex-row md:items-center gap-4">
+                    <div className="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-md">
+                      <Play className="w-7 h-7 text-white" />
                     </div>
-                  </Card>
-                </div>
 
-                {/* Animated Arrow */}
-                <div className="flex justify-center">
-                  <div className="w-1 h-12 bg-gradient-to-b from-blue-400 to-green-400 rounded-full animate-pulse" />
-                </div>
-
-                {/* Step 2: Immediate Action */}
-                <div
-                  className={`transition-all duration-700 delay-200 ${
-                    workflowInView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
-                  }`}
-                >
-                  <Card className="p-6 bg-gradient-to-r from-green-50 to-green-100/50 border-2 border-green-200 shadow-lg hover:shadow-xl transition-all">
-                    <div className="flex items-center gap-4">
-                      <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0">
-                        <MessageSquare className="w-8 h-8 text-white" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Badge className="bg-green-600 text-white">Step 2: Immediate Action</Badge>
-                          <span className="text-sm text-gray-600">Instant response</span>
-                        </div>
-                        <h3 className="text-xl font-bold mb-1">Send WhatsApp Welcome Message</h3>
-                        <p className="text-gray-600">
-                          "Hi {"{name}"}, thanks for your interest! Here's what you need to know about our services..."
-                        </p>
-                      </div>
-                      <MessageSquare className="w-12 h-12 text-green-600 opacity-50" />
+                    <div className="flex-1">
+                      <Badge className="bg-blue-600 text-white mb-1">
+                        Step 1: Trigger
+                      </Badge>
+                      <h3 className="text-xl font-bold">
+                        Facebook Lead Captured
+                      </h3>
+                      <p className="text-gray-600 text-sm md:text-base">
+                        When a new lead submits your Facebook Lead Ad form, the
+                        workflow starts automatically.
+                      </p>
                     </div>
-                  </Card>
-                </div>
 
-                {/* Delay Indicator */}
-                <div className="flex justify-center items-center gap-3">
-                  <div className="w-1 h-8 bg-gradient-to-b from-green-400 to-purple-400 rounded-full" />
-                  <Card className="px-4 py-2 bg-purple-50 border-2 border-purple-200">
-                    <div className="flex items-center gap-2">
-                      <Clock className="w-5 h-5 text-purple-600" />
-                      <span className="font-semibold text-purple-700">Wait 2 hours</span>
-                    </div>
-                  </Card>
-                  <div className="w-1 h-8 bg-gradient-to-b from-purple-400 to-indigo-400 rounded-full" />
-                </div>
+                    <Facebook className="w-10 h-10 text-blue-600 opacity-40 hidden md:block" />
+                  </div>
+                </Card>
+              </div>
 
-                {/* Step 3: Follow-up Action */}
-                <div
-                  className={`transition-all duration-700 delay-400 ${
-                    workflowInView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
-                  }`}
-                >
-                  <Card className="p-6 bg-gradient-to-r from-indigo-50 to-indigo-100/50 border-2 border-indigo-200 shadow-lg hover:shadow-xl transition-all">
-                    <div className="flex items-center gap-4">
-                      <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0">
-                        <Smartphone className="w-8 h-8 text-white" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Badge className="bg-indigo-600 text-white">Step 3: Follow-up</Badge>
-                          <span className="text-sm text-gray-600">After delay</span>
-                        </div>
-                        <h3 className="text-xl font-bold mb-1">Send RCS Message with Rich Media</h3>
-                        <p className="text-gray-600">
-                          Send an interactive RCS message with product images, pricing, and action buttons
-                        </p>
-                      </div>
-                      <Smartphone className="w-12 h-12 text-indigo-600 opacity-50" />
-                    </div>
-                  </Card>
-                </div>
+              {/* Line */}
+              <div className="flex justify-center">
+                <div className="w-1 h-10 bg-gradient-to-b from-blue-400 to-green-400 rounded-full animate-pulse" />
+              </div>
 
-                {/* Delay Indicator */}
-                <div className="flex justify-center items-center gap-3">
-                  <div className="w-1 h-8 bg-gradient-to-b from-indigo-400 to-orange-400 rounded-full" />
-                  <Card className="px-4 py-2 bg-orange-50 border-2 border-orange-200">
-                    <div className="flex items-center gap-2">
-                      <Clock className="w-5 h-5 text-orange-600" />
-                      <span className="font-semibold text-orange-700">Wait 1 day</span>
+              {/* STEP 2 */}
+              <div
+                className={`transition-all duration-700 delay-150 ${
+                  workflowInView
+                    ? "opacity-100 translate-x-0"
+                    : "opacity-0 translate-x-6"
+                }`}
+              >
+                <Card className="p-5 md:p-6 bg-gradient-to-r from-green-50 to-green-100/50 border border-green-200 shadow-md hover:shadow-xl transition-all">
+                  <div className="flex flex-col md:flex-row md:items-center gap-4">
+                    <div className="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center shadow-md">
+                      <MessageSquare className="w-7 h-7 text-white" />
                     </div>
-                  </Card>
-                  <div className="w-1 h-8 bg-gradient-to-b from-orange-400 to-pink-400 rounded-full" />
-                </div>
 
-                {/* Step 4: Final Action */}
-                <div
-                  className={`transition-all duration-700 delay-600 ${
-                    workflowInView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
-                  }`}
-                >
-                  <Card className="p-6 bg-gradient-to-r from-pink-50 to-pink-100/50 border-2 border-pink-200 shadow-lg hover:shadow-xl transition-all">
-                    <div className="flex items-center gap-4">
-                      <div className="w-16 h-16 bg-gradient-to-br from-pink-500 to-pink-600 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0">
-                        <Mail className="w-8 h-8 text-white" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Badge className="bg-pink-600 text-white">Step 4: Final Touch</Badge>
-                          <span className="text-sm text-gray-600">Closing message</span>
-                        </div>
-                        <h3 className="text-xl font-bold mb-1">Send Email with Detailed Information</h3>
-                        <p className="text-gray-600">
-                          Send a comprehensive email with case studies, testimonials, and a special offer to close the
-                          deal
-                        </p>
-                      </div>
-                      <Mail className="w-12 h-12 text-pink-600 opacity-50" />
+                    <div className="flex-1">
+                      <Badge className="bg-green-600 text-white mb-1">
+                        Step 2: Immediate Action
+                      </Badge>
+                      <h3 className="text-xl font-bold">
+                        Send WhatsApp Welcome Message
+                      </h3>
+                      <p className="text-gray-600 text-sm md:text-base">
+                        “Hi {`{name}`}, thanks for your interest! Here's what
+                        you need to know…”
+                      </p>
                     </div>
-                  </Card>
-                </div>
 
-                {/* Success Indicator */}
-                <div className="flex justify-center">
-                  <Card className="px-6 py-4 bg-gradient-to-r from-green-500 to-green-600 border-0 shadow-xl">
-                    <div className="flex items-center gap-3 text-white">
-                      <CheckCircle2 className="w-6 h-6" />
-                      <span className="font-bold text-lg">Workflow Complete - Lead Nurtured Successfully!</span>
+                    <MessageSquare className="w-10 h-10 text-green-600 opacity-40 hidden md:block" />
+                  </div>
+                </Card>
+              </div>
+
+              {/* Delay */}
+              <div className="flex justify-center items-center gap-2 md:gap-3">
+                <div className="w-1 h-6 bg-gradient-to-b from-green-400 to-purple-400 rounded-full" />
+                <Card className="px-4 py-2 bg-purple-50 border border-purple-200">
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-5 h-5 text-purple-600" />
+                    <span className="font-semibold text-purple-700 text-sm">
+                      Wait 2 hours
+                    </span>
+                  </div>
+                </Card>
+                <div className="w-1 h-6 bg-gradient-to-b from-purple-400 to-indigo-400 rounded-full" />
+              </div>
+
+              {/* STEP 3 */}
+              <div
+                className={`transition-all duration-700 delay-300 ${
+                  workflowInView
+                    ? "opacity-100 translate-x-0"
+                    : "opacity-0 translate-x-6"
+                }`}
+              >
+                <Card className="p-5 md:p-6 bg-gradient-to-r from-indigo-50 to-indigo-100/50 border border-indigo-200 shadow-md hover:shadow-xl transition-all">
+                  <div className="flex flex-col md:flex-row md:items-center gap-4">
+                    <div className="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-md">
+                      <Smartphone className="w-7 h-7 text-white" />
                     </div>
-                  </Card>
-                </div>
+
+                    <div className="flex-1">
+                      <Badge className="bg-indigo-600 text-white mb-1">
+                        Step 3: Follow-up
+                      </Badge>
+                      <h3 className="text-xl font-bold">
+                        Send RCS Message with Rich Media
+                      </h3>
+                      <p className="text-gray-600 text-sm md:text-base">
+                        Deliver an interactive message with product images and
+                        action buttons.
+                      </p>
+                    </div>
+
+                    <Smartphone className="w-10 h-10 text-indigo-600 opacity-40 hidden md:block" />
+                  </div>
+                </Card>
+              </div>
+
+              {/* Delay */}
+              <div className="flex justify-center items-center gap-2 md:gap-3">
+                <div className="w-1 h-6 bg-gradient-to-b from-indigo-400 to-orange-400 rounded-full" />
+                <Card className="px-4 py-2 bg-orange-50 border border-orange-200">
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-5 h-5 text-orange-600" />
+                    <span className="font-semibold text-orange-700 text-sm">
+                      Wait 1 day
+                    </span>
+                  </div>
+                </Card>
+                <div className="w-1 h-6 bg-gradient-to-b from-orange-400 to-pink-400 rounded-full" />
+              </div>
+
+              {/* STEP 4 */}
+              <div
+                className={`transition-all duration-700 delay-500 ${
+                  workflowInView
+                    ? "opacity-100 translate-x-0"
+                    : "opacity-0 translate-x-6"
+                }`}
+              >
+                <Card className="p-5 md:p-6 bg-gradient-to-r from-pink-50 to-pink-100/50 border border-pink-200 shadow-md hover:shadow-xl transition-all">
+                  <div className="flex flex-col md:flex-row md:items-center gap-4">
+                    <div className="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-pink-500 to-pink-600 rounded-2xl flex items-center justify-center shadow-md">
+                      <Mail className="w-7 h-7 text-white" />
+                    </div>
+
+                    <div className="flex-1">
+                      <Badge className="bg-pink-600 text-white mb-1">
+                        Step 4: Final Step
+                      </Badge>
+                      <h3 className="text-xl font-bold">
+                        Send Email with Offer
+                      </h3>
+                      <p className="text-gray-600 text-sm md:text-base">
+                        Share case studies, testimonials, and a personalized
+                        offer to close the deal.
+                      </p>
+                    </div>
+
+                    <Mail className="w-10 h-10 text-pink-600 opacity-40 hidden md:block" />
+                  </div>
+                </Card>
+              </div>
+
+              {/* Final Success */}
+              <div className="flex justify-center pt-4">
+                <Card className="px-6 py-4 bg-gradient-to-r from-green-500 to-green-600 shadow-lg border-0">
+                  <div className="flex items-center gap-3 text-white">
+                    <CheckCircle2 className="w-6 h-6" />
+                    <span className="font-bold text-lg">
+                      Workflow Complete — Lead Nurtured Successfully!
+                    </span>
+                  </div>
+                </Card>
               </div>
             </div>
+          </div>
 
-            {/* Workflow Features */}
-            <div
-              className={`mt-12 grid md:grid-cols-3 gap-6 transition-all duration-700 delay-800 ${
-                workflowInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
-            >
-              <Card className="p-6 text-center hover:shadow-lg transition-all">
-                <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <GitBranch className="w-7 h-7 text-white" />
+          {/* Features */}
+          <div
+            className={`mt-14 grid md:grid-cols-3 gap-6 transition-all duration-700 delay-800 ${
+              workflowInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-6"
+            }`}
+          >
+            {[
+              {
+                icon: GitBranch,
+                title: "Conditional Logic",
+                text: "Add branching workflows based on user behavior.",
+                color: "purple",
+              },
+              {
+                icon: Clock,
+                title: "Flexible Delays",
+                text: "Send messages at the perfect moment.",
+                color: "blue",
+              },
+              {
+                icon: Repeat,
+                title: "Multi-Step Sequences",
+                text: "Design complete customer journeys with many steps.",
+                color: "green",
+              },
+            ].map((item, i) => (
+              <Card
+                key={i}
+                className="p-6 text-center hover:shadow-lg transition-all"
+              >
+                <div
+                  className={`w-14 h-14 bg-gradient-to-br from-${item.color}-500 to-${item.color}-600 rounded-xl flex items-center justify-center mx-auto mb-4`}
+                >
+                  <item.icon className="w-7 h-7 text-white" />
                 </div>
-                <h3 className="font-bold text-lg mb-2">Conditional Logic</h3>
-                <p className="text-gray-600 text-sm">
-                  Add if/else conditions to create branching workflows based on user actions or attributes
-                </p>
+                <h3 className="font-bold text-lg mb-2">{item.title}</h3>
+                <p className="text-gray-600 text-sm">{item.text}</p>
               </Card>
-
-              <Card className="p-6 text-center hover:shadow-lg transition-all">
-                <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <Clock className="w-7 h-7 text-white" />
-                </div>
-                <h3 className="font-bold text-lg mb-2">Flexible Delays</h3>
-                <p className="text-gray-600 text-sm">
-                  Set delays in minutes, hours, or days to send messages at the perfect time
-                </p>
-              </Card>
-
-              <Card className="p-6 text-center hover:shadow-lg transition-all">
-                <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <Repeat className="w-7 h-7 text-white" />
-                </div>
-                <h3 className="font-bold text-lg mb-2">Multi-Step Sequences</h3>
-                <p className="text-gray-600 text-sm">
-                  Create unlimited steps with multiple channels for comprehensive customer journeys
-                </p>
-              </Card>
-            </div>
+            ))}
           </div>
         </div>
       </section>
-
+      
+      {/* Visual Workflow Diagram Section */}
       <section
         ref={noCodeHeroRef}
         className="relative overflow-hidden bg-gradient-to-br from-green-50 via-white to-blue-50/30 py-16 md:py-20"
@@ -577,7 +673,9 @@ export default function AutomationWorkflowPage() {
             {/* Content */}
             <div
               className={`transition-all duration-1000 ${
-                noCodeHeroInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"
+                noCodeHeroInView
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 -translate-x-8"
               }`}
             >
               <Badge
@@ -598,9 +696,11 @@ export default function AutomationWorkflowPage() {
               </h2>
 
               <p className="mb-6 text-base text-muted-foreground md:text-lg leading-relaxed">
-                Our intuitive drag-and-drop workflow builder empowers marketers, sales teams, and business owners to
-                create sophisticated automation workflows without any technical expertise. Design multi-step campaigns,
-                add conditional logic, and integrate with 20+ platforms—all through a visual interface that anyone can
+                Our intuitive drag-and-drop workflow builder empowers marketers,
+                sales teams, and business owners to create sophisticated
+                automation workflows without any technical expertise. Design
+                multi-step campaigns, add conditional logic, and integrate with
+                20+ platforms—all through a visual interface that anyone can
                 master in minutes.
               </p>
 
@@ -610,10 +710,12 @@ export default function AutomationWorkflowPage() {
                     <CheckCircle2 className="w-4 h-4 text-green-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-foreground mb-1">Visual Drag-and-Drop Interface</h3>
+                    <h3 className="font-semibold text-foreground mb-1">
+                      Visual Drag-and-Drop Interface
+                    </h3>
                     <p className="text-sm text-muted-foreground">
-                      Build workflows by simply dragging triggers, actions, and delays onto the canvas. No coding
-                      required.
+                      Build workflows by simply dragging triggers, actions, and
+                      delays onto the canvas. No coding required.
                     </p>
                   </div>
                 </div>
@@ -623,9 +725,12 @@ export default function AutomationWorkflowPage() {
                     <CheckCircle2 className="w-4 h-4 text-blue-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-foreground mb-1">Pre-Built Templates</h3>
+                    <h3 className="font-semibold text-foreground mb-1">
+                      Pre-Built Templates
+                    </h3>
                     <p className="text-sm text-muted-foreground">
-                      Start with proven workflow templates for lead nurturing, abandoned cart recovery, and more.
+                      Start with proven workflow templates for lead nurturing,
+                      abandoned cart recovery, and more.
                     </p>
                   </div>
                 </div>
@@ -635,9 +740,12 @@ export default function AutomationWorkflowPage() {
                     <CheckCircle2 className="w-4 h-4 text-purple-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-foreground mb-1">Real-Time Testing & Preview</h3>
+                    <h3 className="font-semibold text-foreground mb-1">
+                      Real-Time Testing & Preview
+                    </h3>
                     <p className="text-sm text-muted-foreground">
-                      Test your workflows before going live with our built-in preview and testing tools.
+                      Test your workflows before going live with our built-in
+                      preview and testing tools.
                     </p>
                   </div>
                 </div>
@@ -664,7 +772,9 @@ export default function AutomationWorkflowPage() {
             {/* Image */}
             <div
               className={`relative transition-all duration-1000 delay-300 ${
-                noCodeHeroInView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
+                noCodeHeroInView
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 translate-x-8"
               }`}
             >
               <div className="relative w-full max-w-lg mx-auto lg:mx-0 lg:ml-auto">
@@ -684,8 +794,12 @@ export default function AutomationWorkflowPage() {
                       <Layers className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <div className="text-xs text-gray-500">Workflow Steps</div>
-                      <div className="text-lg font-bold text-gray-900">Unlimited</div>
+                      <div className="text-xs text-gray-500">
+                        Workflow Steps
+                      </div>
+                      <div className="text-lg font-bold text-gray-900">
+                        Unlimited
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -697,7 +811,9 @@ export default function AutomationWorkflowPage() {
                     </div>
                     <div>
                       <div className="text-xs text-gray-500">Setup Time</div>
-                      <div className="text-lg font-bold text-gray-900">5 Minutes</div>
+                      <div className="text-lg font-bold text-gray-900">
+                        5 Minutes
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -715,16 +831,24 @@ export default function AutomationWorkflowPage() {
         <div className="container mx-auto px-4">
           <div
             className={`text-center mb-12 transition-all duration-700 ${
-              integrationsInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              integrationsInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
             }`}
           >
-            <Badge className="mb-4 bg-blue-100 text-blue-700 border-blue-200" variant="outline">
+            <Badge
+              className="mb-4 bg-blue-100 text-blue-700 border-blue-200"
+              variant="outline"
+            >
               <Zap className="w-3.5 h-3.5 mr-1.5" />
               Platform Integrations
             </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Trigger Workflows from 20+ Platforms</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Trigger Workflows from 20+ Platforms
+            </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Connect with your favorite tools and platforms to trigger automation workflows instantly
+              Connect with your favorite tools and platforms to trigger
+              automation workflows instantly
             </p>
           </div>
 
@@ -733,7 +857,9 @@ export default function AutomationWorkflowPage() {
               <Card
                 key={index}
                 className={`p-6 text-center hover:shadow-xl transition-all duration-300 group cursor-pointer ${
-                  integrationsInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  integrationsInView
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
                 }`}
                 style={{ transitionDelay: `${index * 50}ms` }}
               >
@@ -749,11 +875,19 @@ export default function AutomationWorkflowPage() {
 
           <div
             className={`text-center mt-8 transition-all duration-700 delay-500 ${
-              integrationsInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              integrationsInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
             }`}
           >
-            <p className="text-gray-600 mb-4">And many more integrations available...</p>
-            <Button variant="outline" className="border-2 bg-transparent" asChild>
+            <p className="text-gray-600 mb-4">
+              And many more integrations available...
+            </p>
+            <Button
+              variant="outline"
+              className="border-2 bg-transparent"
+              asChild
+            >
               <Link href="/integrations">View All Integrations</Link>
             </Button>
           </div>
@@ -761,16 +895,24 @@ export default function AutomationWorkflowPage() {
       </section>
 
       {/* Key Features */}
-      <section ref={featuresRef} className="py-12 md:py-14 bg-gradient-to-b from-white via-purple-50/20 to-white">
+      <section
+        ref={featuresRef}
+        className="py-12 md:py-14 bg-gradient-to-b from-white via-purple-50/20 to-white"
+      >
         <div className="container mx-auto px-4">
           <div
             className={`text-center mb-12 transition-all duration-700 ${
-              featuresInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              featuresInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
             }`}
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Powerful Automation Features</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Powerful Automation Features
+            </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Everything you need to create sophisticated automation workflows that drive results
+              Everything you need to create sophisticated automation workflows
+              that drive results
             </p>
           </div>
 
@@ -779,7 +921,9 @@ export default function AutomationWorkflowPage() {
               <Card
                 key={index}
                 className={`p-6 hover:shadow-lg transition-all duration-300 border-gray-200 ${
-                  featuresInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  featuresInView
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
                 }`}
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
@@ -787,7 +931,9 @@ export default function AutomationWorkflowPage() {
                   <feature.icon className="w-6 h-6 text-purple-600" />
                 </div>
                 <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed">{feature.description}</p>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  {feature.description}
+                </p>
               </Card>
             ))}
           </div>
@@ -795,16 +941,24 @@ export default function AutomationWorkflowPage() {
       </section>
 
       {/* Benefits */}
-      <section ref={benefitsRef} className="py-12 md:py-14 bg-gradient-to-br from-purple-50/40 via-white to-blue-50/30">
+      <section
+        ref={benefitsRef}
+        className="py-12 md:py-14 bg-gradient-to-br from-purple-50/40 via-white to-blue-50/30"
+      >
         <div className="container mx-auto px-4">
           <div
             className={`text-center mb-12 transition-all duration-700 ${
-              benefitsInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              benefitsInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
             }`}
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Choose Automation Workflows?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Why Choose Automation Workflows?
+            </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Transform your marketing and sales with intelligent automation that works 24/7
+              Transform your marketing and sales with intelligent automation
+              that works 24/7
             </p>
           </div>
 
@@ -813,7 +967,9 @@ export default function AutomationWorkflowPage() {
               <div
                 key={index}
                 className={`text-center transition-all duration-700 ${
-                  benefitsInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  benefitsInView
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
                 }`}
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
@@ -840,7 +996,9 @@ export default function AutomationWorkflowPage() {
             {/* Image */}
             <div
               className={`relative order-2 lg:order-1 transition-all duration-1000 delay-300 ${
-                enterpriseHeroInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"
+                enterpriseHeroInView
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 -translate-x-8"
               }`}
             >
               <div className="relative w-full max-w-lg mx-auto lg:mx-0">
@@ -861,7 +1019,9 @@ export default function AutomationWorkflowPage() {
                     </div>
                     <div>
                       <div className="text-xs text-gray-500">Uptime</div>
-                      <div className="text-lg font-bold text-gray-900">99.9%</div>
+                      <div className="text-lg font-bold text-gray-900">
+                        99.9%
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -883,7 +1043,9 @@ export default function AutomationWorkflowPage() {
             {/* Content */}
             <div
               className={`order-1 lg:order-2 transition-all duration-1000 ${
-                enterpriseHeroInView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
+                enterpriseHeroInView
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 translate-x-8"
               }`}
             >
               <Badge
@@ -904,31 +1066,43 @@ export default function AutomationWorkflowPage() {
               </h2>
 
               <p className="mb-6 text-base text-muted-foreground md:text-lg leading-relaxed">
-                Built for businesses that need reliability, security, and scale. Our enterprise automation platform
-                handles millions of messages daily with 99.9% uptime, advanced security features, team collaboration
-                tools, and dedicated support. From startups to Fortune 500 companies, we power automation workflows that
-                drive real business results.
+                Built for businesses that need reliability, security, and scale.
+                Our enterprise automation platform handles millions of messages
+                daily with 99.9% uptime, advanced security features, team
+                collaboration tools, and dedicated support. From startups to
+                Fortune 500 companies, we power automation workflows that drive
+                real business results.
               </p>
 
               {/* Stats Grid */}
               <div className="grid grid-cols-2 gap-4 mb-6">
                 <Card className="p-4 bg-white border-2 border-gray-100 hover:border-blue-200 transition-colors">
-                  <div className="text-3xl font-bold text-blue-600 mb-1">99.9%</div>
+                  <div className="text-3xl font-bold text-blue-600 mb-1">
+                    99.9%
+                  </div>
                   <div className="text-sm text-gray-600">Platform Uptime</div>
                 </Card>
 
                 <Card className="p-4 bg-white border-2 border-gray-100 hover:border-green-200 transition-colors">
-                  <div className="text-3xl font-bold text-green-600 mb-1">1M+</div>
+                  <div className="text-3xl font-bold text-green-600 mb-1">
+                    1M+
+                  </div>
                   <div className="text-sm text-gray-600">Messages Per Day</div>
                 </Card>
 
                 <Card className="p-4 bg-white border-2 border-gray-100 hover:border-purple-200 transition-colors">
-                  <div className="text-3xl font-bold text-purple-600 mb-1">24/7</div>
-                  <div className="text-sm text-gray-600">Enterprise Support</div>
+                  <div className="text-3xl font-bold text-purple-600 mb-1">
+                    24/7
+                  </div>
+                  <div className="text-sm text-gray-600">
+                    Enterprise Support
+                  </div>
                 </Card>
 
                 <Card className="p-4 bg-white border-2 border-gray-100 hover:border-orange-200 transition-colors">
-                  <div className="text-3xl font-bold text-orange-600 mb-1">SOC 2</div>
+                  <div className="text-3xl font-bold text-orange-600 mb-1">
+                    SOC 2
+                  </div>
                   <div className="text-sm text-gray-600">Compliant</div>
                 </Card>
               </div>
@@ -940,7 +1114,8 @@ export default function AutomationWorkflowPage() {
                     <Lock className="w-4 h-4 text-blue-600" />
                   </div>
                   <span className="text-sm font-medium text-foreground">
-                    Advanced security with SSO, 2FA, and role-based access control
+                    Advanced security with SSO, 2FA, and role-based access
+                    control
                   </span>
                 </div>
 
@@ -949,7 +1124,8 @@ export default function AutomationWorkflowPage() {
                     <Users className="w-4 h-4 text-green-600" />
                   </div>
                   <span className="text-sm font-medium text-foreground">
-                    Team collaboration with workflow sharing and approval workflows
+                    Team collaboration with workflow sharing and approval
+                    workflows
                   </span>
                 </div>
 
@@ -986,16 +1162,24 @@ export default function AutomationWorkflowPage() {
       </section>
 
       {/* Use Cases */}
-      <section ref={useCasesRef} className="py-12 md:py-14 bg-gradient-to-br from-white via-blue-50/20 to-purple-50/10">
+      <section
+        ref={useCasesRef}
+        className="py-12 md:py-14 bg-gradient-to-br from-white via-blue-50/20 to-purple-50/10"
+      >
         <div className="container mx-auto px-4">
           <div
             className={`text-center mb-12 transition-all duration-700 ${
-              useCasesInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              useCasesInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
             }`}
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Automation Workflow Use Cases</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Automation Workflow Use Cases
+            </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              See how businesses use automation workflows to streamline operations and boost conversions
+              See how businesses use automation workflows to streamline
+              operations and boost conversions
             </p>
           </div>
 
@@ -1004,7 +1188,9 @@ export default function AutomationWorkflowPage() {
               <Card
                 key={index}
                 className={`p-6 hover:shadow-lg transition-all duration-300 border-gray-200 group ${
-                  useCasesInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  useCasesInView
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
                 }`}
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
@@ -1013,8 +1199,12 @@ export default function AutomationWorkflowPage() {
                     <useCase.icon className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold mb-2">{useCase.title}</h3>
-                    <p className="text-gray-600 text-sm leading-relaxed">{useCase.description}</p>
+                    <h3 className="text-lg font-semibold mb-2">
+                      {useCase.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">
+                      {useCase.description}
+                    </p>
                   </div>
                 </div>
               </Card>
@@ -1024,16 +1214,24 @@ export default function AutomationWorkflowPage() {
       </section>
 
       {/* FAQ Section */}
-      <section ref={faqRef} className="py-12 md:py-14 bg-gradient-to-br from-gray-50 to-white">
+      <section
+        ref={faqRef}
+        className="py-12 md:py-14 bg-gradient-to-br from-gray-50 to-white"
+      >
         <div className="container mx-auto px-4">
           <div
             className={`text-center mb-10 transition-all duration-700 ${
-              faqInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              faqInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
             }`}
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-3">Frequently Asked Questions</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-3">
+              Frequently Asked Questions
+            </h2>
             <p className="text-base text-gray-600 max-w-2xl mx-auto">
-              Everything you need to know about automation workflows and multi-channel campaigns
+              Everything you need to know about automation workflows and
+              multi-channel campaigns
             </p>
           </div>
 
@@ -1041,7 +1239,9 @@ export default function AutomationWorkflowPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
               <div
                 className={`transition-all duration-700 ${
-                  faqInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  faqInView
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
                 }`}
               >
                 <Accordion type="single" collapsible className="space-y-3">
@@ -1054,7 +1254,9 @@ export default function AutomationWorkflowPage() {
                       <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
                         {faq.question}
                       </AccordionTrigger>
-                      <AccordionContent className="text-gray-600 pb-4 leading-relaxed">{faq.answer}</AccordionContent>
+                      <AccordionContent className="text-gray-600 pb-4 leading-relaxed">
+                        {faq.answer}
+                      </AccordionContent>
                     </AccordionItem>
                   ))}
                 </Accordion>
@@ -1062,7 +1264,9 @@ export default function AutomationWorkflowPage() {
 
               <div
                 className={`transition-all duration-700 delay-200 ${
-                  faqInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  faqInView
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
                 }`}
               >
                 <Accordion type="single" collapsible className="space-y-3">
@@ -1075,7 +1279,9 @@ export default function AutomationWorkflowPage() {
                       <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
                         {faq.question}
                       </AccordionTrigger>
-                      <AccordionContent className="text-gray-600 pb-4 leading-relaxed">{faq.answer}</AccordionContent>
+                      <AccordionContent className="text-gray-600 pb-4 leading-relaxed">
+                        {faq.answer}
+                      </AccordionContent>
                     </AccordionItem>
                   ))}
                 </Accordion>
@@ -1088,12 +1294,19 @@ export default function AutomationWorkflowPage() {
       {/* CTA Section */}
       <section className="py-12 md:py-14 bg-gradient-to-br from-purple-600 to-blue-700 text-white">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Automate Your Marketing?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Ready to Automate Your Marketing?
+          </h2>
           <p className="text-lg text-purple-100 mb-8 max-w-2xl mx-auto">
-            Start creating powerful automation workflows that drive conversions and save time
+            Start creating powerful automation workflows that drive conversions
+            and save time
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" variant="secondary" className="bg-white text-purple-600 hover:bg-gray-100">
+            <Button
+              size="lg"
+              variant="secondary"
+              className="bg-white text-purple-600 hover:bg-gray-100"
+            >
               Start Free Trial
             </Button>
             <Button
@@ -1108,5 +1321,5 @@ export default function AutomationWorkflowPage() {
         </div>
       </section>
     </div>
-  )
+  );
 }
