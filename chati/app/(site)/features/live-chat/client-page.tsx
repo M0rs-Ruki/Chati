@@ -1,9 +1,14 @@
-"use client"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { BrandSlider } from "@/components/brand-slider"
+"use client";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { BrandSlider } from "@/components/brand-slider";
 import {
   MessageSquare,
   Users,
@@ -25,10 +30,10 @@ import {
   Sparkles,
   TrendingUp,
   Target,
-} from "lucide-react"
-import Link from "next/link"
-import Image from "next/image"
-import { useIntersectionObserver } from "@/hooks/use-intersection-observer"
+} from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
+import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 
 const FloatingChatIcons = () => {
   return (
@@ -58,18 +63,31 @@ const FloatingChatIcons = () => {
         <Inbox className="w-6 h-6 text-white" />
       </div>
     </>
-  )
-}
+  );
+};
 
 export default function LiveChatPage() {
-  const { ref: heroRef, isVisible: heroInView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: block1Ref, isVisible: block1InView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: block2Ref, isVisible: block2InView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: block3Ref, isVisible: block3InView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: featuresRef, isVisible: featuresInView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: benefitsRef, isVisible: benefitsInView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: useCasesRef, isVisible: useCasesInView } = useIntersectionObserver({ threshold: 0.1 })
-  const { ref: faqRef, isVisible: faqInView } = useIntersectionObserver({ threshold: 0.1 })
+  const { ref: heroRef, isVisible: heroInView } = useIntersectionObserver({
+    threshold: 0.1,
+  });
+  const { ref: block1Ref, isVisible: block1InView } = useIntersectionObserver({
+    threshold: 0.1,
+  });
+  const { ref: block2Ref, isVisible: block2InView } = useIntersectionObserver({
+    threshold: 0.1,
+  });
+  const { ref: block3Ref, isVisible: block3InView } = useIntersectionObserver({
+    threshold: 0.1,
+  });
+  const { ref: featuresRef, isVisible: featuresInView } =
+    useIntersectionObserver({ threshold: 0.1 });
+  const { ref: benefitsRef, isVisible: benefitsInView } =
+    useIntersectionObserver({ threshold: 0.1 });
+  const { ref: useCasesRef, isVisible: useCasesInView } =
+    useIntersectionObserver({ threshold: 0.1 });
+  const { ref: faqRef, isVisible: faqInView } = useIntersectionObserver({
+    threshold: 0.1,
+  });
 
   const features = [
     {
@@ -120,7 +138,7 @@ export default function LiveChatPage() {
       description:
         "Provide round-the-clock support with automated responses, chatbots, and team scheduling across time zones.",
     },
-  ]
+  ];
 
   const benefits = [
     {
@@ -147,40 +165,46 @@ export default function LiveChatPage() {
       description:
         "Enterprise-grade security with end-to-end encryption, GDPR compliance, and data protection standards.",
     },
-  ]
+  ];
 
   const useCases = [
     {
       title: "Customer Support",
-      description: "Provide instant support across all messaging channels with unified inbox and team collaboration.",
+      description:
+        "Provide instant support across all messaging channels with unified inbox and team collaboration.",
       icon: MessageSquare,
     },
     {
       title: "Sales Conversations",
-      description: "Engage prospects and close deals faster with real-time messaging across multiple platforms.",
+      description:
+        "Engage prospects and close deals faster with real-time messaging across multiple platforms.",
       icon: Target,
     },
     {
       title: "Order Management",
-      description: "Handle order inquiries, updates, and support requests efficiently from one centralized dashboard.",
+      description:
+        "Handle order inquiries, updates, and support requests efficiently from one centralized dashboard.",
       icon: CheckCircle2,
     },
     {
       title: "Lead Qualification",
-      description: "Qualify leads in real-time with instant responses and automated routing to sales teams.",
+      description:
+        "Qualify leads in real-time with instant responses and automated routing to sales teams.",
       icon: UserPlus,
     },
     {
       title: "Appointment Booking",
-      description: "Schedule appointments and send reminders across all messaging channels with automated workflows.",
+      description:
+        "Schedule appointments and send reminders across all messaging channels with automated workflows.",
       icon: Clock,
     },
     {
       title: "Feedback Collection",
-      description: "Gather customer feedback and reviews through conversational messaging on their preferred platform.",
+      description:
+        "Gather customer feedback and reviews through conversational messaging on their preferred platform.",
       icon: Sparkles,
     },
-  ]
+  ];
 
   const faqsColumn1 = [
     {
@@ -198,7 +222,7 @@ export default function LiveChatPage() {
       answer:
         "You can assign conversations to specific team members, add internal notes visible only to your team, set conversation statuses, and collaborate in real-time. Team members receive notifications when assigned to conversations or mentioned in internal notes.",
     },
-  ]
+  ];
 
   const faqsColumn2 = [
     {
@@ -216,7 +240,7 @@ export default function LiveChatPage() {
       answer:
         "Our analytics dashboard tracks first response time, average response time, and resolution time for each channel and team member. You can set SLA targets and receive alerts when response times exceed thresholds.",
     },
-  ]
+  ];
 
   return (
     <div className="min-h-screen">
@@ -226,15 +250,23 @@ export default function LiveChatPage() {
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-purple-400/20 to-transparent rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-blue-400/15 to-transparent rounded-full blur-3xl" />
 
-        <div ref={heroRef} className="container relative mx-auto px-4 pr-0 md:pr-4 py-12 md:py-14 lg:py-16 z-10">
+        <div
+          ref={heroRef}
+          className="container relative mx-auto px-4 pr-0 md:pr-4 py-12 md:py-14 lg:py-16 z-10"
+        >
           <div className="grid gap-6 lg:grid-cols-2 lg:gap-10 items-center">
             {/* Left Content */}
             <div
               className={`flex flex-col justify-center transition-all duration-1000 ${
-                heroInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                heroInView
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-8"
               }`}
             >
-              <Badge variant="secondary" className="mb-4 bg-blue-100 text-blue-700 hover:bg-blue-200 w-fit shadow-sm">
+              <Badge
+                variant="secondary"
+                className="mb-4 bg-blue-100 text-blue-700 hover:bg-blue-200 w-fit shadow-sm"
+              >
                 <MessageSquare className="w-3.5 h-3.5 mr-1.5" />
                 Multi-Channel Live Chat
               </Badge>
@@ -249,9 +281,10 @@ export default function LiveChatPage() {
               </h1>
 
               <p className="mb-6 text-base text-muted-foreground md:text-lg max-w-xl leading-relaxed">
-                Support customers across WhatsApp, RCS, Instagram DM, and Facebook Messenger from a single Omnion
-                channel inbox. Collaborate with your team, organize conversations with tags and attributes, and deliver
-                exceptional customer experiences.
+                Support customers across WhatsApp, RCS, Instagram DM, and
+                Facebook Messenger from a single Omnion channel inbox.
+                Collaborate with your team, organize conversations with tags and
+                attributes, and deliver exceptional customer experiences.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 mb-6">
@@ -278,25 +311,33 @@ export default function LiveChatPage() {
                   <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mb-2">
                     <MessageSquare className="w-5 h-5 text-green-600" />
                   </div>
-                  <div className="text-xs text-muted-foreground text-center">WhatsApp</div>
+                  <div className="text-xs text-muted-foreground text-center">
+                    WhatsApp
+                  </div>
                 </div>
                 <div className="flex flex-col items-center">
                   <div className="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center mb-2">
                     <Smartphone className="w-5 h-5 text-indigo-600" />
                   </div>
-                  <div className="text-xs text-muted-foreground text-center">RCS</div>
+                  <div className="text-xs text-muted-foreground text-center">
+                    RCS
+                  </div>
                 </div>
                 <div className="flex flex-col items-center">
                   <div className="w-10 h-10 bg-pink-100 rounded-lg flex items-center justify-center mb-2">
                     <Instagram className="w-5 h-5 text-pink-600" />
                   </div>
-                  <div className="text-xs text-muted-foreground text-center">Instagram</div>
+                  <div className="text-xs text-muted-foreground text-center">
+                    Instagram
+                  </div>
                 </div>
                 <div className="flex flex-col items-center">
                   <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mb-2">
                     <Facebook className="w-5 h-5 text-blue-600" />
                   </div>
-                  <div className="text-xs text-muted-foreground text-center">Facebook</div>
+                  <div className="text-xs text-muted-foreground text-center">
+                    Facebook
+                  </div>
                 </div>
               </div>
             </div>
@@ -304,7 +345,9 @@ export default function LiveChatPage() {
             {/* Right Image */}
             <div
               className={`relative flex items-center justify-center lg:justify-end transition-all duration-1000 delay-300 ${
-                heroInView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
+                heroInView
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 translate-x-8"
               }`}
             >
               <div className="relative w-full max-w-lg">
@@ -334,86 +377,107 @@ export default function LiveChatPage() {
       {/* Block 1: Image Left, Content Right - Unified Omnion Inbox */}
       <section
         ref={block1Ref}
-        className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-purple-50/40 to-pink-50/30 py-12 md:py-14"
+        className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-purple-50/40 to-pink-50/30 py-10 sm:py-12 md:py-16 lg:py-20"
       >
-        <div className="absolute top-10 right-20 w-96 h-96 bg-gradient-to-br from-purple-400/15 to-transparent rounded-full blur-3xl" />
-        <div className="absolute bottom-10 left-20 w-96 h-96 bg-gradient-to-tr from-blue-400/15 to-transparent rounded-full blur-3xl" />
+        <div className="absolute top-10 right-10 sm:right-20 w-64 h-64 sm:w-96 sm:h-96 bg-gradient-to-br from-purple-400/15 to-transparent rounded-full blur-3xl" />
+        <div className="absolute bottom-10 left-10 sm:left-20 w-64 h-64 sm:w-96 sm:h-96 bg-gradient-to-tr from-blue-400/15 to-transparent rounded-full blur-3xl" />
 
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="grid gap-8 lg:grid-cols-[55%_45%] items-center">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid gap-6 lg:gap-8 xl:gap-10 lg:grid-cols-2 items-center">
             {/* Left Side - Image */}
             <div
-              className={`flex items-center justify-center lg:justify-start transition-all duration-1000 ${
-                block1InView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"
+              className={`order-1 lg:order-1 flex items-center justify-center lg:justify-start transition-all duration-1000 ${
+                block1InView
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 -translate-x-8"
               }`}
             >
-              <div className="relative">
+              <div className="relative w-full max-w-xl sm:max-w-2xl lg:max-w-3xl">
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 via-purple-400/15 to-pink-400/20 blur-2xl rounded-3xl transform scale-105" />
-                <Image
-                  src="/unified-omnion-inbox-showing-whatsapp-rcs-insta.jpg"
-                  alt="Unified Omnion channel inbox consolidating WhatsApp, RCS, Instagram DM, and Facebook Messenger conversations with smart filtering and organization"
-                  width={800}
-                  height={600}
-                  className="relative z-10 w-full h-auto max-w-2xl object-contain drop-shadow-2xl hover:scale-[1.02] transition-transform duration-500"
-                  loading="lazy"
-                />
+
+                <div className="relative z-10 w-full aspect-[4/3]">
+                  <Image
+                    src="/unified-omnion-inbox-showing-whatsapp-rcs-insta.jpg"
+                    alt="Unified Omnion channel inbox consolidating WhatsApp, RCS, Instagram DM, and Facebook Messenger conversations with smart filtering and organization"
+                    fill
+                    sizes="(max-width: 640px) 95vw, (max-width: 1024px) 85vw, 55vw"
+                    className="object-contain drop-shadow-2xl hover:scale-[1.02] transition-transform duration-500 rounded-lg"
+                    loading="lazy"
+                  />
+                </div>
               </div>
             </div>
 
             {/* Right Side - Content */}
             <div
-              className={`transition-all duration-1000 delay-300 ${
-                block1InView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              className={`order-2 lg:order-2 transition-all duration-1000 delay-300 ${
+                block1InView
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-8"
               }`}
             >
-              <Badge className="mb-3 shadow-sm bg-blue-100 text-blue-700 border-blue-200" variant="outline">
+              <Badge
+                className="mb-3 md:mb-4 shadow-sm bg-blue-100 text-blue-700 border-blue-200"
+                variant="outline"
+              >
                 Unified Omnion Inbox
               </Badge>
-              <h2 className="mb-4 text-balance text-3xl font-bold md:text-4xl lg:text-5xl">
+              <h2 className="mb-4 md:mb-5 text-balance text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl font-bold leading-tight">
                 All Your Conversations in One Place
               </h2>
-              <p className="mb-6 text-pretty text-muted-foreground text-base md:text-lg leading-relaxed">
-                Stop switching between multiple apps and platforms. Our Omnion channel inbox brings together all
-                customer conversations from WhatsApp, RCS, Instagram Direct Messages, and Facebook Messenger into one
-                powerful, unified dashboard where your team can collaborate and respond efficiently.
+              <p className="mb-6 md:mb-8 text-pretty text-muted-foreground text-sm sm:text-base md:text-lg leading-relaxed">
+                Stop switching between multiple apps and platforms. Our Omnion
+                channel inbox brings together all customer conversations from
+                WhatsApp, RCS, Instagram Direct Messages, and Facebook Messenger
+                into one powerful, unified dashboard where your team can
+                collaborate and respond efficiently.
               </p>
 
-              <div className="space-y-4">
-                <div className="flex gap-3 items-start group">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-green-100 to-green-50 group-hover:from-green-200 group-hover:to-green-100 transition-all shadow-sm">
-                    <MessageSquare className="h-5 w-5 text-green-600" />
+              <div className="space-y-4 md:space-y-5">
+                <div className="flex gap-3 md:gap-4 items-start group">
+                  <div className="flex h-9 w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-green-100 to-green-50 group-hover:from-green-200 group-hover:to-green-100 transition-all shadow-sm">
+                    <MessageSquare className="h-4 w-4 md:h-5 md:w-5 text-green-600" />
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">WhatsApp Business Integration</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Connect your WhatsApp Business API and manage all WhatsApp conversations with full message
-                      history, media support, and real-time synchronization.
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-foreground mb-1 text-sm md:text-base">
+                      WhatsApp Business Integration
+                    </h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                      Connect your WhatsApp Business API and manage all WhatsApp
+                      conversations with full message history, media support,
+                      and real-time synchronization.
                     </p>
                   </div>
                 </div>
 
-                <div className="flex gap-3 items-start group">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-100 to-indigo-50 group-hover:from-indigo-200 group-hover:to-indigo-100 transition-all shadow-sm">
-                    <Smartphone className="h-5 w-5 text-indigo-600" />
+                <div className="flex gap-3 md:gap-4 items-start group">
+                  <div className="flex h-9 w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-100 to-indigo-50 group-hover:from-indigo-200 group-hover:to-indigo-100 transition-all shadow-sm">
+                    <Smartphone className="h-4 w-4 md:h-5 md:w-5 text-indigo-600" />
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">RCS Messaging Support</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Support Rich Communication Services (RCS) with rich media, interactive buttons, and enhanced
-                      messaging features for Android users directly from your inbox.
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-foreground mb-1 text-sm md:text-base">
+                      RCS Messaging Support
+                    </h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                      Support Rich Communication Services (RCS) with rich media,
+                      interactive buttons, and enhanced messaging features for
+                      Android users directly from your inbox.
                     </p>
                   </div>
                 </div>
 
-                <div className="flex gap-3 items-start group">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-pink-100 to-pink-50 group-hover:from-pink-200 group-hover:to-pink-100 transition-all shadow-sm">
-                    <Instagram className="h-5 w-5 text-pink-600" />
+                <div className="flex gap-3 md:gap-4 items-start group">
+                  <div className="flex h-9 w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-pink-100 to-pink-50 group-hover:from-pink-200 group-hover:to-pink-100 transition-all shadow-sm">
+                    <Instagram className="h-4 w-4 md:h-5 md:w-5 text-pink-600" />
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">Instagram & Facebook Messenger</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Respond to Instagram Direct Messages and Facebook Messenger conversations alongside your other
-                      channels with unified contact profiles and conversation history.
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-foreground mb-1 text-sm md:text-base">
+                      Instagram & Facebook Messenger
+                    </h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                      Respond to Instagram Direct Messages and Facebook
+                      Messenger conversations alongside your other channels with
+                      unified contact profiles and conversation history.
                     </p>
                   </div>
                 </div>
@@ -426,67 +490,83 @@ export default function LiveChatPage() {
       {/* Block 2: Image Right, Content Left - Team Collaboration */}
       <section
         ref={block2Ref}
-        className="relative overflow-hidden bg-gradient-to-br from-green-50/30 via-white to-blue-50/40 py-12 md:py-14"
+        className="relative overflow-hidden bg-gradient-to-br from-green-50/30 via-white to-blue-50/40 py-10 sm:py-12 md:py-16 lg:py-20"
       >
-        <div className="absolute top-10 left-20 w-96 h-96 bg-gradient-to-br from-green-400/15 to-transparent rounded-full blur-3xl" />
-        <div className="absolute bottom-10 right-20 w-96 h-96 bg-gradient-to-tr from-blue-400/15 to-transparent rounded-full blur-3xl" />
+        <div className="absolute top-10 left-10 sm:left-20 w-64 h-64 sm:w-96 sm:h-96 bg-gradient-to-br from-green-400/15 to-transparent rounded-full blur-3xl" />
+        <div className="absolute bottom-10 right-10 sm:right-20 w-64 h-64 sm:w-96 sm:h-96 bg-gradient-to-tr from-blue-400/15 to-transparent rounded-full blur-3xl" />
 
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="grid gap-8 lg:grid-cols-[45%_55%] items-center">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid gap-6 lg:gap-8 xl:gap-10 lg:grid-cols-2 items-center">
             {/* Left Side - Content */}
             <div
-              className={`transition-all duration-1000 ${
-                block2InView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              className={`order-2 lg:order-1 transition-all duration-1000 ${
+                block2InView
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-8"
               }`}
             >
-              <Badge className="mb-3 shadow-sm bg-green-100 text-green-700 border-green-200" variant="outline">
+              <Badge
+                className="mb-3 md:mb-4 shadow-sm bg-green-100 text-green-700 border-green-200"
+                variant="outline"
+              >
                 Team Collaboration
               </Badge>
-              <h2 className="mb-4 text-balance text-3xl font-bold md:text-4xl lg:text-5xl">
+              <h2 className="mb-4 md:mb-5 text-balance text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl font-bold leading-tight">
                 Collaborate Seamlessly with Your Team
               </h2>
-              <p className="mb-6 text-pretty text-muted-foreground text-base md:text-lg leading-relaxed">
-                Empower your support and sales teams with powerful collaboration tools. Assign conversations, add
-                internal notes, track conversation status, and work together to deliver exceptional customer experiences
-                across all messaging channels.
+              <p className="mb-6 md:mb-8 text-pretty text-muted-foreground text-sm sm:text-base md:text-lg leading-relaxed">
+                Empower your support and sales teams with powerful collaboration
+                tools. Assign conversations, add internal notes, track
+                conversation status, and work together to deliver exceptional
+                customer experiences across all messaging channels.
               </p>
 
-              <div className="space-y-4">
-                <div className="flex gap-3 items-start group">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 group-hover:from-blue-200 group-hover:to-blue-100 transition-all shadow-sm">
-                    <Users className="h-5 w-5 text-blue-600" />
+              <div className="space-y-4 md:space-y-5">
+                <div className="flex gap-3 md:gap-4 items-start group">
+                  <div className="flex h-9 w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 group-hover:from-blue-200 group-hover:to-blue-100 transition-all shadow-sm">
+                    <Users className="h-4 w-4 md:h-5 md:w-5 text-blue-600" />
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">Smart Conversation Assignment</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Automatically route conversations to the right team members based on skills, availability, and
-                      workload. Manually assign or reassign conversations as needed with one click.
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-foreground mb-1 text-sm md:text-base">
+                      Smart Conversation Assignment
+                    </h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                      Automatically route conversations to the right team
+                      members based on skills, availability, and workload.
+                      Manually assign or reassign conversations as needed with
+                      one click.
                     </p>
                   </div>
                 </div>
 
-                <div className="flex gap-3 items-start group">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-purple-100 to-purple-50 group-hover:from-purple-200 group-hover:to-purple-100 transition-all shadow-sm">
-                    <MessageCircle className="h-5 w-5 text-purple-600" />
+                <div className="flex gap-3 md:gap-4 items-start group">
+                  <div className="flex h-9 w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-purple-100 to-purple-50 group-hover:from-purple-200 group-hover:to-purple-100 transition-all shadow-sm">
+                    <MessageCircle className="h-4 w-4 md:h-5 md:w-5 text-purple-600" />
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">Internal Notes & Mentions</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Add private internal notes to conversations, mention team members for collaboration, and maintain
-                      context without cluttering customer-facing messages.
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-foreground mb-1 text-sm md:text-base">
+                      Internal Notes & Mentions
+                    </h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                      Add private internal notes to conversations, mention team
+                      members for collaboration, and maintain context without
+                      cluttering customer-facing messages.
                     </p>
                   </div>
                 </div>
 
-                <div className="flex gap-3 items-start group">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-green-100 to-green-50 group-hover:from-green-200 group-hover:to-green-100 transition-all shadow-sm">
-                    <CheckCircle2 className="h-5 w-5 text-green-600" />
+                <div className="flex gap-3 md:gap-4 items-start group">
+                  <div className="flex h-9 w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-green-100 to-green-50 group-hover:from-green-200 group-hover:to-green-100 transition-all shadow-sm">
+                    <CheckCircle2 className="h-4 w-4 md:h-5 md:w-5 text-green-600" />
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">Status Tracking & Workflows</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Track conversation status (open, pending, resolved) and create custom workflows to ensure no
-                      customer inquiry falls through the cracks.
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-foreground mb-1 text-sm md:text-base">
+                      Status Tracking & Workflows
+                    </h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                      Track conversation status (open, pending, resolved) and
+                      create custom workflows to ensure no customer inquiry
+                      falls through the cracks.
                     </p>
                   </div>
                 </div>
@@ -495,20 +575,25 @@ export default function LiveChatPage() {
 
             {/* Right Side - Image */}
             <div
-              className={`flex items-center justify-center lg:justify-end transition-all duration-1000 delay-300 ${
-                block2InView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
+              className={`order-1 lg:order-2 flex items-center justify-center lg:justify-end transition-all duration-1000 delay-300 ${
+                block2InView
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 translate-x-8"
               }`}
             >
-              <div className="relative">
+              <div className="relative w-full max-w-xl sm:max-w-2xl lg:max-w-3xl">
                 <div className="absolute inset-0 bg-gradient-to-br from-green-400/20 via-blue-400/15 to-purple-400/20 blur-2xl rounded-3xl transform scale-105" />
-                <Image
-                  src="/team-collaboration-dashboard-showing-conversation.jpg"
-                  alt="Team collaboration dashboard showing conversation assignment, internal notes, status tracking, and team member activity across all messaging channels"
-                  width={800}
-                  height={600}
-                  className="relative z-10 w-full h-auto max-w-2xl object-contain drop-shadow-2xl hover:scale-[1.02] transition-transform duration-500"
-                  loading="lazy"
-                />
+
+                <div className="relative z-10 w-full aspect-[4/3]">
+                  <Image
+                    src="/team-collaboration-dashboard-showing-conversation.jpg"
+                    alt="Team collaboration dashboard showing conversation assignment, internal notes, status tracking, and team member activity across all messaging channels"
+                    fill
+                    sizes="(max-width: 640px) 95vw, (max-width: 1024px) 85vw, 55vw"
+                    className="object-contain drop-shadow-2xl hover:scale-[1.02] transition-transform duration-500 rounded-lg"
+                    loading="lazy"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -518,86 +603,106 @@ export default function LiveChatPage() {
       {/* Block 3: Image Left, Content Right - Tags, Attributes & Sources */}
       <section
         ref={block3Ref}
-        className="relative overflow-hidden bg-gradient-to-br from-purple-50/40 via-white to-blue-50/30 py-12 md:py-14"
+        className="relative overflow-hidden bg-gradient-to-br from-purple-50/40 via-white to-blue-50/30 py-10 sm:py-12 md:py-16 lg:py-20"
       >
-        <div className="absolute top-10 right-20 w-96 h-96 bg-gradient-to-br from-blue-400/15 to-transparent rounded-full blur-3xl" />
-        <div className="absolute bottom-10 left-20 w-96 h-96 bg-gradient-to-tr from-purple-400/15 to-transparent rounded-full blur-3xl" />
+        <div className="absolute top-10 right-10 sm:right-20 w-64 h-64 sm:w-96 sm:h-96 bg-gradient-to-br from-blue-400/15 to-transparent rounded-full blur-3xl" />
+        <div className="absolute bottom-10 left-10 sm:left-20 w-64 h-64 sm:w-96 sm:h-96 bg-gradient-to-tr from-purple-400/15 to-transparent rounded-full blur-3xl" />
 
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="grid gap-8 lg:grid-cols-[55%_45%] items-center">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid gap-6 lg:gap-8 xl:gap-10 lg:grid-cols-2 items-center">
             {/* Left Side - Image */}
             <div
-              className={`flex items-center justify-center lg:justify-start transition-all duration-1000 ${
-                block3InView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"
+              className={`order-1 lg:order-1 flex items-center justify-center lg:justify-start transition-all duration-1000 ${
+                block3InView
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 -translate-x-8"
               }`}
             >
-              <div className="relative">
+              <div className="relative w-full max-w-xl sm:max-w-2xl lg:max-w-3xl">
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-400/20 via-blue-400/15 to-pink-400/20 blur-2xl rounded-3xl transform scale-105" />
-                <Image
-                  src="/conversation-management-showing-tags-attributes.jpg"
-                  alt="Conversation management interface showing custom tags, contact attributes, source tracking, and smart filtering for organized customer communication"
-                  width={800}
-                  height={600}
-                  className="relative z-10 w-full h-auto max-w-2xl object-contain drop-shadow-2xl hover:scale-[1.02] transition-transform duration-500"
-                  loading="lazy"
-                />
+
+                <div className="relative z-10 w-full aspect-[4/3]">
+                  <Image
+                    src="/conversation-management-showing-tags-attributes.jpg"
+                    alt="Conversation management interface showing custom tags, contact attributes, source tracking, and smart filtering for organized customer communication"
+                    fill
+                    sizes="(max-width: 640px) 95vw, (max-width: 1024px) 85vw, 55vw"
+                    className="object-contain drop-shadow-2xl hover:scale-[1.02] transition-transform duration-500 rounded-lg"
+                    loading="lazy"
+                  />
+                </div>
               </div>
             </div>
 
             {/* Right Side - Content */}
             <div
-              className={`transition-all duration-1000 delay-300 ${
-                block3InView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              className={`order-2 lg:order-2 transition-all duration-1000 delay-300 ${
+                block3InView
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-8"
               }`}
             >
-              <Badge className="mb-3 shadow-sm bg-purple-100 text-purple-700 border-purple-200" variant="outline">
+              <Badge
+                className="mb-3 md:mb-4 shadow-sm bg-purple-100 text-purple-700 border-purple-200"
+                variant="outline"
+              >
                 Smart Organization
               </Badge>
-              <h2 className="mb-4 text-balance text-3xl font-bold md:text-4xl lg:text-5xl">
+              <h2 className="mb-4 md:mb-5 text-balance text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl font-bold leading-tight">
                 Organize with Tags, Attributes & Sources
               </h2>
-              <p className="mb-6 text-pretty text-muted-foreground text-base md:text-lg leading-relaxed">
-                Keep your conversations organized and actionable with powerful tagging, custom attributes, and source
-                tracking. Filter, search, and segment conversations to find exactly what you need and deliver
-                personalized experiences at scale.
+              <p className="mb-6 md:mb-8 text-pretty text-muted-foreground text-sm sm:text-base md:text-lg leading-relaxed">
+                Keep your conversations organized and actionable with powerful
+                tagging, custom attributes, and source tracking. Filter, search,
+                and segment conversations to find exactly what you need and
+                deliver personalized experiences at scale.
               </p>
 
-              <div className="space-y-4">
-                <div className="flex gap-3 items-start group">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-purple-100 to-purple-50 group-hover:from-purple-200 group-hover:to-purple-100 transition-all shadow-sm">
-                    <Tag className="h-5 w-5 text-purple-600" />
+              <div className="space-y-4 md:space-y-5">
+                <div className="flex gap-3 md:gap-4 items-start group">
+                  <div className="flex h-9 w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-purple-100 to-purple-50 group-hover:from-purple-200 group-hover:to-purple-100 transition-all shadow-sm">
+                    <Tag className="h-4 w-4 md:h-5 md:w-5 text-purple-600" />
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">Custom Tags & Labels</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Create unlimited custom tags to categorize conversations by topic, priority, department, or any
-                      criteria. Apply multiple tags and filter conversations instantly.
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-foreground mb-1 text-sm md:text-base">
+                      Custom Tags & Labels
+                    </h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                      Create unlimited custom tags to categorize conversations
+                      by topic, priority, department, or any criteria. Apply
+                      multiple tags and filter conversations instantly.
                     </p>
                   </div>
                 </div>
 
-                <div className="flex gap-3 items-start group">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 group-hover:from-blue-200 group-hover:to-blue-100 transition-all shadow-sm">
-                    <UserPlus className="h-5 w-5 text-blue-600" />
+                <div className="flex gap-3 md:gap-4 items-start group">
+                  <div className="flex h-9 w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 group-hover:from-blue-200 group-hover:to-blue-100 transition-all shadow-sm">
+                    <UserPlus className="h-4 w-4 md:h-5 md:w-5 text-blue-600" />
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">Contact Attributes</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Store custom contact information like VIP status, purchase history, preferences, and more. Use
-                      attributes to personalize conversations and segment your audience.
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-foreground mb-1 text-sm md:text-base">
+                      Contact Attributes
+                    </h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                      Store custom contact information like VIP status, purchase
+                      history, preferences, and more. Use attributes to
+                      personalize conversations and segment your audience.
                     </p>
                   </div>
                 </div>
 
-                <div className="flex gap-3 items-start group">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-green-100 to-green-50 group-hover:from-green-200 group-hover:to-green-100 transition-all shadow-sm">
-                    <FolderOpen className="h-5 w-5 text-green-600" />
+                <div className="flex gap-3 md:gap-4 items-start group">
+                  <div className="flex h-9 w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-green-100 to-green-50 group-hover:from-green-200 group-hover:to-green-100 transition-all shadow-sm">
+                    <FolderOpen className="h-4 w-4 md:h-5 md:w-5 text-green-600" />
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">Source Tracking</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Track where conversations originated—website chat widget, QR code, social media, or direct
-                      message. Analyze which sources drive the most engagement and conversions.
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-foreground mb-1 text-sm md:text-base">
+                      Source Tracking
+                    </h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                      Track where conversations originated—website chat widget,
+                      QR code, social media, or direct message. Analyze which
+                      sources drive the most engagement and conversions.
                     </p>
                   </div>
                 </div>
@@ -608,16 +713,24 @@ export default function LiveChatPage() {
       </section>
 
       {/* Key Features */}
-      <section ref={featuresRef} className="py-12 md:py-14 bg-gradient-to-b from-white via-blue-50/20 to-white">
+      <section
+        ref={featuresRef}
+        className="py-12 md:py-14 bg-gradient-to-b from-white via-blue-50/20 to-white"
+      >
         <div className="container mx-auto px-4">
           <div
             className={`text-center mb-12 transition-all duration-700 ${
-              featuresInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              featuresInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
             }`}
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Powerful Live Chat Features</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Powerful Live Chat Features
+            </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Everything you need to deliver exceptional customer support across all messaging channels
+              Everything you need to deliver exceptional customer support across
+              all messaging channels
             </p>
           </div>
 
@@ -626,7 +739,9 @@ export default function LiveChatPage() {
               <Card
                 key={index}
                 className={`p-6 hover:shadow-lg transition-all duration-300 border-gray-200 ${
-                  featuresInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  featuresInView
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
                 }`}
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
@@ -634,7 +749,9 @@ export default function LiveChatPage() {
                   <feature.icon className="w-6 h-6 text-blue-600" />
                 </div>
                 <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed">{feature.description}</p>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  {feature.description}
+                </p>
               </Card>
             ))}
           </div>
@@ -642,16 +759,24 @@ export default function LiveChatPage() {
       </section>
 
       {/* Benefits */}
-      <section ref={benefitsRef} className="py-12 md:py-14 bg-gradient-to-br from-blue-50/40 via-white to-purple-50/30">
+      <section
+        ref={benefitsRef}
+        className="py-12 md:py-14 bg-gradient-to-br from-blue-50/40 via-white to-purple-50/30"
+      >
         <div className="container mx-auto px-4">
           <div
             className={`text-center mb-12 transition-all duration-700 ${
-              benefitsInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              benefitsInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
             }`}
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Choose Our Live Chat Platform?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Why Choose Our Live Chat Platform?
+            </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Deliver faster, more personalized support across all your customer's favorite messaging channels
+              Deliver faster, more personalized support across all your
+              customer's favorite messaging channels
             </p>
           </div>
 
@@ -660,7 +785,9 @@ export default function LiveChatPage() {
               <div
                 key={index}
                 className={`text-center transition-all duration-700 ${
-                  benefitsInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  benefitsInView
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
                 }`}
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
@@ -676,16 +803,24 @@ export default function LiveChatPage() {
       </section>
 
       {/* Use Cases */}
-      <section ref={useCasesRef} className="py-12 md:py-14 bg-gradient-to-br from-white via-purple-50/20 to-blue-50/10">
+      <section
+        ref={useCasesRef}
+        className="py-12 md:py-14 bg-gradient-to-br from-white via-purple-50/20 to-blue-50/10"
+      >
         <div className="container mx-auto px-4">
           <div
             className={`text-center mb-12 transition-all duration-700 ${
-              useCasesInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              useCasesInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
             }`}
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Live Chat Use Cases</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Live Chat Use Cases
+            </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              See how businesses use multi-channel live chat to improve customer satisfaction and drive growth
+              See how businesses use multi-channel live chat to improve customer
+              satisfaction and drive growth
             </p>
           </div>
 
@@ -694,7 +829,9 @@ export default function LiveChatPage() {
               <Card
                 key={index}
                 className={`p-6 hover:shadow-lg transition-all duration-300 border-gray-200 group ${
-                  useCasesInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  useCasesInView
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
                 }`}
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
@@ -703,8 +840,12 @@ export default function LiveChatPage() {
                     <useCase.icon className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold mb-2">{useCase.title}</h3>
-                    <p className="text-gray-600 text-sm leading-relaxed">{useCase.description}</p>
+                    <h3 className="text-lg font-semibold mb-2">
+                      {useCase.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">
+                      {useCase.description}
+                    </p>
                   </div>
                 </div>
               </Card>
@@ -714,16 +855,24 @@ export default function LiveChatPage() {
       </section>
 
       {/* FAQ Section */}
-      <section ref={faqRef} className="py-12 md:py-14 bg-gradient-to-br from-gray-50 to-white">
+      <section
+        ref={faqRef}
+        className="py-12 md:py-14 bg-gradient-to-br from-gray-50 to-white"
+      >
         <div className="container mx-auto px-4">
           <div
             className={`text-center mb-10 transition-all duration-700 ${
-              faqInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              faqInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
             }`}
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-3">Frequently Asked Questions</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-3">
+              Frequently Asked Questions
+            </h2>
             <p className="text-base text-gray-600 max-w-2xl mx-auto">
-              Everything you need to know about multi-channel live chat and unified inbox
+              Everything you need to know about multi-channel live chat and
+              unified inbox
             </p>
           </div>
 
@@ -732,7 +881,9 @@ export default function LiveChatPage() {
               {/* Left Column - 3 FAQs */}
               <div
                 className={`transition-all duration-700 ${
-                  faqInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  faqInView
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
                 }`}
               >
                 <Accordion type="single" collapsible className="space-y-3">
@@ -745,7 +896,9 @@ export default function LiveChatPage() {
                       <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
                         {faq.question}
                       </AccordionTrigger>
-                      <AccordionContent className="text-gray-600 pb-4 leading-relaxed">{faq.answer}</AccordionContent>
+                      <AccordionContent className="text-gray-600 pb-4 leading-relaxed">
+                        {faq.answer}
+                      </AccordionContent>
                     </AccordionItem>
                   ))}
                 </Accordion>
@@ -754,7 +907,9 @@ export default function LiveChatPage() {
               {/* Right Column - 3 FAQs */}
               <div
                 className={`transition-all duration-700 delay-200 ${
-                  faqInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  faqInView
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
                 }`}
               >
                 <Accordion type="single" collapsible className="space-y-3">
@@ -767,7 +922,9 @@ export default function LiveChatPage() {
                       <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
                         {faq.question}
                       </AccordionTrigger>
-                      <AccordionContent className="text-gray-600 pb-4 leading-relaxed">{faq.answer}</AccordionContent>
+                      <AccordionContent className="text-gray-600 pb-4 leading-relaxed">
+                        {faq.answer}
+                      </AccordionContent>
                     </AccordionItem>
                   ))}
                 </Accordion>
@@ -780,12 +937,19 @@ export default function LiveChatPage() {
       {/* CTA Section */}
       <section className="py-12 md:py-14 bg-gradient-to-br from-blue-600 to-purple-700 text-white">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Transform Your Customer Support?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Ready to Transform Your Customer Support?
+          </h2>
           <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
-            Start managing all your customer conversations in one unified inbox today
+            Start managing all your customer conversations in one unified inbox
+            today
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" variant="secondary" className="bg-white text-blue-600 hover:bg-gray-100">
+            <Button
+              size="lg"
+              variant="secondary"
+              className="bg-white text-blue-600 hover:bg-gray-100"
+            >
               Start Free Trial
             </Button>
             <Button
@@ -800,5 +964,5 @@ export default function LiveChatPage() {
         </div>
       </section>
     </div>
-  )
+  );
 }

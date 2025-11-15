@@ -367,18 +367,127 @@ export default function WhatsAppBroadcastPage() {
 
       {/* Block 1: Image Left, Content Right - Broadcast Messaging Power */}
       <section
-        ref={block2Ref}
-        className="relative overflow-hidden bg-gradient-to-br from-purple-50/30 via-white to-blue-50/40 py-12 md:py-16 lg:py-20"
+        ref={block1Ref}
+        className="relative overflow-hidden bg-gradient-to-br from-purple-50/30 via-white to-blue-50/40 py-10 sm:py-12 md:py-16 lg:py-20"
       >
         {/* Background Effects */}
-        <div className="absolute top-10 left-20 w-72 h-72 md:w-96 md:h-96 bg-gradient-to-br from-purple-400/15 to-transparent rounded-full blur-3xl" />
-        <div className="absolute bottom-10 right-20 w-72 h-72 md:w-96 md:h-96 bg-gradient-to-tr from-blue-400/15 to-transparent rounded-full blur-3xl" />
+        <div className="absolute top-10 left-10 sm:left-20 w-64 h-64 sm:w-96 sm:h-96 bg-gradient-to-br from-purple-400/15 to-transparent rounded-full blur-3xl" />
+        <div className="absolute bottom-10 right-10 sm:right-20 w-64 h-64 sm:w-96 sm:h-96 bg-gradient-to-tr from-blue-400/15 to-transparent rounded-full blur-3xl" />
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid gap-6 lg:gap-8 xl:gap-5 lg:grid-cols-2 items-center">
+          <div className="grid gap-6 lg:gap-8 xl:gap-10 lg:grid-cols-2 items-center">
+            {/* Left Side - Image */}
+            <div
+              className={`order-1 lg:order-1 flex items-center justify-center lg:justify-start transition-all duration-1000 delay-300 ${
+                block1InView
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 -translate-x-8"
+              }`}
+            >
+              <div className="relative w-full max-w-xl sm:max-w-2xl lg:max-w-3xl">
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-400/20 via-blue-400/15 to-green-400/20 blur-2xl rounded-3xl transform scale-105" />
+
+                <div className="relative z-10 w-full aspect-[4/3]">
+                  <Image
+                    src="/whatsapp-audience-segmentation-dashboard-showing-c.jpg"
+                    alt="WhatsApp audience segmentation dashboard showing customer groups, filters, tags, and targeted broadcast campaigns with personalization options"
+                    fill
+                    sizes="(max-width: 640px) 95vw, (max-width: 1024px) 85vw, 55vw"
+                    className="object-contain drop-shadow-2xl hover:scale-[1.02] transition-transform duration-500 rounded-lg"
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Right Side - Content */}
+            <div
+              className={`order-2 lg:order-2 transition-all duration-1000 ${
+                block1InView
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-8"
+              }`}
+            >
+              <Badge
+                className="mb-3 md:mb-4 shadow-sm bg-purple-100 text-purple-700 border-purple-200"
+                variant="outline"
+              >
+                Broadcast Messaging Power
+              </Badge>
+              <h2 className="mb-4 md:mb-5 text-balance text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl font-bold leading-tight">
+                Send Powerful Broadcast Messages
+              </h2>
+              <p className="mb-6 md:mb-8 text-pretty text-muted-foreground text-sm sm:text-base md:text-lg leading-relaxed">
+                Reach thousands of customers instantly with personalized
+                broadcast campaigns. Schedule messages, track delivery, and
+                measure engagement with our powerful broadcasting tools.
+              </p>
+
+              <div className="space-y-4 md:space-y-5">
+                <div className="flex gap-3 md:gap-4 items-start group">
+                  <div className="flex h-9 w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-purple-100 to-purple-50 group-hover:from-purple-200 group-hover:to-purple-100 transition-all shadow-sm">
+                    <Users className="h-4 w-4 md:h-5 md:w-5 text-purple-600" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-foreground mb-1 text-sm md:text-base">
+                      Mass Message Distribution
+                    </h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                      Send messages to thousands of contacts simultaneously with
+                      automated delivery and real-time tracking.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-3 md:gap-4 items-start group">
+                  <div className="flex h-9 w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 group-hover:from-blue-200 group-hover:to-blue-100 transition-all shadow-sm">
+                    <Target className="h-4 w-4 md:h-5 md:w-5 text-blue-600" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-foreground mb-1 text-sm md:text-base">
+                      Campaign Scheduling
+                    </h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                      Plan and schedule your campaigns in advance for optimal
+                      timing and maximum engagement.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-3 md:gap-4 items-start group">
+                  <div className="flex h-9 w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-green-100 to-green-50 group-hover:from-green-200 group-hover:to-green-100 transition-all shadow-sm">
+                    <Filter className="h-4 w-4 md:h-5 md:w-5 text-green-600" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-foreground mb-1 text-sm md:text-base">
+                      Performance Analytics
+                    </h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                      Track delivery rates, read receipts, and engagement
+                      metrics to optimize your messaging strategy.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Block 2: Image Right, Content Left - Smart Audience Targeting */}
+      <section
+        ref={block2Ref}
+        className="relative overflow-hidden bg-gradient-to-br from-purple-50/30 via-white to-blue-50/40 py-10 sm:py-12 md:py-16 lg:py-20"
+      >
+        {/* Background Effects */}
+        <div className="absolute top-10 left-10 sm:left-20 w-64 h-64 sm:w-96 sm:h-96 bg-gradient-to-br from-purple-400/15 to-transparent rounded-full blur-3xl" />
+        <div className="absolute bottom-10 right-10 sm:right-20 w-64 h-64 sm:w-96 sm:h-96 bg-gradient-to-tr from-blue-400/15 to-transparent rounded-full blur-3xl" />
+
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid gap-6 lg:gap-8 xl:gap-10 lg:grid-cols-2 items-center">
             {/* Left Side - Content */}
             <div
-              className={`transition-all duration-1000 ${
+              className={`order-2 lg:order-1 transition-all duration-1000 ${
                 block2InView
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 translate-y-8"
@@ -456,24 +565,21 @@ export default function WhatsAppBroadcastPage() {
 
             {/* Right Side - Image */}
             <div
-              className={`flex items-center justify-center lg:justify-end transition-all duration-1000 delay-300 ${
+              className={`order-1 lg:order-2 flex items-center justify-center lg:justify-end transition-all duration-1000 delay-300 ${
                 block2InView
                   ? "opacity-100 translate-x-0"
                   : "opacity-0 translate-x-8"
               }`}
             >
-              {/* INCREASED IMAGE SIZE: Changed from max-w-xl lg:max-w-2xl to max-w-2xl lg:max-w-3xl */}
-              <div className="relative w-full max-w-2xl lg:max-w-3xl">
-                {/* Glow Effect */}
+              <div className="relative w-full max-w-xl sm:max-w-2xl lg:max-w-3xl">
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-400/20 via-blue-400/15 to-green-400/20 blur-2xl rounded-3xl transform scale-105" />
 
-                {/* Image Container with Fixed Aspect Ratio */}
                 <div className="relative z-10 w-full aspect-[4/3]">
                   <Image
                     src="/whatsapp-audience-segmentation-dashboard-showing-c.jpg"
                     alt="WhatsApp audience segmentation dashboard showing customer groups, filters, tags, and targeted broadcast campaigns with personalization options"
                     fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 60vw"
+                    sizes="(max-width: 640px) 95vw, (max-width: 1024px) 85vw, 55vw"
                     className="object-contain drop-shadow-2xl hover:scale-[1.02] transition-transform duration-500 rounded-lg"
                     loading="lazy"
                   />
@@ -484,167 +590,58 @@ export default function WhatsAppBroadcastPage() {
         </div>
       </section>
 
-      {/* Block 2: Image Right, Content Left - Smart Audience Targeting */}
-      <section
-        ref={block2Ref}
-        className="relative overflow-hidden bg-gradient-to-br from-purple-50/30 via-white to-blue-50/40 py-12 md:py-14"
-      >
-        <div className="absolute top-10 left-20 w-96 h-96 bg-gradient-to-br from-purple-400/15 to-transparent rounded-full blur-3xl" />
-        <div className="absolute bottom-10 right-20 w-96 h-96 bg-gradient-to-tr from-blue-400/15 to-transparent rounded-full blur-3xl" />
-
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="grid gap-8 lg:grid-cols-[45%_55%] items-center">
-            {/* Left Side - Content */}
-            <div
-              className={`transition-all duration-1000 ${
-                block2InView
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-8"
-              }`}
-            >
-              <Badge
-                className="mb-3 shadow-sm bg-purple-100 text-purple-700 border-purple-200"
-                variant="outline"
-              >
-                Smart Audience Targeting
-              </Badge>
-              <h2 className="mb-4 text-balance text-3xl font-bold md:text-4xl lg:text-5xl">
-                Target the Right Customers Every Time
-              </h2>
-              <p className="mb-6 text-pretty text-muted-foreground text-base md:text-lg leading-relaxed">
-                Create highly targeted broadcast campaigns using advanced
-                segmentation and filtering. Send personalized messages to
-                specific customer groups based on behavior, demographics,
-                purchase history, and engagement levels for maximum impact and
-                conversion.
-              </p>
-
-              <div className="space-y-4">
-                <div className="flex gap-3 items-start group">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-purple-100 to-purple-50 group-hover:from-purple-200 group-hover:to-purple-100 transition-all shadow-sm">
-                    <Users className="h-5 w-5 text-purple-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">
-                      Advanced Customer Segmentation
-                    </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Create unlimited segments based on tags, custom fields,
-                      location, language, purchase behavior, and engagement
-                      history. Target VIP customers, cart abandoners, or
-                      inactive users with precision.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex gap-3 items-start group">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 group-hover:from-blue-200 group-hover:to-blue-100 transition-all shadow-sm">
-                    <Target className="h-5 w-5 text-blue-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">
-                      Dynamic Personalization
-                    </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Personalize every message with customer names, order
-                      details, loyalty points, and custom variables. Make each
-                      broadcast feel like a personal conversation, not mass
-                      marketing.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex gap-3 items-start group">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-green-100 to-green-50 group-hover:from-green-200 group-hover:to-green-100 transition-all shadow-sm">
-                    <Filter className="h-5 w-5 text-green-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">
-                      Smart Filtering & Exclusions
-                    </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Apply multiple filters simultaneously and exclude specific
-                      groups. Prevent message fatigue by automatically excluding
-                      customers who recently received broadcasts or opted out.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Side - Image */}
-            <div
-              className={`flex items-center justify-center lg:justify-end transition-all duration-1000 delay-300 ${
-                block2InView
-                  ? "opacity-100 translate-x-0"
-                  : "opacity-0 translate-x-8"
-              }`}
-            >
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-400/20 via-blue-400/15 to-green-400/20 blur-2xl rounded-3xl transform scale-105" />
-                <Image
-                  src="/whatsapp-audience-segmentation-dashboard-showing-c.jpg"
-                  alt="WhatsApp audience segmentation dashboard showing customer groups, filters, tags, and targeted broadcast campaigns with personalization options"
-                  width={800}
-                  height={600}
-                  className="relative z-10 w-full h-auto max-w-2xl object-contain drop-shadow-2xl hover:scale-[1.02] transition-transform duration-500"
-                  loading="lazy"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Block 3: Image Left, Content Right - Campaign Analytics */}
       <section
         ref={block3Ref}
-        className="relative overflow-hidden bg-gradient-to-br from-green-50/40 via-white to-blue-50/30 py-12 md:py-14"
+        className="relative overflow-hidden bg-gradient-to-br from-green-50/40 via-white to-blue-50/30 py-10 sm:py-12 md:py-16 lg:py-20"
       >
-        <div className="absolute top-10 right-20 w-96 h-96 bg-gradient-to-br from-blue-400/15 to-transparent rounded-full blur-3xl" />
-        <div className="absolute bottom-10 left-20 w-96 h-96 bg-gradient-to-tr from-green-400/15 to-transparent rounded-full blur-3xl" />
+        <div className="absolute top-10 right-10 sm:right-20 w-64 h-64 sm:w-96 sm:h-96 bg-gradient-to-br from-blue-400/15 to-transparent rounded-full blur-3xl" />
+        <div className="absolute bottom-10 left-10 sm:left-20 w-64 h-64 sm:w-96 sm:h-96 bg-gradient-to-tr from-green-400/15 to-transparent rounded-full blur-3xl" />
 
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="grid gap-8 lg:grid-cols-[55%_45%] items-center">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid gap-6 lg:gap-8 xl:gap-10 lg:grid-cols-2 items-center">
             {/* Left Side - Image */}
             <div
-              className={`flex items-center justify-center lg:justify-start transition-all duration-1000 ${
+              className={`order-1 lg:order-1 flex items-center justify-center lg:justify-start transition-all duration-1000 ${
                 block3InView
                   ? "opacity-100 translate-x-0"
                   : "opacity-0 -translate-x-8"
               }`}
             >
-              <div className="relative">
+              <div className="relative w-full max-w-xl sm:max-w-2xl lg:max-w-3xl">
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 via-green-400/15 to-purple-400/20 blur-2xl rounded-3xl transform scale-105" />
-                <Image
-                  src="/whatsapp-broadcast-analytics-dashboard-showing-cam.jpg"
-                  alt="WhatsApp broadcast analytics dashboard showing campaign performance metrics, delivery rates, read receipts, click-through rates, conversion tracking, and ROI analysis"
-                  width={600}
-                  height={600}
-                  className="relative z-10 w-full h-auto max-w-2xl object-contain drop-shadow-2xl hover:scale-[1.02] transition-transform duration-500"
-                  loading="lazy"
-                />
+
+                <div className="relative z-10 w-full aspect-[4/3]">
+                  <Image
+                    src="/whatsapp-broadcast-analytics-dashboard-showing-cam.jpg"
+                    alt="WhatsApp broadcast analytics dashboard showing campaign performance metrics, delivery rates, read receipts, click-through rates, conversion tracking, and ROI analysis"
+                    fill
+                    sizes="(max-width: 640px) 95vw, (max-width: 1024px) 85vw, 55vw"
+                    className="object-contain drop-shadow-2xl hover:scale-[1.02] transition-transform duration-500 rounded-lg"
+                    loading="lazy"
+                  />
+                </div>
               </div>
             </div>
 
             {/* Right Side - Content */}
             <div
-              className={`transition-all duration-1000 delay-300 ${
+              className={`order-2 lg:order-2 transition-all duration-1000 delay-300 ${
                 block3InView
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 translate-y-8"
               }`}
             >
               <Badge
-                className="mb-3 shadow-sm bg-blue-100 text-blue-700 border-blue-200"
+                className="mb-3 md:mb-4 shadow-sm bg-blue-100 text-blue-700 border-blue-200"
                 variant="outline"
               >
                 Campaign Analytics & Insights
               </Badge>
-              <h2 className="mb-4 text-balance text-3xl font-bold md:text-4xl lg:text-5xl">
+              <h2 className="mb-4 md:mb-5 text-balance text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl font-bold leading-tight">
                 Measure What Matters with Deep Analytics
               </h2>
-              <p className="mb-6 text-pretty text-muted-foreground text-base md:text-lg leading-relaxed">
+              <p className="mb-6 md:mb-8 text-pretty text-muted-foreground text-sm sm:text-base md:text-lg leading-relaxed">
                 Track every aspect of your broadcast campaigns with
                 comprehensive analytics and reporting. Understand customer
                 engagement, optimize message timing, and improve campaign
@@ -652,16 +649,16 @@ export default function WhatsAppBroadcastPage() {
                 marketing decisions.
               </p>
 
-              <div className="space-y-4">
-                <div className="flex gap-3 items-start group">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 group-hover:from-blue-200 group-hover:to-blue-100 transition-all shadow-sm">
-                    <BarChart3 className="h-5 w-5 text-blue-600" />
+              <div className="space-y-4 md:space-y-5">
+                <div className="flex gap-3 md:gap-4 items-start group">
+                  <div className="flex h-9 w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 group-hover:from-blue-200 group-hover:to-blue-100 transition-all shadow-sm">
+                    <BarChart3 className="h-4 w-4 md:h-5 md:w-5 text-blue-600" />
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-foreground mb-1 text-sm md:text-base">
                       Comprehensive Campaign Metrics
                     </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                       Track delivery rates, read receipts, click-through rates,
                       and conversion metrics for every broadcast. See exactly
                       how many customers opened, read, and acted on your
@@ -670,15 +667,15 @@ export default function WhatsAppBroadcastPage() {
                   </div>
                 </div>
 
-                <div className="flex gap-3 items-start group">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-green-100 to-green-50 group-hover:from-green-200 group-hover:to-green-100 transition-all shadow-sm">
-                    <TrendingUp className="h-5 w-5 text-green-600" />
+                <div className="flex gap-3 md:gap-4 items-start group">
+                  <div className="flex h-9 w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-green-100 to-green-50 group-hover:from-green-200 group-hover:to-green-100 transition-all shadow-sm">
+                    <TrendingUp className="h-4 w-4 md:h-5 md:w-5 text-green-600" />
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-foreground mb-1 text-sm md:text-base">
                       ROI & Revenue Tracking
                     </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                       Connect broadcasts to actual sales and revenue. Track
                       which campaigns drive the most conversions, calculate ROI,
                       and identify your most profitable messaging strategies.
@@ -686,15 +683,15 @@ export default function WhatsAppBroadcastPage() {
                   </div>
                 </div>
 
-                <div className="flex gap-3 items-start group">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-purple-100 to-purple-50 group-hover:from-purple-200 group-hover:to-purple-100 transition-all shadow-sm">
-                    <Clock className="h-5 w-5 text-purple-600" />
+                <div className="flex gap-3 md:gap-4 items-start group">
+                  <div className="flex h-9 w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-purple-100 to-purple-50 group-hover:from-purple-200 group-hover:to-purple-100 transition-all shadow-sm">
+                    <Clock className="h-4 w-4 md:h-5 md:w-5 text-purple-600" />
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-foreground mb-1 text-sm md:text-base">
                       Optimal Timing Insights
                     </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                       Discover the best times to send broadcasts based on
                       historical engagement data. Our AI analyzes customer
                       behavior patterns to recommend optimal send times for
@@ -708,35 +705,36 @@ export default function WhatsAppBroadcastPage() {
         </div>
       </section>
 
+      {/* CDP Analytics Section */}
       <section
         ref={cdpAnalyticsRef}
-        className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50/30 py-16 md:py-20"
+        className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50/30 py-12 sm:py-16 md:py-20 lg:py-24"
       >
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-br from-blue-400/10 to-transparent rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gradient-to-tr from-purple-400/10 to-transparent rounded-full blur-3xl" />
+        <div className="absolute top-0 right-0 w-[400px] h-[400px] sm:w-[600px] sm:h-[600px] bg-gradient-to-br from-blue-400/10 to-transparent rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-[350px] h-[350px] sm:w-[500px] sm:h-[500px] bg-gradient-to-tr from-purple-400/10 to-transparent rounded-full blur-3xl" />
 
-        <div className="container mx-auto px-4 relative z-10">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Section Header */}
           <div
-            className={`text-center mb-12 transition-all duration-1000 ${
+            className={`text-center mb-10 sm:mb-12 md:mb-16 transition-all duration-1000 ${
               cdpAnalyticsInView
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-8"
             }`}
           >
             <Badge
-              className="mb-4 shadow-sm bg-blue-100 text-blue-700 border-blue-200"
+              className="mb-3 md:mb-4 shadow-sm bg-blue-100 text-blue-700 border-blue-200"
               variant="outline"
             >
               Customer Data Platform Integration
             </Badge>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-balance">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 text-balance">
               Analytics & Reports Powered by{" "}
               <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 Unified Customer Data
               </span>
             </h2>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               Consolidate customer data from multiple sources, gain actionable
               insights, and orchestrate multi-channel campaigns across WhatsApp,
               RCS, SMS, email, and social media—all from one powerful Customer
@@ -745,7 +743,7 @@ export default function WhatsAppBroadcastPage() {
           </div>
 
           {/* Main Content Grid */}
-          <div className="grid lg:grid-cols-2 gap-8 mb-12">
+          <div className="grid lg:grid-cols-2 gap-6 lg:gap-8 xl:gap-10 mb-10 sm:mb-12">
             {/* Left: Analytics Dashboard Image */}
             <div
               className={`transition-all duration-1000 ${
@@ -754,36 +752,39 @@ export default function WhatsAppBroadcastPage() {
                   : "opacity-0 -translate-x-8"
               }`}
             >
-              <div className="relative">
+              <div className="relative w-full max-w-xl sm:max-w-2xl lg:max-w-3xl mx-auto">
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 via-purple-400/15 to-pink-400/20 blur-2xl rounded-3xl transform scale-105" />
-                <Image
-                  src="/customer-data-platform-analytics-dashboard-showing.jpg"
-                  alt="Customer Data Platform analytics dashboard showing unified customer profiles, real-time broadcast metrics, multi-channel campaign performance, segmentation insights, and ROI tracking across WhatsApp, RCS, SMS, email, and social media"
-                  width={800}
-                  height={600}
-                  className="relative z-10 w-full h-auto object-contain drop-shadow-2xl rounded-2xl hover:scale-[1.02] transition-transform duration-500"
-                  loading="lazy"
-                />
+
+                <div className="relative z-10 w-full aspect-[4/3]">
+                  <Image
+                    src="/customer-data-platform-analytics-dashboard-showing.jpg"
+                    alt="Customer Data Platform analytics dashboard showing unified customer profiles, real-time broadcast metrics, multi-channel campaign performance, segmentation insights, and ROI tracking across WhatsApp, RCS, SMS, email, and social media"
+                    fill
+                    sizes="(max-width: 640px) 95vw, (max-width: 1024px) 90vw, 50vw"
+                    className="object-contain drop-shadow-2xl rounded-2xl hover:scale-[1.02] transition-transform duration-500"
+                    loading="lazy"
+                  />
+                </div>
               </div>
             </div>
 
             {/* Right: Key CDP Features */}
             <div
-              className={`space-y-6 transition-all duration-1000 delay-300 ${
+              className={`space-y-5 md:space-y-6 transition-all duration-1000 delay-300 ${
                 cdpAnalyticsInView
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 translate-y-8"
               }`}
             >
-              <div className="flex gap-4 items-start group">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 group-hover:from-blue-200 group-hover:to-blue-100 transition-all shadow-md">
-                  <Database className="h-6 w-6 text-blue-600" />
+              <div className="flex gap-3 md:gap-4 items-start group">
+                <div className="flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 group-hover:from-blue-200 group-hover:to-blue-100 transition-all shadow-md">
+                  <Database className="h-5 w-5 md:h-6 md:w-6 text-blue-600" />
                 </div>
-                <div>
-                  <h3 className="font-bold text-foreground mb-2 text-lg">
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-bold text-foreground mb-1 md:mb-2 text-base md:text-lg">
                     Unified Customer Data Consolidation
                   </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                     Automatically consolidate customer data from 20+ platforms
                     including Razorpay, Shopify, Facebook Leads, India Mart,
                     Justdial, Webhooks, PetPooja, 99Acres, and Housing.com.
@@ -794,15 +795,15 @@ export default function WhatsAppBroadcastPage() {
                 </div>
               </div>
 
-              <div className="flex gap-4 items-start group">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-purple-100 to-purple-50 group-hover:from-purple-200 group-hover:to-purple-100 transition-all shadow-md">
-                  <Layers className="h-6 w-6 text-purple-600" />
+              <div className="flex gap-3 md:gap-4 items-start group">
+                <div className="flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-purple-100 to-purple-50 group-hover:from-purple-200 group-hover:to-purple-100 transition-all shadow-md">
+                  <Layers className="h-5 w-5 md:h-6 md:w-6 text-purple-600" />
                 </div>
-                <div>
-                  <h3 className="font-bold text-foreground mb-2 text-lg">
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-bold text-foreground mb-1 md:mb-2 text-base md:text-lg">
                     Multi-Channel Campaign Orchestration
                   </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                     Coordinate campaigns across WhatsApp, RCS, SMS, email, and
                     social media from a single platform. Track customer journeys
                     across channels, optimize message timing, and ensure
@@ -812,15 +813,15 @@ export default function WhatsAppBroadcastPage() {
                 </div>
               </div>
 
-              <div className="flex gap-4 items-start group">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-green-100 to-green-50 group-hover:from-green-200 group-hover:to-green-100 transition-all shadow-md">
-                  <LineChart className="h-6 w-6 text-green-600" />
+              <div className="flex gap-3 md:gap-4 items-start group">
+                <div className="flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-green-100 to-green-50 group-hover:from-green-200 group-hover:to-green-100 transition-all shadow-md">
+                  <LineChart className="h-5 w-5 md:h-6 md:w-6 text-green-600" />
                 </div>
-                <div>
-                  <h3 className="font-bold text-foreground mb-2 text-lg">
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-bold text-foreground mb-1 md:mb-2 text-base md:text-lg">
                     Real-Time Analytics & Actionable Insights
                   </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                     Monitor broadcast performance in real-time with
                     comprehensive dashboards showing delivery rates, engagement
                     metrics, conversion tracking, and revenue attribution. Get
@@ -830,15 +831,15 @@ export default function WhatsAppBroadcastPage() {
                 </div>
               </div>
 
-              <div className="flex gap-4 items-start group">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-orange-100 to-orange-50 group-hover:from-orange-200 group-hover:to-orange-100 transition-all shadow-md">
-                  <Target className="h-6 w-6 text-orange-600" />
+              <div className="flex gap-3 md:gap-4 items-start group">
+                <div className="flex h-10 w-10 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-orange-100 to-orange-50 group-hover:from-orange-200 group-hover:to-orange-100 transition-all shadow-md">
+                  <Target className="h-5 w-5 md:h-6 md:w-6 text-orange-600" />
                 </div>
-                <div>
-                  <h3 className="font-bold text-foreground mb-2 text-lg">
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-bold text-foreground mb-1 md:mb-2 text-base md:text-lg">
                     Advanced Customer Segmentation
                   </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                     Create dynamic segments using attributes, tags, sources,
                     purchase behavior, engagement history, and custom fields.
                     Build lookalike audiences, identify high-value customers,
@@ -858,18 +859,18 @@ export default function WhatsAppBroadcastPage() {
                 : "opacity-0 translate-y-8"
             }`}
           >
-            <Card className="p-8 bg-white/80 backdrop-blur-sm border-2 shadow-xl">
-              <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold mb-3">
+            <Card className="p-6 sm:p-8 bg-white/80 backdrop-blur-sm border-2 shadow-xl">
+              <div className="text-center mb-6 sm:mb-8">
+                <h3 className="text-xl sm:text-2xl font-bold mb-2 sm:mb-3">
                   Seamless Platform Integrations
                 </h3>
-                <p className="text-muted-foreground max-w-2xl mx-auto">
+                <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto">
                   Connect your entire tech stack and consolidate customer data
                   from all your business tools
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
                 {[
                   { name: "Razorpay", icon: "💳" },
                   { name: "Shopify", icon: "🛍️" },
@@ -884,9 +885,9 @@ export default function WhatsAppBroadcastPage() {
                 ].map((platform, index) => (
                   <div
                     key={index}
-                    className="flex flex-col items-center justify-center p-4 bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all group"
+                    className="flex flex-col items-center justify-center p-3 sm:p-4 bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all group"
                   >
-                    <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">
+                    <div className="text-2xl sm:text-3xl mb-1 sm:mb-2 group-hover:scale-110 transition-transform">
                       {platform.icon}
                     </div>
                     <div className="text-xs font-medium text-center text-gray-700">
@@ -896,10 +897,10 @@ export default function WhatsAppBroadcastPage() {
                 ))}
               </div>
 
-              <div className="mt-8 text-center">
+              <div className="mt-6 sm:mt-8 text-center">
                 <Button
                   size="lg"
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg"
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg text-sm sm:text-base"
                   asChild
                 >
                   <Link href="/features/cdp">
@@ -913,62 +914,68 @@ export default function WhatsAppBroadcastPage() {
 
           {/* Key Metrics Cards */}
           <div
-            className={`grid md:grid-cols-3 gap-6 mt-12 transition-all duration-1000 delay-700 ${
+            className={`grid sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mt-10 sm:mt-12 transition-all duration-1000 delay-700 ${
               cdpAnalyticsInView
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-8"
             }`}
           >
-            <Card className="p-6 bg-gradient-to-br from-blue-50 to-white border-2 border-blue-100 hover:shadow-lg transition-all">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-md">
-                  <Activity className="w-6 h-6 text-white" />
+            <Card className="p-5 sm:p-6 bg-gradient-to-br from-blue-50 to-white border-2 border-blue-100 hover:shadow-lg transition-all">
+              <div className="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-md shrink-0">
+                  <Activity className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-blue-600">
+                  <div className="text-2xl sm:text-3xl font-bold text-blue-600">
                     Real-Time
                   </div>
-                  <div className="text-sm text-muted-foreground">Data Sync</div>
+                  <div className="text-xs sm:text-sm text-muted-foreground">
+                    Data Sync
+                  </div>
                 </div>
               </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                 Customer data syncs in real-time across all platforms, ensuring
                 you always have the most up-to-date information for targeting
                 and personalization.
               </p>
             </Card>
 
-            <Card className="p-6 bg-gradient-to-br from-purple-50 to-white border-2 border-purple-100 hover:shadow-lg transition-all">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center shadow-md">
-                  <PieChart className="w-6 h-6 text-white" />
+            <Card className="p-5 sm:p-6 bg-gradient-to-br from-purple-50 to-white border-2 border-purple-100 hover:shadow-lg transition-all">
+              <div className="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center shadow-md shrink-0">
+                  <PieChart className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-purple-600">360°</div>
-                  <div className="text-sm text-muted-foreground">
+                  <div className="text-2xl sm:text-3xl font-bold text-purple-600">
+                    360°
+                  </div>
+                  <div className="text-xs sm:text-sm text-muted-foreground">
                     Customer View
                   </div>
                 </div>
               </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                 Get a complete 360-degree view of every customer with unified
                 profiles combining data from all touchpoints and interactions.
               </p>
             </Card>
 
-            <Card className="p-6 bg-gradient-to-br from-green-50 to-white border-2 border-green-100 hover:shadow-lg transition-all">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-md">
-                  <TrendingUp className="w-6 h-6 text-white" />
+            <Card className="p-5 sm:p-6 bg-gradient-to-br from-green-50 to-white border-2 border-green-100 hover:shadow-lg transition-all sm:col-span-2 md:col-span-1">
+              <div className="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-md shrink-0">
+                  <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-green-600">3.5x</div>
-                  <div className="text-sm text-muted-foreground">
+                  <div className="text-2xl sm:text-3xl font-bold text-green-600">
+                    3.5x
+                  </div>
+                  <div className="text-xs sm:text-sm text-muted-foreground">
                     Higher ROI
                   </div>
                 </div>
               </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                 Businesses using our CDP-powered analytics see 3.5x higher ROI
                 on broadcast campaigns through better targeting and
                 personalization.
