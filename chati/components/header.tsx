@@ -101,7 +101,7 @@ const industries = [
   },
   {
     name: "Technology & SaaS",
-    icon: "Sparkles" as const,
+    icon: "Car" as const,
     href: "/industries/technology",
   },
 ];

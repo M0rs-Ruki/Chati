@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/accordion";
 import {
   Home,
+  Car,
   Sparkles,
   Building2,
   ShoppingCart,
@@ -80,6 +81,7 @@ const iconMap = {
   ShieldCheck,
   Globe,
   MousePointerClick,
+  Car,
 } as const;
 
 type IconName = keyof typeof iconMap;
