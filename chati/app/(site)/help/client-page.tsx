@@ -262,38 +262,52 @@ export default function HelpCenterPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-green-50/30 to-white">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-green-600 via-emerald-600 to-teal-600 text-white py-16 md:py-24">
-        <div className="absolute inset-0 bg-grid-white/10" />
-        <div className="absolute inset-0 bg-gradient-to-t from-green-600/50 to-transparent" />
+      <section className="relative overflow-hidden bg-gradient-to-br from-green-600 via-emerald-600 to-teal-600 text-white py-14 sm:py-16 md:py-20 lg:py-24">
+        {/* Grid & Overlay */}
+        <div className="absolute inset-0 bg-grid-white/10 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-green-600/50 to-transparent pointer-events-none" />
 
         <div className="container relative mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <Badge className="mb-4 bg-white/20 text-white border-white/30 hover:bg-white/30">
+            <Badge className="mb-4 bg-white/20 text-white border-white/30 hover:bg-white/30 px-3 py-1 text-sm sm:text-base">
               <HelpCircle className="w-3.5 h-3.5 mr-1.5" />
               Help Center
             </Badge>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-balance">
+
+            {/* Heading */}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-tight text-balance">
               How can we help you?
             </h1>
-            <p className="text-xl text-green-100 mb-10 max-w-3xl mx-auto leading-relaxed">
+
+            {/* Subtext */}
+            <p className="text-base sm:text-lg md:text-xl text-green-100 mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed">
               Search our knowledge base for answers, guides, and troubleshooting
               tips
             </p>
 
             {/* Search Bar */}
-            <div className="max-w-2xl mx-auto">
+            <div className="max-w-xl mx-auto w-full">
               <div className="relative">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+
                 <Input
                   type="text"
                   placeholder="Search for help articles, FAQs, guides..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-12 pr-4 py-6 text-lg bg-white text-gray-900 border-0 shadow-xl rounded-xl focus-visible:ring-2 focus-visible:ring-white"
+                  className="
+              w-full pl-12 pr-4 py-4
+              sm:py-5 md:py-6
+              text-base sm:text-lg md:text-xl
+              bg-white text-gray-900 border-0 shadow-xl rounded-xl 
+              focus-visible:ring-2 focus-visible:ring-white
+            "
                 />
               </div>
+
+              {/* Search Result Count */}
               {searchQuery && (
-                <p className="text-sm text-green-100 mt-3">
+                <p className="text-sm text-green-100 mt-2 sm:mt-3">
                   Found {filteredFaqs.length}{" "}
                   {filteredFaqs.length === 1 ? "result" : "results"}
                 </p>
@@ -306,18 +320,36 @@ export default function HelpCenterPage() {
       {/* Quick Links */}
       <section className="py-8 border-b bg-white">
         <div className="container mx-auto px-4">
-          <div className="flex flex-wrap justify-center gap-4">
+          <div
+            className="
+        grid 
+        grid-cols-2       /* Mobile: 2x2 */
+        sm:grid-cols-3    /* Tablet: 3 per row */
+        md:grid-cols-4    /* Desktop: 4 per row */
+        gap-4
+        justify-items-center
+      "
+          >
             {quickLinks.map((link) => (
               <Button
                 key={link.title}
                 variant="outline"
-                className="gap-2 bg-transparent"
+                className="
+            w-full
+            flex items-center justify-center 
+            gap-2 
+            bg-transparent
+            px-4 py-3
+            rounded-lg
+            text-sm sm:text-base
+            whitespace-nowrap
+          "
                 asChild
               >
                 <Link href={link.href}>
                   <link.icon className="w-4 h-4" />
                   {link.title}
-                  <ExternalLink className="w-3 h-3" />
+                  <ExternalLink className="w-3 h-3 opacity-70" />
                 </Link>
               </Button>
             ))}
