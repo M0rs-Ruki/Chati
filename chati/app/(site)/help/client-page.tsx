@@ -1,15 +1,20 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState, useMemo } from "react"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { useState, useMemo } from "react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import {
   Dialog,
   DialogContent,
@@ -17,8 +22,14 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Search,
   HelpCircle,
@@ -37,8 +48,8 @@ import {
   ExternalLink,
   CheckCircle2,
   Send,
-} from "lucide-react"
-import Link from "next/link"
+} from "lucide-react";
+import Link from "next/link";
 
 const helpCategories = [
   {
@@ -89,7 +100,7 @@ const helpCategories = [
     color: "indigo",
     articleCount: 7,
   },
-]
+];
 
 const faqs = [
   {
@@ -188,61 +199,65 @@ const faqs = [
     answer:
       "Yes, account ownership can be transferred. Contact our support team with details about the current and new owner. Both parties will need to verify the transfer for security purposes. Note that billing information and payment methods will need to be updated by the new owner.",
   },
-]
+];
 
 const quickLinks = [
   { title: "API Documentation", href: "/docs", icon: BookOpen },
   { title: "Video Tutorials", href: "/tutorials", icon: BookOpen },
   { title: "Community Forum", href: "/community", icon: Users },
   { title: "Status Page", href: "/status", icon: CheckCircle2 },
-]
+];
 
 export default function HelpCenterPage() {
-  const [searchQuery, setSearchQuery] = useState("")
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
-  const [isContactModalOpen, setIsContactModalOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [contactForm, setContactForm] = useState({
     name: "",
     email: "",
     subject: "",
     category: "",
     message: "",
-  })
+  });
 
   const filteredFaqs = useMemo(() => {
-    let filtered = faqs
+    let filtered = faqs;
 
     if (selectedCategory) {
-      filtered = filtered.filter((faq) => faq.category === selectedCategory)
+      filtered = filtered.filter((faq) => faq.category === selectedCategory);
     }
 
     if (searchQuery) {
-      const query = searchQuery.toLowerCase()
+      const query = searchQuery.toLowerCase();
       filtered = filtered.filter(
-        (faq) => faq.question.toLowerCase().includes(query) || faq.answer.toLowerCase().includes(query),
-      )
+        (faq) =>
+          faq.question.toLowerCase().includes(query) ||
+          faq.answer.toLowerCase().includes(query)
+      );
     }
 
-    return filtered
-  }, [searchQuery, selectedCategory])
+    return filtered;
+  }, [searchQuery, selectedCategory]);
 
-  const leftColumnFaqs = filteredFaqs.filter((_, index) => index % 2 === 0)
-  const rightColumnFaqs = filteredFaqs.filter((_, index) => index % 2 === 1)
+  const leftColumnFaqs = filteredFaqs.filter((_, index) => index % 2 === 0);
+  const rightColumnFaqs = filteredFaqs.filter((_, index) => index % 2 === 1);
 
-  const selectedCategoryData = helpCategories.find((cat) => cat.id === selectedCategory)
+  const selectedCategoryData = helpCategories.find(
+    (cat) => cat.id === selectedCategory
+  );
 
   const handleContactSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log("Contact form submitted:", contactForm)
-    setIsContactModalOpen(false)
+    e.preventDefault();
+    console.log("Contact form submitted:", contactForm);
+    setIsContactModalOpen(false);
     setContactForm({
       name: "",
       email: "",
       subject: "",
       category: "",
       message: "",
-    })
-  }
+    });
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-green-50/30 to-white">
@@ -257,9 +272,12 @@ export default function HelpCenterPage() {
               <HelpCircle className="w-3.5 h-3.5 mr-1.5" />
               Help Center
             </Badge>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-balance">How can we help you?</h1>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-balance">
+              How can we help you?
+            </h1>
             <p className="text-xl text-green-100 mb-10 max-w-3xl mx-auto leading-relaxed">
-              Search our knowledge base for answers, guides, and troubleshooting tips
+              Search our knowledge base for answers, guides, and troubleshooting
+              tips
             </p>
 
             {/* Search Bar */}
@@ -276,7 +294,8 @@ export default function HelpCenterPage() {
               </div>
               {searchQuery && (
                 <p className="text-sm text-green-100 mt-3">
-                  Found {filteredFaqs.length} {filteredFaqs.length === 1 ? "result" : "results"}
+                  Found {filteredFaqs.length}{" "}
+                  {filteredFaqs.length === 1 ? "result" : "results"}
                 </p>
               )}
             </div>
@@ -289,7 +308,12 @@ export default function HelpCenterPage() {
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap justify-center gap-4">
             {quickLinks.map((link) => (
-              <Button key={link.title} variant="outline" className="gap-2 bg-transparent" asChild>
+              <Button
+                key={link.title}
+                variant="outline"
+                className="gap-2 bg-transparent"
+                asChild
+              >
                 <Link href={link.href}>
                   <link.icon className="w-4 h-4" />
                   {link.title}
@@ -307,18 +331,24 @@ export default function HelpCenterPage() {
           {/* Categories Grid */}
           {!searchQuery && !selectedCategory && (
             <div className="mb-16">
-              <h2 className="text-3xl font-bold mb-8 text-center">Browse by Topic</h2>
+              <h2 className="text-3xl font-bold mb-8 text-center">
+                Browse by Topic
+              </h2>
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
                 {helpCategories.map((category) => {
-                  const Icon = category.icon
+                  const Icon = category.icon;
                   const colorClasses = {
                     blue: "from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700",
-                    purple: "from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700",
-                    green: "from-green-500 to-green-600 hover:from-green-600 hover:to-green-700",
+                    purple:
+                      "from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700",
+                    green:
+                      "from-green-500 to-green-600 hover:from-green-600 hover:to-green-700",
                     red: "from-red-500 to-red-600 hover:from-red-600 hover:to-red-700",
-                    yellow: "from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700",
-                    indigo: "from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700",
-                  }
+                    yellow:
+                      "from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700",
+                    indigo:
+                      "from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700",
+                  };
 
                   return (
                     <Card
@@ -327,7 +357,11 @@ export default function HelpCenterPage() {
                       onClick={() => setSelectedCategory(category.id)}
                     >
                       <div
-                        className={`h-2 bg-gradient-to-r ${colorClasses[category.color as keyof typeof colorClasses]}`}
+                        className={`h-2 bg-gradient-to-r ${
+                          colorClasses[
+                            category.color as keyof typeof colorClasses
+                          ]
+                        }`}
                       />
                       <div className="p-6">
                         <div className="w-14 h-14 bg-gradient-to-br from-gray-100 to-gray-50 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
@@ -336,14 +370,18 @@ export default function HelpCenterPage() {
                         <h3 className="text-xl font-semibold mb-2 group-hover:text-green-600 transition-colors">
                           {category.title}
                         </h3>
-                        <p className="text-sm text-gray-600 mb-4">{category.description}</p>
+                        <p className="text-sm text-gray-600 mb-4">
+                          {category.description}
+                        </p>
                         <div className="flex items-center justify-between">
-                          <span className="text-sm text-gray-500">{category.articleCount} articles</span>
+                          <span className="text-sm text-gray-500">
+                            {category.articleCount} articles
+                          </span>
                           <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-green-600 group-hover:translate-x-1 transition-all" />
                         </div>
                       </div>
                     </Card>
-                  )
+                  );
                 })}
               </div>
             </div>
@@ -351,16 +389,27 @@ export default function HelpCenterPage() {
 
           {!searchQuery && selectedCategory && (
             <div className="mb-8 flex flex-wrap gap-2 justify-center">
-              <Button variant="outline" size="sm" onClick={() => setSelectedCategory(null)} className="bg-white">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setSelectedCategory(null)}
+                className="bg-white"
+              >
                 All Topics
               </Button>
               {helpCategories.map((category) => (
                 <Button
                   key={category.id}
-                  variant={selectedCategory === category.id ? "default" : "outline"}
+                  variant={
+                    selectedCategory === category.id ? "default" : "outline"
+                  }
                   size="sm"
                   onClick={() => setSelectedCategory(category.id)}
-                  className={selectedCategory === category.id ? "bg-green-600 hover:bg-green-700" : "bg-white"}
+                  className={
+                    selectedCategory === category.id
+                      ? "bg-green-600 hover:bg-green-700"
+                      : "bg-white"
+                  }
                 >
                   {category.title}
                 </Button>
@@ -372,12 +421,21 @@ export default function HelpCenterPage() {
             <div className="flex items-center justify-between mb-8">
               <div>
                 <h2 className="text-3xl font-bold mb-2">
-                  {selectedCategory ? selectedCategoryData?.title : "Frequently Asked Questions"}
+                  {selectedCategory
+                    ? selectedCategoryData?.title
+                    : "Frequently Asked Questions"}
                 </h2>
-                {selectedCategory && <p className="text-gray-600">{selectedCategoryData?.description}</p>}
+                {selectedCategory && (
+                  <p className="text-gray-600">
+                    {selectedCategoryData?.description}
+                  </p>
+                )}
               </div>
               {selectedCategory && (
-                <Button variant="ghost" onClick={() => setSelectedCategory(null)}>
+                <Button
+                  variant="ghost"
+                  onClick={() => setSelectedCategory(null)}
+                >
                   View All
                 </Button>
               )}
@@ -388,12 +446,13 @@ export default function HelpCenterPage() {
                 <AlertCircle className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold mb-2">No results found</h3>
                 <p className="text-gray-600 mb-6">
-                  We couldn't find any articles matching your search. Try different keywords or browse by category.
+                  We couldn't find any articles matching your search. Try
+                  different keywords or browse by category.
                 </p>
                 <Button
                   onClick={() => {
-                    setSearchQuery("")
-                    setSelectedCategory(null)
+                    setSearchQuery("");
+                    setSelectedCategory(null);
                   }}
                 >
                   Clear Search
@@ -411,9 +470,13 @@ export default function HelpCenterPage() {
                         className="border rounded-lg px-6 bg-white shadow-sm hover:shadow-md transition-shadow"
                       >
                         <AccordionTrigger className="text-left hover:no-underline py-5">
-                          <span className="font-semibold text-gray-900 pr-4">{faq.question}</span>
+                          <span className="font-semibold text-gray-900 pr-4">
+                            {faq.question}
+                          </span>
                         </AccordionTrigger>
-                        <AccordionContent className="text-gray-600 pb-5 leading-relaxed">{faq.answer}</AccordionContent>
+                        <AccordionContent className="text-gray-600 pb-5 leading-relaxed">
+                          {faq.answer}
+                        </AccordionContent>
                       </AccordionItem>
                     ))}
                   </Accordion>
@@ -429,9 +492,13 @@ export default function HelpCenterPage() {
                         className="border rounded-lg px-6 bg-white shadow-sm hover:shadow-md transition-shadow"
                       >
                         <AccordionTrigger className="text-left hover:no-underline py-5">
-                          <span className="font-semibold text-gray-900 pr-4">{faq.question}</span>
+                          <span className="font-semibold text-gray-900 pr-4">
+                            {faq.question}
+                          </span>
                         </AccordionTrigger>
-                        <AccordionContent className="text-gray-600 pb-5 leading-relaxed">{faq.answer}</AccordionContent>
+                        <AccordionContent className="text-gray-600 pb-5 leading-relaxed">
+                          {faq.answer}
+                        </AccordionContent>
                       </AccordionItem>
                     ))}
                   </Accordion>
@@ -445,30 +512,45 @@ export default function HelpCenterPage() {
       <section className="py-16 md:py-20 bg-gradient-to-br from-gray-50 to-white">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Still need help?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Still need help?
+            </h2>
             <p className="text-lg text-gray-600">
-              Our support team is available 24/7 to assist you with any questions or issues
+              Our support team is available 24/7 to assist you with any
+              questions or issues
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            <Dialog open={isContactModalOpen} onOpenChange={setIsContactModalOpen}>
+            <Dialog
+              open={isContactModalOpen}
+              onOpenChange={setIsContactModalOpen}
+            >
               <DialogTrigger asChild>
                 <Card className="p-8 text-center hover:shadow-xl transition-all group cursor-pointer">
                   <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-green-600 transition-colors">
                     <MessageSquare className="w-8 h-8 text-green-600 group-hover:text-white transition-colors" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">Contact Support</h3>
-                  <p className="text-gray-600 mb-6">Fill out a form and we'll get back to you soon</p>
-                  <Button className="w-full bg-green-600 hover:bg-green-700">Open Form</Button>
+                  <h3 className="text-xl font-semibold mb-2">
+                    Contact Support
+                  </h3>
+                  <p className="text-gray-600 mb-6">
+                    Fill out a form and we'll get back to you soon
+                  </p>
+                  <Button className="w-full bg-green-600 hover:bg-green-700">
+                    Open Form
+                  </Button>
                 </Card>
               </DialogTrigger>
 
               <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
-                  <DialogTitle className="text-2xl">Contact Support</DialogTitle>
+                  <DialogTitle className="text-2xl">
+                    Contact Support
+                  </DialogTitle>
                   <DialogDescription>
-                    Fill out the form below and our support team will get back to you within 24 hours.
+                    Fill out the form below and our support team will get back
+                    to you within 24 hours.
                   </DialogDescription>
                 </DialogHeader>
 
@@ -480,7 +562,12 @@ export default function HelpCenterPage() {
                         id="name"
                         placeholder="Your full name"
                         value={contactForm.name}
-                        onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
+                        onChange={(e) =>
+                          setContactForm({
+                            ...contactForm,
+                            name: e.target.value,
+                          })
+                        }
                         required
                       />
                     </div>
@@ -491,7 +578,12 @@ export default function HelpCenterPage() {
                         type="email"
                         placeholder="your@email.com"
                         value={contactForm.email}
-                        onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
+                        onChange={(e) =>
+                          setContactForm({
+                            ...contactForm,
+                            email: e.target.value,
+                          })
+                        }
                         required
                       />
                     </div>
@@ -501,7 +593,9 @@ export default function HelpCenterPage() {
                     <Label htmlFor="category">Category *</Label>
                     <Select
                       value={contactForm.category}
-                      onValueChange={(value) => setContactForm({ ...contactForm, category: value })}
+                      onValueChange={(value) =>
+                        setContactForm({ ...contactForm, category: value })
+                      }
                       required
                     >
                       <SelectTrigger id="category">
@@ -523,7 +617,12 @@ export default function HelpCenterPage() {
                       id="subject"
                       placeholder="Brief description of your issue"
                       value={contactForm.subject}
-                      onChange={(e) => setContactForm({ ...contactForm, subject: e.target.value })}
+                      onChange={(e) =>
+                        setContactForm({
+                          ...contactForm,
+                          subject: e.target.value,
+                        })
+                      }
                       required
                     />
                   </div>
@@ -534,7 +633,12 @@ export default function HelpCenterPage() {
                       id="message"
                       placeholder="Please provide detailed information about your question or issue..."
                       value={contactForm.message}
-                      onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
+                      onChange={(e) =>
+                        setContactForm({
+                          ...contactForm,
+                          message: e.target.value,
+                        })
+                      }
                       rows={6}
                       required
                     />
@@ -549,7 +653,10 @@ export default function HelpCenterPage() {
                     >
                       Cancel
                     </Button>
-                    <Button type="submit" className="flex-1 bg-green-600 hover:bg-green-700">
+                    <Button
+                      type="submit"
+                      className="flex-1 bg-green-600 hover:bg-green-700"
+                    >
                       <Send className="w-4 h-4 mr-2" />
                       Send Message
                     </Button>
@@ -563,9 +670,22 @@ export default function HelpCenterPage() {
                 <Mail className="w-8 h-8 text-blue-600 group-hover:text-white transition-colors" />
               </div>
               <h3 className="text-xl font-semibold mb-2">Email Support</h3>
-              <p className="text-gray-600 mb-6">Send us an email and we'll respond within 24 hours</p>
-              <Button variant="outline" className="w-full bg-transparent" asChild>
-                <Link href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL || "support@chati.chat"}`}>Send Email</Link>
+              <p className="text-gray-600 mb-6">
+                Send us an email and we'll respond within 24 hours
+              </p>
+              <Button
+                variant="outline"
+                className="w-full bg-transparent"
+                asChild
+              >
+                <Link
+                  href={`mailto:${
+                    process.env.NEXT_PUBLIC_CONTACT_EMAIL ||
+                    "support@chati.chat"
+                  }`}
+                >
+                  Send Email
+                </Link>
               </Button>
             </Card>
 
@@ -574,14 +694,24 @@ export default function HelpCenterPage() {
                 <Phone className="w-8 h-8 text-purple-600 group-hover:text-white transition-colors" />
               </div>
               <h3 className="text-xl font-semibold mb-2">Phone Support</h3>
-              <p className="text-gray-600 mb-6">Call us for urgent issues or technical support</p>
-              <Button variant="outline" className="w-full bg-transparent" asChild>
-                <Link href={`tel:${process.env.NEXT_PUBLIC_CONTACT_PHONE || ""}`}>Call Now</Link>
+              <p className="text-gray-600 mb-6">
+                Call us for urgent issues or technical support
+              </p>
+              <Button
+                variant="outline"
+                className="w-full bg-transparent"
+                asChild
+              >
+                <Link
+                  href={`tel:${process.env.NEXT_PUBLIC_CONTACT_PHONE || ""}`}
+                >
+                  Call Now
+                </Link>
               </Button>
             </Card>
           </div>
         </div>
       </section>
     </div>
-  )
+  );
 }

@@ -535,54 +535,80 @@ export default function BlogPostPage({
 
             {/* Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 sm:gap-6">
-              {relatedPosts.map((relatedPost, index) => (
-                <Link
-                  key={relatedPost.slug}
-                  href={`/blog/${relatedPost.slug}`}
-                  className="group block animate-in fade-in slide-in-from-bottom-6 duration-700"
-                  style={{ animationDelay: `${index * 130}ms` }}
-                >
-                  <Card className="overflow-hidden hover:shadow-2xl transition-all duration-500 border-gray-200 h-full bg-white hover:-translate-y-2 hover:border-blue-300 rounded-xl">
-                    {/* Thumbnail */}
-                    <div className="aspect-[16/9] relative bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
-                      <Image
-                        src={relatedPost.thumbnail || "/placeholder.svg"}
-                        alt={relatedPost.title}
-                        fill
-                        className="object-cover group-hover:scale-110 group-hover:rotate-1 transition-transform duration-700"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-4 sm:p-5">
-                      <Badge className="mb-2 sm:mb-3 bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 border-none text-[10px] sm:text-xs font-semibold hover:from-blue-200 hover:to-purple-200 transition-all duration-300">
-                        {relatedPost.category}
-                      </Badge>
-
-                      <h3 className="text-sm sm:text-base font-bold mb-2 sm:mb-3 group-hover:text-blue-600 transition-colors duration-300 line-clamp-2 leading-snug">
-                        {relatedPost.title}
-                      </h3>
-
-                      <p className="text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4 line-clamp-2">
-                        {relatedPost.excerpt}
-                      </p>
-
-                      <div className="flex items-center justify-between text-xs text-gray-500">
-                        <span className="flex items-center gap-1">
-                          <Clock className="w-3 h-3" />
-                          {relatedPost.readTime}
-                        </span>
-
-                        <div className="flex items-center gap-1.5 text-blue-600 font-medium group-hover:gap-2 transition-all duration-300">
-                          <span>Read more</span>
-                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
-                        </div>
+              {loadingRelated ? (
+                // Show 3 loading skeleton cards while fetching
+                Array.from({ length: 3 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="animate-pulse bg-white rounded-xl border border-gray-200 h-full overflow-hidden"
+                    style={{ animationDelay: `${i * 80}ms` }}
+                  >
+                    <div className="aspect-[16/9] bg-gray-100" />
+                    <div className="p-4 sm:p-5 space-y-3">
+                      <div className="h-3 w-1/4 bg-gray-200 rounded" />
+                      <div className="h-4 w-3/4 bg-gray-200 rounded" />
+                      <div className="h-3 w-full bg-gray-200 rounded mt-2" />
+                      <div className="flex items-center justify-between mt-4">
+                        <div className="h-3 w-1/6 bg-gray-200 rounded" />
+                        <div className="h-3 w-1/4 bg-gray-200 rounded" />
                       </div>
                     </div>
-                  </Card>
-                </Link>
-              ))}
+                  </div>
+                ))
+              ) : relatedPosts && relatedPosts.length > 0 ? (
+                relatedPosts.map((relatedPost, index) => (
+                  <Link
+                    key={relatedPost.slug}
+                    href={`/blog/${relatedPost.slug}`}
+                    className="group block animate-in fade-in slide-in-from-bottom-6 duration-700"
+                    style={{ animationDelay: `${index * 130}ms` }}
+                  >
+                    <Card className="overflow-hidden hover:shadow-2xl transition-all duration-500 border-gray-200 h-full bg-white hover:-translate-y-2 hover:border-blue-300 rounded-xl">
+                      {/* Thumbnail */}
+                      <div className="aspect-[16/9] relative bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
+                        <Image
+                          src={relatedPost.thumbnail || "/placeholder.svg"}
+                          alt={relatedPost.title}
+                          fill
+                          className="object-cover group-hover:scale-110 group-hover:rotate-1 transition-transform duration-700"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      </div>
+
+                      {/* Content */}
+                      <div className="p-4 sm:p-5">
+                        <Badge className="mb-2 sm:mb-3 bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 border-none text-[10px] sm:text-xs font-semibold hover:from-blue-200 hover:to-purple-200 transition-all duration-300">
+                          {relatedPost.category}
+                        </Badge>
+
+                        <h3 className="text-sm sm:text-base font-bold mb-2 sm:mb-3 group-hover:text-blue-600 transition-colors duration-300 line-clamp-2 leading-snug">
+                          {relatedPost.title}
+                        </h3>
+
+                        <p className="text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4 line-clamp-2">
+                          {relatedPost.excerpt}
+                        </p>
+
+                        <div className="flex items-center justify-between text-xs text-gray-500">
+                          <span className="flex items-center gap-1">
+                            <Clock className="w-3 h-3" />
+                            {relatedPost.readTime}
+                          </span>
+
+                          <div className="flex items-center gap-1.5 text-blue-600 font-medium group-hover:gap-2 transition-all duration-300">
+                            <span>Read more</span>
+                            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
+                  </Link>
+                ))
+              ) : (
+                <div className="col-span-full text-center text-gray-500 py-8">
+                  No related posts found.
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -634,7 +660,7 @@ export default function BlogPostPage({
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full sm:w-auto border-2 border-white text-white hover:bg-white hover:text-blue-600 font-semibold text-lg px-7 py-5 transition-all duration-300 hover:scale-105"
+                className="w-full sm:w-auto border-2 border-white text-black hover:bg-white hover:text-blue-600 font-semibold text-lg px-7 py-5 transition-all duration-300 hover:scale-105"
                 asChild
               >
                 <Link href="/pricing">View Pricing</Link>
@@ -642,23 +668,22 @@ export default function BlogPostPage({
             </div>
 
             {/* Trust Indicators */}
-            <div className="pt-8 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8 text-blue-100">
-              <div className="flex items-center gap-2">
+            <div className="pt-8 flex flex-row flex-wrap justify-center items-center gap-6 text-blue-100">
+              <div className="flex flex-col items-center text-center gap-1">
                 <span className="text-2xl font-bold text-white">10k+</span>
                 <span className="text-sm">Active Users</span>
               </div>
 
-              {/* Divider (hidden on mobile) */}
-              <div className="hidden sm:block w-px h-8 bg-blue-300" />
+              <div className="w-px h-8 bg-blue-300" />
 
-              <div className="flex items-center gap-2">
+              <div className="flex flex-col items-center text-center gap-1">
                 <span className="text-2xl font-bold text-white">99.9%</span>
                 <span className="text-sm">Uptime</span>
               </div>
 
-              <div className="hidden sm:block w-px h-8 bg-blue-300" />
+              <div className="w-px h-8 bg-blue-300" />
 
-              <div className="flex items-center gap-2">
+              <div className="flex flex-col items-center text-center gap-1">
                 <span className="text-2xl font-bold text-white">24/7</span>
                 <span className="text-sm">Support</span>
               </div>
