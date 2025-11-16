@@ -182,17 +182,55 @@ export default function FoodClientPage() {
     },
   ];
 
+  function Feature({ 
+    Icon, 
+    iconBg, 
+    iconColor, 
+    title, 
+    desc 
+  }: { 
+    Icon: React.ComponentType<{ className?: string }>;
+    iconBg: string;
+    iconColor: string;
+    title: string;
+    desc: string;
+  }) {
+    return (
+      <div className="flex gap-3 items-start group">
+        <div
+          className={`
+          flex h-10 w-10 shrink-0 items-center justify-center rounded-xl 
+          bg-gradient-to-br ${iconBg}
+          group-hover:from-white/80 group-hover:to-white/60 
+          transition-all shadow-sm
+        `}
+        >
+          <Icon className={`h-5 w-5 ${iconColor}`} />
+        </div>
+
+        <div>
+          <h3 className="font-semibold text-base mb-1">{title}</h3>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            {desc}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen">
       {/* Hero Section - Compact */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-orange-50 via-white to-amber-50/30">
-        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-gradient-to-br from-orange-400/15 to-transparent rounded-full blur-3xl" />
-
+      <section className="relative overflow-hidden bg-gradient-to-br from-orange-50 via-white to-amber-50/30 py-10 sm:py-12 md:py-16">
+        {/* Background glow (scaled for mobile) */}
         <div
-          ref={heroRef}
-          className="container relative mx-auto px-4 py-12 md:py-16 z-10"
-        >
-          <div className="grid gap-8 lg:grid-cols-2 items-center">
+          className="absolute top-0 right-0 w-40 h-40 sm:w-72 sm:h-72 md:w-[400px] md:h-[400px] 
+  bg-gradient-to-br from-orange-400/15 to-transparent rounded-full blur-3xl"
+        />
+
+        <div ref={heroRef} className="container relative mx-auto px-4 z-10">
+          <div className="grid gap-10 lg:grid-cols-2 items-center">
+            {/* LEFT CONTENT */}
             <div
               className={`transition-all duration-1000 ${
                 heroInView
@@ -202,13 +240,13 @@ export default function FoodClientPage() {
             >
               <Badge
                 variant="secondary"
-                className="mb-3 bg-orange-100 text-orange-700 w-fit"
+                className="mb-3 bg-orange-100 text-orange-700 w-fit shadow-sm"
               >
                 <Utensils className="w-3.5 h-3.5 mr-1.5" />
                 Food & Beverage Solutions
               </Badge>
 
-              <h1 className="mb-4 text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+              <h1 className="mb-4 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
                 <span className="block text-foreground">
                   Serve Customers Better with
                 </span>
@@ -217,20 +255,27 @@ export default function FoodClientPage() {
                 </span>
               </h1>
 
-              <p className="mb-6 text-base md:text-lg text-muted-foreground leading-relaxed">
+              <p className="mb-6 text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed max-w-lg">
                 Increase orders by 45% with automated ordering, table
                 reservations, and instant customer support via WhatsApp.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-3 mb-6">
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-3 mb-6 w-full sm:w-auto">
                 <Button
                   size="lg"
-                  className="bg-orange-600 hover:bg-orange-700 group"
+                  className="bg-orange-600 hover:bg-orange-700 text-white font-semibold w-full sm:w-auto"
                 >
                   Start Free Trial
-                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
-                <Button size="lg" variant="outline" asChild>
+
+                <Button
+                  size="lg"
+                  variant="outline"
+                  asChild
+                  className="w-full sm:w-auto"
+                >
                   <Link
                     href={`https://wa.me/${
                       process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""
@@ -242,13 +287,15 @@ export default function FoodClientPage() {
                 </Button>
               </div>
 
-              <div className="flex items-center gap-4 pt-4 border-t">
+              {/* Metrics */}
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 pt-4 border-t">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-orange-600" />
                   <span className="text-sm text-muted-foreground">
                     45% More Orders
                   </span>
                 </div>
+
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-orange-600" />
                   <span className="text-sm text-muted-foreground">
@@ -258,6 +305,7 @@ export default function FoodClientPage() {
               </div>
             </div>
 
+            {/* RIGHT IMAGE */}
             <div
               className={`relative transition-all duration-1000 delay-300 ${
                 heroInView
@@ -265,14 +313,16 @@ export default function FoodClientPage() {
                   : "opacity-0 translate-x-8"
               }`}
             >
-              <Image
-                src="/restaurant-staff-taking-orders-on-tablet-with-what.jpg"
-                alt="Restaurant staff using WhatsApp for order management and customer service"
-                width={600}
-                height={500}
-                className="w-full h-auto object-contain drop-shadow-2xl"
-                priority
-              />
+              <div className="relative w-full max-w-sm sm:max-w-md md:max-w-lg mx-auto lg:mx-0">
+                <Image
+                  src="/restaurant-staff-taking-orders-on-tablet-with-what.jpg"
+                  alt="Restaurant staff using WhatsApp for order management"
+                  width={600}
+                  height={500}
+                  className="relative z-10 w-full h-auto object-contain drop-shadow-2xl rounded-2xl"
+                  priority
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -283,13 +333,23 @@ export default function FoodClientPage() {
       {/* Block 1: Image Left, Content Right - Order Management */}
       <section
         ref={block1Ref}
-        className="relative overflow-hidden bg-gradient-to-br from-amber-50/40 via-white to-yellow-50/30 py-12 md:py-14"
+        className="relative overflow-hidden bg-gradient-to-br from-amber-50/40 via-white to-yellow-50/30 
+  py-10 sm:py-12 md:py-16"
       >
-        <div className="absolute top-10 right-20 w-96 h-96 bg-gradient-to-br from-amber-400/15 to-transparent rounded-full blur-3xl" />
-        <div className="absolute bottom-10 left-20 w-96 h-96 bg-gradient-to-tr from-yellow-400/15 to-transparent rounded-full blur-3xl" />
+        {/* Background Blobs (responsive) */}
+        <div
+          className="absolute top-10 right-10 w-56 h-56 sm:w-72 sm:h-72 md:w-96 md:h-96 
+  bg-gradient-to-br from-amber-400/15 to-transparent rounded-full blur-3xl"
+        />
+
+        <div
+          className="absolute bottom-10 left-10 w-56 h-56 sm:w-72 sm:h-72 md:w-96 md:h-96 
+  bg-gradient-to-tr from-yellow-400/15 to-transparent rounded-full blur-3xl"
+        />
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="grid gap-8 lg:grid-cols-[55%_45%] items-center">
+          <div className="grid gap-10 lg:grid-cols-[55%_45%] items-center">
+            {/* IMAGE LEFT */}
             <div
               className={`flex items-center justify-center lg:justify-start transition-all duration-1000 ${
                 block1InView
@@ -297,19 +357,25 @@ export default function FoodClientPage() {
                   : "opacity-0 -translate-x-8"
               }`}
             >
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-amber-400/20 via-yellow-400/15 to-orange-400/20 blur-2xl rounded-3xl transform scale-105" />
+              <div className="relative w-full max-w-sm sm:max-w-md md:max-w-lg">
+                <div
+                  className="absolute inset-0 bg-gradient-to-br from-amber-400/20 via-yellow-400/15 to-orange-400/20 
+          blur-2xl rounded-3xl scale-105"
+                />
+
                 <Image
                   src="/smartphone-showing-food-ordering-interface-on-what.jpg"
-                  alt="Smartphone showing food ordering interface on WhatsApp with menu items and cart"
+                  alt="WhatsApp food ordering menu"
                   width={800}
                   height={600}
-                  className="relative z-10 w-full h-auto max-w-2xl object-contain drop-shadow-2xl hover:scale-[1.02] transition-transform duration-500"
+                  className="relative z-10 w-full h-auto object-contain rounded-2xl 
+            drop-shadow-2xl hover:scale-[1.02] transition-transform duration-500"
                   loading="lazy"
                 />
               </div>
             </div>
 
+            {/* CONTENT RIGHT */}
             <div
               className={`transition-all duration-1000 delay-300 ${
                 block1InView
@@ -323,60 +389,44 @@ export default function FoodClientPage() {
               >
                 Order Management
               </Badge>
-              <h2 className="mb-4 text-balance text-3xl font-bold md:text-4xl lg:text-5xl">
+
+              <h2 className="mb-4 text-balance text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold">
                 Seamless WhatsApp Ordering
               </h2>
-              <p className="mb-6 text-pretty text-muted-foreground text-base md:text-lg leading-relaxed">
-                Let customers browse your menu, customize orders, and complete
-                purchases directly through WhatsApp. Automated confirmations and
-                real-time order tracking keep everyone informed.
+
+              <p className="mb-6 text-muted-foreground text-sm sm:text-base md:text-lg leading-relaxed">
+                Let customers browse menus, customize orders, and pay — all
+                inside WhatsApp with automated confirmations & real-time
+                updates.
               </p>
 
               <div className="space-y-4">
-                <div className="flex gap-3 items-start group">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-amber-100 to-amber-50 group-hover:from-amber-200 group-hover:to-amber-100 transition-all shadow-sm">
-                    <ShoppingBag className="h-5 w-5 text-amber-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">
-                      Digital Menu Catalog
-                    </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Share interactive menus with photos, descriptions, prices,
-                      and customization options.
-                    </p>
-                  </div>
-                </div>
+                {/* Feature 1 */}
+                <Feature
+                  Icon={ShoppingBag}
+                  iconBg="from-amber-100 to-amber-50"
+                  iconColor="text-amber-600"
+                  title="Digital Menu Catalog"
+                  desc="Share interactive menus with photos, customization, and pricing."
+                />
 
-                <div className="flex gap-3 items-start group">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-yellow-100 to-yellow-50 group-hover:from-yellow-200 group-hover:to-yellow-100 transition-all shadow-sm">
-                    <CheckCircle2 className="h-5 w-5 text-yellow-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">
-                      Instant Confirmations
-                    </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Automated order confirmations with estimated preparation
-                      and delivery times.
-                    </p>
-                  </div>
-                </div>
+                {/* Feature 2 */}
+                <Feature
+                  Icon={CheckCircle2}
+                  iconBg="from-yellow-100 to-yellow-50"
+                  iconColor="text-yellow-600"
+                  title="Instant Confirmations"
+                  desc="Send order summaries with estimated preparation & delivery time."
+                />
 
-                <div className="flex gap-3 items-start group">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-orange-100 to-orange-50 group-hover:from-orange-200 group-hover:to-orange-100 transition-all shadow-sm">
-                    <Truck className="h-5 w-5 text-orange-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">
-                      Real-Time Tracking
-                    </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Keep customers updated from order preparation to delivery
-                      with automated status messages.
-                    </p>
-                  </div>
-                </div>
+                {/* Feature 3 */}
+                <Feature
+                  Icon={Truck}
+                  iconBg="from-orange-100 to-orange-50"
+                  iconColor="text-orange-600"
+                  title="Real-Time Tracking"
+                  desc="Update customers automatically from preparation to delivery."
+                />
               </div>
             </div>
           </div>
@@ -386,13 +436,23 @@ export default function FoodClientPage() {
       {/* Block 2: Image Right, Content Left - Reservations & Loyalty */}
       <section
         ref={block2Ref}
-        className="relative overflow-hidden bg-gradient-to-br from-red-50/40 via-white to-pink-50/30 py-12 md:py-14"
+        className="relative overflow-hidden bg-gradient-to-br from-red-50/40 via-white to-pink-50/30 
+  py-10 sm:py-12 md:py-16"
       >
-        <div className="absolute top-10 left-20 w-96 h-96 bg-gradient-to-br from-red-400/15 to-transparent rounded-full blur-3xl" />
-        <div className="absolute bottom-10 right-20 w-96 h-96 bg-gradient-to-tr from-pink-400/15 to-transparent rounded-full blur-3xl" />
+        {/* Background blobs */}
+        <div
+          className="absolute top-10 left-10 w-56 h-56 sm:w-72 sm:h-72 md:w-96 md:h-96 
+  bg-gradient-to-br from-red-400/15 to-transparent rounded-full blur-3xl"
+        />
+
+        <div
+          className="absolute bottom-10 right-10 w-56 h-56 sm:w-72 sm:h-72 md:w-96 md:h-96 
+  bg-gradient-to-tr from-pink-400/15 to-transparent rounded-full blur-3xl"
+        />
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="grid gap-8 lg:grid-cols-[45%_55%] items-center">
+          <div className="grid gap-10 lg:grid-cols-[45%_55%] items-center">
+            {/* CONTENT LEFT */}
             <div
               className={`transition-all duration-1000 ${
                 block2InView
@@ -406,63 +466,44 @@ export default function FoodClientPage() {
               >
                 Reservations & Loyalty
               </Badge>
-              <h2 className="mb-4 text-balance text-3xl font-bold md:text-4xl lg:text-5xl">
+
+              <h2 className="mb-4 text-balance text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold">
                 Build Customer Loyalty
               </h2>
-              <p className="mb-6 text-pretty text-muted-foreground text-base md:text-lg leading-relaxed">
-                Automate table reservations, reward repeat customers with
-                loyalty programs, and collect valuable feedback to continuously
-                improve your service.
+
+              <p className="mb-6 text-muted-foreground text-sm sm:text-base md:text-lg leading-relaxed">
+                Automate reservations, reward repeat buyers, and collect
+                customer feedback to improve your service continuously.
               </p>
 
               <div className="space-y-4">
-                <div className="flex gap-3 items-start group">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-red-100 to-red-50 group-hover:from-red-200 group-hover:to-red-100 transition-all shadow-sm">
-                    <Calendar className="h-5 w-5 text-red-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">
-                      Smart Reservations
-                    </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Automated table booking with real-time availability checks
-                      and confirmation reminders.
-                    </p>
-                  </div>
-                </div>
+                <Feature
+                  Icon={Calendar}
+                  iconBg="from-red-100 to-red-50"
+                  iconColor="text-red-600"
+                  title="Smart Reservations"
+                  desc="Auto-booking with real-time availability checks and reminders."
+                />
 
-                <div className="flex gap-3 items-start group">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-pink-100 to-pink-50 group-hover:from-pink-200 group-hover:to-pink-100 transition-all shadow-sm">
-                    <Gift className="h-5 w-5 text-pink-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">
-                      Loyalty Rewards
-                    </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Automatically track points, send exclusive offers, and
-                      reward your best customers.
-                    </p>
-                  </div>
-                </div>
+                <Feature
+                  Icon={Gift}
+                  iconBg="from-pink-100 to-pink-50"
+                  iconColor="text-pink-600"
+                  title="Loyalty Rewards"
+                  desc="Reward customers automatically with points, deals & perks."
+                />
 
-                <div className="flex gap-3 items-start group">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-orange-100 to-orange-50 group-hover:from-orange-200 group-hover:to-orange-100 transition-all shadow-sm">
-                    <Star className="h-5 w-5 text-orange-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">
-                      Feedback Collection
-                    </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Gather reviews and ratings automatically after each visit
-                      to improve your service.
-                    </p>
-                  </div>
-                </div>
+                <Feature
+                  Icon={Star}
+                  iconBg="from-orange-100 to-orange-50"
+                  iconColor="text-orange-600"
+                  title="Feedback Collection"
+                  desc="Gather reviews after each visit to improve service quality."
+                />
               </div>
             </div>
 
+            {/* IMAGE RIGHT */}
             <div
               className={`flex items-center justify-center lg:justify-end transition-all duration-1000 delay-300 ${
                 block2InView
@@ -470,14 +511,19 @@ export default function FoodClientPage() {
                   : "opacity-0 translate-x-8"
               }`}
             >
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-red-400/20 via-pink-400/15 to-orange-400/20 blur-2xl rounded-3xl transform scale-105" />
+              <div className="relative w-full max-w-sm sm:max-w-md md:max-w-lg">
+                <div
+                  className="absolute inset-0 bg-gradient-to-br from-red-400/20 via-pink-400/15 to-orange-400/20 
+          blur-2xl rounded-3xl scale-105"
+                />
+
                 <Image
                   src="/restaurant-customer-receiving-loyalty-rewards-noti.jpg"
-                  alt="Restaurant customer receiving loyalty rewards and reservation confirmation on WhatsApp"
+                  alt="WhatsApp reservation & loyalty rewards"
                   width={800}
                   height={600}
-                  className="relative z-10 w-full h-auto max-w-2xl object-contain drop-shadow-2xl hover:scale-[1.02] transition-transform duration-500"
+                  className="relative z-10 w-full h-auto object-contain rounded-2xl 
+            drop-shadow-2xl hover:scale-[1.02] transition-transform duration-500"
                   loading="lazy"
                 />
               </div>
