@@ -16,6 +16,8 @@ export async function GET(req: NextRequest) {
     // Query parameters for filtering and pagination
     const searchParams = req.nextUrl.searchParams;
     const statusParam = searchParams.get("status");
+    const randomParam = searchParams.get("random"); // Number of random posts to return
+    const excludeSlug = searchParams.get("exclude"); // Slug to exclude (for current post)
     const page = parseInt(searchParams.get("page") || "1", 10);
     const limit = Math.min(
       parseInt(searchParams.get("limit") || "10", 10),
@@ -23,7 +25,7 @@ export async function GET(req: NextRequest) {
     ); // Max 100 items
     const skip = (page - 1) * limit;
 
-    console.log('📊 Query params:', { statusParam, page, limit, skip });
+    console.log('📊 Query params:', { statusParam, randomParam, excludeSlug, page, limit, skip });
 
     // Validate status parameter
     const validStatuses: PublishStatus[] = [
@@ -38,12 +40,96 @@ export async function GET(req: NextRequest) {
         : undefined;
 
     // Build filter object with proper typing
-    const where: { status?: PublishStatus } = {};
+    const where: { status?: PublishStatus; slug?: { not: string } } = {};
     if (status) {
       where.status = status;
     }
+    // Exclude specific slug (for related posts)
+    if (excludeSlug) {
+      where.slug = { not: excludeSlug };
+    }
 
     console.log('🔍 WHERE clause:', where);
+
+    // Handle random posts request
+    if (randomParam) {
+      const randomCount = Math.min(parseInt(randomParam, 10), 10); // Max 10 random posts
+      
+      // Get total count
+      const total = await prisma.blogPost.count({ 
+        where: { 
+          status: "PUBLISHED",
+          ...(excludeSlug && { slug: { not: excludeSlug } })
+        } 
+      });
+      
+      // If we have fewer posts than requested, return all
+      if (total <= randomCount) {
+        const blogs = await prisma.blogPost.findMany({
+          where: { 
+            status: "PUBLISHED",
+            ...(excludeSlug && { slug: { not: excludeSlug } })
+          },
+          select: {
+            id: true,
+            slug: true,
+            title: true,
+            imageUrl: true,
+            status: true,
+            metadata: true,
+            publishedAt: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+          orderBy: { createdAt: "desc" },
+        });
+        
+        return NextResponse.json({
+          message: "Random blogs fetched successfully",
+          posts: blogs,
+        });
+      }
+      
+      // Generate random offsets
+      const randomOffsets = new Set<number>();
+      while (randomOffsets.size < randomCount) {
+        randomOffsets.add(Math.floor(Math.random() * total));
+      }
+      
+      // Fetch random posts
+      const randomBlogs = await Promise.all(
+        Array.from(randomOffsets).map(offset =>
+          prisma.blogPost.findMany({
+            where: { 
+              status: "PUBLISHED",
+              ...(excludeSlug && { slug: { not: excludeSlug } })
+            },
+            select: {
+              id: true,
+              slug: true,
+              title: true,
+              imageUrl: true,
+              status: true,
+              metadata: true,
+              publishedAt: true,
+              createdAt: true,
+              updatedAt: true,
+            },
+            skip: offset,
+            take: 1,
+          })
+        )
+      );
+      
+      const blogs = randomBlogs.flat();
+      
+      console.log('✅ Fetched random blogs:', blogs.length, 'posts');
+      
+      return NextResponse.json({
+        message: "Random blogs fetched successfully",
+        posts: blogs,
+      });
+    }
 
     // Get total count for pagination
     const total = await prisma.blogPost.count({ where });
