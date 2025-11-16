@@ -295,13 +295,23 @@ export default function EducationPage() {
       {/* Block 1: Image Left, Content Right - Virtual Learning */}
       <section
         ref={block1Ref}
-        className="relative overflow-hidden bg-gradient-to-br from-purple-50/40 via-white to-pink-50/30 py-12 md:py-14"
+        className="relative overflow-hidden bg-gradient-to-br from-purple-50/40 via-white to-pink-50/30 
+  py-10 sm:py-12 md:py-16"
       >
-        <div className="absolute top-10 right-20 w-96 h-96 bg-gradient-to-br from-purple-400/15 to-transparent rounded-full blur-3xl" />
-        <div className="absolute bottom-10 left-20 w-96 h-96 bg-gradient-to-tr from-pink-400/15 to-transparent rounded-full blur-3xl" />
+        {/* Background Blobs – mobile scaled */}
+        <div
+          className="absolute top-10 right-10 w-56 h-56 sm:w-72 sm:h-72 md:w-96 md:h-96 
+  bg-gradient-to-br from-purple-400/15 to-transparent rounded-full blur-3xl"
+        />
+
+        <div
+          className="absolute bottom-10 left-10 w-56 h-56 sm:w-72 sm:h-72 md:w-96 md:h-96 
+  bg-gradient-to-tr from-pink-400/15 to-transparent rounded-full blur-3xl"
+        />
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="grid gap-8 lg:grid-cols-[55%_45%] items-center">
+          <div className="grid gap-10 lg:grid-cols-[55%_45%] items-center">
+            {/* IMAGE LEFT */}
             <div
               className={`flex items-center justify-center lg:justify-start transition-all duration-1000 ${
                 block1InView
@@ -309,19 +319,25 @@ export default function EducationPage() {
                   : "opacity-0 -translate-x-8"
               }`}
             >
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-400/20 via-pink-400/15 to-blue-400/20 blur-2xl rounded-3xl transform scale-105" />
+              <div className="relative w-full max-w-sm sm:max-w-md md:max-w-lg">
+                <div
+                  className="absolute inset-0 bg-gradient-to-br from-purple-400/20 via-pink-400/15 to-blue-400/20 
+          blur-2xl rounded-3xl scale-105"
+                />
+
                 <Image
                   src="/students-using-smartphones-for-online-learning-wit.jpg"
                   alt="Students using smartphones for online learning with WhatsApp notifications"
                   width={800}
                   height={600}
-                  className="relative z-10 w-full h-auto max-w-2xl object-contain drop-shadow-2xl hover:scale-[1.02] transition-transform duration-500"
+                  className="relative z-10 w-full h-auto object-contain rounded-2xl 
+            drop-shadow-2xl hover:scale-[1.02] transition-transform duration-500"
                   loading="lazy"
                 />
               </div>
             </div>
 
+            {/* CONTENT RIGHT */}
             <div
               className={`transition-all duration-1000 delay-300 ${
                 block1InView
@@ -335,57 +351,81 @@ export default function EducationPage() {
               >
                 Virtual Learning
               </Badge>
-              <h2 className="mb-4 text-balance text-3xl font-bold md:text-4xl lg:text-5xl">
+
+              <h2
+                className="mb-4 text-balance 
+        text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold"
+              >
                 Seamless Online Education
               </h2>
-              <p className="mb-6 text-pretty text-muted-foreground text-base md:text-lg leading-relaxed">
+
+              <p
+                className="mb-6 text-muted-foreground 
+        text-sm sm:text-base md:text-lg leading-relaxed"
+              >
                 Share virtual class links, distribute study materials, and keep
-                students engaged with automated WhatsApp notifications. Perfect
-                for hybrid and remote learning environments.
+                students engaged with automated WhatsApp notifications — ideal
+                for hybrid and remote learning.
               </p>
 
               <div className="space-y-4">
+                {/* Feature 1 */}
                 <div className="flex gap-3 items-start group">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-purple-100 to-purple-50 group-hover:from-purple-200 group-hover:to-purple-100 transition-all shadow-sm">
+                  <div
+                    className="flex h-10 w-10 shrink-0 items-center justify-center 
+            rounded-xl bg-gradient-to-br from-purple-100 to-purple-50 
+            group-hover:from-purple-200 group-hover:to-purple-100 transition-all shadow-sm"
+                  >
                     <Video className="h-5 w-5 text-purple-600" />
                   </div>
+
                   <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">
+                    <h3 className="font-semibold text-base mb-1">
                       Instant Class Links
                     </h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      Automatically send Zoom, Google Meet, or Teams links
-                      before each class with one-click access.
+                      Auto-send Zoom, Google Meet, or Teams links before each
+                      class.
                     </p>
                   </div>
                 </div>
 
+                {/* Feature 2 */}
                 <div className="flex gap-3 items-start group">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-pink-100 to-pink-50 group-hover:from-pink-200 group-hover:to-pink-100 transition-all shadow-sm">
+                  <div
+                    className="flex h-10 w-10 shrink-0 items-center justify-center 
+            rounded-xl bg-gradient-to-br from-pink-100 to-pink-50 
+            group-hover:from-pink-200 group-hover:to-pink-100 transition-all shadow-sm"
+                  >
                     <BookOpen className="h-5 w-5 text-pink-600" />
                   </div>
+
                   <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">
+                    <h3 className="font-semibold text-base mb-1">
                       Study Material Distribution
                     </h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      Share PDFs, videos, and learning resources directly with
-                      students via WhatsApp.
+                      Share PDFs, videos, and resources directly on WhatsApp.
                     </p>
                   </div>
                 </div>
 
+                {/* Feature 3 */}
                 <div className="flex gap-3 items-start group">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 group-hover:from-blue-200 group-hover:to-blue-100 transition-all shadow-sm">
+                  <div
+                    className="flex h-10 w-10 shrink-0 items-center justify-center 
+            rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 
+            group-hover:from-blue-200 group-hover:to-blue-100 transition-all shadow-sm"
+                  >
                     <Laptop className="h-5 w-5 text-blue-600" />
                   </div>
+
                   <div>
-                    <h3 className="font-semibold text-foreground mb-1 text-base">
+                    <h3 className="font-semibold text-base mb-1">
                       Recorded Lectures
                     </h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      Send links to recorded sessions so students can review
-                      content at their own pace.
+                      Share recorded sessions for flexible self-paced revision.
                     </p>
                   </div>
                 </div>
