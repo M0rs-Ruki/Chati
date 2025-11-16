@@ -41,10 +41,23 @@ export async function GET(request: NextRequest) {
       data: activeTheme
     });
   } catch (error) {
-    console.error("Error fetching theme:", error);
-    return NextResponse.json(
-      { message: "An error occurred while fetching theme" },
-      { status: 500 }
-    );
+    // Log the full error for debugging (server-side only)
+    console.error("Error fetching theme:", error instanceof Error ? error.stack || error.message : error);
+
+    // Return the default hardcoded theme instead of a 500 so the client can safely apply a theme
+    return NextResponse.json({
+      message: "Using default theme due to server error",
+      data: {
+        id: "default",
+        name: "Default Theme",
+        primaryColor: "#2563eb",
+        secondaryColor: "#7c3aed",
+        accentColor: "#10b981",
+        logoUrl: null,
+        faviconUrl: null,
+        typography: "Inter",
+        isDefault: true,
+      },
+    });
   }
 }

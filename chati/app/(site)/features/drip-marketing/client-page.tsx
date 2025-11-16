@@ -647,12 +647,14 @@ export default function DripMarketingPage() {
                 <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center mb-4 shadow-md mx-auto">
                   <benefit.icon className="w-7 h-7 text-white" />
                 </div>
-                <Badge
-                  className="mb-3 bg-green-100 text-green-700 border-green-200"
-                  variant="outline"
-                >
-                  {benefit.metric}
-                </Badge>
+                <div className="flex justify-center">
+                  <Badge
+                    className="mb-3 bg-green-100 text-green-700 border-green-200"
+                    variant="outline"
+                  >
+                    {benefit.metric}
+                  </Badge>
+                </div>
                 <h3 className="text-lg font-bold mb-2 text-foreground">
                   {benefit.title}
                 </h3>

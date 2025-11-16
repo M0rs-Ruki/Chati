@@ -252,8 +252,8 @@ export default function ChatbotsAIPage() {
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-purple-50 via-white to-blue-50/30">
         {/* Background Glow Elements */}
-        <div className="absolute top-0 right-0 w-[350px] sm:w-[450px] h-[350px] sm:h-[450px] bg-gradient-to-br from-purple-400/20 to-transparent rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-[280px] sm:w-[380px] h-[280px] sm:h-[380px] bg-gradient-to-tr from-blue-400/15 to-transparent rounded-full blur-3xl" />
+        <div className="absolute top-0 right-0 w-[300px] sm:w-[420px] h-[300px] sm:h-[420px] bg-gradient-to-br from-purple-400/20 to-transparent rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-[240px] sm:w-[340px] h-[240px] sm:h-[340px] bg-gradient-to-tr from-blue-400/15 to-transparent rounded-full blur-3xl" />
 
         <div
           ref={heroRef}
@@ -276,7 +276,7 @@ export default function ChatbotsAIPage() {
                 AI Chatbots & Conversational AI
               </Badge>
 
-              <h1 className="text-balance leading-tight tracking-tight mb-4">
+              <h1 className="leading-tight tracking-tight mb-4">
                 <span className="block text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-2">
                   Intelligent AI Chatbots
                 </span>
@@ -286,17 +286,16 @@ export default function ChatbotsAIPage() {
               </h1>
 
               <p className="mb-6 text-base md:text-lg text-muted-foreground max-w-xl leading-relaxed">
-                Deploy AI-powered chatbots with advanced language understanding
-                to automate support, provide instant responses, and enhance
-                customer engagement across WhatsApp, Instagram, RCS, and
-                Messenger.
+                Deploy AI-powered chatbots with advanced understanding to
+                automate support, provide instant responses, and engage
+                customers across WhatsApp, Instagram, RCS, and Messenger.
               </p>
 
               {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3 mb-6">
+              <div className="flex flex-col sm:flex-row gap-3 mb-6 w-full sm:w-auto">
                 <Button
                   size="lg"
-                  className="bg-purple-600 hover:bg-purple-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all group"
+                  className="bg-purple-600 hover:bg-purple-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all group w-full sm:w-auto"
                 >
                   Start Building AI Chatbot
                   <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -305,17 +304,7 @@ export default function ChatbotsAIPage() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="
-              border-2 
-              bg-white 
-              text-gray-800 
-              hover:bg-green-50 
-              hover:border-green-500 
-              hover:text-green-600 
-              font-medium 
-              shadow-sm 
-              transition-all
-            "
+                  className="border-2 bg-white text-gray-800 hover:bg-green-50 hover:border-green-500 hover:text-green-600 font-medium shadow-sm transition-all w-full sm:w-auto"
                   asChild
                 >
                   <Link href="/pricing">View Pricing</Link>
@@ -325,28 +314,46 @@ export default function ChatbotsAIPage() {
               {/* Features */}
               <div className="grid grid-cols-4 gap-4 pt-4 border-t border-gray-200">
                 {[
-                  { icon: Brain, label: "AI-Powered", color: "purple" },
-                  { icon: Clock, label: "24/7 Support", color: "blue" },
-                  { icon: Globe, label: "100+ Languages", color: "green" },
-                  { icon: Sparkles, label: "Smart Learning", color: "pink" },
-                ].map((feature, i) => (
+                  {
+                    icon: Brain,
+                    label: "AI-Powered",
+                    bg: "bg-purple-100",
+                    text: "text-purple-600",
+                  },
+                  {
+                    icon: Clock,
+                    label: "24/7 Support",
+                    bg: "bg-blue-100",
+                    text: "text-blue-600",
+                  },
+                  {
+                    icon: Globe,
+                    label: "100+ Languages",
+                    bg: "bg-green-100",
+                    text: "text-green-600",
+                  },
+                  {
+                    icon: Sparkles,
+                    label: "Smart Learning",
+                    bg: "bg-pink-100",
+                    text: "text-pink-600",
+                  },
+                ].map((f, i) => (
                   <div key={i} className="flex flex-col items-center">
                     <div
-                      className={`w-10 h-10 bg-${feature.color}-100 rounded-lg flex items-center justify-center mb-2`}
+                      className={`w-10 h-10 ${f.bg} rounded-lg flex items-center justify-center mb-2`}
                     >
-                      <feature.icon
-                        className={`w-5 h-5 text-${feature.color}-600`}
-                      />
+                      <f.icon className={`w-5 h-5 ${f.text}`} />
                     </div>
                     <div className="text-xs text-muted-foreground text-center">
-                      {feature.label}
+                      {f.label}
                     </div>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* RIGHT SIDE IMAGE */}
+            {/* RIGHT IMAGE */}
             <div
               className={`relative flex items-center justify-center lg:justify-end transition-all duration-1000 delay-300 ${
                 heroInView

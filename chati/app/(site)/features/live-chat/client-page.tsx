@@ -246,16 +246,16 @@ export default function LiveChatPage() {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50/30">
-        {/* Decorative gradient orbs */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-purple-400/20 to-transparent rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-blue-400/15 to-transparent rounded-full blur-3xl" />
+        {/* Gradient Orbs */}
+        <div className="absolute top-0 right-0 w-[280px] h-[280px] md:w-[500px] md:h-[500px] bg-gradient-to-br from-purple-400/20 to-transparent rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-[250px] h-[250px] md:w-[400px] md:h-[400px] bg-gradient-to-tr from-blue-400/15 to-transparent rounded-full blur-3xl" />
 
         <div
           ref={heroRef}
-          className="container relative mx-auto px-4 pr-0 md:pr-4 py-12 md:py-14 lg:py-16 z-10"
+          className="container relative mx-auto px-4 py-10 md:py-14 lg:py-20 z-10"
         >
-          <div className="grid gap-6 lg:grid-cols-2 lg:gap-10 items-center">
-            {/* Left Content */}
+          <div className="grid lg:grid-cols-2 gap-10 items-center">
+            {/* LEFT CONTENT */}
             <div
               className={`flex flex-col justify-center transition-all duration-1000 ${
                 heroInView
@@ -272,7 +272,7 @@ export default function LiveChatPage() {
               </Badge>
 
               <h1 className="mb-4 text-balance leading-tight tracking-tight">
-                <span className="block text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-2">
+                <span className="block text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
                   Manage All Customer Chats
                 </span>
                 <span className="block text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
@@ -280,35 +280,27 @@ export default function LiveChatPage() {
                 </span>
               </h1>
 
-              <p className="mb-6 text-base text-muted-foreground md:text-lg max-w-xl leading-relaxed">
+              <p className="mb-6 text-base md:text-lg text-muted-foreground max-w-xl leading-relaxed">
                 Support customers across WhatsApp, RCS, Instagram DM, and
-                Facebook Messenger from a single Omnion channel inbox.
-                Collaborate with your team, organize conversations with tags and
-                attributes, and deliver exceptional customer experiences.
+                Facebook Messenger from a single Omnion inbox. Collaborate with
+                your team, organize conversations, and deliver exceptional
+                experiences.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-3 mb-6">
+              {/* BUTTONS */}
+              <div className="flex flex-col sm:flex-row gap-3 mb-6 w-full sm:w-auto">
                 <Button
                   size="lg"
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all group"
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all group w-full sm:w-auto"
                 >
                   Start Free Trial
                   <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </Button>
+
                 <Button
                   size="lg"
                   variant="outline"
-                  className="
-              border-2 
-              bg-white 
-              text-gray-800 
-              hover:bg-green-50 
-              hover:border-green-500 
-              hover:text-green-600 
-              font-medium 
-              shadow-sm 
-              transition-all
-            "
+                  className="border-2 bg-white text-gray-800 hover:bg-green-50 hover:border-green-500 hover:text-green-600 font-medium shadow-sm transition-all w-full sm:w-auto"
                   asChild
                 >
                   <Link href="/pricing">View Pricing</Link>
@@ -317,42 +309,50 @@ export default function LiveChatPage() {
 
               {/* Supported Channels */}
               <div className="grid grid-cols-4 gap-4 pt-4 border-t border-gray-200">
-                <div className="flex flex-col items-center">
-                  <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mb-2">
-                    <MessageSquare className="w-5 h-5 text-green-600" />
+                {[
+                  {
+                    icon: MessageSquare,
+                    label: "WhatsApp",
+                    bg: "bg-green-100",
+                    color: "text-green-600",
+                  },
+                  {
+                    icon: Smartphone,
+                    label: "RCS",
+                    bg: "bg-indigo-100",
+                    color: "text-indigo-600",
+                  },
+                  {
+                    icon: Instagram,
+                    label: "Instagram",
+                    bg: "bg-pink-100",
+                    color: "text-pink-600",
+                  },
+                  {
+                    icon: Facebook,
+                    label: "Facebook",
+                    bg: "bg-blue-100",
+                    color: "text-blue-600",
+                  },
+                ].map((item, i) => (
+                  <div
+                    key={i}
+                    className="flex flex-col items-center text-center"
+                  >
+                    <div
+                      className={`w-10 h-10 ${item.bg} rounded-lg flex items-center justify-center mb-2`}
+                    >
+                      <item.icon className={`w-5 h-5 ${item.color}`} />
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      {item.label}
+                    </div>
                   </div>
-                  <div className="text-xs text-muted-foreground text-center">
-                    WhatsApp
-                  </div>
-                </div>
-                <div className="flex flex-col items-center">
-                  <div className="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center mb-2">
-                    <Smartphone className="w-5 h-5 text-indigo-600" />
-                  </div>
-                  <div className="text-xs text-muted-foreground text-center">
-                    RCS
-                  </div>
-                </div>
-                <div className="flex flex-col items-center">
-                  <div className="w-10 h-10 bg-pink-100 rounded-lg flex items-center justify-center mb-2">
-                    <Instagram className="w-5 h-5 text-pink-600" />
-                  </div>
-                  <div className="text-xs text-muted-foreground text-center">
-                    Instagram
-                  </div>
-                </div>
-                <div className="flex flex-col items-center">
-                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mb-2">
-                    <Facebook className="w-5 h-5 text-blue-600" />
-                  </div>
-                  <div className="text-xs text-muted-foreground text-center">
-                    Facebook
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
 
-            {/* Right Image */}
+            {/* RIGHT IMAGE */}
             <div
               className={`relative flex items-center justify-center lg:justify-end transition-all duration-1000 delay-300 ${
                 heroInView
@@ -360,16 +360,14 @@ export default function LiveChatPage() {
                   : "opacity-0 translate-x-8"
               }`}
             >
-              <div className="relative w-full max-w-lg">
-                {/* Decorative gradient blob behind image */}
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 via-purple-400/15 to-pink-400/20 blur-3xl rounded-full transform scale-110" />
+              <div className="relative w-full max-w-sm sm:max-w-md md:max-w-lg">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 via-purple-400/15 to-pink-400/20 blur-3xl rounded-full scale-110" />
 
-                {/* Floating channel icons */}
                 <FloatingChatIcons />
 
                 <Image
                   src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/omini%20channel%20inbox-hfzkqKY66U3gLqXvC7VBg1FO8eBEfM.webp"
-                  alt="Omnichannel inbox showing woman managing customer conversations across WhatsApp, Instagram, Facebook Messenger, and other channels with business growth analytics"
+                  alt="Omnichannel inbox showing woman managing customer conversations"
                   width={600}
                   height={700}
                   className="relative z-10 w-full h-auto object-contain rounded-2xl shadow-2xl"

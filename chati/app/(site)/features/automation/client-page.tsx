@@ -287,14 +287,16 @@ export default function AutomationWorkflowPage() {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-purple-50 via-white to-blue-50/30">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-purple-400/20 to-transparent rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-blue-400/15 to-transparent rounded-full blur-3xl" />
+        {/* Background Glow Elements */}
+        <div className="absolute top-0 right-0 w-[320px] sm:w-[420px] md:w-[500px] h-[320px] sm:h-[420px] md:h-[500px] bg-gradient-to-br from-purple-400/20 to-transparent rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-[260px] sm:w-[360px] md:w-[420px] h-[260px] sm:h-[360px] md:h-[420px] bg-gradient-to-tr from-blue-400/15 to-transparent rounded-full blur-3xl" />
 
         <div
           ref={heroRef}
-          className="container relative mx-auto px-4 pr-0 md:pr-4 py-12 md:py-14 lg:py-16 z-10"
+          className="container relative mx-auto px-4 py-12 sm:py-14 lg:py-20 z-10"
         >
-          <div className="grid gap-6 lg:grid-cols-2 lg:gap-10 items-center">
+          <div className="grid gap-10 lg:grid-cols-2 items-center">
+            {/* LEFT SECTION */}
             <div
               className={`flex flex-col justify-center transition-all duration-1000 ${
                 heroInView
@@ -310,8 +312,8 @@ export default function AutomationWorkflowPage() {
                 Automation Workflows
               </Badge>
 
-              <h1 className="mb-4 text-balance leading-tight tracking-tight">
-                <span className="block text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-2">
+              <h1 className="mb-4 leading-tight tracking-tight text-balance">
+                <span className="block text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
                   Automate Your Marketing
                 </span>
                 <span className="block text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-pink-600 bg-clip-text text-transparent">
@@ -319,77 +321,79 @@ export default function AutomationWorkflowPage() {
                 </span>
               </h1>
 
-              <p className="mb-6 text-base text-muted-foreground md:text-lg max-w-xl leading-relaxed">
+              <p className="mb-6 text-base md:text-lg text-muted-foreground max-w-xl leading-relaxed">
                 Create powerful automation workflows that trigger WhatsApp, RCS,
                 SMS, and email campaigns from Facebook Leads, Shopify, Razorpay,
-                and 20+ integrations. Build sophisticated drip campaigns with
-                delays, conditions, and multi-step sequences.
+                and 20+ integrations. Build sophisticated drip sequences with
+                delays, conditions, and multi-step actions.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-3 mb-6">
+              {/* BUTTONS */}
+              <div className="flex flex-col sm:flex-row gap-3 mb-6 w-full sm:w-auto">
                 <Button
                   size="lg"
-                  className="bg-purple-600 hover:bg-purple-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all group"
+                  className="bg-purple-600 hover:bg-purple-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all group w-full sm:w-auto"
                 >
                   Start Automating
                   <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </Button>
+
                 <Button
                   size="lg"
                   variant="outline"
-                  className="
-              border-2 
-              bg-white 
-              text-gray-800 
-              hover:bg-green-50 
-              hover:border-green-500 
-              hover:text-green-600 
-              font-medium 
-              shadow-sm 
-              transition-all
-            "
+                  className="border-2 bg-white text-gray-800 hover:bg-green-50 hover:border-green-500 hover:text-green-600 font-medium shadow-sm transition-all w-full sm:w-auto"
                   asChild
                 >
                   <Link href="/pricing">View Pricing</Link>
                 </Button>
               </div>
 
+              {/* FEATURES */}
               <div className="grid grid-cols-4 gap-4 pt-4 border-t border-gray-200">
-                <div className="flex flex-col items-center">
-                  <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mb-2">
-                    <MessageSquare className="w-5 h-5 text-green-600" />
+                {[
+                  {
+                    icon: MessageSquare,
+                    label: "WhatsApp",
+                    bg: "bg-green-100",
+                    text: "text-green-600",
+                  },
+                  {
+                    icon: Smartphone,
+                    label: "RCS",
+                    bg: "bg-indigo-100",
+                    text: "text-indigo-600",
+                  },
+                  {
+                    icon: Radio,
+                    label: "SMS",
+                    bg: "bg-blue-100",
+                    text: "text-blue-600",
+                  },
+                  {
+                    icon: Mail,
+                    label: "Email",
+                    bg: "bg-orange-100",
+                    text: "text-orange-600",
+                  },
+                ].map((item, i) => (
+                  <div
+                    key={i}
+                    className="flex flex-col items-center text-center"
+                  >
+                    <div
+                      className={`w-10 h-10 ${item.bg} rounded-lg flex items-center justify-center mb-2`}
+                    >
+                      <item.icon className={`w-5 h-5 ${item.text}`} />
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      {item.label}
+                    </div>
                   </div>
-                  <div className="text-xs text-muted-foreground text-center">
-                    WhatsApp
-                  </div>
-                </div>
-                <div className="flex flex-col items-center">
-                  <div className="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center mb-2">
-                    <Smartphone className="w-5 h-5 text-indigo-600" />
-                  </div>
-                  <div className="text-xs text-muted-foreground text-center">
-                    RCS
-                  </div>
-                </div>
-                <div className="flex flex-col items-center">
-                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mb-2">
-                    <Radio className="w-5 h-5 text-blue-600" />
-                  </div>
-                  <div className="text-xs text-muted-foreground text-center">
-                    SMS
-                  </div>
-                </div>
-                <div className="flex flex-col items-center">
-                  <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center mb-2">
-                    <Mail className="w-5 h-5 text-orange-600" />
-                  </div>
-                  <div className="text-xs text-muted-foreground text-center">
-                    Email
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
 
+            {/* RIGHT SIDE (IMAGE) */}
             <div
               className={`relative flex items-center justify-center lg:justify-end transition-all duration-1000 delay-300 ${
                 heroInView
@@ -397,12 +401,15 @@ export default function AutomationWorkflowPage() {
                   : "opacity-0 translate-x-8"
               }`}
             >
-              <div className="relative w-full max-w-lg">
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-400/20 via-blue-400/15 to-pink-400/20 blur-3xl rounded-full transform scale-110" />
+              <div className="relative w-full max-w-md sm:max-w-lg lg:max-w-xl">
+                {/* Halo Background */}
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-400/20 via-blue-400/15 to-pink-400/20 blur-2xl rounded-full scale-110" />
+
                 <FloatingWorkflowIcons />
+
                 <Image
                   src="/automation-workflow-builder-showing-triggers-del.jpg"
-                  alt="Automation workflow builder showing triggers, delays, and multi-channel actions for WhatsApp, RCS, SMS, and email campaigns"
+                  alt="Workflow automation interface showing triggers, delays, multi-channel actions"
                   width={600}
                   height={700}
                   className="relative z-10 w-full h-auto object-contain rounded-2xl shadow-2xl"
