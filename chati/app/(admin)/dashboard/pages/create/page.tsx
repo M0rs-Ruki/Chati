@@ -44,8 +44,11 @@ export default function CreatePagePage() {
   });
   const [metadata, setMetadata] = useState({
     description: "",
+    keywords: [] as string[],
     tags: [] as string[],
   });
+  const [keywordsInput, setKeywordsInput] = useState("");
+  const [tagsInput, setTagsInput] = useState("");
   const [content, setContent] = useState<any[]>([]);
   const [debouncedContent, setDebouncedContent] = useState<any[]>([]);
 
@@ -103,7 +106,7 @@ export default function CreatePagePage() {
           content: { blocks: content },
           metadata: {
             description: metadata.description || "",
-            keywords: [],
+            keywords: metadata.keywords || [],
             tags: metadata.tags || [],
           },
           status: formData.status,
@@ -155,7 +158,7 @@ export default function CreatePagePage() {
     }
   };
 
-    const generateSlug = (title: string) => {
+  const generateSlug = (title: string) => {
     return title
       .toLowerCase()
       .replace(/[^a-z0-9\/]+/g, "-") // Preserve forward slashes
@@ -573,9 +576,7 @@ export default function CreatePagePage() {
                 )}
 
                 {/* CDP Block */}
-                {block.type === "cdp-block" && (
-                  <CDPSection data={block.data} />
-                )}
+                {block.type === "cdp-block" && <CDPSection data={block.data} />}
 
                 {/* Workflow Block */}
                 {block.type === "workflow" && (
@@ -688,7 +689,8 @@ export default function CreatePagePage() {
                 className="bg-white border-gray-200 font-mono text-sm text-indigo-600"
               />
               <p className="text-xs text-gray-500">
-                Use lowercase letters, numbers, hyphens, and forward slashes (e.g., resources/test-12)
+                Use lowercase letters, numbers, hyphens, and forward slashes
+                (e.g., resources/test-12)
               </p>
             </div>
           </div>
@@ -730,6 +732,51 @@ export default function CreatePagePage() {
                 placeholder="SEO meta description"
                 className="bg-white border-gray-200"
               />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="keywords" className="text-gray-700 font-medium">
+                Keywords
+              </Label>
+              <Input
+                id="keywords"
+                value={keywordsInput}
+                onChange={(e) => setKeywordsInput(e.target.value)}
+                onBlur={(e) => {
+                  const keywordsArray = e.target.value
+                    .split(",")
+                    .map((k) => k.trim())
+                    .filter((k) => k.length > 0);
+                  setMetadata({ ...metadata, keywords: keywordsArray });
+                }}
+                placeholder="keyword1, keyword2, keyword3"
+                className="bg-white border-gray-200"
+              />
+              <p className="text-xs text-gray-500">
+                Separate keywords with commas
+              </p>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="tags" className="text-gray-700 font-medium">
+                Tags
+              </Label>
+              <Input
+                id="tags"
+                value={tagsInput}
+                onChange={(e) => setTagsInput(e.target.value)}
+                onBlur={(e) => {
+                  const tagsArray = e.target.value
+                    .split(",")
+                    .map((t) => t.trim())
+                    .filter((t) => t.length > 0);
+                  setMetadata({ ...metadata, tags: tagsArray });
+                }}
+                placeholder="tag1, tag2, tag3"
+                className="bg-white border-gray-200"
+              />
+              <p className="text-xs text-gray-500">Separate tags with commas</p>
             </div>
           </div>
         </CardContent>
