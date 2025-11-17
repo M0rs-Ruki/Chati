@@ -221,7 +221,8 @@ export function FeatureBlockComponent({
               </Button>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            {/* FIXED: 1 col on mobile, 2 cols on desktop */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-2">
                 <Label>Icon Name</Label>
                 <Input
@@ -230,6 +231,7 @@ export function FeatureBlockComponent({
                   onChange={(e) => updateFeature(index, "icon", e.target.value)}
                 />
               </div>
+
               <div className="space-y-2">
                 <Label>Icon Color</Label>
                 <Select
@@ -280,6 +282,7 @@ export function FeatureBlockComponent({
       {/* Background & Colors */}
       <div className="space-y-3 p-4 border rounded-lg">
         <h4 className="font-semibold text-sm">Background & Decorations</h4>
+
         <div className="space-y-2">
           <Label>Background Gradient</Label>
           <Select
@@ -307,7 +310,9 @@ export function FeatureBlockComponent({
             </SelectContent>
           </Select>
         </div>
-        <div className="grid grid-cols-2 gap-3">
+
+        {/* FIXED: 1 col mobile, 2 col desktop */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div className="space-y-2">
             <Label>Decor Orb 1 Color</Label>
             <Select
@@ -328,6 +333,7 @@ export function FeatureBlockComponent({
               </SelectContent>
             </Select>
           </div>
+
           <div className="space-y-2">
             <Label>Decor Orb 2 Color</Label>
             <Select

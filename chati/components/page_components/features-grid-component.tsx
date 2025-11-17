@@ -183,7 +183,8 @@ export function FeaturesGridComponent({
                 </Button>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              {/* FIXED: mobile responsive */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-2">
                   <Label>Icon Name</Label>
                   <Input
@@ -198,6 +199,7 @@ export function FeaturesGridComponent({
                     etc.
                   </p>
                 </div>
+
                 <div className="space-y-2">
                   <Label>Icon Color</Label>
                   <Select

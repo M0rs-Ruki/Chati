@@ -183,20 +183,32 @@ export default function CreatePagePage() {
               <div key={block.id || index}>
                 {/* Text + Image Hero */}
                 {block.type === "text-image" && (
-                  <section className="relative overflow-hidden py-12 md:py-16 bg-gradient-to-br from-blue-50 via-white to-green-50 rounded-lg">
+                  <section className="relative overflow-hidden py-10 md:py-16 bg-gradient-to-br from-blue-50 via-white to-green-50 rounded-lg">
                     <div className="container mx-auto px-4">
-                      <div className="grid gap-8 lg:grid-cols-2 items-center">
+                      <div
+                        className={`
+          grid gap-10 
+          lg:grid-cols-2 items-center
+        `}
+                      >
+                        {/* TEXT SIDE */}
                         <div
-                          className={
-                            block.data?.imagePosition === "right"
-                              ? "order-1"
-                              : "order-2"
-                          }
+                          className={`
+            flex flex-col
+            ${
+              block.data?.imagePosition === "right"
+                ? "order-2 lg:order-1"
+                : "order-2 lg:order-2"
+            }
+          `}
                         >
+                          {/* Badge */}
                           <div className="inline-block px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm mb-4">
                             {block.data?.badgeText || "Badge"}
                           </div>
-                          <h1 className="text-3xl md:text-4xl font-bold mb-4">
+
+                          {/* Title */}
+                          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 leading-snug">
                             <span className="block">
                               {block.data?.titlePart1 || "Title Part 1"}
                             </span>
@@ -204,29 +216,41 @@ export default function CreatePagePage() {
                               {block.data?.titlePart2 || "Title Part 2"}
                             </span>
                           </h1>
-                          <p className="text-gray-600 mb-6">
+
+                          {/* Description */}
+                          <p className="text-gray-600 mb-6 text-base sm:text-lg">
                             {block.data?.description || "Description"}
                           </p>
-                          <div className="flex gap-3">
-                            <Button className="bg-green-600 hover:bg-green-700">
+
+                          {/* Buttons */}
+                          <div className="flex flex-wrap gap-3">
+                            <Button className="bg-green-600 hover:bg-green-700 w-full sm:w-auto">
                               {block.data?.button1Text || "Button 1"}
                             </Button>
-                            <Button variant="outline">
+                            <Button
+                              variant="outline"
+                              className="w-full sm:w-auto"
+                            >
                               {block.data?.button2Text || "Button 2"}
                             </Button>
                           </div>
                         </div>
+
+                        {/* IMAGE SIDE */}
                         <div
-                          className={
-                            block.data?.imagePosition === "right"
-                              ? "order-2"
-                              : "order-1"
-                          }
+                          className={`
+            ${
+              block.data?.imagePosition === "right"
+                ? "order-1 lg:order-2"
+                : "order-1 lg:order-1"
+            }
+            flex justify-center
+          `}
                         >
                           <img
                             src={block.data?.imageSrc || "/placeholder.svg"}
                             alt={block.data?.imageAlt || "Image"}
-                            className="w-full rounded-lg shadow-xl"
+                            className="w-full max-w-md lg:max-w-full rounded-lg shadow-xl object-cover"
                           />
                         </div>
                       </div>
@@ -238,32 +262,45 @@ export default function CreatePagePage() {
                 {block.type === "feature-block" && (
                   <section className="py-12 md:py-16 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 rounded-lg">
                     <div className="container mx-auto px-4">
-                      <div className="grid gap-8 lg:grid-cols-2 items-center">
+                      <div className="grid gap-10 lg:grid-cols-2 items-center">
+                        {/* TEXT SIDE */}
                         <div
-                          className={
-                            block.data?.imagePosition === "right"
-                              ? "order-1"
-                              : "order-2"
-                          }
+                          className={`
+            ${
+              block.data?.imagePosition === "right"
+                ? "order-2 lg:order-1"
+                : "order-2 lg:order-2"
+            }
+          `}
                         >
+                          {/* Badge */}
                           <div className="inline-block px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-sm mb-4">
                             {block.data?.badgeText || "Badge"}
                           </div>
-                          <h2 className="text-3xl font-bold mb-4">
+
+                          {/* Title */}
+                          <h2 className="text-2xl sm:text-3xl font-bold mb-4">
                             {block.data?.title || "Title"}
                           </h2>
-                          <p className="text-gray-600 mb-6">
+
+                          {/* Description */}
+                          <p className="text-gray-600 mb-6 text-base sm:text-lg">
                             {block.data?.description || "Description"}
                           </p>
+
+                          {/* Feature List */}
                           <div className="space-y-4">
                             {block.data?.features?.map(
                               (feature: any, idx: number) => (
-                                <div key={idx} className="flex gap-3">
-                                  <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center flex-shrink-0">
+                                <div
+                                  key={idx}
+                                  className="flex items-start gap-4"
+                                >
+                                  <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
                                     <span className="text-green-600">✓</span>
                                   </div>
                                   <div>
-                                    <h3 className="font-semibold">
+                                    <h3 className="font-semibold text-base">
                                       {feature.title}
                                     </h3>
                                     <p className="text-sm text-gray-600">
@@ -275,17 +312,22 @@ export default function CreatePagePage() {
                             )}
                           </div>
                         </div>
+
+                        {/* IMAGE SIDE */}
                         <div
-                          className={
-                            block.data?.imagePosition === "right"
-                              ? "order-2"
-                              : "order-1"
-                          }
+                          className={`
+            ${
+              block.data?.imagePosition === "right"
+                ? "order-1 lg:order-2"
+                : "order-1 lg:order-1"
+            }
+            flex justify-center
+          `}
                         >
                           <img
                             src={block.data?.imageSrc || "/placeholder.svg"}
                             alt={block.data?.imageAlt || "Image"}
-                            className="w-full rounded-lg shadow-xl"
+                            className="w-full max-w-md lg:max-w-full rounded-lg shadow-xl object-cover"
                           />
                         </div>
                       </div>
@@ -297,36 +339,48 @@ export default function CreatePagePage() {
                 {block.type === "features-grid" && (
                   <section className="py-12 md:py-16 bg-white rounded-lg">
                     <div className="container mx-auto px-4">
+                      {/* Header */}
                       <div className="text-center mb-10">
-                        <h2 className="text-3xl font-bold mb-3">
+                        <h2 className="text-2xl sm:text-3xl font-bold mb-3">
                           {block.data?.title || "Features"}
                         </h2>
-                        <p className="text-gray-600">
+                        <p className="text-gray-600 text-base sm:text-lg">
                           {block.data?.description || "Description"}
                         </p>
                       </div>
+
+                      {/* GRID */}
                       <div
-                        className={`grid gap-6 ${
-                          block.data?.columns === "4"
-                            ? "md:grid-cols-4"
-                            : block.data?.columns === "2"
-                            ? "md:grid-cols-2"
-                            : "md:grid-cols-3"
-                        }`}
+                        className={`
+          grid gap-6 
+          grid-cols-1  /* mobile */
+          ${
+            block.data?.columns === "4"
+              ? "md:grid-cols-4"
+              : block.data?.columns === "2"
+              ? "md:grid-cols-2"
+              : "md:grid-cols-3"
+          }
+        `}
                       >
                         {block.data?.features?.map(
                           (feature: any, idx: number) => (
                             <div
                               key={idx}
-                              className="p-6 border rounded-lg hover:shadow-lg transition-shadow"
+                              className="p-6 border rounded-lg hover:shadow-lg transition-shadow bg-white"
                             >
+                              {/* ICON */}
                               <div className="w-12 h-12 rounded-lg bg-cyan-100 flex items-center justify-center mb-4">
-                                <span className="text-cyan-600">★</span>
+                                <span className="text-cyan-600 text-lg">★</span>
                               </div>
-                              <h3 className="font-semibold mb-2">
+
+                              {/* TITLE */}
+                              <h3 className="font-semibold mb-2 text-base sm:text-lg">
                                 {feature.title}
                               </h3>
-                              <p className="text-sm text-gray-600">
+
+                              {/* DESCRIPTION */}
+                              <p className="text-sm text-gray-600 leading-relaxed">
                                 {feature.description}
                               </p>
                             </div>
@@ -387,38 +441,51 @@ export default function CreatePagePage() {
 
                 {/* Brand Slider */}
                 {block.type === "brand-slider" && (
-                  <section className="py-12 md:py-16 bg-white border-b rounded-lg">
+                  <section className="py-10 md:py-16 bg-white border-b rounded-lg">
                     <div className="container mx-auto px-4">
+                      {/* Title */}
                       <div className="text-center mb-8">
-                        <h2 className="text-2xl font-bold">
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold leading-snug">
                           {block.data?.title || "Trusted by"}{" "}
                           <span className="text-green-600">
                             {block.data?.titleHighlight || "Leading Brands"}
                           </span>
                         </h2>
                       </div>
-                      <div className="flex flex-wrap justify-center gap-8 mb-8">
+
+                      {/* BRAND LOGOS */}
+                      <div className="flex flex-wrap justify-center gap-6 sm:gap-8 mb-10">
                         {block.data?.brands?.map((brand: any, idx: number) => (
-                          <div key={idx} className="flex flex-col items-center">
+                          <div
+                            key={idx}
+                            className="flex flex-col items-center text-center"
+                          >
                             <img
                               src={brand.logo || "/placeholder.svg"}
                               alt={brand.name}
-                              className="h-16 w-auto grayscale"
+                              className="h-14 sm:h-16 w-auto grayscale"
                             />
                             {brand.tagline && (
-                              <p className="text-xs text-gray-500 mt-1">
+                              <p className="text-xs text-gray-500 mt-1 max-w-[140px]">
                                 {brand.tagline}
                               </p>
                             )}
                           </div>
                         ))}
                       </div>
-                      <div className="flex flex-wrap justify-center gap-8">
+
+                      {/* TRUST BADGES */}
+                      <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
                         {block.data?.trustBadges?.map(
                           (badge: any, idx: number) => (
-                            <div key={idx} className="flex items-center gap-2">
-                              <span className="text-green-600">✓</span>
-                              <span className="text-sm text-gray-600">
+                            <div
+                              key={idx}
+                              className="flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-full"
+                            >
+                              <span className="text-green-600 text-lg leading-none">
+                                ✓
+                              </span>
+                              <span className="text-sm text-gray-600 whitespace-nowrap">
                                 {badge.text}
                               </span>
                             </div>
@@ -433,15 +500,18 @@ export default function CreatePagePage() {
                 {block.type === "faq" && (
                   <section className="py-12 md:py-16 bg-gradient-to-br from-gray-50 to-white rounded-lg">
                     <div className="container mx-auto px-4">
+                      {/* Header */}
                       <div className="text-center mb-10">
-                        <h2 className="text-3xl font-bold mb-3">
+                        <h2 className="text-2xl sm:text-3xl font-bold mb-3">
                           {block.data?.title || "FAQ"}
                         </h2>
-                        <p className="text-gray-600">
+                        <p className="text-gray-600 text-base sm:text-lg">
                           {block.data?.description || "Description"}
                         </p>
                       </div>
-                      <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-4">
+
+                      {/* FAQ GRID */}
+                      <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4">
                         {block.data?.faqs?.map((faq: any, idx: number) => (
                           <div
                             key={idx}
@@ -464,12 +534,17 @@ export default function CreatePagePage() {
                 {block.type === "cta" && (
                   <section className="py-12 md:py-16 bg-gradient-to-br from-blue-600 to-purple-700 text-white rounded-lg">
                     <div className="container mx-auto px-4 text-center">
-                      <h2 className="text-3xl font-bold mb-4">
+                      {/* Title */}
+                      <h2 className="text-2xl sm:text-3xl font-bold mb-4 leading-snug">
                         {block.data?.title || "CTA Title"}
                       </h2>
-                      <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
+
+                      {/* Description */}
+                      <p className="text-base sm:text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
                         {block.data?.description || "CTA Description"}
                       </p>
+
+                      {/* Buttons */}
                       <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <Button
                           size="lg"
@@ -478,10 +553,11 @@ export default function CreatePagePage() {
                         >
                           {block.data?.button1Text || "Button 1"}
                         </Button>
+
                         <Button
                           size="lg"
                           variant="outline"
-                          className="border-white text-white"
+                          className="border-white text-black bg-white/20 backdrop-blur-sm"
                         >
                           {block.data?.button2Text || "Button 2"}
                         </Button>
@@ -637,7 +713,7 @@ export default function CreatePagePage() {
 
       {/* Page Content with Toggle */}
       <Card className="bg-white border-gray-200 shadow-lg">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 border-b bg-gradient-to-r from-gray-50 to-white">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 border-b bg-gradient-to-r to-white">
           <CardTitle className="text-lg text-gray-900 flex items-center gap-2">
             {viewMode === "edit" ? (
               <>
