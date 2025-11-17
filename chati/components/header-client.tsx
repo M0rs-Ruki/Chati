@@ -346,7 +346,7 @@ export function HeaderClient({
                 {/* HOME */}
                 <Link
                   href="/"
-                  className="flex items-center gap-3 px-3 py-2 text-base font-medium hover:bg-green-50 hover:text-green-600 rounded-lg transition"
+                  className="flex items-center gap-3 px-3 text-base font-medium hover:bg-green-50 hover:text-green-600 rounded-lg transition"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <Home className="h-5 w-5" />
@@ -424,7 +424,7 @@ export function HeaderClient({
                             key={resource.name}
                             href={resource.href}
                             onClick={() => setIsMobileMenuOpen(false)}
-                            className="flex items-center gap-2 px-3 py-2 text-sm rounded-md text-muted-foreground hover:bg-green-50 hover:text-green-600 transition text-left"
+                            className="flex items-center gap-2 px-3 text-sm rounded-md text-muted-foreground hover:bg-green-50 hover:text-green-600 transition text-left"
                           >
                             <Icon className="h-4 w-4 shrink-0" />
                             {resource.name}
@@ -438,7 +438,7 @@ export function HeaderClient({
                 {/* PRICING */}
                 <Link
                   href="/pricing"
-                  className="flex items-center gap-3 px-3 py-2 text-base font-medium hover:bg-green-50 hover:text-green-600 rounded-lg transition"
+                  className="flex items-center gap-3 px-3  text-base font-medium hover:bg-green-50 hover:text-green-600 rounded-lg transition"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <DollarSign className="h-5 w-5" />
@@ -448,7 +448,7 @@ export function HeaderClient({
                 {/* SOLUTIONS */}
                 <Link
                   href="/solutions"
-                  className="flex items-center gap-3 px-3 py-2 text-base font-medium hover:bg-green-50 hover:text-green-600 rounded-lg transition"
+                  className="flex items-center gap-3 px-3 text-base font-medium hover:bg-green-50 hover:text-green-600 rounded-lg transition"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <Lightbulb className="h-5 w-5" />
