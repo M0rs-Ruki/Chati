@@ -7,6 +7,102 @@ import { prisma } from "@/lib/prisma";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
+// Demo/Default SEO data - can be overridden by real page data
+const DEFAULT_SEO_DATA = {
+  siteName: "Chati - WhatsApp Business API Platform",
+  publisher: "Chati",
+  defaultAuthor: "Chati Team",
+  defaultKeywords: [
+    "WhatsApp Business API",
+    "WhatsApp automation",
+    "bulk messaging",
+    "chatbot",
+    "customer engagement",
+    "multi-channel messaging",
+    "unified inbox",
+  ],
+  defaultImage: "/og-image.jpg",
+  twitterHandle: "@chati",
+  locale: "en_US",
+};
+
+// Helper function to merge real data with demo defaults
+function getSEOData(pageData: any, slugString: string) {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://chati.ai";
+  const pageUrl = `${baseUrl}/${slugString}`;
+
+  // Real data from API (priority)
+  const realTitle = pageData.title || "";
+  const realDescription = pageData.metadata?.description;
+  const realKeywords = pageData.metadata?.keywords || [];
+  const realTags = pageData.metadata?.tags || [];
+  const realAuthor = pageData.author?.name || pageData.metadata?.author;
+  const realPublishedAt = pageData.publishedAt || pageData.createdAt;
+  const realUpdatedAt = pageData.updatedAt || pageData.createdAt;
+  const realStatus = pageData.status || "DRAFT";
+  const realOgImage = pageData.metadata?.ogImage || pageData.metadata?.image;
+  const realTwitterCard = pageData.metadata?.twitterCard;
+  const realCanonicalUrl = pageData.metadata?.canonicalUrl;
+
+  // Use real data first, fallback to demo/default data
+  const title = realTitle || "Chati - WhatsApp Business API Platform";
+  const description =
+    realDescription ||
+    `${title} - Connect with customers on WhatsApp Business API. Send bulk messages, automate conversations, and manage all channels in one unified inbox.`;
+  const author = realAuthor || DEFAULT_SEO_DATA.defaultAuthor;
+  const status = realStatus;
+  const shouldIndex = status === "PUBLISHED";
+
+  // Extract image from content blocks if no metadata image
+  let ogImage = realOgImage || DEFAULT_SEO_DATA.defaultImage;
+  if (!realOgImage && pageData.content?.blocks) {
+    const imageBlock = pageData.content.blocks.find(
+      (block: any) => block.data?.imageSrc || block.data?.image
+    );
+    if (imageBlock?.data?.imageSrc) {
+      ogImage = imageBlock.data.imageSrc.startsWith("http")
+        ? imageBlock.data.imageSrc
+        : `${baseUrl}${imageBlock.data.imageSrc}`;
+    } else if (imageBlock?.data?.image) {
+      ogImage = imageBlock.data.image.startsWith("http")
+        ? imageBlock.data.image
+        : `${baseUrl}${imageBlock.data.image}`;
+    }
+  }
+
+  // Ensure ogImage is a full URL
+  if (ogImage && !ogImage.startsWith("http")) {
+    ogImage = `${baseUrl}${ogImage}`;
+  }
+
+  // Combine real keywords/tags with default keywords (remove duplicates)
+  const allKeywords = [
+    ...realKeywords,
+    ...realTags,
+    ...DEFAULT_SEO_DATA.defaultKeywords,
+  ].filter((k, i, arr) => arr.indexOf(k) === i && k); // Remove duplicates and empty values
+
+  // Use canonical URL from metadata if provided, otherwise use page URL
+  const canonicalUrl = realCanonicalUrl || pageUrl;
+
+  return {
+    title,
+    description,
+    author,
+    keywords: allKeywords,
+    tags: realTags,
+    ogImage,
+    canonicalUrl,
+    pageUrl,
+    baseUrl,
+    publishedAt: realPublishedAt,
+    updatedAt: realUpdatedAt,
+    status,
+    shouldIndex,
+    twitterCard: realTwitterCard || "summary_large_image",
+  };
+}
+
 // Fetch page directly from database
 async function getPage(slug: string) {
   try {
@@ -54,104 +150,66 @@ export async function generateMetadata({
   }
 
   const pageData = page as any;
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://chati.ai";
-  const pageUrl = `${baseUrl}/${slugString}`;
-
-  // Extract metadata
-  const title = page.title;
-  const description =
-    pageData.metadata?.description ||
-    `${page.title} - WhatsApp Business API Platform`;
-  const keywords = pageData.metadata?.keywords || [];
-  const tags = pageData.metadata?.tags || [];
-  const author = pageData.author?.name || "Chati Team";
-  const publishedAt = pageData.publishedAt || pageData.createdAt;
-  const updatedAt = pageData.updatedAt || pageData.createdAt;
-  const status = pageData.status || "DRAFT";
-
-  // Determine if page should be indexed (only PUBLISHED pages)
-  const shouldIndex = status === "PUBLISHED";
-
-  // Extract image from content blocks if available
-  let ogImage = `${baseUrl}/og-image.jpg`;
-  if (pageData.content?.blocks) {
-    const imageBlock = pageData.content.blocks.find(
-      (block: any) => block.data?.imageSrc || block.data?.image
-    );
-    if (imageBlock?.data?.imageSrc) {
-      ogImage = imageBlock.data.imageSrc.startsWith("http")
-        ? imageBlock.data.imageSrc
-        : `${baseUrl}${imageBlock.data.imageSrc}`;
-    } else if (imageBlock?.data?.image) {
-      ogImage = imageBlock.data.image.startsWith("http")
-        ? imageBlock.data.image
-        : `${baseUrl}${imageBlock.data.image}`;
-    }
-  }
-
-  // Combine keywords and tags for better SEO
-  const allKeywords = [
-    ...keywords,
-    ...tags,
-    "WhatsApp Business API",
-    "WhatsApp automation",
-    "customer engagement",
-  ].filter((k, i, arr) => arr.indexOf(k) === i); // Remove duplicates
+  
+  // Get SEO data (real data + demo defaults)
+  const seoData = getSEOData(pageData, slugString);
 
   return {
-    title: `${title} | Chati - WhatsApp Business API Platform`,
-    description,
-    keywords: allKeywords.join(", "),
-    authors: [{ name: author }],
-    creator: author,
-    publisher: "Chati",
-    metadataBase: new URL(baseUrl),
+    title: `${seoData.title} | ${DEFAULT_SEO_DATA.siteName}`,
+    description: seoData.description,
+    keywords: seoData.keywords.join(", "),
+    authors: [{ name: seoData.author }],
+    creator: seoData.author,
+    publisher: DEFAULT_SEO_DATA.publisher,
+    metadataBase: new URL(seoData.baseUrl),
     alternates: {
-      canonical: pageUrl,
+      canonical: seoData.canonicalUrl,
     },
     openGraph: {
       type: "website",
-      locale: "en_US",
-      url: pageUrl,
-      siteName: "Chati - WhatsApp Business API Platform",
-      title: `${title} | Chati`,
-      description,
+      locale: DEFAULT_SEO_DATA.locale,
+      url: seoData.pageUrl,
+      siteName: DEFAULT_SEO_DATA.siteName,
+      title: `${seoData.title} | Chati`,
+      description: seoData.description,
       images: [
         {
-          url: ogImage,
+          url: seoData.ogImage,
           width: 1200,
           height: 630,
-          alt: title,
+          alt: seoData.title,
         },
       ],
-      ...(publishedAt && {
-        publishedTime: new Date(publishedAt).toISOString(),
+      ...(seoData.publishedAt && {
+        publishedTime: new Date(seoData.publishedAt).toISOString(),
       }),
-      ...(updatedAt && { modifiedTime: new Date(updatedAt).toISOString() }),
+      ...(seoData.updatedAt && {
+        modifiedTime: new Date(seoData.updatedAt).toISOString(),
+      }),
     },
     twitter: {
-      card: "summary_large_image",
-      title: `${title} | Chati`,
-      description,
-      images: [ogImage],
-      creator: "@chati",
-      site: "@chati",
+      card: seoData.twitterCard as "summary_large_image" | "summary",
+      title: `${seoData.title} | Chati`,
+      description: seoData.description,
+      images: [seoData.ogImage],
+      creator: DEFAULT_SEO_DATA.twitterHandle,
+      site: DEFAULT_SEO_DATA.twitterHandle,
     },
     robots: {
-      index: shouldIndex,
-      follow: shouldIndex,
+      index: seoData.shouldIndex,
+      follow: seoData.shouldIndex,
       googleBot: {
-        index: shouldIndex,
-        follow: shouldIndex,
-        "max-video-preview": shouldIndex ? -1 : 0,
-        "max-image-preview": shouldIndex ? "large" : "none",
-        "max-snippet": shouldIndex ? -1 : 0,
+        index: seoData.shouldIndex,
+        follow: seoData.shouldIndex,
+        "max-video-preview": seoData.shouldIndex ? -1 : 0,
+        "max-image-preview": seoData.shouldIndex ? "large" : "none",
+        "max-snippet": seoData.shouldIndex ? -1 : 0,
       },
-      ...(shouldIndex ? {} : { noarchive: true, nosnippet: true }),
+      ...(seoData.shouldIndex ? {} : { noarchive: true, nosnippet: true }),
     },
-    category: tags[0] || undefined,
+    category: seoData.tags[0] || undefined,
     other: {
-      ...(tags.length > 0 && { "article:tag": tags.join(", ") }),
+      ...(seoData.tags.length > 0 && { "article:tag": seoData.tags.join(", ") }),
     },
   };
 }

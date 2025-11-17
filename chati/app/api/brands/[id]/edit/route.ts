@@ -9,12 +9,24 @@ import {
 import { Prisma } from "@prisma/client";
 import { z } from "zod";
 
-const updateBrandSchema = z.object({
-  name: z.string().min(1, "Brand name is required").max(200, "Brand name must be less than 200 characters").trim().optional(),
-  logoUrl: z.string().url("Logo URL must be a valid URL").optional(),
-}).refine((data) => data.name !== undefined || data.logoUrl !== undefined, {
-  message: "At least one field (name or logoUrl) must be provided for update",
-});
+const updateBrandSchema = z
+  .object({
+    name: z
+      .string()
+      .min(1, "Brand name is required")
+      .max(200, "Brand name must be less than 200 characters")
+      .trim()
+      .optional(),
+    logoUrl: z
+      .union([
+        z.string().url("Logo URL must be a valid URL"),
+        z.array(z.string().url("Logo URL must be a valid URL")),
+      ])
+      .optional(),
+  })
+  .refine((data) => data.name !== undefined || data.logoUrl !== undefined, {
+    message: "At least one field (name or logoUrl) must be provided for update",
+  });
 
 /**
  * PUT /api/brands/[id]/edit
@@ -97,14 +109,19 @@ export async function PUT(
     // Build update data
     const updateData: Prisma.BrandUpdateInput = {};
     if (name !== undefined) updateData.name = name;
-    if (logoUrl !== undefined) updateData.logoUrl = [logoUrl]; // logoUrl is String[] in schema
+    if (logoUrl !== undefined) {
+      // Handle both string (single logo) and array (multiple logos)
+      updateData.logoUrl = Array.isArray(logoUrl) ? logoUrl : [logoUrl];
+    }
 
     const updatedBrand = await prisma.brand.update({
       where: { id: params.id },
       data: updateData,
     });
 
-    console.info(`[AUDIT] Brand updated: ${updatedBrand.id} (${updatedBrand.name}) by user: ${user.id} (${user.email})`);
+    console.info(
+      `[AUDIT] Brand updated: ${updatedBrand.id} (${updatedBrand.name}) by user: ${user.id} (${user.email})`
+    );
 
     return NextResponse.json({
       message: "Brand updated successfully",

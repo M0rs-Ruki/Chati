@@ -94,6 +94,7 @@ export default function DashboardLayout({
     { href: "/dashboard/docs", icon: BookOpen, label: "Documentation" },
     { href: "/dashboard/media", icon: ImageIcon, label: "Media Library" },
     { href: "/dashboard/themes", icon: Palette, label: "Theme" },
+    { href: "/dashboard/brands", icon: ImageIcon, label: "Brands" },
     { href: "/dashboard/users", icon: Users, label: "Users" },
   ];
 

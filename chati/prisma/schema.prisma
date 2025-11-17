@@ -27,6 +27,11 @@ enum PublishStatus {
   ARCHIVED
 }
 
+enum BrandStatus {
+  ACTIVE
+  INACTIVE
+}
+
 // USER
 
 model User {
@@ -128,6 +133,7 @@ model Brand {
   id        String   @id @default(cuid())
   name      String   @unique
   logoUrl   String[]
+  status    BrandStatus @default(INACTIVE)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

@@ -75,6 +75,8 @@ export default function ThemeEditor() {
     fetchThemes();
   }, []);
 
+
+
   const fetchThemes = async () => {
     try {
       setLoading(true);
@@ -401,6 +403,8 @@ export default function ThemeEditor() {
     setMediaPickerOpen(false);
     setMediaPickerTarget(null);
   };
+
+
 
   const openMediaPicker = (
     target: "logo" | "favicon" | "create-logo" | "create-favicon"
@@ -1093,6 +1097,8 @@ export default function ThemeEditor() {
           </Button>
         </div>
       )}
+
+
 
       {/* Media Picker Dialog */}
       <MediaPicker
