@@ -7,6 +7,8 @@ import { CDPSection } from "@/components/page_components/cdp-block";
 import { WorkflowSection } from "@/components/page_components/workflow-block";
 import { EnterpriseHeroSection } from "@/components/page_components/enterprise-hero-block";
 import { useRef, useState, useEffect } from "react";
+import Script from "next/script";
+import { generateFAQSchema, generateArticleSchema } from "@/lib/seo-utils";
 
 interface PageClientProps {
   page: any;
@@ -431,7 +433,7 @@ export default function PageClient({ page }: PageClientProps) {
                     <Button
                       size="lg"
                       variant="secondary"
-                      className="bg-white text-blue-600"
+                      className="bg-white text-black"
                     >
                       {block.data?.button1Text || "Button 1"}
                     </Button>
@@ -463,8 +465,72 @@ export default function PageClient({ page }: PageClientProps) {
     );
   };
 
+  // Extract FAQ blocks for structured data
+  const faqBlocks = components.filter((block: any) => block.type === "faq");
+  const allFAQs = faqBlocks.flatMap((block: any) => block.data?.faqs || []);
+
+  // Generate structured data
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://chati.ai";
+  const pageUrl = `${baseUrl}/${page.slug}`;
+
+  // Extract image from content blocks if available
+  let ogImage = `${baseUrl}/og-image.jpg`;
+  const imageBlock = components.find(
+    (block: any) => block.data?.imageSrc || block.data?.image
+  );
+  if (imageBlock?.data?.imageSrc) {
+    ogImage = imageBlock.data.imageSrc.startsWith("http")
+      ? imageBlock.data.imageSrc
+      : `${baseUrl}${imageBlock.data.imageSrc}`;
+  } else if (imageBlock?.data?.image) {
+    ogImage = imageBlock.data.image.startsWith("http")
+      ? imageBlock.data.image
+      : `${baseUrl}${imageBlock.data.image}`;
+  }
+
+  // Generate FAQ schema if FAQs exist
+  const faqSchema = allFAQs.length > 0 ? generateFAQSchema(allFAQs) : null;
+
+  // Generate Article schema for published pages
+  const articleSchema =
+    page.status === "PUBLISHED" && page.publishedAt
+      ? generateArticleSchema({
+          title: page.title,
+          description:
+            page.metadata?.description ||
+            `${page.title} - WhatsApp Business API Platform`,
+          image: ogImage,
+          datePublished: new Date(
+            page.publishedAt || page.createdAt
+          ).toISOString(),
+          dateModified: new Date(
+            page.updatedAt || page.createdAt
+          ).toISOString(),
+          author: page.author?.name || "Chati Team",
+          url: pageUrl,
+        })
+      : null;
+
   return (
     <div className="min-h-screen bg-white">
+      {/* Structured Data - FAQ Schema */}
+      {faqSchema && (
+        <Script
+          id="faq-schema"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
+
+      {/* Structured Data - Article Schema */}
+      {articleSchema && (
+        <Script
+          id="article-schema"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+        />
+      )}
+
       {/* Page Header */}
       {/* <header className="bg-white border-b">
         <div className="container mx-auto px-4 py-8">
