@@ -16,6 +16,8 @@ import {
   Grid3x3,
   Images,
   Briefcase,
+  Workflow,
+  Building2,
 } from "lucide-react";
 import {
   TextImageComponent,
@@ -34,6 +36,8 @@ import {
   ctaDefaults,
 } from "./page_components";
 import { CDPEditor, cdpDefaults } from "./page_components/cdp-block";
+import { WorkflowEditor, workflowDefaults } from "./page_components/workflow-block";
+import { EnterpriseHeroEditor, enterpriseHeroDefaults } from "./page_components/enterprise-hero-block";
 
 interface Component {
   id: string;
@@ -53,11 +57,13 @@ export default function PageBuilder({ content, onChange }: PageBuilderProps) {
 
   const componentTypes = [
     { type: "text-image", label: "Text + Image Hero", icon: LayoutGrid },
+    { type: "enterprise-hero", label: "Enterprise Hero", icon: Building2 },
     { type: "feature-block", label: "Feature Block", icon: Blocks },
     { type: "features-grid", label: "Features Grid", icon: Grid3x3 },
     { type: "use-cases", label: "Use Cases", icon: Briefcase },
     { type: "brand-slider", label: "Brand Slider", icon: Images },
     { type: "cdp-block", label: "CDP Section", icon: Blocks },
+    { type: "workflow", label: "Workflow Automation", icon: Workflow },
     { type: "faq", label: "FAQ Section", icon: HelpCircle },
     { type: "cta", label: "CTA Section", icon: Megaphone },
   ];
@@ -76,6 +82,8 @@ export default function PageBuilder({ content, onChange }: PageBuilderProps) {
     switch (type) {
       case "text-image":
         return textImageDefaults;
+      case "enterprise-hero":
+        return enterpriseHeroDefaults;
       case "feature-block":
         return featureBlockDefaults;
       case "features-grid":
@@ -86,6 +94,8 @@ export default function PageBuilder({ content, onChange }: PageBuilderProps) {
         return brandSliderDefaults;
       case "cdp-block":
         return cdpDefaults;
+      case "workflow":
+        return workflowDefaults;
       case "faq":
         return faqDefaults;
       case "cta":
@@ -127,6 +137,10 @@ export default function PageBuilder({ content, onChange }: PageBuilderProps) {
         return (
           <TextImageComponent data={component.data} onChange={handleChange} />
         );
+      case "enterprise-hero":
+        return (
+          <EnterpriseHeroEditor data={component.data} onChange={handleChange} />
+        );
       case "feature-block":
         return (
           <FeatureBlockComponent
@@ -151,6 +165,8 @@ export default function PageBuilder({ content, onChange }: PageBuilderProps) {
         );
       case "cdp-block":
         return <CDPEditor data={component.data} onChange={handleChange} />;
+      case "workflow":
+        return <WorkflowEditor data={component.data} onChange={handleChange} />;
       case "faq":
         return <FAQComponent data={component.data} onChange={handleChange} />;
       case "cta":

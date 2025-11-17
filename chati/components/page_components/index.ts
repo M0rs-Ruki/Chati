@@ -6,3 +6,5 @@ export * from "./brand-slider-component";
 export * from "./faq-component";
 export * from "./cta-component";
 export * from "./cdp-block";
+export * from "./workflow-block";
+export * from "./enterprise-hero-block";
