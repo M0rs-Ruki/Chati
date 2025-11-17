@@ -19,6 +19,7 @@ import {
   Plus,
 } from "lucide-react";
 import PageBuilder from "@/components/page-builder";
+import { CDPSection } from "@/components/page_components/cdp-block";
 import {
   Select,
   SelectContent,
@@ -564,6 +565,11 @@ export default function CreatePagePage() {
                       </div>
                     </div>
                   </section>
+                )}
+
+                {/* CDP Block */}
+                {block.type === "cdp-block" && (
+                  <CDPSection data={block.data} />
                 )}
               </div>
             ))}

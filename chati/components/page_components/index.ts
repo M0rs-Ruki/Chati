@@ -5,3 +5,4 @@ export * from "./use-cases-component";
 export * from "./brand-slider-component";
 export * from "./faq-component";
 export * from "./cta-component";
+export * from "./cdp-block";

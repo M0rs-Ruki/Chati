@@ -33,6 +33,7 @@ import {
   CTAComponent,
   ctaDefaults,
 } from "./page_components";
+import { CDPEditor, cdpDefaults } from "./page_components/cdp-block";
 
 interface Component {
   id: string;
@@ -56,6 +57,7 @@ export default function PageBuilder({ content, onChange }: PageBuilderProps) {
     { type: "features-grid", label: "Features Grid", icon: Grid3x3 },
     { type: "use-cases", label: "Use Cases", icon: Briefcase },
     { type: "brand-slider", label: "Brand Slider", icon: Images },
+    { type: "cdp-block", label: "CDP Section", icon: Blocks },
     { type: "faq", label: "FAQ Section", icon: HelpCircle },
     { type: "cta", label: "CTA Section", icon: Megaphone },
   ];
@@ -82,6 +84,8 @@ export default function PageBuilder({ content, onChange }: PageBuilderProps) {
         return useCasesDefaults;
       case "brand-slider":
         return brandSliderDefaults;
+      case "cdp-block":
+        return cdpDefaults;
       case "faq":
         return faqDefaults;
       case "cta":
@@ -145,6 +149,8 @@ export default function PageBuilder({ content, onChange }: PageBuilderProps) {
         return (
           <BrandSliderComponent data={component.data} onChange={handleChange} />
         );
+      case "cdp-block":
+        return <CDPEditor data={component.data} onChange={handleChange} />;
       case "faq":
         return <FAQComponent data={component.data} onChange={handleChange} />;
       case "cta":
