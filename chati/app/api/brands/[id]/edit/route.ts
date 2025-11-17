@@ -9,6 +9,11 @@ import {
 import { Prisma } from "@prisma/client";
 import { z } from "zod";
 
+const logoSchema = z.object({
+  name: z.string().min(1, "Logo name is required"),
+  url: z.string().url("Logo URL must be valid"),
+});
+
 const updateBrandSchema = z
   .object({
     name: z
@@ -17,12 +22,7 @@ const updateBrandSchema = z
       .max(200, "Brand name must be less than 200 characters")
       .trim()
       .optional(),
-    logoUrl: z
-      .union([
-        z.string().url("Logo URL must be a valid URL"),
-        z.array(z.string().url("Logo URL must be a valid URL")),
-      ])
-      .optional(),
+    logoUrl: z.array(logoSchema).optional(),
     status: z.enum(["ACTIVE", "INACTIVE"]).optional(),
   })
   .refine(
@@ -31,16 +31,10 @@ const updateBrandSchema = z
       data.logoUrl !== undefined ||
       data.status !== undefined,
     {
-      message:
-        "At least one field (name, logoUrl, tagline, or status) must be provided for update",
+      message: "At least one field must be provided for update",
     }
   );
 
-/**
- * PUT /api/brands/[id]/edit
- * Updates a specific brand by ID
- * Requires ADMIN or EDITOR role
- */
 export async function PUT(
   req: NextRequest,
   { params }: { params: { id: string } }
@@ -56,7 +50,6 @@ export async function PUT(
       );
     }
 
-    // Apply rate limiting
     const rateLimitIdentifier = getRateLimitIdentifier(req, user.id);
     const rateLimitError = checkRateLimit(
       rateLimitIdentifier,
@@ -67,7 +60,6 @@ export async function PUT(
 
     const body = await req.json().catch(() => ({}));
 
-    // Validate input
     const validation = updateBrandSchema.safeParse(body);
     if (!validation.success) {
       const errors = validation.error.errors.map((err) => {
@@ -85,7 +77,6 @@ export async function PUT(
 
     const { name, logoUrl, status } = validation.data;
 
-    // Check if brand exists
     const existingBrand = await prisma.brand.findUnique({
       where: { id: params.id },
     });
@@ -97,7 +88,6 @@ export async function PUT(
       );
     }
 
-    // Check for duplicate name if name is being changed
     if (name && name !== existingBrand.name) {
       const duplicateBrand = await prisma.brand.findFirst({
         where: {
@@ -114,13 +104,9 @@ export async function PUT(
       }
     }
 
-    // Build update data
     const updateData: Prisma.BrandUpdateInput = {};
     if (name !== undefined) updateData.name = name;
-    if (logoUrl !== undefined) {
-      // Handle both string (single logo) and array (multiple logos)
-      updateData.logoUrl = Array.isArray(logoUrl) ? logoUrl : [logoUrl];
-    }
+    if (logoUrl !== undefined) updateData.logoUrl = logoUrl as any;
     if (status !== undefined) updateData.status = status;
 
     const updatedBrand = await prisma.brand.update({
@@ -139,7 +125,6 @@ export async function PUT(
   } catch (error) {
     console.error("[ERROR] Error updating brand:", error);
 
-    // Handle specific Prisma errors
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2025") {
         return NextResponse.json(

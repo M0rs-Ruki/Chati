@@ -85,10 +85,7 @@ export function BrandSlider({
             tagline: b.tagline || undefined,
             logos:
               Array.isArray(b.logoUrl) && b.logoUrl.length > 0
-                ? b.logoUrl.map((item: any) => ({
-                    name: item.name || b.name,
-                    url: item.url,
-                  }))
+                ? b.logoUrl // Already in {name, url} format from DB
                 : [{ name: b.name, url: "/placeholder.svg" }],
           }));
         }

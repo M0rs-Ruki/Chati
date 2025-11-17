@@ -1,14 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-/**
- * GET /api/public/brands
- * Retrieves all brands for public display
- * PUBLIC ENDPOINT - No authentication required
- */
 export async function GET(req: NextRequest) {
   try {
     const brands = await prisma.brand.findMany({
+      where: { status: "ACTIVE" }, // Only active brands
       orderBy: { createdAt: "desc" },
       select: {
         id: true,
@@ -24,7 +20,7 @@ export async function GET(req: NextRequest) {
   } catch (error) {
     console.error("[ERROR] Error fetching brands:", error);
     return NextResponse.json(
-      { 
+      {
         message: "Failed to fetch brands",
         errors: ["An unexpected error occurred. Please try again later."],
       },

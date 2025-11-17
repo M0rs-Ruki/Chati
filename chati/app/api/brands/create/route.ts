@@ -9,26 +9,22 @@ import {
 import { Prisma } from "@prisma/client";
 import { z } from "zod";
 
+// Updated schema for logo objects
+const logoSchema = z.object({
+  name: z.string().min(1, "Logo name is required"),
+  url: z.string().url("Logo URL must be valid"),
+});
+
 const createBrandSchema = z.object({
   name: z
     .string()
     .min(1, "Brand name is required")
     .max(200, "Brand name must be less than 200 characters")
     .trim(),
-  logoUrl: z.union([
-    z.string().url("Logo URL must be a valid URL"),
-    z
-      .array(z.string().url("Each logo URL must be a valid URL"))
-      .min(1, "At least one logo URL is required"),
-  ]),
+  logoUrl: z.array(logoSchema).min(1, "At least one logo is required"),
   status: z.enum(["ACTIVE", "INACTIVE"]).optional(),
 });
 
-/**
- * POST /api/brands/create
- * Creates a new brand
- * Requires ADMIN or EDITOR role
- */
 export async function POST(req: NextRequest) {
   try {
     const { user, error } = await authenticateRequest(req);
@@ -43,7 +39,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Apply rate limiting
     const rateLimitIdentifier = getRateLimitIdentifier(req, user.id);
     const rateLimitError = checkRateLimit(
       rateLimitIdentifier,
@@ -54,7 +49,6 @@ export async function POST(req: NextRequest) {
 
     const body = await req.json().catch(() => ({}));
 
-    // Validate input
     const validation = createBrandSchema.safeParse(body);
     if (!validation.success) {
       const errors = validation.error.errors.map((err) => {
@@ -72,7 +66,6 @@ export async function POST(req: NextRequest) {
 
     const { name, logoUrl, status } = validation.data;
 
-    // Check for duplicate brand name
     const existingBrand = await prisma.brand.findFirst({
       where: { name: { equals: name, mode: "insensitive" } },
     });
@@ -84,13 +77,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Ensure logoUrl is an array
-    const logoUrlArray = Array.isArray(logoUrl) ? logoUrl : [logoUrl];
-
     const newBrand = await prisma.brand.create({
       data: {
         name,
-        logoUrl: logoUrlArray,
+        logoUrl: logoUrl as any, // Prisma will store this as Json
         status: status || "INACTIVE",
       },
     });
@@ -109,7 +99,6 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error("[ERROR] Error creating brand:", error);
 
-    // Handle specific Prisma errors
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2002") {
         return NextResponse.json(

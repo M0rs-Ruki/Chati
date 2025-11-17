@@ -5,8 +5,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import Image from "next/image";
-import { MediaPicker } from "@/components/media-picker";
+import { MediaPicker } from "@/components/media-picker-multiple";
 import {
   Plus,
   Trash2,
@@ -19,11 +20,16 @@ import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import BrandsLoading from "./loading";
 
+interface BrandLogo {
+  name: string;
+  url: string;
+}
+
 interface Brand {
   id: string;
   name: string;
-  logoUrl: string[];
-  tagline?: string | null;
+  logoUrl: BrandLogo[]; // Changed to BrandLogo[]
+  status: "ACTIVE" | "INACTIVE";
   createdAt: string;
   updatedAt: string;
 }
@@ -36,18 +42,20 @@ export default function BrandsPage() {
   const [isCreating, setIsCreating] = useState(false);
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
   const [isUpdating, setIsUpdating] = useState<string | null>(null);
+  const [isTogglingStatus, setIsTogglingStatus] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
-  
+
   const [newBrandForm, setNewBrandForm] = useState({
     name: "",
-    tagline: "",
-    logoUrls: [] as string[],
+    logoUrls: [] as BrandLogo[], // Changed to BrandLogo[]
   });
-  
+
   const [editingBrand, setEditingBrand] = useState<Brand | null>(null);
   const [mediaPickerOpen, setMediaPickerOpen] = useState(false);
   const [editingLogoIndex, setEditingLogoIndex] = useState<number | null>(null);
-  const [mediaPickerMode, setMediaPickerMode] = useState<"create" | "edit">("create");
+  const [mediaPickerMode, setMediaPickerMode] = useState<"create" | "edit">(
+    "create"
+  );
 
   useEffect(() => {
     setMounted(true);
@@ -117,8 +125,7 @@ export default function BrandsPage() {
         },
         body: JSON.stringify({
           name: newBrandForm.name,
-          tagline: newBrandForm.tagline || null,
-          logoUrl: newBrandForm.logoUrls,
+          logoUrl: newBrandForm.logoUrls, // Now sends {name, url} objects
         }),
       });
 
@@ -132,7 +139,7 @@ export default function BrandsPage() {
         description: "Brand created successfully!",
       });
 
-      setNewBrandForm({ name: "", tagline: "", logoUrls: [] });
+      setNewBrandForm({ name: "", logoUrls: [] });
       fetchBrands();
     } catch (error: any) {
       toast({
@@ -165,7 +172,6 @@ export default function BrandsPage() {
         },
         body: JSON.stringify({
           name: editingBrand.name,
-          tagline: editingBrand.tagline || null,
           logoUrl: editingBrand.logoUrl,
         }),
       });
@@ -234,29 +240,67 @@ export default function BrandsPage() {
     }
   };
 
-  const handleMediaSelect = (url: string, alt?: string) => {
+  const toggleBrandStatus = async (brand: Brand) => {
+    const newStatus = brand.status === "ACTIVE" ? "INACTIVE" : "ACTIVE";
+    setIsTogglingStatus(brand.id);
+
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        router.push("/admin");
+        return;
+      }
+
+      const response = await fetch(`/api/brands/${brand.id}/edit`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          status: newStatus,
+        }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Failed to update brand status");
+      }
+
+      toast({
+        title: "Success",
+        description: `Brand ${newStatus === "ACTIVE" ? "activated" : "deactivated"} successfully!`,
+      });
+
+      fetchBrands();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setIsTogglingStatus(null);
+    }
+  };
+
+  // UPDATED: Now handles multiple selection
+  const handleMediaSelect = (urls: string[], alts?: string[]) => {
+    const newLogos: BrandLogo[] = urls.map((url, index) => ({
+      name: alts?.[index] || `Logo ${index + 1}`,
+      url: url,
+    }));
+
     if (mediaPickerMode === "create") {
-      if (editingLogoIndex !== null) {
-        const updated = [...newBrandForm.logoUrls];
-        updated[editingLogoIndex] = url;
-        setNewBrandForm({ ...newBrandForm, logoUrls: updated });
-      } else {
-        setNewBrandForm({
-          ...newBrandForm,
-          logoUrls: [...newBrandForm.logoUrls, url],
-        });
-      }
+      setNewBrandForm({
+        ...newBrandForm,
+        logoUrls: [...newBrandForm.logoUrls, ...newLogos],
+      });
     } else if (mediaPickerMode === "edit" && editingBrand) {
-      if (editingLogoIndex !== null) {
-        const updated = [...editingBrand.logoUrl];
-        updated[editingLogoIndex] = url;
-        setEditingBrand({ ...editingBrand, logoUrl: updated });
-      } else {
-        setEditingBrand({
-          ...editingBrand,
-          logoUrl: [...editingBrand.logoUrl, url],
-        });
-      }
+      setEditingBrand({
+        ...editingBrand,
+        logoUrl: [...editingBrand.logoUrl, ...newLogos],
+      });
     }
 
     setEditingLogoIndex(null);
@@ -283,10 +327,20 @@ export default function BrandsPage() {
     }
   };
 
-  const editLogo = (index: number, mode: "create" | "edit") => {
-    setMediaPickerMode(mode);
-    setEditingLogoIndex(index);
-    setMediaPickerOpen(true);
+  const editLogoName = (
+    index: number,
+    newName: string,
+    mode: "create" | "edit"
+  ) => {
+    if (mode === "create") {
+      const updated = [...newBrandForm.logoUrls];
+      updated[index] = { ...updated[index], name: newName };
+      setNewBrandForm({ ...newBrandForm, logoUrls: updated });
+    } else if (editingBrand) {
+      const updated = [...editingBrand.logoUrl];
+      updated[index] = { ...updated[index], name: newName };
+      setEditingBrand({ ...editingBrand, logoUrl: updated });
+    }
   };
 
   if (isLoadingBrands) {
@@ -302,7 +356,7 @@ export default function BrandsPage() {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 bg-clip-text text-transparent">
-          Brand Management 
+          Brand Management
         </h1>
         <p className="text-lg text-gray-600 mt-2">
           Manage your brand logos for the brand slider component
@@ -318,35 +372,19 @@ export default function BrandsPage() {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6 p-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            <div>
-              <Label htmlFor="brand-name" className="text-gray-700 font-medium">
-                Brand Name *
-              </Label>
-              <Input
-                id="brand-name"
-                value={newBrandForm.name}
-                onChange={(e) =>
-                  setNewBrandForm({ ...newBrandForm, name: e.target.value })
-                }
-                placeholder="e.g., Google, Microsoft, Apple"
-                className="mt-2"
-              />
-            </div>
-            <div>
-              <Label htmlFor="brand-tagline" className="text-gray-700 font-medium">
-                Tagline (Optional)
-              </Label>
-              <Input
-                id="brand-tagline"
-                value={newBrandForm.tagline}
-                onChange={(e) =>
-                  setNewBrandForm({ ...newBrandForm, tagline: e.target.value })
-                }
-                placeholder="e.g., Trusted by thousands"
-                className="mt-2"
-              />
-            </div>
+          <div>
+            <Label htmlFor="brand-name" className="text-gray-700 font-medium">
+              Brand Name *
+            </Label>
+            <Input
+              id="brand-name"
+              value={newBrandForm.name}
+              onChange={(e) =>
+                setNewBrandForm({ ...newBrandForm, name: e.target.value })
+              }
+              placeholder="e.g., Google, Microsoft, Apple"
+              className="mt-2"
+            />
           </div>
 
           <div>
@@ -362,7 +400,7 @@ export default function BrandsPage() {
                 className="border-indigo-200 hover:bg-indigo-50"
               >
                 <Plus className="w-4 h-4 mr-1" />
-                Add Logo
+                Add Logos
               </Button>
             </div>
 
@@ -371,46 +409,43 @@ export default function BrandsPage() {
                 <Package className="w-12 h-12 mx-auto mb-3 text-gray-400" />
                 <p className="text-sm font-medium">No logos added yet</p>
                 <p className="text-xs mt-1">
-                  Click "Add Logo" to select from media library
+                  Click "Add Logos" to select from media library
                 </p>
               </div>
             ) : (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                {newBrandForm.logoUrls.map((logoUrl, index) => (
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {newBrandForm.logoUrls.map((logo, index) => (
                   <div
                     key={index}
                     className="relative border-2 border-gray-200 rounded-lg p-3 bg-white hover:border-indigo-300 transition-colors"
                   >
                     <div className="aspect-square flex items-center justify-center mb-2 bg-gray-50 rounded">
                       <Image
-                        src={logoUrl}
-                        alt={`Logo ${index + 1}`}
+                        src={logo.url}
+                        alt={logo.name}
                         width={80}
                         height={80}
                         className="max-w-full max-h-full object-contain"
                       />
                     </div>
-                    <div className="flex gap-1">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={() => editLogo(index, "create")}
-                        className="flex-1 text-xs"
-                      >
-                        <ImageIcon className="w-3 h-3 mr-1" />
-                        Change
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={() => removeLogo(index, "create")}
-                        className="text-red-600 hover:bg-red-50"
-                      >
-                        <Trash2 className="w-3 h-3" />
-                      </Button>
-                    </div>
+                    <Input
+                      value={logo.name}
+                      onChange={(e) =>
+                        editLogoName(index, e.target.value, "create")
+                      }
+                      className="text-xs mb-2"
+                      placeholder="Logo name"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => removeLogo(index, "create")}
+                      className="w-full text-red-600 hover:bg-red-50"
+                    >
+                      <Trash2 className="w-3 h-3 mr-1" />
+                      Remove
+                    </Button>
                   </div>
                 ))}
               </div>
@@ -420,7 +455,9 @@ export default function BrandsPage() {
           <Button
             onClick={createBrand}
             disabled={
-              isCreating || !newBrandForm.name || newBrandForm.logoUrls.length === 0
+              isCreating ||
+              !newBrandForm.name ||
+              newBrandForm.logoUrls.length === 0
             }
             className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 h-12"
           >
@@ -449,29 +486,15 @@ export default function BrandsPage() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6 p-6">
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <Label className="text-gray-700 font-medium">Brand Name *</Label>
-                <Input
-                  value={editingBrand.name}
-                  onChange={(e) =>
-                    setEditingBrand({ ...editingBrand, name: e.target.value })
-                  }
-                  className="mt-2"
-                />
-              </div>
-              <div>
-                <Label className="text-gray-700 font-medium">
-                  Tagline (Optional)
-                </Label>
-                <Input
-                  value={editingBrand.tagline || ""}
-                  onChange={(e) =>
-                    setEditingBrand({ ...editingBrand, tagline: e.target.value })
-                  }
-                  className="mt-2"
-                />
-              </div>
+            <div>
+              <Label className="text-gray-700 font-medium">Brand Name *</Label>
+              <Input
+                value={editingBrand.name}
+                onChange={(e) =>
+                  setEditingBrand({ ...editingBrand, name: e.target.value })
+                }
+                className="mt-2"
+              />
             </div>
 
             <div>
@@ -487,46 +510,43 @@ export default function BrandsPage() {
                   className="border-blue-200 hover:bg-blue-50"
                 >
                   <Plus className="w-4 h-4 mr-1" />
-                  Add Logo
+                  Add Logos
                 </Button>
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                {editingBrand.logoUrl.map((logoUrl, index) => (
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {editingBrand.logoUrl.map((logo, index) => (
                   <div
                     key={index}
                     className="relative border-2 border-gray-200 rounded-lg p-3 bg-white hover:border-blue-300 transition-colors"
                   >
                     <div className="aspect-square flex items-center justify-center mb-2 bg-gray-50 rounded">
                       <Image
-                        src={logoUrl}
-                        alt={`Logo ${index + 1}`}
+                        src={logo.url}
+                        alt={logo.name}
                         width={80}
                         height={80}
                         className="max-w-full max-h-full object-contain"
                       />
                     </div>
-                    <div className="flex gap-1">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={() => editLogo(index, "edit")}
-                        className="flex-1 text-xs"
-                      >
-                        <ImageIcon className="w-3 h-3 mr-1" />
-                        Change
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={() => removeLogo(index, "edit")}
-                        className="text-red-600 hover:bg-red-50"
-                      >
-                        <Trash2 className="w-3 h-3" />
-                      </Button>
-                    </div>
+                    <Input
+                      value={logo.name}
+                      onChange={(e) =>
+                        editLogoName(index, e.target.value, "edit")
+                      }
+                      className="text-xs mb-2"
+                      placeholder="Logo name"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => removeLogo(index, "edit")}
+                      className="w-full text-red-600 hover:bg-red-50"
+                    >
+                      <Trash2 className="w-3 h-3 mr-1" />
+                      Remove
+                    </Button>
                   </div>
                 ))}
               </div>
@@ -564,7 +584,7 @@ export default function BrandsPage() {
         <h2 className="text-2xl font-bold text-gray-900">
           All Brands ({brands.length})
         </h2>
-        
+
         {brands.length === 0 ? (
           <Card className="border-gray-200 shadow-lg">
             <CardContent className="text-center py-12">
@@ -589,22 +609,37 @@ export default function BrandsPage() {
                       <h3 className="text-lg font-bold text-gray-900">
                         {brand.name}
                       </h3>
-                      {brand.tagline && (
-                        <p className="text-sm text-gray-600 mt-1">{brand.tagline}</p>
-                      )}
+                      <div className="flex items-center gap-3 mt-3">
+                        <Switch
+                          checked={brand.status === "ACTIVE"}
+                          onCheckedChange={() => toggleBrandStatus(brand)}
+                          disabled={isTogglingStatus === brand.id}
+                          className="data-[state=checked]:bg-green-600"
+                        />
+                        <span
+                          className={`text-sm font-medium ${
+                            brand.status === "ACTIVE"
+                              ? "text-green-700"
+                              : "text-gray-500"
+                          }`}
+                        >
+                          {isTogglingStatus === brand.id ? "Updating..." : brand.status}
+                        </span>
+                      </div>
                     </div>
                   </div>
 
                   <div className="space-y-3">
                     <div className="flex flex-wrap gap-2">
-                      {brand.logoUrl.slice(0, 3).map((logoUrl, idx) => (
+                      {brand.logoUrl.slice(0, 3).map((logo, idx) => (
                         <div
                           key={idx}
                           className="w-16 h-16 border rounded-lg p-2 bg-gray-50 flex items-center justify-center"
+                          title={logo.name}
                         >
                           <Image
-                            src={logoUrl}
-                            alt={`${brand.name} logo`}
+                            src={logo.url}
+                            alt={logo.name}
                             width={48}
                             height={48}
                             className="max-w-full max-h-full object-contain"
@@ -652,11 +687,12 @@ export default function BrandsPage() {
         )}
       </div>
 
-      {/* Media Picker Dialog */}
+      {/* Media Picker Dialog - MULTIPLE SELECTION */}
       <MediaPicker
         open={mediaPickerOpen}
         onOpenChange={setMediaPickerOpen}
         onSelect={handleMediaSelect}
+        multiple={true} // Enable multiple selection
       />
     </div>
   );
