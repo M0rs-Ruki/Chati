@@ -6,12 +6,39 @@ import { Calendar, Clock, User } from "lucide-react";
 import { CDPSection } from "@/components/page_components/cdp-block";
 import { WorkflowSection } from "@/components/page_components/workflow-block";
 import { EnterpriseHeroSection } from "@/components/page_components/enterprise-hero-block";
+import { useRef, useState, useEffect } from "react";
 
 interface PageClientProps {
   page: any;
 }
 
 export default function PageClient({ page }: PageClientProps) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [isPaused, setIsPaused] = useState(false);
+
+  useEffect(() => {
+    const scrollContainer = scrollRef.current;
+    if (!scrollContainer) return;
+
+    let animationId: number;
+    let scrollPosition = 0;
+
+    const scroll = () => {
+      if (!isPaused && scrollContainer) {
+        scrollPosition += 0.5;
+        if (scrollPosition >= scrollContainer.scrollWidth / 2) {
+          scrollPosition = 0;
+        }
+        scrollContainer.scrollLeft = scrollPosition;
+      }
+      animationId = requestAnimationFrame(scroll);
+    };
+
+    animationId = requestAnimationFrame(scroll);
+
+    return () => cancelAnimationFrame(animationId);
+  }, [isPaused]);
+
   // Parse components/content blocks
   const components = (() => {
     if (!page.content && !page.components) return [];
@@ -67,20 +94,22 @@ export default function PageClient({ page }: PageClientProps) {
           <div key={block.id || index}>
             {/* Text + Image Hero */}
             {block.type === "text-image" && (
-              <section className="relative overflow-hidden py-12 md:py-16 bg-gradient-to-br from-blue-50 via-white to-green-50">
+              <section className="relative overflow-hidden py-10 md:py-16 bg-gradient-to-br from-blue-50 via-white to-green-50">
                 <div className="container mx-auto px-4">
-                  <div className="grid gap-8 lg:grid-cols-2 items-center">
+                  <div className="grid gap-10 lg:gap-16 lg:grid-cols-2 items-center">
+                    {/* TEXT SECTION */}
                     <div
                       className={
                         block.data?.imagePosition === "right"
-                          ? "order-1"
-                          : "order-2"
+                          ? "lg:order-1 order-2"
+                          : "lg:order-2 order-2"
                       }
                     >
                       <div className="inline-block px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm mb-4">
                         {block.data?.badgeText || "Badge"}
                       </div>
-                      <h1 className="text-3xl md:text-4xl font-bold mb-4">
+
+                      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold leading-tight mb-4">
                         <span className="block">
                           {block.data?.titlePart1 || "Title Part 1"}
                         </span>
@@ -88,29 +117,46 @@ export default function PageClient({ page }: PageClientProps) {
                           {block.data?.titlePart2 || "Title Part 2"}
                         </span>
                       </h1>
-                      <p className="text-gray-600 mb-6">
+
+                      <p className="text-gray-600 mb-6 text-base sm:text-lg">
                         {block.data?.description || "Description"}
                       </p>
-                      <div className="flex gap-3">
-                        <Button className="bg-green-600 hover:bg-green-700">
+
+                      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                        <Button className="bg-green-600 hover:bg-green-700 w-full sm:w-auto">
                           {block.data?.button1Text || "Button 1"}
                         </Button>
-                        <Button variant="outline">
+                        <Button
+                          variant="outline"
+                          className="
+              border-2 
+              bg-white 
+              text-gray-800 
+              hover:bg-green-50 
+              hover:border-green-500 
+              hover:text-green-600 
+              font-medium 
+              shadow-sm 
+              transition-all
+            "
+                        >
                           {block.data?.button2Text || "Button 2"}
                         </Button>
                       </div>
                     </div>
+
+                    {/* IMAGE SECTION */}
                     <div
                       className={
                         block.data?.imagePosition === "right"
-                          ? "order-2"
-                          : "order-1"
+                          ? "lg:order-2 order-1"
+                          : "lg:order-1 order-1"
                       }
                     >
                       <img
                         src={block.data?.imageSrc || "/placeholder.svg"}
                         alt={block.data?.imageAlt || "Image"}
-                        className="w-full rounded-lg shadow-xl"
+                        className="w-full rounded-xl shadow-2xl max-h-[450px] object-cover"
                       />
                     </div>
                   </div>
@@ -120,37 +166,45 @@ export default function PageClient({ page }: PageClientProps) {
 
             {/* Feature Block */}
             {block.type === "feature-block" && (
-              <section className="py-12 md:py-16 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+              <section className="py-10 md:py-16 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
                 <div className="container mx-auto px-4">
-                  <div className="grid gap-8 lg:grid-cols-2 items-center">
+                  <div className="grid gap-10 lg:gap-16 lg:grid-cols-2 items-center">
+                    {/* TEXT SECTION */}
                     <div
                       className={
                         block.data?.imagePosition === "right"
-                          ? "order-1"
-                          : "order-2"
+                          ? "lg:order-1 order-2"
+                          : "lg:order-2 order-2"
                       }
                     >
                       <div className="inline-block px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-sm mb-4">
                         {block.data?.badgeText || "Badge"}
                       </div>
-                      <h2 className="text-3xl font-bold mb-4">
+
+                      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 leading-tight">
                         {block.data?.title || "Title"}
                       </h2>
-                      <p className="text-gray-600 mb-6">
+
+                      <p className="text-gray-600 mb-6 text-base sm:text-lg">
                         {block.data?.description || "Description"}
                       </p>
-                      <div className="space-y-4">
+
+                      {/* FEATURES LIST */}
+                      <div className="space-y-5">
                         {block.data?.features?.map(
                           (feature: any, idx: number) => (
-                            <div key={idx} className="flex gap-3">
-                              <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center flex-shrink-0">
-                                <span className="text-green-600">✓</span>
+                            <div key={idx} className="flex gap-4 items-start">
+                              <div className="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center flex-shrink-0">
+                                <span className="text-green-600 text-lg">
+                                  ✓
+                                </span>
                               </div>
+
                               <div>
-                                <h3 className="font-semibold">
+                                <h3 className="font-semibold text-lg">
                                   {feature.title}
                                 </h3>
-                                <p className="text-sm text-gray-600">
+                                <p className="text-sm sm:text-base text-gray-600">
                                   {feature.description}
                                 </p>
                               </div>
@@ -159,17 +213,19 @@ export default function PageClient({ page }: PageClientProps) {
                         )}
                       </div>
                     </div>
+
+                    {/* IMAGE SECTION */}
                     <div
                       className={
                         block.data?.imagePosition === "right"
-                          ? "order-2"
-                          : "order-1"
+                          ? "lg:order-2 order-1"
+                          : "lg:order-1 order-1"
                       }
                     >
                       <img
                         src={block.data?.imageSrc || "/placeholder.svg"}
                         alt={block.data?.imageAlt || "Image"}
-                        className="w-full rounded-lg shadow-xl"
+                        className="w-full rounded-2xl shadow-2xl max-h-[420px] object-cover"
                       />
                     </div>
                   </div>
@@ -267,6 +323,7 @@ export default function PageClient({ page }: PageClientProps) {
             {block.type === "brand-slider" && (
               <section className="py-12 md:py-16 bg-white border-b">
                 <div className="container mx-auto px-4">
+                  {/* TITLE */}
                   <div className="text-center mb-8">
                     <h2 className="text-2xl font-bold">
                       {block.data?.title || "Trusted by"}{" "}
@@ -275,22 +332,43 @@ export default function PageClient({ page }: PageClientProps) {
                       </span>
                     </h2>
                   </div>
-                  <div className="flex flex-wrap justify-center gap-8 mb-8">
-                    {block.data?.brands?.map((brand: any, idx: number) => (
-                      <div key={idx} className="flex flex-col items-center">
-                        <img
-                          src={brand.logo || "/placeholder.svg"}
-                          alt={brand.name}
-                          className="h-16 w-auto grayscale"
-                        />
-                        {brand.tagline && (
-                          <p className="text-xs text-gray-500 mt-1">
-                            {brand.tagline}
-                          </p>
-                        )}
-                      </div>
-                    ))}
+
+                  {/* SCROLLING BRAND LIST */}
+                  <div
+                    ref={scrollRef}
+                    onMouseEnter={() => setIsPaused(true)}
+                    onMouseLeave={() => setIsPaused(false)}
+                    className="overflow-x-auto scrollbar-hide mb-10 cursor-grab active:cursor-grabbing"
+                    style={{
+                      scrollbarWidth: "none",
+                      msOverflowStyle: "none",
+                    }}
+                  >
+                    <div className="flex gap-10 md:gap-16 items-center min-w-max px-4">
+                      {[
+                        ...(block.data?.brands || []),
+                        ...(block.data?.brands || []),
+                      ].map((brand: any, idx: number) => (
+                        <div
+                          key={idx}
+                          className="flex flex-col items-center min-w-[130px] grayscale hover:grayscale-0 transition-all"
+                        >
+                          <img
+                            src={brand.logo || "/placeholder.svg"}
+                            alt={brand.name}
+                            className="h-12 md:h-16 w-auto object-contain mb-2"
+                          />
+                          {brand.tagline && (
+                            <p className="text-xs text-gray-500">
+                              {brand.tagline}
+                            </p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
                   </div>
+
+                  {/* TRUST BADGES */}
                   <div className="flex flex-wrap justify-center gap-8">
                     {block.data?.trustBadges?.map((badge: any, idx: number) => (
                       <div key={idx} className="flex items-center gap-2">
@@ -307,21 +385,31 @@ export default function PageClient({ page }: PageClientProps) {
 
             {/* FAQ */}
             {block.type === "faq" && (
-              <section className="py-12 md:py-16 bg-gradient-to-br from-gray-50 to-white">
+              <section className="py-10 md:py-16 bg-gradient-to-br from-gray-50 to-white">
                 <div className="container mx-auto px-4">
-                  <div className="text-center mb-10">
-                    <h2 className="text-3xl font-bold mb-3">
+                  {/* HEADER */}
+                  <div className="text-center mb-10 max-w-2xl mx-auto">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 leading-tight">
                       {block.data?.title || "FAQ"}
                     </h2>
-                    <p className="text-gray-600">
+                    <p className="text-gray-600 text-base sm:text-lg">
                       {block.data?.description || "Description"}
                     </p>
                   </div>
-                  <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-4">
+
+                  {/* FAQ GRID */}
+                  <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                     {block.data?.faqs?.map((faq: any, idx: number) => (
-                      <div key={idx} className="p-6 bg-white border rounded-lg">
-                        <h3 className="font-semibold mb-2">{faq.question}</h3>
-                        <p className="text-sm text-gray-600">{faq.answer}</p>
+                      <div
+                        key={idx}
+                        className="p-6 md:p-7 bg-white border rounded-xl shadow-sm hover:shadow-md transition-all"
+                      >
+                        <h3 className="font-semibold text-lg mb-2">
+                          {faq.question}
+                        </h3>
+                        <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                          {faq.answer}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -360,14 +448,10 @@ export default function PageClient({ page }: PageClientProps) {
             )}
 
             {/* CDP Block */}
-            {block.type === "cdp-block" && (
-              <CDPSection data={block.data} />
-            )}
+            {block.type === "cdp-block" && <CDPSection data={block.data} />}
 
             {/* Workflow Block */}
-            {block.type === "workflow" && (
-              <WorkflowSection data={block.data} />
-            )}
+            {block.type === "workflow" && <WorkflowSection data={block.data} />}
 
             {/* Enterprise Hero Block */}
             {block.type === "enterprise-hero" && (

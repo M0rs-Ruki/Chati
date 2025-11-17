@@ -155,11 +155,14 @@ export default function CreatePagePage() {
     }
   };
 
-  const generateSlug = (title: string) => {
+    const generateSlug = (title: string) => {
     return title
       .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "");
+      .replace(/[^a-z0-9\/]+/g, "-") // Preserve forward slashes
+      .replace(/-+/g, "-") // Replace multiple hyphens with single hyphen
+      .replace(/^-+|-+$/g, "") // Remove leading/trailing hyphens
+      .replace(/\/+/g, "/") // Replace multiple slashes with single slash
+      .replace(/^\/+|\/+$/g, ""); // Remove leading/trailing slashes
   };
 
   const renderPreview = () => {
@@ -681,9 +684,12 @@ export default function CreatePagePage() {
                 onChange={(e) =>
                   setFormData({ ...formData, slug: e.target.value })
                 }
-                placeholder="page-url-slug"
+                placeholder="page-slug or nested/page-slug"
                 className="bg-white border-gray-200 font-mono text-sm text-indigo-600"
               />
+              <p className="text-xs text-gray-500">
+                Use lowercase letters, numbers, hyphens, and forward slashes (e.g., resources/test-12)
+              </p>
             </div>
           </div>
 

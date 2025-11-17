@@ -6,15 +6,22 @@ import { z } from "zod";
 
 /**
  * Slug validation schema
+ * Supports nested paths with forward slashes (e.g., "resources/test-12")
  */
 export const slugSchema = z
   .string()
   .min(1, "Slug is required")
   .max(200, "Slug must be less than 200 characters")
   .regex(
-    /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
-    "Slug must be lowercase letters, numbers, and hyphens only"
-  );
+    /^[a-z0-9]+(?:-[a-z0-9]+)*(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)*$/,
+    "Slug must be lowercase letters, numbers, hyphens, and forward slashes (e.g., 'resources/test-12')"
+  )
+  .refine((slug) => !slug.startsWith("/") && !slug.endsWith("/"), {
+    message: "Slug cannot start or end with a forward slash",
+  })
+  .refine((slug) => !slug.includes("//"), {
+    message: "Slug cannot contain consecutive forward slashes",
+  });
 
 /**
  * Title validation schema

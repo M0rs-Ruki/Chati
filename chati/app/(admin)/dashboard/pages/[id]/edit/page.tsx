@@ -800,9 +800,12 @@ export default function EditPagePage() {
                   onChange={(e) =>
                     setFormData({ ...formData, slug: e.target.value })
                   }
-                  placeholder="page-url-slug"
+                  placeholder="page-slug or nested/page-slug"
                   className="bg-white border-gray-200 font-mono text-sm"
                 />
+                <p className="text-xs text-gray-500">
+                  Use lowercase letters, numbers, hyphens, and forward slashes (e.g., resources/test-12)
+                </p>
               </div>
             </div>
 
