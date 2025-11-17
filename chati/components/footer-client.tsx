@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -24,6 +25,11 @@ import { useTheme } from "@/components/theme-provider-global";
 
 export function FooterClient() {
   const { theme, loading } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <footer className="relative bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950 border-t border-slate-800">
@@ -35,25 +41,14 @@ export function FooterClient() {
         {/* Logo and Description */}
         <div className="mb-8">
           <Link href="/" className="flex items-center space-x-2 group mb-3">
-            {!loading && theme?.logoUrl ? (
-              <Image
-                src={theme.logoUrl}
-                alt="Logo"
-                width={120}
-                height={40}
-                className="h-8 w-auto transition-transform group-hover:scale-105 duration-300"
-                priority
-              />
-            ) : (
-              <Image
-                src="/chati-logo-full.png"
-                alt="Chati - Create, Connect, Converse"
-                width={120}
-                height={40}
-                className="h-8 w-auto transition-transform group-hover:scale-105 duration-300"
-                priority
-              />
-            )}
+            <Image
+              src={mounted && !loading && theme?.logoUrl ? theme.logoUrl : "/chati-logo-full.png"}
+              alt="Logo"
+              width={120}
+              height={40}
+              className="h-8 w-auto transition-transform group-hover:scale-105 duration-300"
+              priority
+            />
           </Link>
 
           <p className="text-xs text-slate-400 flex items-center gap-1.5 mb-4">
@@ -191,25 +186,14 @@ export function FooterClient() {
           <div className="lg:pr-8">
             <div className="mb-4">
               <Link href="/" className="flex items-center space-x-2 group">
-                {!loading && theme?.logoUrl ? (
-                  <Image
-                    src={theme.logoUrl}
-                    alt="Logo"
-                    width={120}
-                    height={40}
-                    className="h-10 w-auto transition-transform group-hover:scale-105 duration-300"
-                    priority
-                  />
-                ) : (
-                  <Image
-                    src="/chati-logo-full.png"
-                    alt="Chati - Create, Connect, Converse"
-                    width={120}
-                    height={40}
-                    className="h-10 w-auto transition-transform group-hover:scale-105 duration-300"
-                    priority
-                  />
-                )}
+                <Image
+                  src={mounted && !loading && theme?.logoUrl ? theme.logoUrl : "/chati-logo-full.png"}
+                  alt="Logo"
+                  width={120}
+                  height={40}
+                  className="h-10 w-auto transition-transform group-hover:scale-105 duration-300"
+                  priority
+                />
               </Link>
 
               <p className="text-xs text-slate-400 flex items-center gap-1.5 mt-2">

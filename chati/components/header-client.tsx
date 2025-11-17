@@ -109,9 +109,14 @@ export function HeaderClient({
   industries,
   resources,
 }: HeaderClientProps) {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { theme, loading } = useTheme();
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -134,25 +139,18 @@ export function HeaderClient({
         <div className="flex h-20 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2 group">
-            {!loading && theme?.logoUrl ? (
-              <Image
-                src={theme.logoUrl}
-                alt="Logo"
-                width={120}
-                height={40}
-                className="h-10 w-auto transition-transform group-hover:scale-105 duration-300"
-                priority
-              />
-            ) : (
-              <Image
-                src="/chati-logo-full.png"
-                alt="Chati - Create, Connect, Converse"
-                width={120}
-                height={40}
-                className="h-10 w-auto transition-transform group-hover:scale-105 duration-300"
-                priority
-              />
-            )}
+            <Image
+              src={
+                mounted && !loading && theme?.logoUrl
+                  ? theme.logoUrl
+                  : "/chati-logo-full.png"
+              }
+              alt="Logo"
+              width={120}
+              height={40}
+              className="h-10 w-auto transition-transform group-hover:scale-105 duration-300"
+              priority
+            />
           </Link>
 
           {/* Desktop Navigation */}
@@ -337,91 +335,99 @@ export function HeaderClient({
                 <Menu className="h-6 w-6" />
               </Button>
             </SheetTrigger>
+
             <SheetContent
               side="right"
-              className="w-[300px] sm:w-[400px] overflow-y-auto"
+              className="w-[85vw] sm:w-[400px] max-w-full overflow-y-auto px-4 py-6"
             >
               <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
-              <div className="flex flex-col gap-4 mt-6">
+
+              <div className="flex flex-col gap-5">
+                {/* HOME */}
                 <Link
                   href="/"
-                  className="flex items-center gap-3 px-3 py-2 text-base font-medium hover:text-green-600 hover:bg-green-50 rounded-lg transition-all duration-200"
+                  className="flex items-center gap-3 px-3 py-2 text-base font-medium hover:bg-green-50 hover:text-green-600 rounded-lg transition"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  <Home className="h-5 w-5 shrink-0" />
-                  <span>Home</span>
+                  <Home className="h-5 w-5" />
+                  Home
                 </Link>
 
-                <Accordion type="single" collapsible className="w-full">
+                {/* ACCORDION */}
+                <Accordion
+                  type="single"
+                  collapsible
+                  className="w-full text-left"
+                >
+                  {/* FEATURES */}
                   <AccordionItem value="features" className="border-none">
-                    <AccordionTrigger className="flex items-center gap-3 px-3 py-2 text-base font-medium hover:text-green-600 hover:bg-green-50 rounded-lg hover:no-underline">
-                      <div className="flex items-center gap-3">
-                        <Sparkles className="h-5 w-5 shrink-0" />
-                        <span>Features</span>
-                      </div>
+                    <AccordionTrigger className="px-3 py-2 rounded-lg text-base font-medium flex gap-3 items-center hover:bg-green-50 hover:text-green-600 text-left">
+                      <Sparkles className="h-5 w-5 shrink-0" />
+                      <span className="text-left w-full">Features</span>
                     </AccordionTrigger>
-                    <AccordionContent className="pl-6 space-y-1 pt-2">
+
+                    <AccordionContent className="pl-10 space-y-2 pt-2 text-left">
                       {features.map((feature) => {
                         const Icon = iconMap[feature.icon];
                         return (
                           <Link
                             key={feature.name}
                             href={feature.href}
-                            className="flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground hover:text-green-600 hover:bg-green-50 rounded-lg transition-all duration-200"
                             onClick={() => setIsMobileMenuOpen(false)}
+                            className="flex items-center gap-2 px-3 py-2 text-sm rounded-md text-muted-foreground hover:bg-green-50 hover:text-green-600 transition text-left"
                           >
                             <Icon className="h-4 w-4 shrink-0" />
-                            <span>{feature.name}</span>
+                            {feature.name}
                           </Link>
                         );
                       })}
                     </AccordionContent>
                   </AccordionItem>
 
+                  {/* INDUSTRY */}
                   <AccordionItem value="industry" className="border-none">
-                    <AccordionTrigger className="flex items-center gap-3 px-3 py-2 text-base font-medium hover:text-green-600 hover:bg-green-50 rounded-lg hover:no-underline">
-                      <div className="flex items-center gap-3">
-                        <Building2 className="h-5 w-5 shrink-0" />
-                        <span>Industry</span>
-                      </div>
+                    <AccordionTrigger className="px-3 py-2 rounded-lg text-base font-medium flex gap-3 items-center hover:bg-green-50 hover:text-green-600 text-left">
+                      <Building2 className="h-5 w-5 shrink-0" />
+                      <span className="text-left w-full">Industry</span>
                     </AccordionTrigger>
-                    <AccordionContent className="pl-6 space-y-1 pt-2">
+
+                    <AccordionContent className="pl-10 space-y-2 pt-2 text-left">
                       {industries.map((industry) => {
                         const Icon = iconMap[industry.icon];
                         return (
                           <Link
                             key={industry.name}
                             href={industry.href}
-                            className="flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground hover:text-green-600 hover:bg-green-50 rounded-lg transition-all duration-200"
                             onClick={() => setIsMobileMenuOpen(false)}
+                            className="flex items-center gap-2 px-3 py-2 text-sm rounded-md text-muted-foreground hover:bg-green-50 hover:text-green-600 transition text-left"
                           >
                             <Icon className="h-4 w-4 shrink-0" />
-                            <span>{industry.name}</span>
+                            {industry.name}
                           </Link>
                         );
                       })}
                     </AccordionContent>
                   </AccordionItem>
 
+                  {/* RESOURCES */}
                   <AccordionItem value="resources" className="border-none">
-                    <AccordionTrigger className="flex items-center gap-3 px-3 py-2 text-base font-medium hover:text-green-600 hover:bg-green-50 rounded-lg hover:no-underline">
-                      <div className="flex items-center gap-3">
-                        <BookOpen className="h-5 w-5 shrink-0" />
-                        <span>Resources</span>
-                      </div>
+                    <AccordionTrigger className="px-3 py-2 rounded-lg text-base font-medium flex gap-3 items-center hover:bg-green-50 hover:text-green-600 text-left">
+                      <BookOpen className="h-5 w-5 shrink-0" />
+                      <span className="text-left w-full">Resources</span>
                     </AccordionTrigger>
-                    <AccordionContent className="pl-6 space-y-1 pt-2">
+
+                    <AccordionContent className="pl-10 space-y-2 pt-2 text-left">
                       {resources.map((resource) => {
                         const Icon = iconMap[resource.icon];
                         return (
                           <Link
                             key={resource.name}
                             href={resource.href}
-                            className="flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground hover:text-green-600 hover:bg-green-50 rounded-lg transition-all duration-200"
                             onClick={() => setIsMobileMenuOpen(false)}
+                            className="flex items-center gap-2 px-3 py-2 text-sm rounded-md text-muted-foreground hover:bg-green-50 hover:text-green-600 transition text-left"
                           >
                             <Icon className="h-4 w-4 shrink-0" />
-                            <span>{resource.name}</span>
+                            {resource.name}
                           </Link>
                         );
                       })}
@@ -429,30 +435,29 @@ export function HeaderClient({
                   </AccordionItem>
                 </Accordion>
 
+                {/* PRICING */}
                 <Link
                   href="/pricing"
-                  className="flex items-center gap-3 px-3 py-2 text-base font-medium hover:text-green-600 hover:bg-green-50 rounded-lg transition-all duration-200"
+                  className="flex items-center gap-3 px-3 py-2 text-base font-medium hover:bg-green-50 hover:text-green-600 rounded-lg transition"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  <DollarSign className="h-5 w-5 shrink-0" />
-                  <span>Pricing</span>
+                  <DollarSign className="h-5 w-5" />
+                  Pricing
                 </Link>
 
+                {/* SOLUTIONS */}
                 <Link
                   href="/solutions"
-                  className="flex items-center gap-3 px-3 py-2 text-base font-medium hover:text-green-600 hover:bg-green-50 rounded-lg transition-all duration-200"
+                  className="flex items-center gap-3 px-3 py-2 text-base font-medium hover:bg-green-50 hover:text-green-600 rounded-lg transition"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  <Lightbulb className="h-5 w-5 shrink-0" />
-                  <span>Solutions</span>
+                  <Lightbulb className="h-5 w-5" />
+                  Solutions
                 </Link>
 
-                <div className="pt-4 mt-4 border-t space-y-3">
-                  <Button
-                    variant="outline"
-                    className="w-full border-2 bg-transparent transition-all duration-200"
-                    asChild
-                  >
+                {/* CTA BUTTONS */}
+                <div className="pt-6 mt-4 border-t space-y-3">
+                  <Button variant="outline" className="w-full border-2" asChild>
                     <Link
                       href={
                         process.env.NEXT_PUBLIC_APP_URL ||
@@ -462,8 +467,9 @@ export function HeaderClient({
                       Sign In
                     </Link>
                   </Button>
+
                   <Button
-                    className="w-full bg-green-600 hover:bg-green-700 text-white transition-all duration-200"
+                    className="w-full bg-green-600 hover:bg-green-700 text-white"
                     asChild
                   >
                     <Link
