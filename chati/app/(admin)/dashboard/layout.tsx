@@ -20,7 +20,7 @@ import {
   Settings,
 } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { useTheme } from "@/lib/theme-provider";
+import { useTheme } from "@/components/theme-provider-global";
 import { Button } from "@/components/ui/button";
 
 interface User {
@@ -38,7 +38,7 @@ export default function DashboardLayout({
 }) {
   const router = useRouter();
   const pathname = usePathname();
-  const { theme } = useTheme();
+  const { theme, loading } = useTheme();
   const [user, setUser] = useState<User | null>(null);
   const [loadingUser, setLoadingUser] = useState(true);
   const [mounted, setMounted] = useState(false);
@@ -121,9 +121,9 @@ export default function DashboardLayout({
         <div className="flex flex-col h-full relative z-10">
           {/* Logo Section */}
           <div className="p-6 border-b border-gray-100/50 bg-gradient-to-r from-white to-gray-50/30">
-            {theme?.logoUrl ? (
+            {mounted && !loading && theme?.logoUrl ? (
               <Image
-                src={theme.logoUrl || "/placeholder.svg"}
+                src={theme.logoUrl}
                 alt="Logo"
                 className="h-12 w-auto"
                 width={150}
