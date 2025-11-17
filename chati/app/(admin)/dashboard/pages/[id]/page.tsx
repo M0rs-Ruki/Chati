@@ -13,6 +13,9 @@ import {
   User,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { CDPSection } from "@/components/page_components/cdp-block";
+import { WorkflowSection } from "@/components/page_components/workflow-block";
+import { EnterpriseHeroSection } from "@/components/page_components/enterprise-hero-block";
 
 interface PageData {
   id: string;
@@ -538,6 +541,21 @@ export default function ViewPagePage() {
                       </div>
                     </div>
                   </section>
+                )}
+
+                {/* CDP Block */}
+                {block.type === "cdp-block" && (
+                  <CDPSection data={block.data} />
+                )}
+
+                {/* Workflow Block */}
+                {block.type === "workflow" && (
+                  <WorkflowSection data={block.data} />
+                )}
+
+                {/* Enterprise Hero Block */}
+                {block.type === "enterprise-hero" && (
+                  <EnterpriseHeroSection data={block.data} />
                 )}
               </div>
             ))}

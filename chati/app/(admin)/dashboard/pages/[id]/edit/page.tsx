@@ -20,6 +20,9 @@ import {
   FileText,
 } from "lucide-react";
 import PageBuilder from "@/components/page-builder";
+import { CDPSection } from "@/components/page_components/cdp-block";
+import { WorkflowSection } from "@/components/page_components/workflow-block";
+import { EnterpriseHeroSection } from "@/components/page_components/enterprise-hero-block";
 import {
   Select,
   SelectContent,
@@ -675,6 +678,21 @@ export default function EditPagePage() {
                       </div>
                     </div>
                   </section>
+                )}
+
+                {/* CDP Block */}
+                {block.type === "cdp-block" && (
+                  <CDPSection data={block.data} />
+                )}
+
+                {/* Workflow Block */}
+                {block.type === "workflow" && (
+                  <WorkflowSection data={block.data} />
+                )}
+
+                {/* Enterprise Hero Block */}
+                {block.type === "enterprise-hero" && (
+                  <EnterpriseHeroSection data={block.data} />
                 )}
               </div>
             ))}

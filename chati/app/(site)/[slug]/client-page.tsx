@@ -3,6 +3,9 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, User } from "lucide-react";
+import { CDPSection } from "@/components/page_components/cdp-block";
+import { WorkflowSection } from "@/components/page_components/workflow-block";
+import { EnterpriseHeroSection } from "@/components/page_components/enterprise-hero-block";
 
 interface PageClientProps {
   page: any;
@@ -347,13 +350,28 @@ export default function PageClient({ page }: PageClientProps) {
                     <Button
                       size="lg"
                       variant="outline"
-                      className="border-white text-white"
+                      className="border-white text-black"
                     >
                       {block.data?.button2Text || "Button 2"}
                     </Button>
                   </div>
                 </div>
               </section>
+            )}
+
+            {/* CDP Block */}
+            {block.type === "cdp-block" && (
+              <CDPSection data={block.data} />
+            )}
+
+            {/* Workflow Block */}
+            {block.type === "workflow" && (
+              <WorkflowSection data={block.data} />
+            )}
+
+            {/* Enterprise Hero Block */}
+            {block.type === "enterprise-hero" && (
+              <EnterpriseHeroSection data={block.data} />
             )}
           </div>
         ))}
