@@ -10,8 +10,18 @@ import { Prisma } from "@prisma/client";
 import { z } from "zod";
 
 const createBrandSchema = z.object({
-  name: z.string().min(1, "Brand name is required").max(200, "Brand name must be less than 200 characters").trim(),
-  logoUrl: z.string().url("Logo URL must be a valid URL").min(1, "Logo URL is required"),
+  name: z
+    .string()
+    .min(1, "Brand name is required")
+    .max(200, "Brand name must be less than 200 characters")
+    .trim(),
+  logoUrl: z.union([
+    z.string().url("Logo URL must be a valid URL"),
+    z
+      .array(z.string().url("Each logo URL must be a valid URL"))
+      .min(1, "At least one logo URL is required"),
+  ]),
+  status: z.enum(["ACTIVE", "INACTIVE"]).optional(),
 });
 
 /**
@@ -43,7 +53,7 @@ export async function POST(req: NextRequest) {
     if (rateLimitError) return rateLimitError;
 
     const body = await req.json().catch(() => ({}));
-    
+
     // Validate input
     const validation = createBrandSchema.safeParse(body);
     if (!validation.success) {
@@ -52,7 +62,7 @@ export async function POST(req: NextRequest) {
         return path ? `${path}: ${err.message}` : err.message;
       });
       return NextResponse.json(
-        { 
+        {
           message: "Validation failed",
           errors,
         },
@@ -60,7 +70,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { name, logoUrl } = validation.data;
+    const { name, logoUrl, status } = validation.data;
 
     // Check for duplicate brand name
     const existingBrand = await prisma.brand.findFirst({
@@ -74,14 +84,20 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Ensure logoUrl is an array
+    const logoUrlArray = Array.isArray(logoUrl) ? logoUrl : [logoUrl];
+
     const newBrand = await prisma.brand.create({
       data: {
         name,
-        logoUrl: [logoUrl], // logoUrl is String[] in schema
+        logoUrl: logoUrlArray,
+        status: status || "INACTIVE",
       },
     });
 
-    console.info(`[AUDIT] Brand created: ${newBrand.id} (${newBrand.name}) by user: ${user.id} (${user.email})`);
+    console.info(
+      `[AUDIT] Brand created: ${newBrand.id} (${newBrand.name}) by user: ${user.id} (${user.email})`
+    );
 
     return NextResponse.json(
       {
@@ -92,7 +108,7 @@ export async function POST(req: NextRequest) {
     );
   } catch (error) {
     console.error("[ERROR] Error creating brand:", error);
-    
+
     // Handle specific Prisma errors
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2002") {
@@ -106,7 +122,7 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json(
-      { 
+      {
         message: "Failed to create brand",
         errors: ["An unexpected error occurred. Please try again later."],
       },

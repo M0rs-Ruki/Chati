@@ -23,10 +23,18 @@ const updateBrandSchema = z
         z.array(z.string().url("Logo URL must be a valid URL")),
       ])
       .optional(),
+    status: z.enum(["ACTIVE", "INACTIVE"]).optional(),
   })
-  .refine((data) => data.name !== undefined || data.logoUrl !== undefined, {
-    message: "At least one field (name or logoUrl) must be provided for update",
-  });
+  .refine(
+    (data) =>
+      data.name !== undefined ||
+      data.logoUrl !== undefined ||
+      data.status !== undefined,
+    {
+      message:
+        "At least one field (name, logoUrl, tagline, or status) must be provided for update",
+    }
+  );
 
 /**
  * PUT /api/brands/[id]/edit
@@ -75,7 +83,7 @@ export async function PUT(
       );
     }
 
-    const { name, logoUrl } = validation.data;
+    const { name, logoUrl, status } = validation.data;
 
     // Check if brand exists
     const existingBrand = await prisma.brand.findUnique({
@@ -113,6 +121,7 @@ export async function PUT(
       // Handle both string (single logo) and array (multiple logos)
       updateData.logoUrl = Array.isArray(logoUrl) ? logoUrl : [logoUrl];
     }
+    if (status !== undefined) updateData.status = status;
 
     const updatedBrand = await prisma.brand.update({
       where: { id: params.id },
