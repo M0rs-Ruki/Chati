@@ -11,8 +11,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Plus, Trash2, ImageIcon } from "lucide-react";
+import { Plus, Trash2, ImageIcon, Sliders } from "lucide-react";
 import { MediaPicker } from "@/components/media-picker";
+import { BrandSelectorDialog } from "@/components/brand-selector-dialog";
 
 interface Brand {
   name: string;
@@ -41,6 +42,14 @@ interface BrandSliderComponentProps {
   onChange: (data: BrandSliderData) => void;
 }
 
+interface SelectedBrand {
+  brandId: string;
+  brandName: string;
+  logoUrl: { name: string; url: string }[];
+  theme: "DARK" | "COLOR";
+  isFullBrand: boolean;
+}
+
 export function BrandSliderComponent({
   data,
   onChange,
@@ -49,8 +58,27 @@ export function BrandSliderComponent({
   const [selectedBrandIndex, setSelectedBrandIndex] = useState<number | null>(
     null
   );
+  const [brandSelectorOpen, setBrandSelectorOpen] = useState(false);
+  const [brandMode, setBrandMode] = useState<"selector" | "manual" | null>(
+    null
+  );
 
   const addBrand = () => {
+    // If selector mode is active, switch to manual mode and clear selector brands
+    if (brandMode === "selector") {
+      if (
+        !confirm(
+          "Switching to manual mode will clear brands selected from the brand selector. Continue?"
+        )
+      ) {
+        return;
+      }
+      onChange({
+        ...data,
+        brands: [],
+      });
+    }
+    setBrandMode("manual");
     onChange({
       ...data,
       brands: [
@@ -69,6 +97,13 @@ export function BrandSliderComponent({
       alert("Minimum 3 brands required");
       return;
     }
+    // Only allow removal in manual mode
+    if (brandMode === "selector") {
+      alert(
+        "Cannot remove brands in selector mode. Switch to manual mode first."
+      );
+      return;
+    }
     onChange({
       ...data,
       brands: data.brands.filter((_, i) => i !== index),
@@ -76,6 +111,13 @@ export function BrandSliderComponent({
   };
 
   const updateBrand = (index: number, field: keyof Brand, value: string) => {
+    // Only allow editing in manual mode
+    if (brandMode === "selector") {
+      alert(
+        "Cannot edit brands in selector mode. Switch to manual mode first."
+      );
+      return;
+    }
     const newBrands = [...data.brands];
     newBrands[index] = { ...newBrands[index], [field]: value };
     onChange({ ...data, brands: newBrands });
@@ -109,6 +151,57 @@ export function BrandSliderComponent({
     const newBadges = [...data.trustBadges];
     newBadges[index] = { ...newBadges[index], [field]: value };
     onChange({ ...data, trustBadges: newBadges });
+  };
+
+  const handleBrandSelection = (selectedBrands: SelectedBrand[]) => {
+    // If manual mode is active, ask to switch
+    if (brandMode === "manual" && data.brands.length > 0) {
+      if (
+        !confirm(
+          "Switching to selector mode will clear manually added brands. Continue?"
+        )
+      ) {
+        setBrandSelectorOpen(false);
+        return;
+      }
+    }
+
+    // Convert selected brands to the Brand format used in this component
+    const newBrands: Brand[] = selectedBrands.flatMap((selectedBrand) =>
+      selectedBrand.logoUrl.map((logo) => ({
+        name: selectedBrand.brandName,
+        logo: logo.url,
+        tagline: logo.name || "",
+      }))
+    );
+
+    // Replace all brands with selected ones (selector mode)
+    setBrandMode("selector");
+    onChange({
+      ...data,
+      brands: newBrands,
+    });
+
+    setBrandSelectorOpen(false);
+  };
+
+  const handleOpenBrandSelector = () => {
+    // If manual mode is active, warn user
+    if (brandMode === "manual" && data.brands.length > 0) {
+      if (
+        !confirm(
+          "Opening brand selector will clear manually added brands. Continue?"
+        )
+      ) {
+        return;
+      }
+      onChange({
+        ...data,
+        brands: [],
+      });
+    }
+    setBrandMode("selector");
+    setBrandSelectorOpen(true);
   };
 
   return (
@@ -181,13 +274,50 @@ export function BrandSliderComponent({
       {/* Brands */}
       <div className="space-y-3 p-4 border rounded-lg">
         <div className="flex items-center justify-between">
-          <h4 className="font-semibold text-sm">
-            Brands ({data.brands.length})
-          </h4>
-          <Button type="button" size="sm" variant="outline" onClick={addBrand}>
-            <Plus className="h-3 w-3 mr-1" />
-            Add Brand
-          </Button>
+          <div>
+            <h4 className="font-semibold text-sm">
+              Brands ({data.brands.length})
+            </h4>
+            {brandMode && (
+              <p className="text-xs text-gray-500 mt-1">
+                Mode:{" "}
+                <span className="font-medium">
+                  {brandMode === "selector" ? "Brand Selector" : "Manual Entry"}
+                </span>
+              </p>
+            )}
+          </div>
+          <div className="flex gap-2">
+            <Button
+              type="button"
+              size="sm"
+              variant={brandMode === "selector" ? "default" : "outline"}
+              onClick={handleOpenBrandSelector}
+              className={
+                brandMode === "selector"
+                  ? "bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700"
+                  : ""
+              }
+            >
+              <Sliders className="h-3 w-3 mr-1" />
+              Select Brands
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              variant={brandMode === "manual" ? "default" : "outline"}
+              onClick={addBrand}
+              disabled={brandMode === "selector"}
+              title={
+                brandMode === "selector"
+                  ? "Cannot add brands manually in selector mode"
+                  : "Add a brand manually"
+              }
+            >
+              <Plus className="h-3 w-3 mr-1" />
+              Add Brand
+            </Button>
+          </div>
         </div>
 
         <div className="space-y-4">
@@ -203,7 +333,14 @@ export function BrandSliderComponent({
                   size="icon"
                   variant="ghost"
                   onClick={() => removeBrand(index)}
-                  disabled={data.brands.length <= 3}
+                  disabled={data.brands.length <= 3 || brandMode === "selector"}
+                  title={
+                    brandMode === "selector"
+                      ? "Cannot remove brands in selector mode"
+                      : data.brands.length <= 3
+                      ? "Minimum 3 brands required"
+                      : "Remove brand"
+                  }
                 >
                   <Trash2 className="h-4 w-4 text-red-600" />
                 </Button>
@@ -215,6 +352,8 @@ export function BrandSliderComponent({
                   placeholder="UTKAL BUILDERS"
                   value={brand.name}
                   onChange={(e) => updateBrand(index, "name", e.target.value)}
+                  disabled={brandMode === "selector"}
+                  className={brandMode === "selector" ? "bg-gray-100" : ""}
                 />
               </div>
 
@@ -225,6 +364,8 @@ export function BrandSliderComponent({
                     placeholder="https://example.com/logo.png"
                     value={brand.logo}
                     onChange={(e) => updateBrand(index, "logo", e.target.value)}
+                    disabled={brandMode === "selector"}
+                    className={brandMode === "selector" ? "bg-gray-100" : ""}
                   />
                   <Button
                     type="button"
@@ -235,6 +376,7 @@ export function BrandSliderComponent({
                       setMediaPickerOpen(true);
                     }}
                     title="Select from media library"
+                    disabled={brandMode === "selector"}
                   >
                     <ImageIcon className="h-4 w-4" />
                   </Button>
@@ -249,6 +391,8 @@ export function BrandSliderComponent({
                   onChange={(e) =>
                     updateBrand(index, "tagline", e.target.value)
                   }
+                  disabled={brandMode === "selector"}
+                  className={brandMode === "selector" ? "bg-gray-100" : ""}
                 />
               </div>
             </div>
@@ -352,6 +496,13 @@ export function BrandSliderComponent({
             setSelectedBrandIndex(null);
           }
         }}
+      />
+
+      {/* Brand Selector Dialog */}
+      <BrandSelectorDialog
+        open={brandSelectorOpen}
+        onOpenChange={setBrandSelectorOpen}
+        onSelect={handleBrandSelection}
       />
     </div>
   );

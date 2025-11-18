@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/select";
 import Image from "next/image";
 import { MediaPicker } from "@/components/media-picker-multiple";
+import { BrandSelectorDialog } from "@/components/brand-selector-dialog";
 import {
   Plus,
   Trash2,
@@ -22,6 +23,9 @@ import {
   Image as ImageIcon,
   Edit,
   Package,
+  Sliders,
+  Copy,
+  Download,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
@@ -40,6 +44,14 @@ interface Brand {
   theme: "DARK" | "COLOR";
   createdAt: string;
   updatedAt: string;
+}
+
+interface SelectedBrand {
+  brandId: string;
+  brandName: string;
+  logoUrl: BrandLogo[];
+  theme: "DARK" | "COLOR";
+  isFullBrand: boolean;
 }
 
 export default function BrandsPage() {
@@ -65,6 +77,10 @@ export default function BrandsPage() {
   const [mediaPickerMode, setMediaPickerMode] = useState<"create" | "edit">(
     "create"
   );
+  const [brandSelectorOpen, setBrandSelectorOpen] = useState(false);
+  const [selectedBrandsForSlider, setSelectedBrandsForSlider] = useState<
+    SelectedBrand[]
+  >([]);
 
   useEffect(() => {
     setMounted(true);
@@ -356,6 +372,66 @@ export default function BrandsPage() {
     }
   };
 
+  const handleBrandSelection = (selected: SelectedBrand[]) => {
+    setSelectedBrandsForSlider(selected);
+  };
+
+  const removeSelectedBrand = (index: number) => {
+    setSelectedBrandsForSlider(
+      selectedBrandsForSlider.filter((_, i) => i !== index)
+    );
+  };
+
+  const copySelectedBrandsToClipboard = () => {
+    const brandsData = selectedBrandsForSlider.flatMap((selected) =>
+      selected.logoUrl.map((logo) => ({
+        name: selected.brandName,
+        logo: logo.url,
+        tagline: logo.name,
+      }))
+    );
+
+    const jsonString = JSON.stringify(brandsData, null, 2);
+    navigator.clipboard.writeText(jsonString);
+    toast({
+      title: "Success",
+      description: "Selected brands copied to clipboard!",
+    });
+  };
+
+  const downloadSelectedBrands = () => {
+    const brandsData = selectedBrandsForSlider.flatMap((selected) =>
+      selected.logoUrl.map((logo) => ({
+        name: selected.brandName,
+        logo: logo.url,
+        tagline: logo.name,
+      }))
+    );
+
+    const jsonString = JSON.stringify(brandsData, null, 2);
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "selected-brands.json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    toast({
+      title: "Success",
+      description: "Selected brands downloaded!",
+    });
+  };
+
+  const getTotalSelectedLogos = () => {
+    return selectedBrandsForSlider.reduce(
+      (total, brand) => total + brand.logoUrl.length,
+      0
+    );
+  };
+
   if (isLoadingBrands) {
     return <BrandsLoading />;
   }
@@ -375,6 +451,126 @@ export default function BrandsPage() {
           Manage your brand logos for the brand slider component
         </p>
       </div>
+
+      {/* Brand Slider Selector Section */}
+      <Card className="border-purple-200 shadow-lg mb-8 animate-in slide-in-from-top duration-500">
+        <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50">
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-gray-900 flex items-center gap-2">
+              <Sliders className="w-5 h-5 text-purple-600" />
+              Brand Slider Selector
+            </CardTitle>
+            <Button
+              onClick={() => setBrandSelectorOpen(true)}
+              className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700"
+            >
+              <Sliders className="w-4 h-4 mr-2" />
+              Select Brands
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-4 p-6">
+          {selectedBrandsForSlider.length === 0 ? (
+            <div className="text-center py-12 text-gray-500 border-2 border-dashed rounded-lg bg-gray-50">
+              <Sliders className="w-12 h-12 mx-auto mb-3 text-gray-400" />
+              <p className="text-sm font-medium">
+                No brands selected for slider
+              </p>
+              <p className="text-xs mt-1">
+                Click "Select Brands" to choose brands or individual logos
+              </p>
+            </div>
+          ) : (
+            <>
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <p className="text-sm font-medium text-gray-700">
+                    {selectedBrandsForSlider.length} brand(s) selected
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    {getTotalSelectedLogos()} total logo(s)
+                  </p>
+                </div>
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={copySelectedBrandsToClipboard}
+                    className="border-purple-200 hover:bg-purple-50"
+                  >
+                    <Copy className="w-4 h-4 mr-1" />
+                    Copy JSON
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={downloadSelectedBrands}
+                    className="border-purple-200 hover:bg-purple-50"
+                  >
+                    <Download className="w-4 h-4 mr-1" />
+                    Download
+                  </Button>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                {selectedBrandsForSlider.map((selectedBrand, index) => (
+                  <div
+                    key={`${selectedBrand.brandId}-${index}`}
+                    className="border rounded-lg p-4 bg-white"
+                  >
+                    <div className="flex items-start justify-between mb-3">
+                      <div>
+                        <h3 className="font-semibold text-lg">
+                          {selectedBrand.brandName}
+                        </h3>
+                        <p className="text-xs text-gray-500 mt-1">
+                          {selectedBrand.isFullBrand
+                            ? "Full brand selected"
+                            : `${selectedBrand.logoUrl.length} logo(s) selected`}
+                        </p>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => removeSelectedBrand(index)}
+                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                    <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                      {selectedBrand.logoUrl.map((logo, logoIndex) => (
+                        <div
+                          key={logoIndex}
+                          className={`border rounded-lg p-2 bg-gray-50 flex flex-col items-center ${
+                            selectedBrand.theme === "DARK"
+                              ? "grayscale hover:grayscale-0"
+                              : ""
+                          }`}
+                        >
+                          <div className="aspect-square w-full flex items-center justify-center mb-1">
+                            <Image
+                              src={logo.url}
+                              alt={logo.name}
+                              width={64}
+                              height={64}
+                              className="max-w-full max-h-full object-contain"
+                            />
+                          </div>
+                          <p className="text-xs text-center truncate w-full">
+                            {logo.name}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+        </CardContent>
+      </Card>
 
       {/* Create New Brand Form */}
       <Card className="border-gray-200 shadow-lg mb-8 animate-in slide-in-from-top duration-500">
@@ -784,6 +980,14 @@ export default function BrandsPage() {
         onOpenChange={setMediaPickerOpen}
         onSelect={handleMediaSelect}
         multiple={true} // Enable multiple selection
+      />
+
+      {/* Brand Selector Dialog */}
+      <BrandSelectorDialog
+        open={brandSelectorOpen}
+        onOpenChange={setBrandSelectorOpen}
+        onSelect={handleBrandSelection}
+        existingBrands={brands}
       />
     </div>
   );
