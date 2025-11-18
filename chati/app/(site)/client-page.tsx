@@ -29,8 +29,11 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { TypingAnimation } from "@/components/typing-animation";
 import { BrandSlider } from "@/components/brand-slider";
-import { FloatingSocialIcons } from "@/components/floating-social-icons";
-import { FloatingCDPElements } from "@/components/floating-cdp-elements";
+import {
+  FloatingSocialIcons,
+  FloatingSocialIconsMobile,
+} from "@/components/floating-social-icons";
+import { FloatingCDPElements, FloatingCDPElementsMobile } from "@/components/floating-cdp-elements";
 import dynamic from "next/dynamic";
 import { CounterAnimation } from "@/components/counter-animation";
 import { BackToTop } from "@/components/back-to-top";
@@ -167,11 +170,11 @@ export default function ClientPage() {
                 <FloatingSocialIcons />
 
                 <Image
-                  src="/whatsapp-API-with-Chati.png"
+                  src="/hero-woman-thinking.webp"
                   alt="Professional using WhatsApp Business API for customer engagement"
-                  width={500}
-                  height={500}
-                  className="relative z-10 h-auto w-full sm:w-auto max-h-[380px] sm:max-h-[400px] lg:max-h-[450px] object-contain object-bottom drop-shadow-2xl lg:ml-auto"
+                  width={580}
+                  height={580}
+                  className="relative z-10 h-full w-full sm:w-auto max-h-[450px] sm:max-h-[480px] lg:max-h-[580px] object-cover object-bottom drop-shadow-2xl lg:ml-auto"
                   priority
                 />
               </div>
@@ -181,12 +184,12 @@ export default function ClientPage() {
       </section>
 
       {/* Mobile Hero Section - Hidden on Desktop */}
-      <section className="block md:hidden relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-green-50/30">
+      <section className="block md:hidden relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-green-50/30 pb-0">
         {/* Decorative gradient orbs */}
         <div className="absolute top-0 right-0 w-[200px] h-[200px] bg-gradient-to-br from-green-400/20 to-transparent rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-[150px] h-[150px] bg-gradient-to-tr from-blue-400/15 to-transparent rounded-full blur-3xl" />
 
-        <div className="container relative mx-auto px-4 py-8 z-10">
+        <div className="container relative mx-auto px-4 py-8 z-10 flex flex-col min-h-[100svh]">
           {/* Badge */}
           <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-green-100 px-3 py-1.5 text-xs font-medium text-green-700 w-fit shadow-sm">
             <Bell className="h-3 w-3 animate-pulse" />
@@ -219,22 +222,8 @@ export default function ClientPage() {
             messaging solutions.
           </p>
 
-          {/* Image */}
-          <div className="relative w-full h-[280px] mb-6 flex items-center justify-center">
-            <div className="absolute inset-0 bg-gradient-to-br from-green-400/20 via-blue-400/15 to-pink-400/20 blur-2xl rounded-full" />
-
-            <Image
-              src="/whatsapp-API-with-Chati.png"
-              alt="Professional using WhatsApp Business API"
-              width={400}
-              height={400}
-              className="relative z-10 w-auto h-full max-w-full object-contain drop-shadow-xl"
-              priority
-            />
-          </div>
-
           {/* Buttons */}
-          <div className="flex flex-col gap-3 mb-6">
+          <div className="flex flex-col gap-3 mb-2">
             <Button
               size="lg"
               className="bg-green-600 hover:bg-green-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all group w-full"
@@ -266,8 +255,37 @@ export default function ClientPage() {
             </Button>
           </div>
 
+          {/* Image */}
+          {/* <div className="relative w-full flex-1 flex items-end justify-center sm:mt-0 ">
+            <div className="absolute inset-0 bg-gradient-to-br from-green-400/20 via-blue-400/15 to-pink-400/20 blur-2xl rounded-ful" />
+            <FloatingSocialIcons />
+            <Image
+              src="/whatsapp-API-with-Chati.png"
+              alt="Professional using WhatsApp Business API"
+              width={900}
+              height={600}
+              className="relative z-10 w-auto  max-w-full object-contain drop-shadow-2xl"
+              style={{ objectPosition: "bottom" }}
+              priority
+            />
+          </div> */}
+          <div className="relative flex items-end justify-center sm:mt-0">
+            <div className="absolute inset-0 bg-gradient-to-br from-green-400/20 via-blue-400/15 to-pink-400/20 blur-2xl rounded-ful" />
+            {/* Show icons above and only inside the image div */}
+            <FloatingSocialIconsMobile />
+            <Image
+              src="/whatsapp-API-with-Chati.png"
+              alt="Professional using WhatsApp Business API"
+              width={900}
+              height={600}
+              className="relative z-10 w-auto max-w-full object-contain drop-shadow-2xl"
+              style={{ objectPosition: "bottom" }}
+              priority
+            />
+          </div>
+
           {/* Trust Badges */}
-          <div className="pt-4 border-t border-gray-200 flex items-center justify-center">
+          <div className="pt-3 border-t border-gray-200 flex items-center justify-center">
             <Image
               src="/chati-gdpr.webp"
               alt="GDPR Compliant, Meta Business Partner, 500+ Global Businesses"
@@ -286,16 +304,17 @@ export default function ClientPage() {
       {/* Multi-Channel Hero Section after Brand Slider */}
       <MultiChannelHero />
 
-      {/* CDP Integration Section - Full-section background with prominent woman image */}
+      {/* CDP Integration Section - Desktop Only */}
       <section
         ref={cdpSectionRef}
-        className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50/30"
+        className="hidden md:block relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50/30"
       >
         {/* Decorative gradient orbs */}
         <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-gradient-to-br from-purple-400/20 to-transparent rounded-full blur-3xl" />
         <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-gradient-to-tr from-blue-400/15 to-transparent rounded-full blur-3xl" />
 
-        <div className="container relative mx-auto px-4 py-8 md:py-10 z-10">
+        {/* To ensure section touches bottom on mobile */}
+        <div className="container relative mx-auto px-4 py-8 md:py-10 z-10 min-h-[600px] md:min-h-0 flex flex-col justify-end">
           <div className="grid gap-6 lg:grid-cols-2 lg:gap-8 items-center">
             {/* Left Content */}
             <div
@@ -403,7 +422,7 @@ export default function ClientPage() {
               </div>
             </div>
 
-            {/* Right Image */}
+            {/* Right Image and Floating Elements */}
             <div
               className={`relative flex items-end justify-end lg:absolute lg:right-0 lg:top-0 lg:bottom-0 lg:w-1/2 -mr-4 md:mr-0 transition-all duration-1000 ${
                 isCDPVisible
@@ -411,12 +430,11 @@ export default function ClientPage() {
                   : "opacity-0 translate-x-8"
               }`}
             >
-              <div className="relative w-full max-w-[450px] lg:max-w-full">
+              <div className="relative w-full max-w-[450px] lg:max-w-full pb-3 sm:pb-0">
                 {/* Decorative gradient blob behind image */}
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-400/20 via-blue-400/15 to-pink-400/20 blur-3xl rounded-full transform scale-110" />
 
-                <FloatingCDPElements />
-
+                {/* Make FloatingCDPElements appear above the image */}
                 <Image
                   src="/cdp-marketing-chati.png"
                   alt="Customer Data Platform showing unified customer journey with real-time analytics, CRM integration, location intelligence, weather-based targeting, purchase tracking, and omnichannel messaging"
@@ -426,8 +444,146 @@ export default function ClientPage() {
                   loading="lazy"
                   priority={false}
                 />
+
+                <div className="absolute inset-0 pointer-events-none ">
+                  <FloatingCDPElements />
+                </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CDP Integration Section - Mobile Only */}
+      <section className="block md:hidden relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50/30 pb-0 min-h-[100svh] flex flex-col">
+        {/* Decorative gradient orbs */}
+        <div className="absolute top-0 left-0 w-[200px] h-[200px] bg-gradient-to-br from-purple-400/20 to-transparent rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-0 w-[150px] h-[150px] bg-gradient-to-tr from-blue-400/15 to-transparent rounded-full blur-3xl" />
+
+        {/* 
+          Force the section to fill at least the viewport, push content up if needed, and ensure the image always touches the bottom.
+        */}
+        <div className="container relative mx-auto z-10 flex flex-col flex-1" style={{gap: 0}}>
+          <div className="flex flex-col flex-1 justify-start">
+            {/* Badge */}
+            <Badge
+              className="mb-4 shadow-sm bg-purple-100 text-purple-700 border-purple-200 w-fit"
+              variant="outline"
+            >
+              Customer Data Platform
+            </Badge>
+
+            {/* Heading */}
+            <h2 className="mb-3 text-balance text-3xl font-bold leading-tight">
+              Unify Customer Data for Smarter Campaigns
+            </h2>
+
+            {/* Description */}
+            <p className="mb-4 text-pretty text-muted-foreground text-sm leading-relaxed">
+              Connect every touchpoint into one powerful platform. Deliver
+              personalized WhatsApp, RCS, and Messenger campaigns powered by
+              real-time insights and behavioral data.
+            </p>
+
+            {/* Features List */}
+            <div className="space-y-3 mb-4">
+              <div className="flex gap-2.5 items-start group">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-green-100 to-green-50 group-hover:from-green-200 group-hover:to-green-100 transition-all shadow-sm">
+                  <CheckCircle2 className="h-4 w-4 text-green-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground mb-0.5 text-sm">
+                    Unified Customer Profiles
+                  </h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Aggregate data from CRM, e-commerce, and analytics into a
+                    single view for targeted messaging campaigns.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex gap-2.5 items-start group">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 group-hover:from-blue-200 group-hover:to-blue-100 transition-all shadow-sm">
+                  <CheckCircle2 className="h-4 w-4 text-blue-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground mb-0.5 text-sm">
+                    Smart Automation
+                  </h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Trigger personalized messages based on customer
+                    actions—purchases, cart activity, and engagement milestones.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex gap-2.5 items-start group">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-purple-100 to-purple-50 group-hover:from-purple-200 group-hover:to-purple-100 transition-all shadow-sm">
+                  <CheckCircle2 className="h-4 w-4 text-purple-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground mb-0.5 text-sm">
+                    Omnichannel Orchestration
+                  </h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Design seamless experiences across WhatsApp, RCS, Messenger,
+                    email, and SMS with consistent messaging.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Buttons */}
+            <div className="flex flex-col gap-3 mb-2 px-4 ">
+              <Button
+                size="lg"
+                className="bg-purple-600 hover:bg-purple-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all group w-full"
+                asChild
+              >
+                <Link
+                  href={
+                    process.env.NEXT_PUBLIC_APP_URL || "https://app.chati.chat"
+                  }
+                >
+                  Explore CDP Features
+                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-2 bg-white hover:bg-gray-50 hover:border-purple-500 hover:text-purple-600 font-medium shadow-sm transition-all w-full"
+                asChild
+              >
+                <Link
+                  href={`https://wa.me/${
+                    process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""
+                  }`}
+                >
+                  Talk to Expert
+                </Link>
+              </Button>
+            </div>
+          </div>
+
+          {/* Image is forced to always touch the bottom */}
+          <div className="relative w-full flex items-end justify-center pt-0 flex-shrink-0" style={{minHeight: 0}}>
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-400/20 via-blue-400/15 to-pink-400/20 blur-2xl rounded-full" />
+            <FloatingCDPElementsMobile />
+            <Image
+              src="/cdp-marketing-chati.png"
+              alt="Customer Data Platform showing unified customer journey with real-time analytics, CRM integration, location intelligence, weather-based targeting, purchase tracking, and omnichannel messaging"
+              width={500}
+              height={333}
+              className="relative z-10 w-full h-auto max-w-xs sm:max-w-sm md:max-w-md object-contain drop-shadow-2xl"
+              style={{
+                objectFit: "contain",
+                objectPosition: "center bottom",
+                marginBottom: 0,
+              }}
+              loading="lazy"
+              priority={false}
+            />
           </div>
         </div>
       </section>
@@ -899,7 +1055,7 @@ export default function ClientPage() {
       </section>
 
       {/* CTA Section - Minimalistic and compact */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-green-600 to-blue-700 py-10 md:py-12">
+      <section className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-green-600 to-blue-700 py-10 md:py-8">
         {/* Decorative elements for depth */}
         <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />
         <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
