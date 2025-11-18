@@ -1,6 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import FAQSection from "@/components/section/FAQSection"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
@@ -203,6 +204,46 @@ export default function AutomotivePage() {
         "Yes, all messages are end-to-end encrypted when using WhatsApp, and RCS provides encryption between sender and Google's servers. Our platform is fully compliant with GDPR and automotive industry data protection standards. Sensitive information like VIN numbers, payment details, and personal documents are transmitted through secure, encrypted channels. We never store payment information and integrate directly with PCI-compliant payment gateways.",
     },
   ]
+
+  const faqsColumnFAQSection1 = [
+    {
+      question: "How can WhatsApp chatbots help my automotive business?",
+      answer: "WhatsApp chatbots automate lead capture, qualify prospects 24/7, schedule test drives instantly, book service appointments, answer vehicle queries about pricing and features, send service reminders, provide roadside assistance, handle trade-in inquiries, and deliver real-time updates on vehicle availability—all while reducing response times by 60-80% and increasing lead conversion rates by up to 300%."
+    },
+    {
+      question: "What can customers do with an automotive chatbot?",
+      answer: "Customers can browse your vehicle inventory with images and specs, check real-time pricing and offers, schedule test drives at their convenience, book service appointments and track repairs, get instant answers about financing options, receive personalized vehicle recommendations based on preferences, inquire about trade-in values, access 24/7 roadside assistance, and complete purchases—all through conversational chat without leaving WhatsApp."
+    },
+    {
+      question: "How does RCS messaging enhance the automotive experience?",
+      answer: "RCS (Rich Communication Services) enables immersive virtual showrooms with high-resolution vehicle galleries and 360° views, interactive brochures with feature comparisons, one-tap test drive booking with calendar integration, real-time service appointment scheduling, instant financing applications with embedded forms, maintenance alerts with rich media, and verified business branding—creating app-like experiences within native Android messaging that boost engagement by 45%."
+    },
+    {
+      question: "Can chatbots integrate with my dealership management system (DMS)?",
+      answer: "Absolutely! Our chatbots integrate seamlessly with popular DMS platforms like CDK, Reynolds & Reynolds, Dealertrack, and VinSolutions, plus CRM systems like Salesforce Automotive Cloud. This enables real-time inventory sync, automatic lead creation, service history access, appointment scheduling integration, finance application routing, and unified customer profiles—ensuring all customer interactions are tracked and actionable across your entire tech stack."
+    }
+  ];
+  
+  const faqsColumnFAQSection2 = [
+    {
+      question: "How do chatbots qualify leads automatically?",
+      answer: "AI-powered chatbots ask qualifying questions about budget, preferred vehicle type, timeline, trade-in needs, and financing requirements. They score leads based on intent signals, prioritize hot prospects ready to buy, automatically route qualified leads to sales reps via SMS or CRM, and nurture lower-intent leads with drip campaigns—ensuring your sales team focuses only on high-quality opportunities while no lead goes unattended."
+    },
+    {
+      question: "What types of service reminders can be automated?",
+      answer: "Automate oil change reminders based on mileage or time intervals, scheduled maintenance notifications for inspections and tire rotations, recall alerts with booking links, warranty expiration warnings, seasonal service promotions (winter tire changes, AC checks), post-service follow-ups requesting feedback, and insurance renewal reminders—all personalized with vehicle details, service history, and preferred service center, driving 65% higher appointment bookings."
+    },
+    {
+      question: "Can chatbots handle complex automotive queries?",
+      answer: "Yes! Advanced NLP enables chatbots to understand questions about vehicle specifications, compare models side-by-side, explain financing and lease options, provide insurance estimates, answer technical questions using your knowledge base, and even analyze uploaded photos for trade-in appraisals. For complex scenarios beyond the bot's capability, seamless human handoff transfers conversations to live sales or service advisors with full context."
+    },
+    {
+      question: "How quickly can we implement an automotive chatbot?",
+      answer: "Basic chatbot deployment takes 3-5 business days using pre-built automotive templates for common use cases. Full customization with DMS integration, inventory sync, custom workflows, and advanced AI training typically requires 1-2 weeks. You'll receive industry-specific conversation flows, vehicle database integration, test drive scheduling logic, and service booking automation out-of-the-box—allowing you to start capturing leads and automating customer service immediately."
+    }
+  ];
+  
+
 
   return (
     <div className="min-h-screen">
@@ -533,75 +574,13 @@ export default function AutomotivePage() {
       </section>
 
       {/* FAQ Section */}
-      <section ref={faqRef} className="py-12 md:py-16 bg-gradient-to-br from-gray-50 to-white">
-        <div className="container mx-auto px-4">
-          <div
-            className={`text-center mb-10 transition-all duration-1000 ${
-              faqInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
-          >
-            <Badge className="mb-4 shadow-sm" variant="outline">
-              Common Questions
-            </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Automotive Chatbot FAQs</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Everything you need to know about WhatsApp & RCS automation for automotive businesses
-            </p>
-          </div>
-
-          <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Left Column */}
-              <div
-                className={`transition-all duration-1000 ${
-                  faqInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Accordion type="single" collapsible className="space-y-3">
-                  {faqsColumn1.map((faq, index) => (
-                    <AccordionItem
-                      key={index}
-                      value={`item-${index}`}
-                      className="bg-white border-2 rounded-lg px-6 shadow-sm hover:shadow-md transition-shadow"
-                    >
-                      <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground pb-4 leading-relaxed">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-
-              {/* Right Column */}
-              <div
-                className={`transition-all duration-1000 delay-300 ${
-                  faqInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Accordion type="single" collapsible className="space-y-3">
-                  {faqsColumn2.map((faq, index) => (
-                    <AccordionItem
-                      key={index}
-                      value={`item-${index + 3}`}
-                      className="bg-white border-2 rounded-lg px-6 shadow-sm hover:shadow-md transition-shadow"
-                    >
-                      <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground pb-4 leading-relaxed">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <FAQSection
+        badgeText="Common Questions"
+        title="Frequently Asked Questions"
+        description="Everything you need to know about WhatsApp & RCS Chatbots for Automotive Business"
+        faqsColumn1={faqsColumnFAQSection1}
+        faqsColumn2={faqsColumnFAQSection2}
+      />
 
       {/* Final CTA */}
       <section className="py-12 md:py-16 bg-gradient-to-br from-orange-600 to-red-600 text-white">

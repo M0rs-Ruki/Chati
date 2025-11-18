@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import FAQSection from "@/components/section/FAQSection";
 import {
   Accordion,
   AccordionContent,
@@ -182,6 +183,45 @@ export default function EcommerceClientPage() {
         "Our platform includes a unified inbox where your team can manage all customer conversations. You can also set up AI chatbots to handle common questions automatically, escalating complex issues to human agents.",
     },
   ];
+
+  const faqsColumnFAQSection1 = [
+    {
+      question: "How does WhatsApp work for e-commerce?",
+      answer: "WhatsApp transforms into a complete sales channel where you can showcase products through catalogs, take orders directly in chat, process payments via WhatsApp Pay or integrated gateways, send automated order confirmations and tracking updates, provide instant customer support, and recover abandoned carts—all within a single conversation thread that feels personal and convenient for shoppers."
+    },
+    {
+      question: "What is the WhatsApp product catalog feature?",
+      answer: "The catalog feature lets you display your entire product inventory within WhatsApp with images, descriptions, prices, and product codes. Customers can browse items directly from the chat screen using the shopping button, add products to cart, adjust quantities, and send order inquiries—all without leaving the app. It's like having a mini e-commerce store inside WhatsApp."
+    },
+    {
+      question: "Can customers complete purchases on WhatsApp?",
+      answer: "Yes! Customers can browse catalogs, add items to cart, send order requests, and complete payments through WhatsApp Pay (available in select countries) or integrated payment links from Razorpay, Stripe, or PayPal. The entire purchase journey—from product discovery to payment confirmation—happens seamlessly within the WhatsApp conversation, reducing friction and boosting conversion rates by 25-40%."
+    },
+    {
+      question: "How can I recover abandoned carts on WhatsApp?",
+      answer: "Set up automated reminders that trigger when customers add items to cart but don't complete checkout. Send personalized messages within 1-3 hours with cart contents, product images, and exclusive discounts to incentivize completion. WhatsApp abandoned cart recovery achieves 40-60% recovery rates—significantly higher than email—because messages are read instantly and feel more personal."
+    }
+  ];
+  
+  const faqsColumnFAQSection2 = [
+    {
+      question: "What kind of automated messages can I send?",
+      answer: "Automate order confirmations immediately after purchase, shipping notifications with tracking links, delivery updates when orders are out for delivery, payment receipts, reorder reminders for repeat customers, personalized product recommendations based on browsing history, promotional campaigns for new launches or sales, and post-purchase feedback requests—keeping customers informed and engaged throughout their shopping journey."
+    },
+    {
+      question: "Can I integrate WhatsApp with my Shopify or WooCommerce store?",
+      answer: "Absolutely! WhatsApp Business API integrates seamlessly with Shopify, WooCommerce, Magento, BigCommerce, and other e-commerce platforms. Sync your product catalog automatically, receive order notifications in real-time, update inventory levels, trigger order status messages, and centralize customer conversations—ensuring your WhatsApp commerce operations stay synchronized with your main online store without manual effort."
+    },
+    {
+      question: "How do chatbots help with e-commerce on WhatsApp?",
+      answer: "AI chatbots answer product questions 24/7, provide size and color recommendations, check inventory availability, suggest related or complementary products, help customers track orders, process returns and exchanges, collect reviews, and escalate complex queries to human agents—handling up to 80% of routine inquiries automatically while delivering instant responses that improve customer satisfaction and reduce support costs."
+    },
+    {
+      question: "Is WhatsApp commerce suitable for small businesses?",
+      answer: "Yes! The free WhatsApp Business App is perfect for small businesses with under 1,000 monthly customers. Upload up to 500 products in your catalog, use quick replies for common questions, set automated greeting and away messages, and accept payments through simple links. As you grow, upgrade to WhatsApp Business API for unlimited contacts, advanced automation, and multi-agent support—scalable for businesses of any size."
+    }
+  ];
+  
 
   return (
     <div className="min-h-screen">
@@ -674,81 +714,13 @@ export default function EcommerceClientPage() {
       </section>
 
       {/* FAQ Section - 3/3 Layout */}
-      <section
-        ref={faqRef}
-        className="py-12 md:py-14 bg-gradient-to-br from-gray-50 to-white"
-      >
-        <div className="container mx-auto px-4">
-          <div
-            className={`text-center mb-10 transition-all duration-700 ${
-              faqInView
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-8"
-            }`}
-          >
-            <h2 className="text-3xl md:text-4xl font-bold mb-3">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-base text-gray-600 max-w-2xl mx-auto">
-              Everything you need to know about WhatsApp for e-commerce
-            </p>
-          </div>
-
-          <div className="max-w-5xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-              <div
-                className={`transition-all duration-700 ${
-                  faqInView
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Accordion type="single" collapsible className="space-y-3">
-                  {faqsColumn1.map((faq, index) => (
-                    <AccordionItem
-                      key={index}
-                      value={`item-${index}`}
-                      className="bg-white border border-gray-200 rounded-lg px-5 shadow-sm hover:shadow-md transition-shadow"
-                    >
-                      <AccordionTrigger className="text-left font-semibold hover:no-underline py-4 text-sm">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-gray-600 pb-4 leading-relaxed text-sm">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-
-              <div
-                className={`transition-all duration-700 delay-200 ${
-                  faqInView
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Accordion type="single" collapsible className="space-y-3">
-                  {faqsColumn2.map((faq, index) => (
-                    <AccordionItem
-                      key={index}
-                      value={`item-${index + 3}`}
-                      className="bg-white border border-gray-200 rounded-lg px-5 shadow-sm hover:shadow-md transition-shadow"
-                    >
-                      <AccordionTrigger className="text-left font-semibold hover:no-underline py-4 text-sm">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-gray-600 pb-4 leading-relaxed text-sm">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <FAQSection
+        badgeText="Common Questions"
+        title="Frequently Asked Questions"
+        description="Everything you need to know about WhatsApp for E-commerce"
+        faqsColumn1={faqsColumnFAQSection1}
+        faqsColumn2={faqsColumnFAQSection2}
+      />
 
       {/* CTA Section */}
       <section className="py-12 md:py-14 bg-gradient-to-br from-green-600 to-emerald-700 text-white">

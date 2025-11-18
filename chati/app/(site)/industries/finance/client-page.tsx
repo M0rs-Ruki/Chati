@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import FAQSection from "@/components/section/FAQSection";
 import {
   Accordion,
   AccordionContent,
@@ -179,6 +180,45 @@ export function FinanceClientPage() {
         "Yes, Chati integrates seamlessly with major core banking systems, CRMs, and financial software through secure APIs, ensuring real-time data synchronization while maintaining security protocols.",
     },
   ];
+
+  const faqsColumnFAQSection1 = [
+    {
+      question: "How can financial institutions use WhatsApp Business API?",
+      answer: "Financial institutions can send instant transaction alerts, payment confirmations, fund transfer notifications, OTPs for secure authentication, loan and EMI reminders, credit card payment alerts, policy renewal notices, investment updates, and fraud alerts—all through WhatsApp's secure, end-to-end encrypted platform that customers already use daily, achieving 98% open rates compared to 20% for email."
+    },
+    {
+      question: "Is WhatsApp secure enough for banking and financial data?",
+      answer: "Absolutely! WhatsApp uses military-grade end-to-end encryption for all messages, making it highly secure for financial communications. WhatsApp Business API is compliant with GDPR, PCI-DSS, and ISO 27001 standards. Leading banks, insurance companies, and fintech firms worldwide trust WhatsApp for sending OTPs, account statements, transaction alerts, and sensitive customer information securely."
+    },
+    {
+      question: "What banking services can customers access via WhatsApp?",
+      answer: "Customers can check account balances, view transaction history, receive instant OTPs for authentication, apply for loans or credit cards, get personalized investment advice, make bill payments through integrated payment links, track loan applications, report lost cards, access customer support 24/7, and complete KYC verification—all through conversational chat without visiting branches or downloading separate banking apps."
+    },
+    {
+      question: "Can WhatsApp help reduce customer service costs?",
+      answer: "Yes! Banks report up to 25% reduction in customer service costs by handling queries through WhatsApp. AI-powered chatbots answer 80% of routine questions automatically—balance inquiries, transaction status, branch locations, interest rates—freeing agents to handle complex issues. Automated notifications reduce call center volume, while self-service features empower customers to complete tasks independently, slashing operational expenses."
+    }
+  ];
+  
+  const faqsColumnFAQSection2 = [
+    {
+      question: "How does WhatsApp help with loan and insurance processes?",
+      answer: "WhatsApp streamlines the entire loan journey—from application to disbursement. Send pre-approved offers, collect documents via chat, provide instant eligibility checks, automate EMI reminders, and share repayment links. For insurance, enable policy comparisons, instant quotes, premium payment links, claim tracking, document submission, renewal reminders, and 24/7 policy assistance—reducing processing time by 60% and improving conversion rates by 35%."
+    },
+    {
+      question: "Can we send promotional offers through WhatsApp?",
+      answer: "Yes, but with customer consent! WhatsApp allows promotional messages for opted-in customers. Send personalized loan offers, credit card promotions, investment opportunities, insurance plans, special interest rates, cashback deals, and seasonal campaigns. Use rich media like product brochures, comparison charts, and video explainers. Promotional messages on WhatsApp achieve 45-60% engagement rates—10x higher than traditional email marketing."
+    },
+    {
+      question: "How does WhatsApp integrate with banking systems?",
+      answer: "WhatsApp Business API integrates seamlessly with core banking systems, CRM platforms, payment gateways, and fraud detection tools through RESTful APIs. Sync customer data in real-time, trigger automated notifications based on transactions, pull account information for chatbot responses, process payments through UPI/cards, and maintain unified customer profiles—creating a connected ecosystem that delivers contextual, personalized banking experiences at scale."
+    },
+    {
+      question: "What compliance requirements apply to financial WhatsApp messaging?",
+      answer: "Financial institutions must obtain explicit opt-in consent before messaging, clearly identify themselves as the sender, provide opt-out mechanisms, protect customer data per GDPR/local laws, use verified business profiles with green checkmarks, maintain message audit trails, implement contact masking for privacy, and follow WhatsApp's Commerce and Business Policy. Working with certified Business Solution Providers ensures compliance with all regulatory requirements and industry standards."
+    }
+  ];
+  
 
   return (
     <div className="min-h-screen">
@@ -659,79 +699,13 @@ export function FinanceClientPage() {
       </section>
 
       {/* FAQ Section - Compact */}
-      <section ref={faqRef} className="py-12 md:py-14 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div
-            className={`text-center mb-10 transition-all duration-700 ${
-              faqInView
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-8"
-            }`}
-          >
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-base text-muted-foreground max-w-2xl mx-auto">
-              Common questions about WhatsApp Business API for financial
-              services
-            </p>
-          </div>
-
-          <div className="max-w-5xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-              <div
-                className={`transition-all duration-700 ${
-                  faqInView
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Accordion type="single" collapsible className="space-y-3">
-                  {faqsColumn1.map((faq, index) => (
-                    <AccordionItem
-                      key={index}
-                      value={`item-${index}`}
-                      className="bg-white border border-gray-200 rounded-lg px-5 shadow-sm hover:shadow-md transition-shadow"
-                    >
-                      <AccordionTrigger className="text-left font-semibold hover:no-underline py-4 text-sm">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground pb-4 text-sm leading-relaxed">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-
-              <div
-                className={`transition-all duration-700 delay-200 ${
-                  faqInView
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Accordion type="single" collapsible className="space-y-3">
-                  {faqsColumn2.map((faq, index) => (
-                    <AccordionItem
-                      key={index + 3}
-                      value={`item-${index + 3}`}
-                      className="bg-white border border-gray-200 rounded-lg px-5 shadow-sm hover:shadow-md transition-shadow"
-                    >
-                      <AccordionTrigger className="text-left font-semibold hover:no-underline py-4 text-sm">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground pb-4 text-sm leading-relaxed">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <FAQSection
+        badgeText="Common Questions"
+        title="Frequently Asked Questions"
+        description="Everything you need to know about WhatsApp for Finance"
+        faqsColumn1={faqsColumnFAQSection1}
+        faqsColumn2={faqsColumnFAQSection2}
+      />
 
       {/* CTA Section - Compact */}
       <section className="py-12 md:py-14 bg-gradient-to-br from-emerald-600 to-teal-700 text-white">

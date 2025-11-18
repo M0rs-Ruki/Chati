@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import FAQSection from "@/components/section/FAQSection";
 import {
   Accordion,
   AccordionContent,
@@ -192,6 +193,45 @@ export default function EducationPage() {
         "Students can browse courses, register, and complete payments directly through WhatsApp. Send enrollment confirmations, payment receipts, and course access details automatically, streamlining the entire enrollment process.",
     },
   ];
+
+  const faqsColumnFAQSection1 = [
+    {
+      question: "How can educational institutions use WhatsApp Business API?",
+      answer: "Educational institutions can use WhatsApp Business API to send admission updates, exam notifications, timetable changes, fee reminders, attendance alerts, result announcements, event invitations, assignment deadlines, and virtual classroom links—all through automated, personalized messages that achieve 98% open rates and keep students, parents, and faculty connected in real-time."
+    },
+    {
+      question: "Can we automate student communication?",
+      answer: "Yes! Automate welcome messages for new enrollments, fee payment reminders with payment links, attendance notifications to parents, exam schedules and admit cards, result announcements, assignment submissions, class cancellation alerts, and library due date reminders. WhatsApp automation reduces administrative workload by 80% while ensuring timely, consistent communication across thousands of students."
+    },
+    {
+      question: "How does WhatsApp help with student admissions?",
+      answer: "WhatsApp streamlines the entire admissions funnel—from initial inquiry to enrollment. Use chatbots to answer FAQs 24/7, send application reminders and follow-ups, share admission forms and prospectus, schedule campus tours, provide document checklists, send acceptance letters, and guide through fee payment. Institutions report up to 65% fewer incomplete applications and 30% higher conversion rates."
+    },
+    {
+      question: "Can multiple staff members use the same WhatsApp number?",
+      answer: "Absolutely! WhatsApp Business API supports multi-agent access, allowing your entire team—admissions, academics, accounts, and support—to manage conversations from a unified inbox. Assign chats to departments, track response times, collaborate with internal notes, and maintain conversation history, ensuring seamless communication without sharing personal phone numbers or creating confusion."
+    }
+  ];
+  
+  const faqsColumnFAQSection2 = [
+    {
+      question: "Is WhatsApp secure for sharing student information?",
+      answer: "Yes, WhatsApp uses end-to-end encryption for all messages, making it secure for sharing attendance reports, progress cards, exam results, fee receipts, and announcements. When integrated with your school ERP system, it ensures compliance with data privacy standards like GDPR. You can also control message access with role-based permissions for added security."
+    },
+    {
+      question: "Can we integrate WhatsApp with our school management system?",
+      answer: "Yes! WhatsApp Business API integrates seamlessly with popular school ERP and LMS platforms like Classter, Fedena, EduCtrl, Studybase, and custom systems via API. Sync student data automatically, trigger notifications based on system events, pull attendance records, send automated fee alerts, and create a unified communication hub that works with your existing infrastructure."
+    },
+    {
+      question: "How can we engage students and parents better?",
+      answer: "Use WhatsApp groups for class-specific updates, broadcast important announcements to all parents, share multimedia study materials like PDFs and videos, conduct polls and surveys for feedback, send personalized performance reports, organize parent-teacher meeting schedules, share event photos and newsletters, and enable direct teacher-parent conversations—creating a connected academic community with 70% higher engagement."
+    },
+    {
+      question: "What's the difference between WhatsApp Business App and API?",
+      answer: "WhatsApp Business App is free and suitable for small schools with under 1,000 contacts, offering basic features like quick replies and catalogs. WhatsApp Business API is designed for larger institutions, supporting unlimited contacts, automated workflows, multi-agent support, CRM integration, advanced analytics, and verified business profiles—ideal for colleges, universities, and multi-branch educational organizations scaling their communication."
+    }
+  ];
+  
 
   return (
     <div className="min-h-screen">
@@ -679,78 +719,13 @@ export default function EducationPage() {
       </section>
 
       {/* FAQ Section - Compact */}
-      <section ref={faqRef} className="py-12 md:py-14 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div
-            className={`text-center mb-10 transition-all duration-700 ${
-              faqInView
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-8"
-            }`}
-          >
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-base text-muted-foreground max-w-2xl mx-auto">
-              Common questions about WhatsApp Business API for education
-            </p>
-          </div>
-
-          <div className="max-w-5xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-              <div
-                className={`transition-all duration-700 ${
-                  faqInView
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Accordion type="single" collapsible className="space-y-3">
-                  {faqsColumn1.map((faq, index) => (
-                    <AccordionItem
-                      key={index}
-                      value={`item-${index}`}
-                      className="bg-white border border-gray-200 rounded-lg px-5 shadow-sm hover:shadow-md transition-shadow"
-                    >
-                      <AccordionTrigger className="text-left font-semibold hover:no-underline py-4 text-sm">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground pb-4 text-sm leading-relaxed">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-
-              <div
-                className={`transition-all duration-700 delay-200 ${
-                  faqInView
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Accordion type="single" collapsible className="space-y-3">
-                  {faqsColumn2.map((faq, index) => (
-                    <AccordionItem
-                      key={index + 3}
-                      value={`item-${index + 3}`}
-                      className="bg-white border border-gray-200 rounded-lg px-5 shadow-sm hover:shadow-md transition-shadow"
-                    >
-                      <AccordionTrigger className="text-left font-semibold hover:no-underline py-4 text-sm">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground pb-4 text-sm leading-relaxed">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <FAQSection
+        badgeText="Common Questions"
+        title="Frequently Asked Questions"
+        description="Everything you need to know about WhatsApp for Education"
+        faqsColumn1={faqsColumnFAQSection1}
+        faqsColumn2={faqsColumnFAQSection2}
+      />
 
       {/* CTA Section - Compact */}
       <section className="py-12 md:py-14 bg-gradient-to-br from-blue-600 to-purple-700 text-white">
