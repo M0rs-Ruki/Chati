@@ -1279,7 +1279,7 @@ export default function AutomationWorkflowPage() {
 
       {/* FAQ Section */}
       <FAQSection
-        badgeText="FAQ"
+        badgeText="Common Questions"
         title="Frequently Asked Questions"
         description="Everything you need to know about automation workflows and multi-channel campaigns"
         faqsColumn1={faqsColumnFAQSection1}

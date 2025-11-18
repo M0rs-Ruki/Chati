@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import FAQSection from "@/components/section/FAQSection";
 import {
   Accordion,
   AccordionContent,
@@ -275,6 +276,52 @@ export default function DripMarketingPage() {
       question: "Can I track which channel each contact received messages on?",
       answer:
         "Our analytics dashboard shows exactly which channel each message was delivered on, including fallback paths taken. See delivery rates, open rates, and click rates for each channel, so you can optimize your sequences and understand customer channel preferences.",
+    },
+  ];
+
+  const faqsColumnFAQSection1 = [
+    {
+      question: "What is drip marketing?",
+      answer:
+        "Drip marketing is an automated strategy that sends a series of pre-scheduled messages to customers over time, triggered by specific actions or dates. Instead of sending one-off messages, drip campaigns nurture leads with targeted content delivered at optimal intervals—keeping your brand top-of-mind throughout the customer journey.",
+    },
+    {
+      question: "How does multi-channel fallback work?",
+      answer:
+        "Multi-channel fallback ensures message delivery by automatically switching channels if the primary channel fails. For example, if a push notification isn't delivered within 30 minutes, the system automatically sends the same message via email. If that's not opened, it falls back to SMS or WhatsApp—guaranteeing your critical messages always reach customers.",
+    },
+    {
+      question: "What triggers a drip campaign?",
+      answer:
+        "Drip campaigns can be triggered by customer actions (sign-ups, purchases, cart abandonment, downloads), time-based events (birthdays, subscription renewals), behavioral patterns (inactive users, product browsing), or lifecycle stages (onboarding, re-engagement). Each trigger initiates a personalized sequence tailored to that specific action.",
+    },
+    {
+      question: "How many messages should be in a drip campaign?",
+      answer:
+        "The ideal number varies by goal—onboarding sequences typically include 3-5 emails over 2 weeks, while nurture campaigns may have 7-10 messages over several months. The key is spacing messages appropriately (24-72 hours apart for urgent campaigns, weekly for educational content) to avoid overwhelming recipients while maintaining engagement.",
+    },
+  ];
+
+  const faqsColumnFAQSection2 = [
+    {
+      question: "Can I personalize drip campaign messages?",
+      answer:
+        "Absolutely! Use dynamic fields to personalize each message with names, purchase history, browsing behavior, location, and custom data. Advanced drip campaigns can branch based on recipient actions—if someone clicks a link, they receive one sequence; if they don't, they get a different follow-up series tailored to re-engage them.",
+    },
+    {
+      question: "Which channels support fallback messaging?",
+      answer:
+        "Our platform supports fallback across 10+ channels including push notifications, email, SMS, WhatsApp, Facebook Messenger, Instagram DMs, and in-app messages. You define the priority sequence and wait time between attempts. The system automatically checks delivery status and switches channels until the message is successfully delivered.",
+    },
+    {
+      question: "How do I measure drip campaign success?",
+      answer:
+        "Track key metrics including open rates, click-through rates, conversion rates, unsubscribe rates, and time-to-conversion for each message in your sequence. Identify which emails perform best and where subscribers drop off. Use A/B testing to optimize subject lines, timing, and content, then adjust your drip flow based on performance data.",
+    },
+    {
+      question: "When should I use fallback vs. multi-channel?",
+      answer:
+        "Use fallback for critical, time-sensitive messages (order confirmations, security alerts, payment reminders) where delivery is essential. Use multi-channel campaigns when you want to reach audiences on their preferred platforms simultaneously. Fallback prioritizes delivery certainty, while multi-channel maximizes reach and engagement across touchpoints.",
     },
   ];
 
@@ -728,87 +775,13 @@ export default function DripMarketingPage() {
       </section>
 
       {/* FAQ Section */}
-      <section
-        ref={faqRef}
-        className="py-16 md:py-20 bg-gradient-to-br from-gray-50 to-white"
-      >
-        <div className="container mx-auto px-4">
-          <div
-            className={`text-center mb-12 transition-all duration-1000 ${
-              faqInView
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-8"
-            }`}
-          >
-            <Badge className="mb-4 shadow-sm" variant="outline">
-              Common Questions
-            </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Everything you need to know about drip marketing and multi-channel
-              fallback
-            </p>
-          </div>
-
-          <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Left Column */}
-              <div
-                className={`transition-all duration-1000 ${
-                  faqInView
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Accordion type="single" collapsible className="space-y-3">
-                  {faqsColumn1.map((faq, index) => (
-                    <AccordionItem
-                      key={index}
-                      value={`item-${index}`}
-                      className="bg-white border-2 rounded-lg px-6 shadow-sm hover:shadow-md transition-shadow"
-                    >
-                      <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground pb-4 leading-relaxed">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-
-              {/* Right Column */}
-              <div
-                className={`transition-all duration-1000 delay-300 ${
-                  faqInView
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Accordion type="single" collapsible className="space-y-3">
-                  {faqsColumn2.map((faq, index) => (
-                    <AccordionItem
-                      key={index}
-                      value={`item-${index + 3}`}
-                      className="bg-white border-2 rounded-lg px-6 shadow-sm hover:shadow-md transition-shadow"
-                    >
-                      <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground pb-4 leading-relaxed">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <FAQSection
+        badgeText="Common Questions"
+        title="Frequently Asked Questions"
+        description="Everything you need to know about drip marketing and multi-channel fallback"
+        faqsColumn1={faqsColumnFAQSection1}
+        faqsColumn2={faqsColumnFAQSection2}
+      />
 
       {/* Final CTA */}
       <section className="py-16 md:py-20 bg-gradient-to-br from-purple-600 to-pink-600 text-white">

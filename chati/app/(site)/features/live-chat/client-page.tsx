@@ -246,41 +246,48 @@ export default function LiveChatPage() {
   const faqsColumnFAQSection1 = [
     {
       question: "What is a unified inbox?",
-      answer: "A unified inbox consolidates all your customer conversations from multiple channels—WhatsApp, email, live chat, social media, and SMS—into a single dashboard. This allows your team to manage all interactions without switching between platforms, ensuring no message gets lost."
+      answer:
+        "A unified inbox consolidates all your customer conversations from multiple channels—WhatsApp, email, live chat, social media, and SMS—into a single dashboard. This allows your team to manage all interactions without switching between platforms, ensuring no message gets lost.",
     },
     {
       question: "Which channels can I connect?",
-      answer: "Our platform supports all major communication channels including WhatsApp, Facebook Messenger, Instagram DMs, email, live website chat, SMS, Telegram, and more. You can enable or disable channels based on your business needs and manage them all from one interface."
+      answer:
+        "Our platform supports all major communication channels including WhatsApp, Facebook Messenger, Instagram DMs, email, live website chat, SMS, Telegram, and more. You can enable or disable channels based on your business needs and manage them all from one interface.",
     },
     {
       question: "Can multiple agents handle the same conversation?",
-      answer: "Yes, your team can collaborate seamlessly. Conversations can be assigned to specific agents, transferred between team members, or handled collaboratively with internal notes. All team members can view the complete conversation history and customer context."
+      answer:
+        "Yes, your team can collaborate seamlessly. Conversations can be assigned to specific agents, transferred between team members, or handled collaboratively with internal notes. All team members can view the complete conversation history and customer context.",
     },
     {
       question: "How does conversation routing work?",
-      answer: "Our intelligent routing system automatically assigns incoming messages to the most qualified agent based on channel, language, department, or expertise. You can also set up custom routing rules and round-robin distribution to balance workload across your team."
-    }
+      answer:
+        "Our intelligent routing system automatically assigns incoming messages to the most qualified agent based on channel, language, department, or expertise. You can also set up custom routing rules and round-robin distribution to balance workload across your team.",
+    },
   ];
-  
+
   const faqsColumnFAQSection2 = [
     {
       question: "Can customers switch between channels mid-conversation?",
-      answer: "Absolutely! Our unified inbox maintains conversation continuity across all channels. If a customer starts on live chat and continues via WhatsApp, your agents will see the complete conversation history, so customers never have to repeat themselves."
+      answer:
+        "Absolutely! Our unified inbox maintains conversation continuity across all channels. If a customer starts on live chat and continues via WhatsApp, your agents will see the complete conversation history, so customers never have to repeat themselves.",
     },
     {
       question: "Does the platform support multiple languages?",
-      answer: "Yes, our platform includes built-in translation for 120+ languages. Customers can chat in their preferred language, and agents receive auto-translated messages, making your support team instantly multilingual without any language barriers."
+      answer:
+        "Yes, our platform includes built-in translation for 120+ languages. Customers can chat in their preferred language, and agents receive auto-translated messages, making your support team instantly multilingual without any language barriers.",
     },
     {
       question: "Can I set office hours for live chat?",
-      answer: "Yes, you can configure business hours for each channel. Outside office hours, you can automatically switch to chatbot responses, show offline messages, or create tickets that your team can handle the next business day."
+      answer:
+        "Yes, you can configure business hours for each channel. Outside office hours, you can automatically switch to chatbot responses, show offline messages, or create tickets that your team can handle the next business day.",
     },
     {
       question: "How many concurrent chats can agents handle?",
-      answer: "Agents can manage multiple conversations simultaneously. You can set custom limits per agent based on their capacity—typically 3-5 concurrent chats for live support. The platform helps prioritize urgent messages and provides quick reply templates to improve efficiency."
-    }
+      answer:
+        "Agents can manage multiple conversations simultaneously. You can set custom limits per agent based on their capacity—typically 3-5 concurrent chats for live support. The platform helps prioritize urgent messages and provides quick reply templates to improve efficiency.",
+    },
   ];
-  
 
   return (
     <div className="min-h-screen">
@@ -904,7 +911,7 @@ export default function LiveChatPage() {
 
       {/* FAQ Section */}
       <FAQSection
-        badgeText="FAQ"
+        badgeText="Common Questions"
         title="Frequently Asked Questions"
         description="Everything you need to know about our live chat platform"
         faqsColumn1={faqsColumnFAQSection1}

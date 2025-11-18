@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import FAQSection from "@/components/section/FAQSection";
 import {
   Accordion,
   AccordionContent,
@@ -258,6 +259,52 @@ export default function RCSMessagingPage() {
       question: "What's the cost difference between RCS and SMS?",
       answer:
         "RCS typically costs 2-3x more than SMS per message, but delivers 3x better engagement and 60% higher conversions. The improved ROI more than justifies the cost. Plus, automatic fallback to SMS for non-RCS devices means you only pay RCS rates when messages are delivered via RCS.",
+    },
+  ];
+
+  const faqsColumnFAQSection1 = [
+    {
+      question: "What is RCS messaging?",
+      answer:
+        "RCS (Rich Communication Services) is the next-generation messaging protocol that replaces traditional SMS. It enables businesses to send rich, interactive messages with images, videos, carousels, action buttons, read receipts, typing indicators, and verified brand identity—all within the native messaging app on Android devices without requiring app downloads.",
+    },
+    {
+      question: "How does WhatsApp fallback work with RCS?",
+      answer:
+        "Fallback ensures 100% message delivery by automatically switching channels. If RCS isn't available on the recipient's device or fails to deliver within seconds, the message is instantly re-routed to WhatsApp. If WhatsApp delivery also fails, it falls back to SMS as the final layer—guaranteeing your message always reaches customers.",
+    },
+    {
+      question: "What devices support RCS messaging?",
+      answer:
+        "RCS works on most Android devices (Android 5.0+) using default messaging apps like Google Messages and Samsung Messages. iPhone users with iOS 18+ can also receive RCS messages. If a device doesn't support RCS, our platform automatically detects this and uses fallback channels like WhatsApp or SMS.",
+    },
+    {
+      question: "What features does RCS offer that SMS doesn't?",
+      answer:
+        "RCS provides verified business branding with logos and company names, high-resolution images and videos, interactive buttons and carousels, real-time typing indicators, read receipts, location sharing, product catalogs, appointment booking, and two-way conversations—transforming basic text messages into rich, app-like experiences that drive 35% higher engagement than SMS.",
+    },
+  ];
+
+  const faqsColumnFAQSection2 = [
+    {
+      question: "How do I know if my message was sent via RCS or fallback?",
+      answer:
+        "Our platform provides real-time delivery analytics showing exactly which channel delivered each message—RCS, WhatsApp, or SMS. You'll see delivery status, read receipts, interaction rates, and response times for every channel. This transparency helps you understand customer preferences and optimize your messaging strategy.",
+    },
+    {
+      question: "Is RCS messaging secure?",
+      answer:
+        "Yes, RCS messages between Google Messages users are end-to-end encrypted, just like WhatsApp. For business messaging, RCS uses carrier-grade security with verified sender authentication, preventing spoofing and phishing. Recipients see your verified business name and logo, building trust and ensuring customers know messages are legitimate.",
+    },
+    {
+      question: "What's the best fallback sequence for important messages?",
+      answer:
+        "For critical messages like OTPs, payment confirmations, or delivery alerts, use RCS → WhatsApp → SMS fallback. Start with RCS for the richest experience, fall back to WhatsApp for high engagement rates, and use SMS as the universal backup. This multi-layer approach ensures 99.9% delivery while maximizing the quality of customer interactions.",
+    },
+    {
+      question: "Can I personalize RCS messages and track engagement?",
+      answer:
+        "Absolutely! RCS supports dynamic personalization with customer names, order details, recommendations, and custom fields. You get detailed analytics including delivery rates, read receipts, button clicks, carousel swipes, reply rates, and conversion tracking. A/B test rich media, messaging flows, and CTAs to continuously optimize performance and ROI.",
     },
   ];
 
@@ -789,87 +836,13 @@ export default function RCSMessagingPage() {
       </section>
 
       {/* FAQ Section */}
-      <section
-        ref={faqRef}
-        className="py-16 md:py-20 bg-gradient-to-br from-gray-50 to-white"
-      >
-        <div className="container mx-auto px-4">
-          <div
-            className={`text-center mb-12 transition-all duration-1000 ${
-              faqInView
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-8"
-            }`}
-          >
-            <Badge className="mb-4 shadow-sm" variant="outline">
-              Common Questions
-            </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Everything you need to know about RCS messaging and WhatsApp
-              fallback
-            </p>
-          </div>
-
-          <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Left Column */}
-              <div
-                className={`transition-all duration-1000 ${
-                  faqInView
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Accordion type="single" collapsible className="space-y-3">
-                  {faqsColumn1.map((faq, index) => (
-                    <AccordionItem
-                      key={index}
-                      value={`item-${index}`}
-                      className="bg-white border-2 rounded-lg px-6 shadow-sm hover:shadow-md transition-shadow"
-                    >
-                      <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground pb-4 leading-relaxed">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-
-              {/* Right Column */}
-              <div
-                className={`transition-all duration-1000 delay-300 ${
-                  faqInView
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Accordion type="single" collapsible className="space-y-3">
-                  {faqsColumn2.map((faq, index) => (
-                    <AccordionItem
-                      key={index}
-                      value={`item-${index + 3}`}
-                      className="bg-white border-2 rounded-lg px-6 shadow-sm hover:shadow-md transition-shadow"
-                    >
-                      <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground pb-4 leading-relaxed">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <FAQSection
+        badgeText="Common Questions"
+        title="Frequently Asked Questions"
+        description="Everything you need to know about RCS messaging and WhatsApp fallback"
+        faqsColumn1={faqsColumnFAQSection1}
+        faqsColumn2={faqsColumnFAQSection2}
+      />
 
       {/* Final CTA */}
       <section className="py-16 md:py-20 bg-gradient-to-br from-blue-600 to-cyan-600 text-white">

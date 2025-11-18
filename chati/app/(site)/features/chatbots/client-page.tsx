@@ -933,7 +933,7 @@ export default function ChatbotsAIPage() {
 
       {/* FAQ Section */}
       <FAQSection
-        badgeText="FAQ"
+        badgeText="Common Questions"
         title="Frequently Asked Questions"
         description="Everything you need to know about AI chatbots and conversational AI"
         faqsColumn1={faqsColumnFAQSection1}
