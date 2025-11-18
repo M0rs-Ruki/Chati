@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
+// Ensure this route is not cached and runs on every request
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function GET(req: NextRequest) {
   try {
     const brands = await prisma.brand.findMany({
@@ -19,10 +23,23 @@ export async function GET(req: NextRequest) {
     });
   } catch (error) {
     console.error("[ERROR] Error fetching brands:", error);
+
+    // Provide more detailed error information
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error";
+    const isDatabaseError =
+      errorMessage.includes("Prisma") || errorMessage.includes("database");
+
     return NextResponse.json(
       {
         message: "Failed to fetch brands",
-        errors: ["An unexpected error occurred. Please try again later."],
+        errors: [
+          isDatabaseError
+            ? "Database connection error. Please check your database configuration."
+            : "An unexpected error occurred. Please try again later.",
+        ],
+        error:
+          process.env.NODE_ENV === "development" ? errorMessage : undefined,
       },
       { status: 500 }
     );
