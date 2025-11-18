@@ -1055,7 +1055,7 @@ export default function ClientPage() {
       </section>
 
       {/* CTA Section - Minimalistic and compact */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-green-600 to-blue-700 py-10 md:py-8">
+      <section className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-green-600 to-blue-700 py-6 md:py-6">
         {/* Decorative elements for depth */}
         <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />
         <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
