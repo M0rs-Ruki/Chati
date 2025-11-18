@@ -11,6 +11,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { BrandSlider } from "@/components/brand-slider";
+import CTASection from "@/components/section/CTASection";
 import {
   Plane,
   Hotel,
@@ -197,41 +198,48 @@ export default function TravelPage() {
   const faqsColumnFAQSection1 = [
     {
       question: "How can travel businesses use WhatsApp for bookings?",
-      answer: "Travel companies can automate the entire booking process via WhatsApp—customers browse packages, check availability, customize itineraries, make reservations for flights/hotels/tours, complete payments through integrated links, and receive instant confirmations with e-tickets and vouchers. WhatsApp booking systems handle inquiries 24/7, reduce booking friction, and increase conversions by 112% compared to traditional email-based processes."
+      answer:
+        "Travel companies can automate the entire booking process via WhatsApp—customers browse packages, check availability, customize itineraries, make reservations for flights/hotels/tours, complete payments through integrated links, and receive instant confirmations with e-tickets and vouchers. WhatsApp booking systems handle inquiries 24/7, reduce booking friction, and increase conversions by 112% compared to traditional email-based processes.",
     },
     {
       question: "What travel notifications can be sent through WhatsApp?",
-      answer: "Send booking confirmations with PNR and itinerary details, flight status alerts for delays or gate changes, check-in reminders 24 hours before departure, boarding pass delivery, hotel reservation confirmations, weather updates at destination, travel insurance information, visa status updates, real-time baggage tracking, and trip completion surveys—all through WhatsApp's 98% open rate channel ensuring travelers stay informed throughout their journey."
+      answer:
+        "Send booking confirmations with PNR and itinerary details, flight status alerts for delays or gate changes, check-in reminders 24 hours before departure, boarding pass delivery, hotel reservation confirmations, weather updates at destination, travel insurance information, visa status updates, real-time baggage tracking, and trip completion surveys—all through WhatsApp's 98% open rate channel ensuring travelers stay informed throughout their journey.",
     },
     {
       question: "Can hotels manage guest communication via WhatsApp?",
-      answer: "Absolutely! Hotels send pre-arrival messages with check-in details and special requests confirmation, share Google Maps location and parking info, provide digital room keys, offer personalized upselling opportunities (spa treatments, room upgrades), send restaurant menus and room service options, enable instant guest support during stay, collect real-time feedback, and maintain post-stay engagement—improving guest satisfaction scores by 45% and driving 35% more direct bookings."
+      answer:
+        "Absolutely! Hotels send pre-arrival messages with check-in details and special requests confirmation, share Google Maps location and parking info, provide digital room keys, offer personalized upselling opportunities (spa treatments, room upgrades), send restaurant menus and room service options, enable instant guest support during stay, collect real-time feedback, and maintain post-stay engagement—improving guest satisfaction scores by 45% and driving 35% more direct bookings.",
     },
     {
       question: "How does WhatsApp help with customer support in travel?",
-      answer: "Provide 24/7 instant support through AI chatbots answering FAQs about visas, baggage policies, cancellations, and destinations. Handle booking modifications, process refunds, share alternative flight options during disruptions, provide emergency assistance, and escalate complex issues to live agents with full context. WhatsApp support reduces response time by 70%, handles 80% of routine queries automatically, and achieves 4.5+ CSAT scores consistently."
-    }
+      answer:
+        "Provide 24/7 instant support through AI chatbots answering FAQs about visas, baggage policies, cancellations, and destinations. Handle booking modifications, process refunds, share alternative flight options during disruptions, provide emergency assistance, and escalate complex issues to live agents with full context. WhatsApp support reduces response time by 70%, handles 80% of routine queries automatically, and achieves 4.5+ CSAT scores consistently.",
+    },
   ];
-  
+
   const faqsColumnFAQSection2 = [
     {
       question: "Can we send promotional offers through WhatsApp?",
-      answer: "Yes! Send personalized travel deals based on browsing history and preferences, early bird discounts for seasonal packages, flash sales for last-minute bookings, exclusive loyalty rewards for repeat customers, destination recommendations with rich media content, group travel offers, and festival/holiday specials. WhatsApp promotional messages achieve 60-80% open rates and 25-40% conversion rates—12x higher than email marketing—driving significant revenue growth."
+      answer:
+        "Yes! Send personalized travel deals based on browsing history and preferences, early bird discounts for seasonal packages, flash sales for last-minute bookings, exclusive loyalty rewards for repeat customers, destination recommendations with rich media content, group travel offers, and festival/holiday specials. WhatsApp promotional messages achieve 60-80% open rates and 25-40% conversion rates—12x higher than email marketing—driving significant revenue growth.",
     },
     {
       question: "How does WhatsApp integrate with booking systems?",
-      answer: "WhatsApp Business API integrates seamlessly with travel booking engines, property management systems (PMS), global distribution systems (GDS), and CRM platforms through REST APIs. Sync booking data in real-time, automate confirmation messages, trigger status updates, pull inventory availability, process payments, and maintain unified customer profiles—creating an end-to-end connected ecosystem that eliminates manual work and delivers seamless traveler experiences."
+      answer:
+        "WhatsApp Business API integrates seamlessly with travel booking engines, property management systems (PMS), global distribution systems (GDS), and CRM platforms through REST APIs. Sync booking data in real-time, automate confirmation messages, trigger status updates, pull inventory availability, process payments, and maintain unified customer profiles—creating an end-to-end connected ecosystem that eliminates manual work and delivers seamless traveler experiences.",
     },
     {
       question: "Can we share itineraries and travel documents via WhatsApp?",
-      answer: "Absolutely! Share complete travel itineraries with day-by-day schedules, flight tickets and boarding passes as PDFs, hotel vouchers with confirmation codes, visa documents and travel insurance, activity bookings and entry tickets, Google Maps locations for hotels and attractions, emergency contact information, and multi-language travel guides—all securely via WhatsApp's end-to-end encrypted platform that travelers already use daily."
+      answer:
+        "Absolutely! Share complete travel itineraries with day-by-day schedules, flight tickets and boarding passes as PDFs, hotel vouchers with confirmation codes, visa documents and travel insurance, activity bookings and entry tickets, Google Maps locations for hotels and attractions, emergency contact information, and multi-language travel guides—all securely via WhatsApp's end-to-end encrypted platform that travelers already use daily.",
     },
     {
       question: "Is WhatsApp suitable for both B2C and B2B travel businesses?",
-      answer: "Yes! B2C travel agencies use WhatsApp for individual traveler bookings, personalized recommendations, and customer support. B2B tour operators leverage it for corporate travel coordination, group booking management, agent-to-agent communication, bulk reservation confirmations, and partner collaboration. WhatsApp's scalability, automation capabilities, and multi-agent support make it ideal for travel businesses of all sizes—from solo agents to multinational hospitality chains managing millions of guests."
-    }
+      answer:
+        "Yes! B2C travel agencies use WhatsApp for individual traveler bookings, personalized recommendations, and customer support. B2B tour operators leverage it for corporate travel coordination, group booking management, agent-to-agent communication, bulk reservation confirmations, and partner collaboration. WhatsApp's scalability, automation capabilities, and multi-agent support make it ideal for travel businesses of all sizes—from solo agents to multinational hospitality chains managing millions of guests.",
+    },
   ];
-  
 
   type FeatureProps = {
     iconBg: string;
@@ -704,42 +712,27 @@ export default function TravelPage() {
         faqsColumn2={faqsColumnFAQSection2}
       />
 
-      {/* CTA Section - Compact */}
-      <section className="py-12 md:py-14 bg-gradient-to-br from-cyan-600 to-blue-700 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4">
-            Ready to Transform Guest Experiences?
-          </h2>
-          <p className="text-base md:text-lg text-cyan-100 mb-8 max-w-2xl mx-auto">
-            Join travel companies increasing bookings and satisfaction with
-            WhatsApp
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Button
-              size="lg"
-              variant="secondary"
-              className="bg-white text-cyan-600 hover:bg-gray-100"
-            >
-              Start Free Trial
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-2 border-white text-white hover:bg-white/10 bg-transparent"
-              asChild
-            >
-              <Link
-                href={`https://wa.me/${
-                  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""
-                }`}
-              >
-                <Bell className="mr-2 h-4 w-4" />
-                Schedule Demo
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+      {/* CTA Section */}
+      <CTASection
+        gradientFrom="from-cyan-600"
+        gradientVia="via-cyan-600"
+        gradientTo="to-blue-700"
+        title="Ready to Transform Guest Experiences?"
+        description="Join travel companies increasing bookings and satisfaction with WhatsApp"
+        primaryButtonText="Start Free Trial"
+        primaryButtonLink={
+          process.env.NEXT_PUBLIC_APP_URL || "https://app.chati.chat"
+        }
+        primaryButtonBgColor="bg-white"
+        primaryButtonTextColor="text-cyan-600"
+        primaryButtonHoverBg="hover:bg-gray-100"
+        secondaryButtonText="Schedule Demo"
+        secondaryButtonLink={`https://wa.me/${
+          process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""
+        }`}
+        showSecondaryButton={true}
+        footerText=""
+      />
     </div>
   );
 }

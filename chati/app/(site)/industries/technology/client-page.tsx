@@ -11,6 +11,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { BrandSlider } from "@/components/brand-slider";
+import CTASection from "@/components/section/CTASection";
 import {
   Sparkles,
   Rocket,
@@ -185,41 +186,48 @@ export function TechnologyClientPage() {
   const faqsColumnFAQSection1 = [
     {
       question: "How can SaaS companies use WhatsApp for customer onboarding?",
-      answer: "SaaS companies can automate the entire onboarding journey via WhatsApp—send welcome messages with getting-started guides, deliver personalized setup tutorials based on user actions, share quick-start videos, provide feature walkthroughs, offer contextual tips when users complete milestones, and trigger drip campaigns that guide trial users through activation steps. WhatsApp onboarding achieves 85% engagement rates compared to 20% for email, accelerating time-to-value by 60%."
+      answer:
+        "SaaS companies can automate the entire onboarding journey via WhatsApp—send welcome messages with getting-started guides, deliver personalized setup tutorials based on user actions, share quick-start videos, provide feature walkthroughs, offer contextual tips when users complete milestones, and trigger drip campaigns that guide trial users through activation steps. WhatsApp onboarding achieves 85% engagement rates compared to 20% for email, accelerating time-to-value by 60%.",
     },
     {
       question: "Can WhatsApp help reduce customer churn?",
-      answer: "Absolutely! Set up automated alerts for inactive users with re-engagement tips, send feature recommendations based on usage patterns, provide proactive support for struggling users, share success stories and best practices, offer personalized check-ins from customer success teams, and deliver renewal reminders with incentives. WhatsApp's instant, conversational approach increases user engagement by 45% and reduces churn by 25-35% through timely interventions."
+      answer:
+        "Absolutely! Set up automated alerts for inactive users with re-engagement tips, send feature recommendations based on usage patterns, provide proactive support for struggling users, share success stories and best practices, offer personalized check-ins from customer success teams, and deliver renewal reminders with incentives. WhatsApp's instant, conversational approach increases user engagement by 45% and reduces churn by 25-35% through timely interventions.",
     },
     {
       question: "How does WhatsApp improve trial-to-paid conversions?",
-      answer: "Use WhatsApp drip sequences to nurture trial users—send activation messages highlighting quick wins, showcase underutilized premium features, share customer success stories, provide usage analytics showing value delivered, send trial expiration alerts with upgrade incentives, and offer time-limited discounts. Personalized WhatsApp campaigns based on product-qualified leads (PQL) signals achieve 30-50% higher conversion rates than generic email nurture sequences."
+      answer:
+        "Use WhatsApp drip sequences to nurture trial users—send activation messages highlighting quick wins, showcase underutilized premium features, share customer success stories, provide usage analytics showing value delivered, send trial expiration alerts with upgrade incentives, and offer time-limited discounts. Personalized WhatsApp campaigns based on product-qualified leads (PQL) signals achieve 30-50% higher conversion rates than generic email nurture sequences.",
     },
     {
       question: "Can we provide technical support via WhatsApp?",
-      answer: "Yes! Offer 24/7 first-line support through AI chatbots that answer FAQs, troubleshoot common issues, and provide setup guidance. Enable users to submit bug reports with screenshots, share error logs, schedule support calls, and escalate complex issues to live agents with full conversation context. WhatsApp support reduces ticket resolution time by 40%, decreases support costs by 30%, and improves customer satisfaction scores by 25%."
-    }
+      answer:
+        "Yes! Offer 24/7 first-line support through AI chatbots that answer FAQs, troubleshoot common issues, and provide setup guidance. Enable users to submit bug reports with screenshots, share error logs, schedule support calls, and escalate complex issues to live agents with full conversation context. WhatsApp support reduces ticket resolution time by 40%, decreases support costs by 30%, and improves customer satisfaction scores by 25%.",
+    },
   ];
-  
+
   const faqsColumnFAQSection2 = [
     {
       question: "How can we integrate WhatsApp with our SaaS platform?",
-      answer: "Integrate WhatsApp Business API with your SaaS platform via webhooks and REST APIs to trigger event-based messages—welcome new sign-ups, notify users about account activity, send usage alerts, deliver payment confirmations, share feature updates, and sync user data bidirectionally. Popular integrations include Salesforce, HubSpot, Intercom, Segment, and Zapier, creating a unified ecosystem where customer interactions flow seamlessly between platforms."
+      answer:
+        "Integrate WhatsApp Business API with your SaaS platform via webhooks and REST APIs to trigger event-based messages—welcome new sign-ups, notify users about account activity, send usage alerts, deliver payment confirmations, share feature updates, and sync user data bidirectionally. Popular integrations include Salesforce, HubSpot, Intercom, Segment, and Zapier, creating a unified ecosystem where customer interactions flow seamlessly between platforms.",
     },
     {
       question: "What types of automated messages can SaaS companies send?",
-      answer: "Send trial start confirmations with onboarding links, usage milestone celebrations ('You created your 10th project!'), feature announcement updates, billing notifications and payment receipts, subscription renewal reminders, downgrade prevention offers, webinar invitations, product update changelogs, security alerts, and personalized upgrade recommendations—all triggered automatically based on user behavior, subscription tier, and engagement patterns for maximum relevance."
+      answer:
+        "Send trial start confirmations with onboarding links, usage milestone celebrations ('You created your 10th project!'), feature announcement updates, billing notifications and payment receipts, subscription renewal reminders, downgrade prevention offers, webinar invitations, product update changelogs, security alerts, and personalized upgrade recommendations—all triggered automatically based on user behavior, subscription tier, and engagement patterns for maximum relevance.",
     },
     {
       question: "Can we use WhatsApp for product announcements and updates?",
-      answer: "Absolutely! Share new feature launches with demo videos, product roadmap updates, changelog highlights, beta program invitations, maintenance notifications, security updates, integration announcements, and educational content about advanced capabilities. Rich media messages with GIFs, tutorial videos, and interactive buttons achieve 60-80% read rates and 35-50% click-through rates—ensuring your product updates reach and engage users effectively."
+      answer:
+        "Absolutely! Share new feature launches with demo videos, product roadmap updates, changelog highlights, beta program invitations, maintenance notifications, security updates, integration announcements, and educational content about advanced capabilities. Rich media messages with GIFs, tutorial videos, and interactive buttons achieve 60-80% read rates and 35-50% click-through rates—ensuring your product updates reach and engage users effectively.",
     },
     {
       question: "Is WhatsApp scalable for growing SaaS businesses?",
-      answer: "Yes! WhatsApp Business API is built for scale, supporting unlimited contacts, multi-agent teams, automated workflows, and high-volume messaging. Whether you have 100 or 1 million users, you can segment audiences, personalize messages, trigger behavioral campaigns, and maintain 1-on-1 conversations. Leading SaaS companies report handling 50,000+ monthly conversations per agent while maintaining sub-2-minute response times through intelligent automation and live agent collaboration."
-    }
+      answer:
+        "Yes! WhatsApp Business API is built for scale, supporting unlimited contacts, multi-agent teams, automated workflows, and high-volume messaging. Whether you have 100 or 1 million users, you can segment audiences, personalize messages, trigger behavioral campaigns, and maintain 1-on-1 conversations. Leading SaaS companies report handling 50,000+ monthly conversations per agent while maintaining sub-2-minute response times through intelligent automation and live agent collaboration.",
+    },
   ];
-  
 
   return (
     <div className="min-h-screen">
@@ -678,42 +686,27 @@ export function TechnologyClientPage() {
         faqsColumn2={faqsColumnFAQSection2}
       />
 
-      {/* CTA Section - Compact */}
-      <section className="py-12 md:py-14 bg-gradient-to-br from-purple-600 to-pink-700 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4">
-            Ready to Scale Your SaaS Business?
-          </h2>
-          <p className="text-base md:text-lg text-purple-100 mb-8 max-w-2xl mx-auto">
-            Join innovative tech companies using WhatsApp to onboard users
-            faster and drive product adoption
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Button
-              size="lg"
-              variant="secondary"
-              className="bg-white text-purple-600 hover:bg-gray-100"
-            >
-              Start Free Trial
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-2 border-white text-white hover:bg-white/10 bg-transparent"
-              asChild
-            >
-              <Link
-                href={`https://wa.me/${
-                  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""
-                }`}
-              >
-                <Bell className="mr-2 h-4 w-4" />
-                Schedule Demo
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+      {/* CTA Section */}
+      <CTASection
+        gradientFrom="from-purple-600"
+        gradientVia="via-purple-600"
+        gradientTo="to-pink-700"
+        title="Ready to Scale Your SaaS Business?"
+        description="Join innovative tech companies using WhatsApp to onboard users faster and drive product adoption"
+        primaryButtonText="Start Free Trial"
+        primaryButtonLink={
+          process.env.NEXT_PUBLIC_APP_URL || "https://app.chati.chat"
+        }
+        primaryButtonBgColor="bg-white"
+        primaryButtonTextColor="text-purple-600"
+        primaryButtonHoverBg="hover:bg-gray-100"
+        secondaryButtonText="Schedule Demo"
+        secondaryButtonLink={`https://wa.me/${
+          process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""
+        }`}
+        showSecondaryButton={true}
+        footerText=""
+      />
     </div>
   );
 }

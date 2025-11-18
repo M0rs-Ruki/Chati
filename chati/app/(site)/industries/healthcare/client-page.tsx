@@ -11,6 +11,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { BrandSlider } from "@/components/brand-slider";
+import CTASection from "@/components/section/CTASection";
 import {
   Heart,
   Calendar,
@@ -186,41 +187,49 @@ const HealthcareClientPage = () => {
   const faqsColumnFAQSection1 = [
     {
       question: "How can healthcare providers use WhatsApp?",
-      answer: "Healthcare providers can use WhatsApp to automate appointment scheduling and reminders, send prescription refill alerts, share lab reports and medical documents securely, conduct telemedicine consultations via video/voice calls, provide medication adherence reminders, share health tips and wellness content, offer 24/7 patient support through chatbots, and send post-discharge care instructions—reducing no-shows by 40% and improving patient engagement by 50%."
+      answer:
+        "Healthcare providers can use WhatsApp to automate appointment scheduling and reminders, send prescription refill alerts, share lab reports and medical documents securely, conduct telemedicine consultations via video/voice calls, provide medication adherence reminders, share health tips and wellness content, offer 24/7 patient support through chatbots, and send post-discharge care instructions—reducing no-shows by 40% and improving patient engagement by 50%.",
     },
     {
       question: "Is WhatsApp secure for sharing medical information?",
-      answer: "Yes! WhatsApp uses end-to-end encryption for all messages, making it secure for sharing appointment details, prescriptions, lab results, and medical advice. When integrated with HIPAA-compliant platforms and used within proper consent frameworks, WhatsApp meets healthcare privacy standards. However, avoid sharing highly sensitive data like complete medical records; instead, use secure patient portals and share access links via WhatsApp."
+      answer:
+        "Yes! WhatsApp uses end-to-end encryption for all messages, making it secure for sharing appointment details, prescriptions, lab results, and medical advice. When integrated with HIPAA-compliant platforms and used within proper consent frameworks, WhatsApp meets healthcare privacy standards. However, avoid sharing highly sensitive data like complete medical records; instead, use secure patient portals and share access links via WhatsApp.",
     },
     {
       question: "Can patients book appointments through WhatsApp?",
-      answer: "Absolutely! Patients can check doctor availability, select preferred time slots, book appointments, receive instant confirmations, and get automated reminders 24 hours before visits—all through conversational chat. They can also reschedule or cancel appointments easily. WhatsApp appointment booking reduces administrative workload by 60%, eliminates phone tag, and decreases no-show rates by 35-40% with timely reminders."
+      answer:
+        "Absolutely! Patients can check doctor availability, select preferred time slots, book appointments, receive instant confirmations, and get automated reminders 24 hours before visits—all through conversational chat. They can also reschedule or cancel appointments easily. WhatsApp appointment booking reduces administrative workload by 60%, eliminates phone tag, and decreases no-show rates by 35-40% with timely reminders.",
     },
     {
       question: "How do appointment reminders work on WhatsApp?",
-      answer: "Automated reminders are sent 48 hours, 24 hours, and 2 hours before appointments with doctor name, date, time, location, and preparation instructions. Patients can confirm, reschedule, or cancel with quick reply buttons. Post-appointment, send follow-up care instructions and medication reminders. Automated reminders achieve 98% open rates compared to 20% for email, significantly reducing missed appointments and improving clinic efficiency."
-    }
+      answer:
+        "Automated reminders are sent 48 hours, 24 hours, and 2 hours before appointments with doctor name, date, time, location, and preparation instructions. Patients can confirm, reschedule, or cancel with quick reply buttons. Post-appointment, send follow-up care instructions and medication reminders. Automated reminders achieve 98% open rates compared to 20% for email, significantly reducing missed appointments and improving clinic efficiency.",
+    },
   ];
-  
+
   const faqsColumnFAQSection2 = [
     {
       question: "Can WhatsApp handle telemedicine consultations?",
-      answer: "Yes! WhatsApp supports video calls, voice calls, voice messages, and text chat—perfect for remote consultations. Patients can share symptoms, photos of conditions, and medical history. Doctors can provide initial diagnosis, treatment recommendations, prescription images, and follow-up advice. For non-emergency cases, WhatsApp telemedicine makes healthcare accessible to remote patients, elderly individuals, and those with mobility challenges—expanding your patient reach by 45%."
+      answer:
+        "Yes! WhatsApp supports video calls, voice calls, voice messages, and text chat—perfect for remote consultations. Patients can share symptoms, photos of conditions, and medical history. Doctors can provide initial diagnosis, treatment recommendations, prescription images, and follow-up advice. For non-emergency cases, WhatsApp telemedicine makes healthcare accessible to remote patients, elderly individuals, and those with mobility challenges—expanding your patient reach by 45%.",
     },
     {
       question: "How can chatbots help in healthcare?",
-      answer: "AI-powered healthcare chatbots answer FAQs 24/7 about clinic hours, doctor availability, services offered, insurance acceptance, and general health queries. They can screen symptoms, provide preliminary triage, collect patient information before appointments, send medication reminders, share health tips, and escalate urgent cases to live staff. Chatbots handle 70-80% of routine inquiries automatically, freeing medical staff to focus on patient care."
+      answer:
+        "AI-powered healthcare chatbots answer FAQs 24/7 about clinic hours, doctor availability, services offered, insurance acceptance, and general health queries. They can screen symptoms, provide preliminary triage, collect patient information before appointments, send medication reminders, share health tips, and escalate urgent cases to live staff. Chatbots handle 70-80% of routine inquiries automatically, freeing medical staff to focus on patient care.",
     },
     {
-      question: "Can we integrate WhatsApp with our hospital management system?",
-      answer: "Yes! WhatsApp Business API integrates with popular hospital management systems (HMS), electronic medical records (EMR), and practice management software through APIs. Sync patient data, automatically trigger appointment reminders based on bookings, share lab results when ready, send billing notifications, update prescription details, and maintain unified patient communication history—creating a seamless connected healthcare ecosystem that improves operational efficiency by 50%."
+      question:
+        "Can we integrate WhatsApp with our hospital management system?",
+      answer:
+        "Yes! WhatsApp Business API integrates with popular hospital management systems (HMS), electronic medical records (EMR), and practice management software through APIs. Sync patient data, automatically trigger appointment reminders based on bookings, share lab results when ready, send billing notifications, update prescription details, and maintain unified patient communication history—creating a seamless connected healthcare ecosystem that improves operational efficiency by 50%.",
     },
     {
       question: "What types of health content can we share?",
-      answer: "Share preventive care tips, seasonal health alerts (flu shots, dengue awareness), disease management guides for chronic conditions (diabetes, hypertension), medication instructions, dietary recommendations, exercise routines, mental health resources, clinic updates, new service announcements, and doctor introductions. Use rich media like videos, infographics, and PDFs. Educational content positions your clinic as a trusted health partner, increasing patient loyalty by 60%."
-    }
+      answer:
+        "Share preventive care tips, seasonal health alerts (flu shots, dengue awareness), disease management guides for chronic conditions (diabetes, hypertension), medication instructions, dietary recommendations, exercise routines, mental health resources, clinic updates, new service announcements, and doctor introductions. Use rich media like videos, infographics, and PDFs. Educational content positions your clinic as a trusted health partner, increasing patient loyalty by 60%.",
+    },
   ];
-  
 
   return (
     <div className="min-h-screen">
@@ -748,34 +757,24 @@ const HealthcareClientPage = () => {
       />
 
       {/* CTA Section */}
-      <section className="py-12 md:py-14 bg-gradient-to-br from-blue-600 to-cyan-700 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Ready to Transform Patient Care?
-          </h2>
-          <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
-            Join leading healthcare providers using secure WhatsApp messaging to
-            improve patient satisfaction
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              size="lg"
-              variant="secondary"
-              className="bg-white text-blue-600 hover:bg-gray-100"
-            >
-              Start Free Trial
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-white text-white hover:bg-white/10 bg-transparent"
-              asChild
-            >
-              <Link href="/pricing">View Pricing Plans</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+      <CTASection
+        gradientFrom="from-blue-600"
+        gradientVia="via-blue-600"
+        gradientTo="to-cyan-700"
+        title="Ready to Transform Patient Care?"
+        description="Join leading healthcare providers using secure WhatsApp messaging to improve patient satisfaction"
+        primaryButtonText="Start Free Trial"
+        primaryButtonLink={
+          process.env.NEXT_PUBLIC_APP_URL || "https://app.chati.chat"
+        }
+        primaryButtonBgColor="bg-white"
+        primaryButtonTextColor="text-blue-600"
+        primaryButtonHoverBg="hover:bg-gray-100"
+        secondaryButtonText="View Pricing Plans"
+        secondaryButtonLink="/pricing"
+        showSecondaryButton={true}
+        footerText=""
+      />
     </div>
   );
 };

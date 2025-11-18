@@ -30,6 +30,7 @@ import {
 } from "lucide-react";
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 import { BrandSlider } from "@/components/brand-slider";
+import CTASection from "@/components/section/CTASection";
 import Image from "next/image";
 import {
   Accordion,
@@ -65,33 +66,38 @@ export default function ClientPage() {
   const faqsColumnFAQSection1 = [
     {
       question: "What is a Customer Data Platform (CDP)?",
-      answer: "A Customer Data Platform (CDP) is a software system that consolidates customer data from multiple sources into a unified database, creating comprehensive customer profiles. It enables businesses to segment audiences, personalize campaigns, and gain actionable insights across all customer touchpoints."
+      answer:
+        "A Customer Data Platform (CDP) is a software system that consolidates customer data from multiple sources into a unified database, creating comprehensive customer profiles. It enables businesses to segment audiences, personalize campaigns, and gain actionable insights across all customer touchpoints.",
     },
     {
       question: "How does the CDP integrate with my existing tools?",
-      answer: "Our CDP offers seamless integration with 20+ platforms including Razorpay, Shopify, Facebook Leads, India Mart, Justdial, and more. We provide pre-built connectors, RESTful APIs, and webhooks for custom integrations. Data synchronization happens in real-time, ensuring your customer profiles are always up-to-date."
+      answer:
+        "Our CDP offers seamless integration with 20+ platforms including Razorpay, Shopify, Facebook Leads, India Mart, Justdial, and more. We provide pre-built connectors, RESTful APIs, and webhooks for custom integrations. Data synchronization happens in real-time, ensuring your customer profiles are always up-to-date.",
     },
     {
       question: "Can I create custom customer segments?",
-      answer: "Yes! Our advanced segmentation engine allows you to create unlimited custom segments based on any combination of behavioral, demographic, transactional, and custom attributes. You can also create dynamic segments that automatically update as customer data changes, and use AI-powered predictive segments."
-    }
+      answer:
+        "Yes! Our advanced segmentation engine allows you to create unlimited custom segments based on any combination of behavioral, demographic, transactional, and custom attributes. You can also create dynamic segments that automatically update as customer data changes, and use AI-powered predictive segments.",
+    },
   ];
-  
+
   const faqsColumnFAQSection2 = [
     {
       question: "What channels can I use for campaigns?",
-      answer: "You can launch campaigns across multiple channels including WhatsApp Business API, RCS (Rich Communication Services), SMS, Email, Instagram Direct Messages, and Facebook Messenger. Our platform enables omnichannel orchestration, allowing you to coordinate campaigns across all channels from a single interface."
+      answer:
+        "You can launch campaigns across multiple channels including WhatsApp Business API, RCS (Rich Communication Services), SMS, Email, Instagram Direct Messages, and Facebook Messenger. Our platform enables omnichannel orchestration, allowing you to coordinate campaigns across all channels from a single interface.",
     },
     {
       question: "Is my customer data secure and compliant?",
-      answer: "Absolutely. We implement enterprise-grade security with end-to-end encryption, secure data storage, and regular security audits. Our platform is GDPR compliant and includes features for data privacy, consent management, and role-based access control. We also provide audit trails and data retention policies."
+      answer:
+        "Absolutely. We implement enterprise-grade security with end-to-end encryption, secure data storage, and regular security audits. Our platform is GDPR compliant and includes features for data privacy, consent management, and role-based access control. We also provide audit trails and data retention policies.",
     },
     {
       question: "How quickly can I see results?",
-      answer: "Most businesses see measurable improvements within the first 30 days. Our quick-start templates and pre-built integrations allow you to launch your first campaign within hours. Real-time analytics provide immediate visibility into campaign performance, customer engagement, and ROI."
-    }
+      answer:
+        "Most businesses see measurable improvements within the first 30 days. Our quick-start templates and pre-built integrations allow you to launch your first campaign within hours. Real-time analytics provide immediate visibility into campaign performance, customer engagement, and ROI.",
+    },
   ];
-  
 
   return (
     <div className="flex flex-col">
@@ -929,49 +935,26 @@ export default function ClientPage() {
       />
 
       {/* CTA Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-purple-600 via-blue-600 to-purple-700 py-16 md:py-20">
-        <div className="absolute inset-0 bg-grid-white/10" />
-        <div className="container relative mx-auto px-4 text-center">
-          <h2 className="mb-4 text-balance text-3xl font-bold text-white md:text-4xl lg:text-5xl">
-            Ready to Transform Your Customer Data?
-          </h2>
-          <p className="mb-8 text-pretty text-blue-100 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-            Start consolidating customer data, creating targeted segments, and
-            launching personalized campaigns today.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              size="lg"
-              className="bg-white text-purple-600 hover:bg-gray-100 font-semibold shadow-xl hover:shadow-2xl transition-all group"
-              asChild
-            >
-              <Link
-                href={
-                  process.env.NEXT_PUBLIC_APP_URL || "https://app.chati.chat"
-                }
-              >
-                Start Free Trial
-                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-2 border-white text-white hover:bg-white/10 font-medium bg-transparent"
-              asChild
-            >
-              <Link
-                href={`https://wa.me/${
-                  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""
-                }`}
-              >
-                <Bell className="mr-2 h-4 w-4" />
-                Schedule Demo
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+      <CTASection
+        gradientFrom="from-purple-600"
+        gradientVia="via-blue-600"
+        gradientTo="to-purple-700"
+        title="Ready to Transform Your Customer Data?"
+        description="Start consolidating customer data, creating targeted segments, and launching personalized campaigns today."
+        primaryButtonText="Start Free Trial"
+        primaryButtonLink={
+          process.env.NEXT_PUBLIC_APP_URL || "https://app.chati.chat"
+        }
+        primaryButtonBgColor="bg-white"
+        primaryButtonTextColor="text-purple-600"
+        primaryButtonHoverBg="hover:bg-gray-100"
+        secondaryButtonText="Schedule Demo"
+        secondaryButtonLink={`https://wa.me/${
+          process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""
+        }`}
+        showSecondaryButton={true}
+        footerText=""
+      />
     </div>
   );
 }

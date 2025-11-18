@@ -11,6 +11,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { BrandSlider } from "@/components/brand-slider";
+import CTASection from "@/components/section/CTASection";
 import {
   Utensils,
   ShoppingBag,
@@ -726,42 +727,27 @@ export default function FoodClientPage() {
         faqsColumn2={faqsColumnFAQSection2}
       />
 
-      {/* CTA Section - Compact */}
-      <section className="py-12 md:py-14 bg-gradient-to-br from-orange-600 to-amber-700 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4">
-            Ready to Transform Your Restaurant?
-          </h2>
-          <p className="text-base md:text-lg text-orange-100 mb-8 max-w-2xl mx-auto">
-            Join leading restaurants increasing orders and customer satisfaction
-            with WhatsApp
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Button
-              size="lg"
-              variant="secondary"
-              className="bg-white text-orange-600 hover:bg-gray-100"
-            >
-              Start Free Trial
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-2 border-white text-white hover:bg-white/10 bg-transparent"
-              asChild
-            >
-              <Link
-                href={`https://wa.me/${
-                  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""
-                }`}
-              >
-                <Bell className="mr-2 h-4 w-4" />
-                Schedule Demo
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+      {/* CTA Section */}
+      <CTASection
+        gradientFrom="from-orange-600"
+        gradientVia="via-orange-600"
+        gradientTo="to-amber-700"
+        title="Ready to Transform Your Restaurant?"
+        description="Join leading restaurants increasing orders and customer satisfaction with WhatsApp"
+        primaryButtonText="Start Free Trial"
+        primaryButtonLink={
+          process.env.NEXT_PUBLIC_APP_URL || "https://app.chati.chat"
+        }
+        primaryButtonBgColor="bg-white"
+        primaryButtonTextColor="text-orange-600"
+        primaryButtonHoverBg="hover:bg-gray-100"
+        secondaryButtonText="Schedule Demo"
+        secondaryButtonLink={`https://wa.me/${
+          process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""
+        }`}
+        showSecondaryButton={true}
+        footerText=""
+      />
     </div>
   );
 }

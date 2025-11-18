@@ -1,10 +1,20 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import Link from "next/link"
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import Link from "next/link";
 import {
   ArrowRight,
   MessageSquare,
@@ -30,15 +40,18 @@ import {
   FileText,
   Settings,
   Smartphone,
-} from "lucide-react"
-import { BrandSlider } from "@/components/brand-slider"
-import { CounterAnimation } from "@/components/counter-animation"
-import { useIntersectionObserver } from "@/hooks/use-intersection-observer"
-import Image from "next/image"
+} from "lucide-react";
+import { BrandSlider } from "@/components/brand-slider";
+import { CounterAnimation } from "@/components/counter-animation";
+import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
+import Image from "next/image";
+import CTASection from "@/components/section/CTASection";
 
 export default function ClientPage() {
-  const { ref: statsRef, isVisible: isStatsVisible } = useIntersectionObserver()
-  const { ref: featuresRef, isVisible: isFeaturesVisible } = useIntersectionObserver()
+  const { ref: statsRef, isVisible: isStatsVisible } =
+    useIntersectionObserver();
+  const { ref: featuresRef, isVisible: isFeaturesVisible } =
+    useIntersectionObserver();
 
   return (
     <div className="flex flex-col">
@@ -69,7 +82,10 @@ export default function ClientPage() {
 
         <div className="container relative mx-auto px-4 py-12 md:py-14 lg:py-16 z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <Badge className="mb-4 shadow-sm bg-green-100 text-green-700 border-green-200" variant="outline">
+            <Badge
+              className="mb-4 shadow-sm bg-green-100 text-green-700 border-green-200"
+              variant="outline"
+            >
               Platform Features
             </Badge>
 
@@ -78,8 +94,10 @@ export default function ClientPage() {
             </h1>
 
             <p className="mb-6 text-pretty text-muted-foreground text-lg md:text-xl leading-relaxed max-w-3xl mx-auto">
-              From AI-powered chatbots to multi-channel messaging, team collaboration, and advanced analytics—discover
-              the comprehensive features that make Chati.ai the complete solution for modern business communication.
+              From AI-powered chatbots to multi-channel messaging, team
+              collaboration, and advanced analytics—discover the comprehensive
+              features that make Chati.ai the complete solution for modern
+              business communication.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -88,7 +106,11 @@ export default function ClientPage() {
                 className="bg-green-600 hover:bg-green-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all group"
                 asChild
               >
-                <Link href={process.env.NEXT_PUBLIC_APP_URL || "https://app.chati.chat"}>
+                <Link
+                  href={
+                    process.env.NEXT_PUBLIC_APP_URL || "https://app.chati.chat"
+                  }
+                >
                   Start Free Trial
                   <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
@@ -99,7 +121,11 @@ export default function ClientPage() {
                 className="border-2 bg-white hover:bg-gray-50 font-medium shadow-sm"
                 asChild
               >
-                <Link href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""}`}>
+                <Link
+                  href={`https://wa.me/${
+                    process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""
+                  }`}
+                >
                   <Bell className="mr-2 h-4 w-4" />
                   Schedule Demo
                 </Link>
@@ -129,8 +155,8 @@ export default function ClientPage() {
               Powerful Tools for Every Business Need
             </h2>
             <p className="mx-auto max-w-2xl text-pretty text-muted-foreground text-lg">
-              Our platform combines cutting-edge technology with intuitive design to deliver exceptional customer
-              experiences
+              Our platform combines cutting-edge technology with intuitive
+              design to deliver exceptional customer experiences
             </p>
           </div>
 
@@ -221,7 +247,9 @@ export default function ClientPage() {
               <Card
                 key={index}
                 className={`border-2 hover:border-primary/50 transition-all hover:shadow-lg bg-white/80 backdrop-blur-sm ${
-                  isFeaturesVisible ? `opacity-100 translate-y-0 ${feature.delay}` : "opacity-0 translate-y-8"
+                  isFeaturesVisible
+                    ? `opacity-100 translate-y-0 ${feature.delay}`
+                    : "opacity-0 translate-y-8"
                 } transition-all duration-700`}
               >
                 <CardHeader>
@@ -231,7 +259,9 @@ export default function ClientPage() {
                     <feature.icon className={`h-6 w-6 ${feature.iconColor}`} />
                   </div>
                   <CardTitle className="text-xl">{feature.title}</CardTitle>
-                  <CardDescription className="text-base leading-relaxed">{feature.description}</CardDescription>
+                  <CardDescription className="text-base leading-relaxed">
+                    {feature.description}
+                  </CardDescription>
                 </CardHeader>
               </Card>
             ))}
@@ -246,15 +276,19 @@ export default function ClientPage() {
         <div className="container mx-auto px-4 relative z-10">
           <div className="grid gap-8 lg:grid-cols-2 items-center">
             <div>
-              <Badge className="mb-3 shadow-sm bg-green-100 text-green-700 border-green-200" variant="outline">
+              <Badge
+                className="mb-3 shadow-sm bg-green-100 text-green-700 border-green-200"
+                variant="outline"
+              >
                 WhatsApp Business API
               </Badge>
               <h2 className="mb-4 text-balance text-3xl font-bold md:text-4xl lg:text-5xl">
                 Official WhatsApp Business Partner
               </h2>
               <p className="mb-6 text-pretty text-muted-foreground text-lg leading-relaxed">
-                As an official Meta Business Partner, we provide verified WhatsApp Business API access with the green
-                tick badge, ensuring maximum trust and deliverability for your messages.
+                As an official Meta Business Partner, we provide verified
+                WhatsApp Business API access with the green tick badge, ensuring
+                maximum trust and deliverability for your messages.
               </p>
 
               <div className="space-y-4">
@@ -262,22 +296,26 @@ export default function ClientPage() {
                   {
                     icon: CheckCircle2,
                     title: "Verified Green Tick",
-                    description: "Build trust with official business verification and green tick badge",
+                    description:
+                      "Build trust with official business verification and green tick badge",
                   },
                   {
                     icon: Zap,
                     title: "Unlimited Messaging",
-                    description: "No daily limits—send millions of messages to engage your entire customer base",
+                    description:
+                      "No daily limits—send millions of messages to engage your entire customer base",
                   },
                   {
                     icon: Sparkles,
                     title: "Rich Media Support",
-                    description: "Send images, videos, documents, location, and interactive buttons",
+                    description:
+                      "Send images, videos, documents, location, and interactive buttons",
                   },
                   {
                     icon: Target,
                     title: "Template Management",
-                    description: "Create, manage, and get approval for message templates in multiple languages",
+                    description:
+                      "Create, manage, and get approval for message templates in multiple languages",
                   },
                 ].map((item, index) => (
                   <div key={index} className="flex gap-3 items-start group">
@@ -285,8 +323,12 @@ export default function ClientPage() {
                       <item.icon className="h-5 w-5 text-green-600" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-foreground mb-1">{item.title}</h3>
-                      <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
+                      <h3 className="font-semibold text-foreground mb-1">
+                        {item.title}
+                      </h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        {item.description}
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -318,19 +360,27 @@ export default function ClientPage() {
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-10">
-            <Badge className="mb-4 shadow-sm bg-blue-100 text-blue-700 border-blue-200" variant="outline">
+            <Badge
+              className="mb-4 shadow-sm bg-blue-100 text-blue-700 border-blue-200"
+              variant="outline"
+            >
               Platform Performance
             </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Trusted by Businesses Worldwide</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Trusted by Businesses Worldwide
+            </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Our platform delivers exceptional results for thousands of companies across industries
+              Our platform delivers exceptional results for thousands of
+              companies across industries
             </p>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
             <div
               className={`text-center p-6 rounded-2xl bg-white/60 backdrop-blur-sm border border-white/80 shadow-lg hover:shadow-xl transition-all hover:scale-105 ${
-                isStatsVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                isStatsVisible
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-8"
               } transition-all duration-700`}
             >
               <CounterAnimation
@@ -339,12 +389,16 @@ export default function ClientPage() {
                 className="text-4xl md:text-5xl font-bold bg-gradient-to-br from-green-600 to-green-700 bg-clip-text text-transparent mb-2"
                 duration={2500}
               />
-              <p className="text-muted-foreground text-sm md:text-base font-medium">Messages Delivered</p>
+              <p className="text-muted-foreground text-sm md:text-base font-medium">
+                Messages Delivered
+              </p>
             </div>
 
             <div
               className={`text-center p-6 rounded-2xl bg-white/60 backdrop-blur-sm border border-white/80 shadow-lg hover:shadow-xl transition-all hover:scale-105 ${
-                isStatsVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                isStatsVisible
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-8"
               } transition-all duration-700 delay-100`}
             >
               <CounterAnimation
@@ -353,12 +407,16 @@ export default function ClientPage() {
                 className="text-4xl md:text-5xl font-bold bg-gradient-to-br from-blue-600 to-blue-700 bg-clip-text text-transparent mb-2"
                 duration={2500}
               />
-              <p className="text-muted-foreground text-sm md:text-base font-medium">Active Businesses</p>
+              <p className="text-muted-foreground text-sm md:text-base font-medium">
+                Active Businesses
+              </p>
             </div>
 
             <div
               className={`text-center p-6 rounded-2xl bg-white/60 backdrop-blur-sm border border-white/80 shadow-lg hover:shadow-xl transition-all hover:scale-105 ${
-                isStatsVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                isStatsVisible
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-8"
               } transition-all duration-700 delay-200`}
             >
               <CounterAnimation
@@ -367,12 +425,16 @@ export default function ClientPage() {
                 className="text-4xl md:text-5xl font-bold bg-gradient-to-br from-purple-600 to-purple-700 bg-clip-text text-transparent mb-2"
                 duration={2500}
               />
-              <p className="text-muted-foreground text-sm md:text-base font-medium">Customer Satisfaction</p>
+              <p className="text-muted-foreground text-sm md:text-base font-medium">
+                Customer Satisfaction
+              </p>
             </div>
 
             <div
               className={`text-center p-6 rounded-2xl bg-white/60 backdrop-blur-sm border border-white/80 shadow-lg hover:shadow-xl transition-all hover:scale-105 ${
-                isStatsVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                isStatsVisible
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-8"
               } transition-all duration-700 delay-300`}
             >
               <CounterAnimation
@@ -381,7 +443,9 @@ export default function ClientPage() {
                 className="text-4xl md:text-5xl font-bold bg-gradient-to-br from-orange-600 to-orange-700 bg-clip-text text-transparent mb-2"
                 duration={2500}
               />
-              <p className="text-muted-foreground text-sm md:text-base font-medium">Faster Response Time</p>
+              <p className="text-muted-foreground text-sm md:text-base font-medium">
+                Faster Response Time
+              </p>
             </div>
           </div>
         </div>
@@ -394,7 +458,9 @@ export default function ClientPage() {
             <Badge className="mb-3 shadow-sm" variant="outline">
               More Features
             </Badge>
-            <h2 className="mb-4 text-balance text-3xl font-bold md:text-4xl">Complete Feature Set</h2>
+            <h2 className="mb-4 text-balance text-3xl font-bold md:text-4xl">
+              Complete Feature Set
+            </h2>
             <p className="mx-auto max-w-2xl text-pretty text-muted-foreground text-lg">
               Everything you need to manage customer communication at scale
             </p>
@@ -410,26 +476,52 @@ export default function ClientPage() {
               {
                 icon: Tag,
                 title: "Smart Segmentation",
-                description: "Target customers with precision using tags and filters",
+                description:
+                  "Target customers with precision using tags and filters",
               },
-              { icon: FileText, title: "Template Library", description: "Pre-approved templates for faster messaging" },
-              { icon: Settings, title: "API & Webhooks", description: "Integrate with any system using REST APIs" },
+              {
+                icon: FileText,
+                title: "Template Library",
+                description: "Pre-approved templates for faster messaging",
+              },
+              {
+                icon: Settings,
+                title: "API & Webhooks",
+                description: "Integrate with any system using REST APIs",
+              },
               {
                 icon: Lock,
                 title: "Role-Based Access",
                 description: "Control permissions with granular access levels",
               },
-              { icon: Clock, title: "Business Hours", description: "Set availability and auto-responses" },
-              { icon: Smartphone, title: "Mobile Apps", description: "iOS and Android apps for on-the-go management" },
-              { icon: TrendingUp, title: "Growth Tools", description: "QR codes, chat widgets, and link generators" },
+              {
+                icon: Clock,
+                title: "Business Hours",
+                description: "Set availability and auto-responses",
+              },
+              {
+                icon: Smartphone,
+                title: "Mobile Apps",
+                description: "iOS and Android apps for on-the-go management",
+              },
+              {
+                icon: TrendingUp,
+                title: "Growth Tools",
+                description: "QR codes, chat widgets, and link generators",
+              },
             ].map((feature, index) => (
-              <Card key={index} className="border hover:border-primary/50 transition-all hover:shadow-md bg-white">
+              <Card
+                key={index}
+                className="border hover:border-primary/50 transition-all hover:shadow-md bg-white"
+              >
                 <CardHeader className="pb-4">
                   <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-primary/20 to-primary/10">
                     <feature.icon className="h-5 w-5 text-primary" />
                   </div>
                   <CardTitle className="text-lg">{feature.title}</CardTitle>
-                  <CardDescription className="text-sm">{feature.description}</CardDescription>
+                  <CardDescription className="text-sm">
+                    {feature.description}
+                  </CardDescription>
                 </CardHeader>
               </Card>
             ))}
@@ -445,7 +537,9 @@ export default function ClientPage() {
               <Badge className="mb-3 shadow-sm" variant="outline">
                 FAQ
               </Badge>
-              <h2 className="mb-3 text-balance text-3xl font-bold md:text-4xl">Frequently Asked Questions</h2>
+              <h2 className="mb-3 text-balance text-3xl font-bold md:text-4xl">
+                Frequently Asked Questions
+              </h2>
               <p className="text-muted-foreground text-base">
                 Common questions about our features and platform capabilities
               </p>
@@ -453,7 +547,11 @@ export default function ClientPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
               <div className="space-y-3">
-                <Accordion type="single" collapsible className="w-full space-y-3">
+                <Accordion
+                  type="single"
+                  collapsible
+                  className="w-full space-y-3"
+                >
                   <AccordionItem
                     value="item-1"
                     className="border rounded-lg px-6 bg-white shadow-sm hover:shadow-md transition-all"
@@ -462,9 +560,10 @@ export default function ClientPage() {
                       Can I try the platform before committing?
                     </AccordionTrigger>
                     <AccordionContent className="text-muted-foreground leading-relaxed pb-4">
-                      Yes! We offer a 14-day free trial with full access to all features. No credit card required to
-                      start. You can explore the platform, test integrations, and send messages to see how it works for
-                      your business.
+                      Yes! We offer a 14-day free trial with full access to all
+                      features. No credit card required to start. You can
+                      explore the platform, test integrations, and send messages
+                      to see how it works for your business.
                     </AccordionContent>
                   </AccordionItem>
 
@@ -476,9 +575,10 @@ export default function ClientPage() {
                       Do I need technical knowledge to use the platform?
                     </AccordionTrigger>
                     <AccordionContent className="text-muted-foreground leading-relaxed pb-4">
-                      Not at all! Our platform is designed for non-technical users with an intuitive drag-and-drop
-                      interface. However, we also provide APIs and webhooks for developers who want advanced
-                      customization.
+                      Not at all! Our platform is designed for non-technical
+                      users with an intuitive drag-and-drop interface. However,
+                      we also provide APIs and webhooks for developers who want
+                      advanced customization.
                     </AccordionContent>
                   </AccordionItem>
 
@@ -490,16 +590,21 @@ export default function ClientPage() {
                       Can I use my existing phone number?
                     </AccordionTrigger>
                     <AccordionContent className="text-muted-foreground leading-relaxed pb-4">
-                      Yes, you can use your existing business phone number for WhatsApp Business API. We'll help you
-                      migrate it during the onboarding process. The number must not be currently registered on WhatsApp
-                      or WhatsApp Business App.
+                      Yes, you can use your existing business phone number for
+                      WhatsApp Business API. We'll help you migrate it during
+                      the onboarding process. The number must not be currently
+                      registered on WhatsApp or WhatsApp Business App.
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>
               </div>
 
               <div className="space-y-3">
-                <Accordion type="single" collapsible className="w-full space-y-3">
+                <Accordion
+                  type="single"
+                  collapsible
+                  className="w-full space-y-3"
+                >
                   <AccordionItem
                     value="item-4"
                     className="border rounded-lg px-6 bg-white shadow-sm hover:shadow-md transition-all"
@@ -508,9 +613,11 @@ export default function ClientPage() {
                       How does the AI chatbot work?
                     </AccordionTrigger>
                     <AccordionContent className="text-muted-foreground leading-relaxed pb-4">
-                      Our AI chatbot uses natural language processing to understand customer queries and provide
-                      relevant responses. You can train it with your business data, FAQs, and product information. It
-                      learns from interactions and improves over time.
+                      Our AI chatbot uses natural language processing to
+                      understand customer queries and provide relevant
+                      responses. You can train it with your business data, FAQs,
+                      and product information. It learns from interactions and
+                      improves over time.
                     </AccordionContent>
                   </AccordionItem>
 
@@ -522,8 +629,10 @@ export default function ClientPage() {
                       What integrations are available?
                     </AccordionTrigger>
                     <AccordionContent className="text-muted-foreground leading-relaxed pb-4">
-                      We integrate with popular platforms including Shopify, WooCommerce, Salesforce, HubSpot, Zapier,
-                      and more. We also provide REST APIs and webhooks for custom integrations with any system.
+                      We integrate with popular platforms including Shopify,
+                      WooCommerce, Salesforce, HubSpot, Zapier, and more. We
+                      also provide REST APIs and webhooks for custom
+                      integrations with any system.
                     </AccordionContent>
                   </AccordionItem>
 
@@ -535,9 +644,10 @@ export default function ClientPage() {
                       Is there a limit on team members?
                     </AccordionTrigger>
                     <AccordionContent className="text-muted-foreground leading-relaxed pb-4">
-                      Team member limits depend on your plan. Starter plans include up to 3 users, Professional plans up
-                      to 10 users, and Enterprise plans offer unlimited team members with advanced role-based access
-                      control.
+                      Team member limits depend on your plan. Starter plans
+                      include up to 3 users, Professional plans up to 10 users,
+                      and Enterprise plans offer unlimited team members with
+                      advanced role-based access control.
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>
@@ -548,50 +658,26 @@ export default function ClientPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-green-600 to-blue-700 py-12 md:py-14">
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />
-        <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
-
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 text-balance">
-              Ready to Transform Your Customer Communication?
-            </h2>
-
-            <p className="text-lg md:text-xl text-white/90 mb-6 max-w-2xl mx-auto text-pretty leading-relaxed">
-              Start your free trial today and experience the power of our comprehensive messaging platform. No credit
-              card required.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
-              <Button
-                size="lg"
-                className="bg-white text-green-600 hover:bg-gray-50 font-semibold shadow-xl hover:shadow-2xl transition-all px-8 group"
-                asChild
-              >
-                <Link href={process.env.NEXT_PUBLIC_APP_URL || "https://app.chati.chat"}>
-                  Start Free Trial
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-2 border-white text-white hover:bg-white/10 font-medium shadow-lg backdrop-blur-sm px-8 bg-transparent"
-                asChild
-              >
-                <Link href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""}`}>
-                  <MessageCircle className="mr-2 h-5 w-5" />
-                  Talk to Sales
-                </Link>
-              </Button>
-            </div>
-
-            <p className="mt-5 text-sm text-white/80">Free 14-day trial • No credit card required • Cancel anytime</p>
-          </div>
-        </div>
-      </section>
+      <CTASection
+        gradientFrom="from-blue-600"
+        gradientVia="via-green-600"
+        gradientTo="to-blue-700"
+        title="Ready to Transform Your Customer Communication?"
+        description="Start your free trial today and experience the power of our comprehensive messaging platform. No credit card required."
+        primaryButtonText="Start Free Trial"
+        primaryButtonLink={
+          process.env.NEXT_PUBLIC_APP_URL || "https://app.chati.chat"
+        }
+        primaryButtonBgColor="bg-white"
+        primaryButtonTextColor="text-green-600"
+        primaryButtonHoverBg="hover:bg-gray-50"
+        secondaryButtonText="Talk to Sales"
+        secondaryButtonLink={`https://wa.me/${
+          process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""
+        }`}
+        showSecondaryButton={true}
+        footerText="Free 14-day trial • No credit card required • Cancel anytime"
+      />
     </div>
-  )
+  );
 }

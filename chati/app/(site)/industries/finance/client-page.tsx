@@ -11,6 +11,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { BrandSlider } from "@/components/brand-slider";
+import CTASection from "@/components/section/CTASection";
 import {
   DollarSign,
   Shield,
@@ -184,41 +185,49 @@ export function FinanceClientPage() {
   const faqsColumnFAQSection1 = [
     {
       question: "How can financial institutions use WhatsApp Business API?",
-      answer: "Financial institutions can send instant transaction alerts, payment confirmations, fund transfer notifications, OTPs for secure authentication, loan and EMI reminders, credit card payment alerts, policy renewal notices, investment updates, and fraud alerts—all through WhatsApp's secure, end-to-end encrypted platform that customers already use daily, achieving 98% open rates compared to 20% for email."
+      answer:
+        "Financial institutions can send instant transaction alerts, payment confirmations, fund transfer notifications, OTPs for secure authentication, loan and EMI reminders, credit card payment alerts, policy renewal notices, investment updates, and fraud alerts—all through WhatsApp's secure, end-to-end encrypted platform that customers already use daily, achieving 98% open rates compared to 20% for email.",
     },
     {
       question: "Is WhatsApp secure enough for banking and financial data?",
-      answer: "Absolutely! WhatsApp uses military-grade end-to-end encryption for all messages, making it highly secure for financial communications. WhatsApp Business API is compliant with GDPR, PCI-DSS, and ISO 27001 standards. Leading banks, insurance companies, and fintech firms worldwide trust WhatsApp for sending OTPs, account statements, transaction alerts, and sensitive customer information securely."
+      answer:
+        "Absolutely! WhatsApp uses military-grade end-to-end encryption for all messages, making it highly secure for financial communications. WhatsApp Business API is compliant with GDPR, PCI-DSS, and ISO 27001 standards. Leading banks, insurance companies, and fintech firms worldwide trust WhatsApp for sending OTPs, account statements, transaction alerts, and sensitive customer information securely.",
     },
     {
       question: "What banking services can customers access via WhatsApp?",
-      answer: "Customers can check account balances, view transaction history, receive instant OTPs for authentication, apply for loans or credit cards, get personalized investment advice, make bill payments through integrated payment links, track loan applications, report lost cards, access customer support 24/7, and complete KYC verification—all through conversational chat without visiting branches or downloading separate banking apps."
+      answer:
+        "Customers can check account balances, view transaction history, receive instant OTPs for authentication, apply for loans or credit cards, get personalized investment advice, make bill payments through integrated payment links, track loan applications, report lost cards, access customer support 24/7, and complete KYC verification—all through conversational chat without visiting branches or downloading separate banking apps.",
     },
     {
       question: "Can WhatsApp help reduce customer service costs?",
-      answer: "Yes! Banks report up to 25% reduction in customer service costs by handling queries through WhatsApp. AI-powered chatbots answer 80% of routine questions automatically—balance inquiries, transaction status, branch locations, interest rates—freeing agents to handle complex issues. Automated notifications reduce call center volume, while self-service features empower customers to complete tasks independently, slashing operational expenses."
-    }
+      answer:
+        "Yes! Banks report up to 25% reduction in customer service costs by handling queries through WhatsApp. AI-powered chatbots answer 80% of routine questions automatically—balance inquiries, transaction status, branch locations, interest rates—freeing agents to handle complex issues. Automated notifications reduce call center volume, while self-service features empower customers to complete tasks independently, slashing operational expenses.",
+    },
   ];
-  
+
   const faqsColumnFAQSection2 = [
     {
       question: "How does WhatsApp help with loan and insurance processes?",
-      answer: "WhatsApp streamlines the entire loan journey—from application to disbursement. Send pre-approved offers, collect documents via chat, provide instant eligibility checks, automate EMI reminders, and share repayment links. For insurance, enable policy comparisons, instant quotes, premium payment links, claim tracking, document submission, renewal reminders, and 24/7 policy assistance—reducing processing time by 60% and improving conversion rates by 35%."
+      answer:
+        "WhatsApp streamlines the entire loan journey—from application to disbursement. Send pre-approved offers, collect documents via chat, provide instant eligibility checks, automate EMI reminders, and share repayment links. For insurance, enable policy comparisons, instant quotes, premium payment links, claim tracking, document submission, renewal reminders, and 24/7 policy assistance—reducing processing time by 60% and improving conversion rates by 35%.",
     },
     {
       question: "Can we send promotional offers through WhatsApp?",
-      answer: "Yes, but with customer consent! WhatsApp allows promotional messages for opted-in customers. Send personalized loan offers, credit card promotions, investment opportunities, insurance plans, special interest rates, cashback deals, and seasonal campaigns. Use rich media like product brochures, comparison charts, and video explainers. Promotional messages on WhatsApp achieve 45-60% engagement rates—10x higher than traditional email marketing."
+      answer:
+        "Yes, but with customer consent! WhatsApp allows promotional messages for opted-in customers. Send personalized loan offers, credit card promotions, investment opportunities, insurance plans, special interest rates, cashback deals, and seasonal campaigns. Use rich media like product brochures, comparison charts, and video explainers. Promotional messages on WhatsApp achieve 45-60% engagement rates—10x higher than traditional email marketing.",
     },
     {
       question: "How does WhatsApp integrate with banking systems?",
-      answer: "WhatsApp Business API integrates seamlessly with core banking systems, CRM platforms, payment gateways, and fraud detection tools through RESTful APIs. Sync customer data in real-time, trigger automated notifications based on transactions, pull account information for chatbot responses, process payments through UPI/cards, and maintain unified customer profiles—creating a connected ecosystem that delivers contextual, personalized banking experiences at scale."
+      answer:
+        "WhatsApp Business API integrates seamlessly with core banking systems, CRM platforms, payment gateways, and fraud detection tools through RESTful APIs. Sync customer data in real-time, trigger automated notifications based on transactions, pull account information for chatbot responses, process payments through UPI/cards, and maintain unified customer profiles—creating a connected ecosystem that delivers contextual, personalized banking experiences at scale.",
     },
     {
-      question: "What compliance requirements apply to financial WhatsApp messaging?",
-      answer: "Financial institutions must obtain explicit opt-in consent before messaging, clearly identify themselves as the sender, provide opt-out mechanisms, protect customer data per GDPR/local laws, use verified business profiles with green checkmarks, maintain message audit trails, implement contact masking for privacy, and follow WhatsApp's Commerce and Business Policy. Working with certified Business Solution Providers ensures compliance with all regulatory requirements and industry standards."
-    }
+      question:
+        "What compliance requirements apply to financial WhatsApp messaging?",
+      answer:
+        "Financial institutions must obtain explicit opt-in consent before messaging, clearly identify themselves as the sender, provide opt-out mechanisms, protect customer data per GDPR/local laws, use verified business profiles with green checkmarks, maintain message audit trails, implement contact masking for privacy, and follow WhatsApp's Commerce and Business Policy. Working with certified Business Solution Providers ensures compliance with all regulatory requirements and industry standards.",
+    },
   ];
-  
 
   return (
     <div className="min-h-screen">
@@ -707,42 +716,27 @@ export function FinanceClientPage() {
         faqsColumn2={faqsColumnFAQSection2}
       />
 
-      {/* CTA Section - Compact */}
-      <section className="py-12 md:py-14 bg-gradient-to-br from-emerald-600 to-teal-700 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4">
-            Ready to Transform Your Financial Services?
-          </h2>
-          <p className="text-base md:text-lg text-emerald-100 mb-8 max-w-2xl mx-auto">
-            Join leading financial institutions enhancing customer experience
-            with secure WhatsApp messaging
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Button
-              size="lg"
-              variant="secondary"
-              className="bg-white text-emerald-600 hover:bg-gray-100"
-            >
-              Start Free Trial
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-2 border-white text-white hover:bg-white/10 bg-transparent"
-              asChild
-            >
-              <Link
-                href={`https://wa.me/${
-                  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""
-                }`}
-              >
-                <Bell className="mr-2 h-4 w-4" />
-                Schedule Demo
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+      {/* CTA Section */}
+      <CTASection
+        gradientFrom="from-emerald-600"
+        gradientVia="via-emerald-600"
+        gradientTo="to-teal-700"
+        title="Ready to Transform Your Financial Services?"
+        description="Join leading financial institutions enhancing customer experience with secure WhatsApp messaging"
+        primaryButtonText="Start Free Trial"
+        primaryButtonLink={
+          process.env.NEXT_PUBLIC_APP_URL || "https://app.chati.chat"
+        }
+        primaryButtonBgColor="bg-white"
+        primaryButtonTextColor="text-emerald-600"
+        primaryButtonHoverBg="hover:bg-gray-100"
+        secondaryButtonText="Schedule Demo"
+        secondaryButtonLink={`https://wa.me/${
+          process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""
+        }`}
+        showSecondaryButton={true}
+        footerText=""
+      />
     </div>
   );
 }
