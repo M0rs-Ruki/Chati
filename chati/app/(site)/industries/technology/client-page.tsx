@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import FAQSection from "@/components/section/FAQSection";
 import {
   Accordion,
   AccordionContent,
@@ -180,6 +181,45 @@ export function TechnologyClientPage() {
         "Yes! Share API documentation, code examples, and technical guides. Help developers troubleshoot integration issues and notify them about API changes or deprecations—all within WhatsApp.",
     },
   ];
+
+  const faqsColumnFAQSection1 = [
+    {
+      question: "How can SaaS companies use WhatsApp for customer onboarding?",
+      answer: "SaaS companies can automate the entire onboarding journey via WhatsApp—send welcome messages with getting-started guides, deliver personalized setup tutorials based on user actions, share quick-start videos, provide feature walkthroughs, offer contextual tips when users complete milestones, and trigger drip campaigns that guide trial users through activation steps. WhatsApp onboarding achieves 85% engagement rates compared to 20% for email, accelerating time-to-value by 60%."
+    },
+    {
+      question: "Can WhatsApp help reduce customer churn?",
+      answer: "Absolutely! Set up automated alerts for inactive users with re-engagement tips, send feature recommendations based on usage patterns, provide proactive support for struggling users, share success stories and best practices, offer personalized check-ins from customer success teams, and deliver renewal reminders with incentives. WhatsApp's instant, conversational approach increases user engagement by 45% and reduces churn by 25-35% through timely interventions."
+    },
+    {
+      question: "How does WhatsApp improve trial-to-paid conversions?",
+      answer: "Use WhatsApp drip sequences to nurture trial users—send activation messages highlighting quick wins, showcase underutilized premium features, share customer success stories, provide usage analytics showing value delivered, send trial expiration alerts with upgrade incentives, and offer time-limited discounts. Personalized WhatsApp campaigns based on product-qualified leads (PQL) signals achieve 30-50% higher conversion rates than generic email nurture sequences."
+    },
+    {
+      question: "Can we provide technical support via WhatsApp?",
+      answer: "Yes! Offer 24/7 first-line support through AI chatbots that answer FAQs, troubleshoot common issues, and provide setup guidance. Enable users to submit bug reports with screenshots, share error logs, schedule support calls, and escalate complex issues to live agents with full conversation context. WhatsApp support reduces ticket resolution time by 40%, decreases support costs by 30%, and improves customer satisfaction scores by 25%."
+    }
+  ];
+  
+  const faqsColumnFAQSection2 = [
+    {
+      question: "How can we integrate WhatsApp with our SaaS platform?",
+      answer: "Integrate WhatsApp Business API with your SaaS platform via webhooks and REST APIs to trigger event-based messages—welcome new sign-ups, notify users about account activity, send usage alerts, deliver payment confirmations, share feature updates, and sync user data bidirectionally. Popular integrations include Salesforce, HubSpot, Intercom, Segment, and Zapier, creating a unified ecosystem where customer interactions flow seamlessly between platforms."
+    },
+    {
+      question: "What types of automated messages can SaaS companies send?",
+      answer: "Send trial start confirmations with onboarding links, usage milestone celebrations ('You created your 10th project!'), feature announcement updates, billing notifications and payment receipts, subscription renewal reminders, downgrade prevention offers, webinar invitations, product update changelogs, security alerts, and personalized upgrade recommendations—all triggered automatically based on user behavior, subscription tier, and engagement patterns for maximum relevance."
+    },
+    {
+      question: "Can we use WhatsApp for product announcements and updates?",
+      answer: "Absolutely! Share new feature launches with demo videos, product roadmap updates, changelog highlights, beta program invitations, maintenance notifications, security updates, integration announcements, and educational content about advanced capabilities. Rich media messages with GIFs, tutorial videos, and interactive buttons achieve 60-80% read rates and 35-50% click-through rates—ensuring your product updates reach and engage users effectively."
+    },
+    {
+      question: "Is WhatsApp scalable for growing SaaS businesses?",
+      answer: "Yes! WhatsApp Business API is built for scale, supporting unlimited contacts, multi-agent teams, automated workflows, and high-volume messaging. Whether you have 100 or 1 million users, you can segment audiences, personalize messages, trigger behavioral campaigns, and maintain 1-on-1 conversations. Leading SaaS companies report handling 50,000+ monthly conversations per agent while maintaining sub-2-minute response times through intelligent automation and live agent collaboration."
+    }
+  ];
+  
 
   return (
     <div className="min-h-screen">
@@ -630,78 +670,13 @@ export function TechnologyClientPage() {
       </section>
 
       {/* FAQ Section - Compact */}
-      <section ref={faqRef} className="py-12 md:py-14 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div
-            className={`text-center mb-10 transition-all duration-700 ${
-              faqInView
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-8"
-            }`}
-          >
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-base text-muted-foreground max-w-2xl mx-auto">
-              Common questions about WhatsApp Business API for SaaS
-            </p>
-          </div>
-
-          <div className="max-w-5xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-              <div
-                className={`transition-all duration-700 ${
-                  faqInView
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Accordion type="single" collapsible className="space-y-3">
-                  {faqsColumn1.map((faq, index) => (
-                    <AccordionItem
-                      key={index}
-                      value={`item-${index}`}
-                      className="bg-white border border-gray-200 rounded-lg px-5 shadow-sm hover:shadow-md transition-shadow"
-                    >
-                      <AccordionTrigger className="text-left font-semibold hover:no-underline py-4 text-sm">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground pb-4 text-sm leading-relaxed">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-
-              <div
-                className={`transition-all duration-700 delay-200 ${
-                  faqInView
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Accordion type="single" collapsible className="space-y-3">
-                  {faqsColumn2.map((faq, index) => (
-                    <AccordionItem
-                      key={index + 3}
-                      value={`item-${index + 3}`}
-                      className="bg-white border border-gray-200 rounded-lg px-5 shadow-sm hover:shadow-md transition-shadow"
-                    >
-                      <AccordionTrigger className="text-left font-semibold hover:no-underline py-4 text-sm">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground pb-4 text-sm leading-relaxed">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <FAQSection
+        badgeText="Common Questions"
+        title="Frequently Asked Questions"
+        description="Everything you need to know about WhatsApp for Technology"
+        faqsColumn1={faqsColumnFAQSection1}
+        faqsColumn2={faqsColumnFAQSection2}
+      />
 
       {/* CTA Section - Compact */}
       <section className="py-12 md:py-14 bg-gradient-to-br from-purple-600 to-pink-700 text-white">

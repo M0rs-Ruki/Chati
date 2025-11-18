@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import FAQSection from "@/components/section/FAQSection";
 import { Badge } from "@/components/ui/badge";
 import {
   Accordion,
@@ -182,13 +183,59 @@ export default function FoodClientPage() {
     },
   ];
 
-  function Feature({ 
-    Icon, 
-    iconBg, 
-    iconColor, 
-    title, 
-    desc 
-  }: { 
+  const faqsColumnFAQSection1 = [
+    {
+      question: "How can restaurants use WhatsApp for taking orders?",
+      answer:
+        "Restaurants can display digital menus with photos and prices through WhatsApp catalogs, allowing customers to browse items, customize orders, add to cart, and place orders directly in chat. Integrate payment links for instant checkout, send automated order confirmations, provide real-time delivery tracking, and enable one-tap reordering for regulars—all without third-party delivery apps that charge 20-30% commission.",
+    },
+    {
+      question: "Can I send my menu through WhatsApp?",
+      answer:
+        "Absolutely! Use WhatsApp Business catalog to showcase up to 500 items with images, descriptions, prices, and variants (sizes, toppings, spice levels). Send daily specials, seasonal menus, and combo offers as rich media messages. Customers can browse your full menu directly in chat, ask questions about ingredients or allergens, and place orders instantly—creating a seamless mobile-first ordering experience.",
+    },
+    {
+      question: "How does WhatsApp help with delivery tracking?",
+      answer:
+        "Send automated notifications at every stage—order confirmed, food preparation started, order out for delivery with live tracking link, estimated arrival time, and delivery completion confirmation. Include delivery person's contact for direct coordination. Real-time updates reduce 'Where's my order?' calls by 70%, improve customer satisfaction, and build trust through transparency in the entire delivery journey.",
+    },
+    {
+      question: "Can I take table reservations via WhatsApp?",
+      answer:
+        "Yes! Enable customers to check table availability, book reservations, specify party size and timing, request special seating, and receive instant confirmations—all through chat. Send automated reminders 2 hours before reservation, allow easy modifications or cancellations, manage waitlists, and notify guests when tables are ready. WhatsApp reservations reduce no-shows by 40% and eliminate phone tag.",
+    },
+  ];
+
+  const faqsColumnFAQSection2 = [
+    {
+      question: "How can I promote offers and increase repeat orders?",
+      answer:
+        "Send personalized promotions based on order history—'Try our new pasta!' for Italian food lovers, birthday discounts, exclusive weekend deals, happy hour specials, and loyalty rewards. Broadcast flash sales, combo offers, and seasonal menus to opted-in customers. WhatsApp promotions achieve 60-80% open rates and 25-40% conversion rates—10x better than email—driving repeat orders and increasing average order value by 35%.",
+    },
+    {
+      question: "Can chatbots handle customer queries automatically?",
+      answer:
+        "AI chatbots answer FAQs 24/7—menu inquiries, dietary options (vegan, gluten-free), operating hours, delivery areas, minimum order values, ingredient questions, and allergen information. Provide instant recommendations based on preferences, upsell complementary items, collect delivery addresses, and seamlessly transfer complex requests to staff. Chatbots handle 75% of routine queries, freeing your team to focus on food preparation and service.",
+    },
+    {
+      question: "How do I integrate WhatsApp with my POS system?",
+      answer:
+        "WhatsApp Business API integrates with popular restaurant POS systems like Clover, Square, Toast, and Lightspeed through APIs. Orders placed via WhatsApp automatically sync to your kitchen display system, update inventory in real-time, trigger billing, and maintain unified customer profiles with order history. This integration eliminates manual entry, reduces errors by 95%, and creates a seamless operation from chat to kitchen.",
+    },
+    {
+      question: "Is WhatsApp better than food delivery apps for my restaurant?",
+      answer:
+        "WhatsApp complements delivery apps while building direct customer relationships. Unlike apps charging 20-30% commission per order, WhatsApp messaging costs pennies. You own customer data, control pricing, run personalized marketing, and keep 100% of profits. For regulars and nearby customers, direct WhatsApp ordering increases margins by 25-35%, builds brand loyalty, and reduces dependency on expensive third-party platforms.",
+    },
+  ];
+
+  function Feature({
+    Icon,
+    iconBg,
+    iconColor,
+    title,
+    desc,
+  }: {
     Icon: React.ComponentType<{ className?: string }>;
     iconBg: string;
     iconColor: string;
@@ -671,78 +718,13 @@ export default function FoodClientPage() {
       </section>
 
       {/* FAQ Section - Compact */}
-      <section ref={faqRef} className="py-12 md:py-14 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div
-            className={`text-center mb-10 transition-all duration-700 ${
-              faqInView
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-8"
-            }`}
-          >
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-base text-muted-foreground max-w-2xl mx-auto">
-              Common questions about WhatsApp Business API for food businesses
-            </p>
-          </div>
-
-          <div className="max-w-5xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-              <div
-                className={`transition-all duration-700 ${
-                  faqInView
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Accordion type="single" collapsible className="space-y-3">
-                  {faqsColumn1.map((faq, index) => (
-                    <AccordionItem
-                      key={index}
-                      value={`item-${index}`}
-                      className="bg-white border border-gray-200 rounded-lg px-5 shadow-sm hover:shadow-md transition-shadow"
-                    >
-                      <AccordionTrigger className="text-left font-semibold hover:no-underline py-4 text-sm">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground pb-4 text-sm leading-relaxed">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-
-              <div
-                className={`transition-all duration-700 delay-200 ${
-                  faqInView
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Accordion type="single" collapsible className="space-y-3">
-                  {faqsColumn2.map((faq, index) => (
-                    <AccordionItem
-                      key={index + 3}
-                      value={`item-${index + 3}`}
-                      className="bg-white border border-gray-200 rounded-lg px-5 shadow-sm hover:shadow-md transition-shadow"
-                    >
-                      <AccordionTrigger className="text-left font-semibold hover:no-underline py-4 text-sm">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground pb-4 text-sm leading-relaxed">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <FAQSection
+        badgeText="Common Questions"
+        title="Frequently Asked Questions"
+        description="Everything you need to know about WhatsApp for Food & Beverage"
+        faqsColumn1={faqsColumnFAQSection1}
+        faqsColumn2={faqsColumnFAQSection2}
+      />
 
       {/* CTA Section - Compact */}
       <section className="py-12 md:py-14 bg-gradient-to-br from-orange-600 to-amber-700 text-white">

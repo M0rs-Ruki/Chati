@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import FAQSection from "@/components/section/FAQSection";
 import { Badge } from "@/components/ui/badge";
 import {
   Accordion,
@@ -180,6 +181,52 @@ export function RealEstateClientPage() {
       question: "Does it integrate with real estate CRMs?",
       answer:
         "Yes, Chati integrates with popular real estate CRMs and property management systems, ensuring all your client data and property information stays synchronized across platforms.",
+    },
+  ];
+
+  const faqsColumnFAQSection1 = [
+    {
+      question: "How can real estate agents use WhatsApp for lead generation?",
+      answer:
+        "Real estate agents can use Click-to-WhatsApp ads on Facebook and Instagram to capture leads directly in chat, add WhatsApp buttons on websites for instant inquiries, integrate with property portals, qualify leads automatically through chatbot questions about budget and preferences, send instant property recommendations, and nurture prospects with automated follow-ups—increasing conversion rates by 27% compared to traditional landing pages.",
+    },
+    {
+      question: "Can I share property listings through WhatsApp?",
+      answer:
+        "Absolutely! Share high-resolution images, virtual tour videos, 3D walkthroughs, floor plans, location maps, and detailed brochures directly in chat. Use WhatsApp Business catalog to showcase your entire property portfolio with prices, specifications, and amenities. Send personalized property recommendations based on buyer preferences, enabling clients to browse listings conveniently on their mobile devices—making property discovery engaging and immediate.",
+    },
+    {
+      question: "How does WhatsApp help schedule property viewings?",
+      answer:
+        "Automate the entire booking process—clients can check available time slots, select preferred dates, confirm site visits, and receive instant booking confirmations. Send automated reminders 24 hours before viewings with property address, agent contact, and directions. Allow easy rescheduling through quick reply buttons. WhatsApp scheduling reduces no-shows by 35%, eliminates back-and-forth calls, and ensures your sales team's calendar stays organized.",
+    },
+    {
+      question: "Can I automate follow-ups with potential buyers?",
+      answer:
+        "Yes! Set up automated drip campaigns that send property updates, market insights, price changes, and new listings based on buyer preferences. Follow up after site visits with feedback requests, additional property options, and financing information. Send periodic check-ins to warm leads who aren't ready to buy yet. Automated follow-ups keep you top-of-mind, nurture relationships over time, and increase conversion rates by 40% without manual effort.",
+    },
+  ];
+
+  const faqsColumnFAQSection2 = [
+    {
+      question: "How do chatbots help real estate businesses?",
+      answer:
+        "AI chatbots qualify leads 24/7 by asking about budget, location preferences, property type, and timeline. They answer FAQs about amenities, documentation, home loan processes, registration procedures, and property tax. Chatbots provide instant responses outside business hours, schedule viewings automatically, collect KYC documents, and escalate serious buyers to agents—handling 70-80% of initial inquiries while your team focuses on closing deals.",
+    },
+    {
+      question: "Can WhatsApp integrate with my real estate CRM?",
+      answer:
+        "Yes! WhatsApp Business API integrates seamlessly with popular real estate CRMs like Salesforce, Zoho, HubSpot, and property management systems. Automatically sync leads from WhatsApp to CRM, track conversation history, assign leads to agents, update deal stages, trigger automated workflows, and maintain unified client profiles—creating a centralized system where every inquiry is captured, tracked, and converted efficiently without manual data entry.",
+    },
+    {
+      question: "Can clients submit documents through WhatsApp?",
+      answer:
+        "Absolutely! Clients can securely submit KYC documents, identity proofs, income certificates, property papers, and bank statements directly through WhatsApp's encrypted platform. Create document checklists, send upload reminders, verify submissions, and store files in your CRM automatically. This eliminates physical document collection, speeds up verification processes by 50%, and provides a convenient digital experience that modern buyers expect.",
+    },
+    {
+      question: "What kind of property updates can I send?",
+      answer:
+        "Send new property launch announcements with photos and pricing, price reduction alerts for interested properties, construction progress updates with site photos, possession date reminders, payment due notifications with links, open house invitations, market trend reports, exclusive pre-launch offers, and neighborhood development updates. Rich media messages with videos and floor plans achieve 60-80% engagement rates, keeping buyers informed and accelerating purchase decisions.",
     },
   ];
 
@@ -658,78 +705,13 @@ export function RealEstateClientPage() {
       </section>
 
       {/* FAQ Section - Compact */}
-      <section ref={faqRef} className="py-12 md:py-14 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div
-            className={`text-center mb-10 transition-all duration-700 ${
-              faqInView
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-8"
-            }`}
-          >
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-base text-muted-foreground max-w-2xl mx-auto">
-              Common questions about WhatsApp Business API for real estate
-            </p>
-          </div>
-
-          <div className="max-w-5xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-              <div
-                className={`transition-all duration-700 ${
-                  faqInView
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Accordion type="single" collapsible className="space-y-3">
-                  {faqsColumn1.map((faq, index) => (
-                    <AccordionItem
-                      key={index}
-                      value={`item-${index}`}
-                      className="bg-white border border-gray-200 rounded-lg px-5 shadow-sm hover:shadow-md transition-shadow"
-                    >
-                      <AccordionTrigger className="text-left font-semibold hover:no-underline py-4 text-sm">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground pb-4 text-sm leading-relaxed">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-
-              <div
-                className={`transition-all duration-700 delay-200 ${
-                  faqInView
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Accordion type="single" collapsible className="space-y-3">
-                  {faqsColumn2.map((faq, index) => (
-                    <AccordionItem
-                      key={index + 3}
-                      value={`item-${index + 3}`}
-                      className="bg-white border border-gray-200 rounded-lg px-5 shadow-sm hover:shadow-md transition-shadow"
-                    >
-                      <AccordionTrigger className="text-left font-semibold hover:no-underline py-4 text-sm">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground pb-4 text-sm leading-relaxed">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <FAQSection
+        badgeText="Common Questions"
+        title="Frequently Asked Questions"
+        description="Everything you need to know about WhatsApp for Real Estate"
+        faqsColumn1={faqsColumnFAQSection1}
+        faqsColumn2={faqsColumnFAQSection2}
+      />
 
       {/* CTA Section - Compact */}
       <section className="py-12 md:py-14 bg-gradient-to-br from-blue-600 to-indigo-700 text-white">

@@ -3,6 +3,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import FAQSection from "@/components/section/FAQSection";
 import {
   Accordion,
   AccordionContent,
@@ -192,6 +193,46 @@ export default function TravelPage() {
         "Send automated post-stay surveys via WhatsApp with conversational questions. The 98% open rate ensures higher response rates than email surveys. Collect ratings, reviews, and detailed feedback to improve your services.",
     },
   ];
+
+  const faqsColumnFAQSection1 = [
+    {
+      question: "How can travel businesses use WhatsApp for bookings?",
+      answer: "Travel companies can automate the entire booking process via WhatsApp—customers browse packages, check availability, customize itineraries, make reservations for flights/hotels/tours, complete payments through integrated links, and receive instant confirmations with e-tickets and vouchers. WhatsApp booking systems handle inquiries 24/7, reduce booking friction, and increase conversions by 112% compared to traditional email-based processes."
+    },
+    {
+      question: "What travel notifications can be sent through WhatsApp?",
+      answer: "Send booking confirmations with PNR and itinerary details, flight status alerts for delays or gate changes, check-in reminders 24 hours before departure, boarding pass delivery, hotel reservation confirmations, weather updates at destination, travel insurance information, visa status updates, real-time baggage tracking, and trip completion surveys—all through WhatsApp's 98% open rate channel ensuring travelers stay informed throughout their journey."
+    },
+    {
+      question: "Can hotels manage guest communication via WhatsApp?",
+      answer: "Absolutely! Hotels send pre-arrival messages with check-in details and special requests confirmation, share Google Maps location and parking info, provide digital room keys, offer personalized upselling opportunities (spa treatments, room upgrades), send restaurant menus and room service options, enable instant guest support during stay, collect real-time feedback, and maintain post-stay engagement—improving guest satisfaction scores by 45% and driving 35% more direct bookings."
+    },
+    {
+      question: "How does WhatsApp help with customer support in travel?",
+      answer: "Provide 24/7 instant support through AI chatbots answering FAQs about visas, baggage policies, cancellations, and destinations. Handle booking modifications, process refunds, share alternative flight options during disruptions, provide emergency assistance, and escalate complex issues to live agents with full context. WhatsApp support reduces response time by 70%, handles 80% of routine queries automatically, and achieves 4.5+ CSAT scores consistently."
+    }
+  ];
+  
+  const faqsColumnFAQSection2 = [
+    {
+      question: "Can we send promotional offers through WhatsApp?",
+      answer: "Yes! Send personalized travel deals based on browsing history and preferences, early bird discounts for seasonal packages, flash sales for last-minute bookings, exclusive loyalty rewards for repeat customers, destination recommendations with rich media content, group travel offers, and festival/holiday specials. WhatsApp promotional messages achieve 60-80% open rates and 25-40% conversion rates—12x higher than email marketing—driving significant revenue growth."
+    },
+    {
+      question: "How does WhatsApp integrate with booking systems?",
+      answer: "WhatsApp Business API integrates seamlessly with travel booking engines, property management systems (PMS), global distribution systems (GDS), and CRM platforms through REST APIs. Sync booking data in real-time, automate confirmation messages, trigger status updates, pull inventory availability, process payments, and maintain unified customer profiles—creating an end-to-end connected ecosystem that eliminates manual work and delivers seamless traveler experiences."
+    },
+    {
+      question: "Can we share itineraries and travel documents via WhatsApp?",
+      answer: "Absolutely! Share complete travel itineraries with day-by-day schedules, flight tickets and boarding passes as PDFs, hotel vouchers with confirmation codes, visa documents and travel insurance, activity bookings and entry tickets, Google Maps locations for hotels and attractions, emergency contact information, and multi-language travel guides—all securely via WhatsApp's end-to-end encrypted platform that travelers already use daily."
+    },
+    {
+      question: "Is WhatsApp suitable for both B2C and B2B travel businesses?",
+      answer: "Yes! B2C travel agencies use WhatsApp for individual traveler bookings, personalized recommendations, and customer support. B2B tour operators leverage it for corporate travel coordination, group booking management, agent-to-agent communication, bulk reservation confirmations, and partner collaboration. WhatsApp's scalability, automation capabilities, and multi-agent support make it ideal for travel businesses of all sizes—from solo agents to multinational hospitality chains managing millions of guests."
+    }
+  ];
+  
+
   type FeatureProps = {
     iconBg: string;
     iconColor: string;
@@ -655,79 +696,13 @@ export default function TravelPage() {
       </section>
 
       {/* FAQ Section - Compact */}
-      <section ref={faqRef} className="py-12 md:py-14 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div
-            className={`text-center mb-10 transition-all duration-700 ${
-              faqInView
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-8"
-            }`}
-          >
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-base text-muted-foreground max-w-2xl mx-auto">
-              Common questions about WhatsApp Business API for travel and
-              hospitality
-            </p>
-          </div>
-
-          <div className="max-w-5xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-              <div
-                className={`transition-all duration-700 ${
-                  faqInView
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Accordion type="single" collapsible className="space-y-3">
-                  {faqsColumn1.map((faq, index) => (
-                    <AccordionItem
-                      key={index}
-                      value={`item-${index}`}
-                      className="bg-white border border-gray-200 rounded-lg px-5 shadow-sm hover:shadow-md transition-shadow"
-                    >
-                      <AccordionTrigger className="text-left font-semibold hover:no-underline py-4 text-sm">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground pb-4 text-sm leading-relaxed">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-
-              <div
-                className={`transition-all duration-700 delay-200 ${
-                  faqInView
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Accordion type="single" collapsible className="space-y-3">
-                  {faqsColumn2.map((faq, index) => (
-                    <AccordionItem
-                      key={index}
-                      value={`item-${index + 3}`}
-                      className="bg-white border border-gray-200 rounded-lg px-5 shadow-sm hover:shadow-md transition-shadow"
-                    >
-                      <AccordionTrigger className="text-left font-semibold hover:no-underline py-4 text-sm">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground pb-4 text-sm leading-relaxed">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <FAQSection
+        badgeText="Common Questions"
+        title="Frequently Asked Questions"
+        description="Everything you need to know about WhatsApp for Travel & Hospitality"
+        faqsColumn1={faqsColumnFAQSection1}
+        faqsColumn2={faqsColumnFAQSection2}
+      />
 
       {/* CTA Section - Compact */}
       <section className="py-12 md:py-14 bg-gradient-to-br from-cyan-600 to-blue-700 text-white">
