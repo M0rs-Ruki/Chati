@@ -1130,45 +1130,52 @@ export default function WhatsAppBroadcastPage() {
       {/* FAQ Section */}
       <section
         ref={faqRef}
-        className="py-12 md:py-14 bg-gradient-to-br from-gray-50 to-white"
+        className="relative overflow-hidden bg-gradient-to-br from-gray-50 via-white to-blue-50/20 py-12 md:py-14"
       >
-        <div className="container mx-auto px-4">
-          <div
-            className={`text-center mb-10 transition-all duration-700 ${
-              faqInView
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-8"
-            }`}
-          >
-            <h2 className="text-3xl md:text-4xl font-bold mb-3">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-base text-gray-600 max-w-2xl mx-auto">
-              Everything you need to know about WhatsApp broadcast messaging
-            </p>
-          </div>
-
+        <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-6xl mx-auto">
+            <div
+              className={`mb-10 text-center transition-all duration-700 ${
+                faqInView
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-8"
+              }`}
+            >
+              <Badge className="mb-3 shadow-sm" variant="outline">
+                FAQ
+              </Badge>
+              <h2 className="mb-3 text-balance text-3xl font-bold md:text-4xl">
+                Frequently Asked Questions
+              </h2>
+              <p className="text-muted-foreground text-base">
+                Everything you need to know about WhatsApp broadcast messaging
+              </p>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
               {/* Left Column - 3 FAQs */}
               <div
-                className={`transition-all duration-700 ${
+                className={`space-y-3 transition-all duration-700 ${
                   faqInView
                     ? "opacity-100 translate-y-0"
                     : "opacity-0 translate-y-8"
                 }`}
               >
-                <Accordion type="single" collapsible className="space-y-3">
+                <Accordion
+                  type="single"
+                  collapsible
+                  className="w-full space-y-3"
+                >
                   {faqsColumn1.map((faq, index) => (
                     <AccordionItem
                       key={index}
                       value={`item-${index}`}
-                      className="bg-white border border-gray-200 rounded-lg px-6 shadow-sm hover:shadow-md transition-shadow"
+                      className="border rounded-lg px-6 bg-white shadow-sm hover:shadow-md transition-all duration-300"
                     >
                       <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
                         {faq.question}
                       </AccordionTrigger>
-                      <AccordionContent className="text-gray-600 pb-4 leading-relaxed">
+                      <AccordionContent className="text-muted-foreground leading-relaxed pb-4 animate-in fade-in slide-in-from-top-2 duration-300">
                         {faq.answer}
                       </AccordionContent>
                     </AccordionItem>
@@ -1178,23 +1185,27 @@ export default function WhatsAppBroadcastPage() {
 
               {/* Right Column - 3 FAQs */}
               <div
-                className={`transition-all duration-700 delay-200 ${
+                className={`space-y-3 transition-all duration-700 delay-200 ${
                   faqInView
                     ? "opacity-100 translate-y-0"
                     : "opacity-0 translate-y-8"
                 }`}
               >
-                <Accordion type="single" collapsible className="space-y-3">
+                <Accordion
+                  type="single"
+                  collapsible
+                  className="w-full space-y-3"
+                >
                   {faqsColumn2.map((faq, index) => (
                     <AccordionItem
                       key={index}
                       value={`item-${index + 3}`}
-                      className="bg-white border border-gray-200 rounded-lg px-6 shadow-sm hover:shadow-md transition-shadow"
+                      className="border rounded-lg px-6 bg-white shadow-sm hover:shadow-md transition-all duration-300"
                     >
                       <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
                         {faq.question}
                       </AccordionTrigger>
-                      <AccordionContent className="text-gray-600 pb-4 leading-relaxed">
+                      <AccordionContent className="text-muted-foreground leading-relaxed pb-4 animate-in fade-in slide-in-from-top-2 duration-300">
                         {faq.answer}
                       </AccordionContent>
                     </AccordionItem>
