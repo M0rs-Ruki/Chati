@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import FAQSection from "@/components/section/FAQSection";
 import {
   ArrowRight,
   Database,
@@ -60,6 +61,37 @@ export default function ClientPage() {
   const { ref: faqRef, isVisible: isFaqVisible } = useIntersectionObserver({
     threshold: 0.1,
   });
+
+  const faqsColumnFAQSection1 = [
+    {
+      question: "What is a Customer Data Platform (CDP)?",
+      answer: "A Customer Data Platform (CDP) is a software system that consolidates customer data from multiple sources into a unified database, creating comprehensive customer profiles. It enables businesses to segment audiences, personalize campaigns, and gain actionable insights across all customer touchpoints."
+    },
+    {
+      question: "How does the CDP integrate with my existing tools?",
+      answer: "Our CDP offers seamless integration with 20+ platforms including Razorpay, Shopify, Facebook Leads, India Mart, Justdial, and more. We provide pre-built connectors, RESTful APIs, and webhooks for custom integrations. Data synchronization happens in real-time, ensuring your customer profiles are always up-to-date."
+    },
+    {
+      question: "Can I create custom customer segments?",
+      answer: "Yes! Our advanced segmentation engine allows you to create unlimited custom segments based on any combination of behavioral, demographic, transactional, and custom attributes. You can also create dynamic segments that automatically update as customer data changes, and use AI-powered predictive segments."
+    }
+  ];
+  
+  const faqsColumnFAQSection2 = [
+    {
+      question: "What channels can I use for campaigns?",
+      answer: "You can launch campaigns across multiple channels including WhatsApp Business API, RCS (Rich Communication Services), SMS, Email, Instagram Direct Messages, and Facebook Messenger. Our platform enables omnichannel orchestration, allowing you to coordinate campaigns across all channels from a single interface."
+    },
+    {
+      question: "Is my customer data secure and compliant?",
+      answer: "Absolutely. We implement enterprise-grade security with end-to-end encryption, secure data storage, and regular security audits. Our platform is GDPR compliant and includes features for data privacy, consent management, and role-based access control. We also provide audit trails and data retention policies."
+    },
+    {
+      question: "How quickly can I see results?",
+      answer: "Most businesses see measurable improvements within the first 30 days. Our quick-start templates and pre-built integrations allow you to launch your first campaign within hours. Real-time analytics provide immediate visibility into campaign performance, customer engagement, and ROI."
+    }
+  ];
+  
 
   return (
     <div className="flex flex-col">
@@ -888,156 +920,13 @@ export default function ClientPage() {
       </section>
 
       {/* FAQ Section */}
-      <section
-        ref={faqRef}
-        className="relative overflow-hidden bg-gradient-to-br from-gray-50 via-white to-blue-50/20 py-12 md:py-16"
-      >
-        <div className="container mx-auto px-4">
-          <div
-            className={`text-center mb-12 transition-all duration-1000 ${
-              isFaqVisible
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-8"
-            }`}
-          >
-            <Badge
-              className="mb-4 bg-blue-100 text-blue-700 border-blue-200"
-              variant="outline"
-            >
-              <MessageSquare className="mr-2 h-3.5 w-3.5" />
-              FAQ
-            </Badge>
-            <h2 className="mb-4 text-balance text-3xl font-bold md:text-4xl lg:text-5xl">
-              Frequently Asked{" "}
-              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                Questions
-              </span>
-            </h2>
-            <p className="text-pretty text-muted-foreground text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
-              Everything you need to know about our Customer Data Platform.
-            </p>
-          </div>
-
-          <div
-            className={`grid gap-6 md:grid-cols-2 max-w-5xl mx-auto transition-all duration-1000 delay-200 ${
-              isFaqVisible
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-8"
-            }`}
-          >
-            {/* Column 1 */}
-            <div className="space-y-4">
-              <Accordion type="single" collapsible className="space-y-4">
-                <AccordionItem
-                  value="item-1"
-                  className="bg-white border border-gray-200 rounded-xl px-6"
-                >
-                  <AccordionTrigger className="text-left font-semibold hover:no-underline">
-                    What is a Customer Data Platform (CDP)?
-                  </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground leading-relaxed">
-                    A Customer Data Platform (CDP) is a software system that
-                    consolidates customer data from multiple sources into a
-                    unified database, creating comprehensive customer profiles.
-                    It enables businesses to segment audiences, personalize
-                    campaigns, and gain actionable insights across all customer
-                    touchpoints.
-                  </AccordionContent>
-                </AccordionItem>
-
-                <AccordionItem
-                  value="item-2"
-                  className="bg-white border border-gray-200 rounded-xl px-6"
-                >
-                  <AccordionTrigger className="text-left font-semibold hover:no-underline">
-                    How does the CDP integrate with my existing tools?
-                  </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground leading-relaxed">
-                    Our CDP offers seamless integration with 20+ platforms
-                    including Razorpay, Shopify, Facebook Leads, India Mart,
-                    Justdial, and more. We provide pre-built connectors, RESTful
-                    APIs, and webhooks for custom integrations. Data
-                    synchronization happens in real-time, ensuring your customer
-                    profiles are always up-to-date.
-                  </AccordionContent>
-                </AccordionItem>
-
-                <AccordionItem
-                  value="item-3"
-                  className="bg-white border border-gray-200 rounded-xl px-6"
-                >
-                  <AccordionTrigger className="text-left font-semibold hover:no-underline">
-                    Can I create custom customer segments?
-                  </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground leading-relaxed">
-                    Yes! Our advanced segmentation engine allows you to create
-                    unlimited custom segments based on any combination of
-                    behavioral, demographic, transactional, and custom
-                    attributes. You can also create dynamic segments that
-                    automatically update as customer data changes, and use
-                    AI-powered predictive segments.
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-            </div>
-
-            {/* Column 2 */}
-            <div className="space-y-4">
-              <Accordion type="single" collapsible className="space-y-4">
-                <AccordionItem
-                  value="item-4"
-                  className="bg-white border border-gray-200 rounded-xl px-6"
-                >
-                  <AccordionTrigger className="text-left font-semibold hover:no-underline">
-                    What channels can I use for campaigns?
-                  </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground leading-relaxed">
-                    You can launch campaigns across multiple channels including
-                    WhatsApp Business API, RCS (Rich Communication Services),
-                    SMS, Email, Instagram Direct Messages, and Facebook
-                    Messenger. Our platform enables omnichannel orchestration,
-                    allowing you to coordinate campaigns across all channels
-                    from a single interface.
-                  </AccordionContent>
-                </AccordionItem>
-
-                <AccordionItem
-                  value="item-5"
-                  className="bg-white border border-gray-200 rounded-xl px-6"
-                >
-                  <AccordionTrigger className="text-left font-semibold hover:no-underline">
-                    Is my customer data secure and compliant?
-                  </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground leading-relaxed">
-                    Absolutely. We implement enterprise-grade security with
-                    end-to-end encryption, secure data storage, and regular
-                    security audits. Our platform is GDPR compliant and includes
-                    features for data privacy, consent management, and
-                    role-based access control. We also provide audit trails and
-                    data retention policies.
-                  </AccordionContent>
-                </AccordionItem>
-
-                <AccordionItem
-                  value="item-6"
-                  className="bg-white border border-gray-200 rounded-xl px-6"
-                >
-                  <AccordionTrigger className="text-left font-semibold hover:no-underline">
-                    How quickly can I see results?
-                  </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground leading-relaxed">
-                    Most businesses see measurable improvements within the first
-                    30 days. Our quick-start templates and pre-built
-                    integrations allow you to launch your first campaign within
-                    hours. Real-time analytics provide immediate visibility into
-                    campaign performance, customer engagement, and ROI.
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-            </div>
-          </div>
-        </div>
-      </section>
+      <FAQSection
+        badgeText="Common Questions"
+        title="Frequently Asked Questions"
+        description="Everything you need to know about Customer Data Platform (CDP)"
+        faqsColumn1={faqsColumnFAQSection1}
+        faqsColumn2={faqsColumnFAQSection2}
+      />
 
       {/* CTA Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-purple-600 via-blue-600 to-purple-700 py-16 md:py-20">

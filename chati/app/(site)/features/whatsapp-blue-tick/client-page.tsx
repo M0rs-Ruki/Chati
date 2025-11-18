@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import FAQSection from "@/components/section/FAQSection";
 import {
   Accordion,
   AccordionContent,
@@ -246,6 +247,53 @@ export default function WhatsAppBlueTickPage() {
       question: "Can I still use API features without the blue tick?",
       answer:
         "Yes, absolutely! All WhatsApp Business API features—broadcasts, automation, chatbots, analytics—work perfectly without the blue tick. Verification simply adds the trust badge to enhance your brand credibility.",
+    },
+  ];
+
+  const faqsColumnFAQSection1 = [
+    {
+      question: "What is the WhatsApp Blue Tick verification?",
+      answer:
+        "The WhatsApp Blue Tick (verified badge) is an official verification from Meta that confirms your business account is authentic and legitimate. It appears next to your business name, building customer trust and helping prevent impersonation. The blue tick shows customers they're communicating with a verified, credible business.",
+    },
+    {
+      question: "What are the requirements to get verified?",
+      answer:
+        "To qualify for verification, you need: a WhatsApp Business API account, completed business verification with Meta, an approved display name, two-step verification enabled, at least 5 pieces of organic media presence (news articles, press coverage from reputable publications), compliance with WhatsApp policies, and your business must be notable and authentic.",
+    },
+    {
+      question: "How long does the verification process take?",
+      answer:
+        "Meta typically reviews blue tick applications within 3-5 business days. However, during periods of high submission volume, it may take up to 2 weeks. You'll receive an email notification once your application is reviewed. If approved, the blue tick appears immediately on your WhatsApp Business profile.",
+    },
+    {
+      question:
+        "What is the difference between Meta Verified and Official Business Account?",
+      answer:
+        "Meta Verified is a paid subscription ($14-$20/month) available in select countries offering a verified badge, impersonation protection, and account support. Official Business Account (OBA) is a free verification for notable businesses using WhatsApp Business API, requiring proof of media presence and brand recognition. Both display the blue tick.",
+    },
+  ];
+
+  const faqsColumnFAQSection2 = [
+    {
+      question: "Can I get verified with the WhatsApp Business App?",
+      answer:
+        "Yes, through Meta Verified subscription. Open the WhatsApp Business App, go to Settings > Meta Verified, choose your plan, submit business documents (license, legal identity), and complete payment. This is currently available in India, Brazil, Colombia, and Indonesia, with more regions being added progressively.",
+    },
+    {
+      question: "What happens if my verification is rejected?",
+      answer:
+        "If rejected, Meta will explain the reason via email. Common issues include insufficient media presence, non-compliant display name, incomplete business verification, or policy violations. You can reapply after 30 days once you've addressed the issues. Payments are refunded if verification fails.",
+    },
+    {
+      question: "Do I need organic media coverage to get verified?",
+      answer:
+        "Yes, for WhatsApp Business API verification (OBA), you need at least 5 organic media mentions from reputable sources like news outlets, major publications, or industry blogs. Paid PR articles and advertisements don't count. This proves your business is notable and recognized publicly, which is a key requirement.",
+    },
+    {
+      question: "Can I lose my blue tick after verification?",
+      answer:
+        "Yes, Meta can revoke your verified badge if you violate WhatsApp's Commerce or Business policies, engage in spam, impersonate others, or if your business becomes inactive. For Meta Verified subscriptions, you'll also lose the badge if you stop paying. Maintain compliance and active business operations to keep your verification.",
     },
   ];
 
@@ -662,86 +710,13 @@ export default function WhatsAppBlueTickPage() {
       </section>
 
       {/* FAQ Section */}
-      <section
-        ref={faqRef}
-        className="py-16 md:py-20 bg-gradient-to-br from-gray-50 to-white"
-      >
-        <div className="container mx-auto px-4">
-          <div
-            className={`text-center mb-12 transition-all duration-1000 ${
-              faqInView
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-8"
-            }`}
-          >
-            <Badge className="mb-4 shadow-sm" variant="outline">
-              Common Questions
-            </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Everything you need to know about WhatsApp Blue Tick verification
-            </p>
-          </div>
-
-          <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Left Column */}
-              <div
-                className={`transition-all duration-1000 ${
-                  faqInView
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Accordion type="single" collapsible className="space-y-3">
-                  {faqsColumn1.map((faq, index) => (
-                    <AccordionItem
-                      key={index}
-                      value={`item-${index}`}
-                      className="bg-white border-2 rounded-lg px-6 shadow-sm hover:shadow-md transition-shadow"
-                    >
-                      <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground pb-4 leading-relaxed">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-
-              {/* Right Column */}
-              <div
-                className={`transition-all duration-1000 delay-300 ${
-                  faqInView
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Accordion type="single" collapsible className="space-y-3">
-                  {faqsColumn2.map((faq, index) => (
-                    <AccordionItem
-                      key={index}
-                      value={`item-${index + 4}`}
-                      className="bg-white border-2 rounded-lg px-6 shadow-sm hover:shadow-md transition-shadow"
-                    >
-                      <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground pb-4 leading-relaxed">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <FAQSection
+        badgeText="Common Questions"
+        title="Frequently Asked Questions"
+        description="Everything you need to know about WhatsApp Blue Tick verification"
+        faqsColumn1={faqsColumnFAQSection1}
+        faqsColumn2={faqsColumnFAQSection2}
+      />
 
       {/* Final CTA */}
       <section className="py-16 md:py-20 bg-gradient-to-br from-blue-600 to-green-600 text-white">

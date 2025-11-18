@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import FAQSection from "@/components/section/FAQSection";
 import {
   Accordion,
   AccordionContent,
@@ -235,6 +236,52 @@ export default function ClickTrackingPage() {
       question: "Is Click Tracking available for all plans?",
       answer:
         "Click Tracking is typically available on our Pro and Enterprise plans. Check your current plan features or contact our sales team to upgrade and unlock this powerful retargeting capability to maximize your WhatsApp marketing ROI.",
+    },
+  ];
+
+  const faqsColumnFAQSection1 = [
+    {
+      question: "What is WhatsApp Click Tracking?",
+      answer:
+        "WhatsApp Click Tracking monitors when recipients tap links in your WhatsApp messages, providing visibility into content engagement and conversion paths. It captures metrics like click-through rates, unique clicks, time-to-click, and user behavior—helping you understand which messages, offers, and CTAs drive the most customer action.",
+    },
+    {
+      question: "How does click tracking work technically?",
+      answer:
+        "Click tracking uses shortened trackable URLs (like Bitly or custom domains) with unique identifiers for each recipient. When users click, the system logs the event, then redirects to the destination URL. You can also use UTM parameters with Google Analytics or leverage WhatsApp Business API's native analytics to track delivery, read status, and link clicks.",
+    },
+    {
+      question: "Which platforms can I use for tracking WhatsApp clicks?",
+      answer:
+        "You can track clicks through multiple platforms: WhatsApp Business API's native analytics dashboard, Google Analytics 4 (GA4) with UTM parameters and custom events, Google Tag Manager (GTM) for automated event tracking, URL shorteners like Bitly with built-in analytics, Meta Pixel for conversion tracking, and dedicated WhatsApp marketing platforms like Braze or Dotdigital.",
+    },
+    {
+      question: "Can I track individual user behavior?",
+      answer:
+        "Yes! With WhatsApp Business API, each link can include a unique identifier per recipient, enabling precise attribution. You can see which specific customers clicked links, when they clicked, how many times, and which device they used. This individual-level tracking helps personalize follow-ups and identify your most engaged customers.",
+    },
+  ];
+
+  const faqsColumnFAQSection2 = [
+    {
+      question: "How do I set up click tracking in Google Analytics?",
+      answer:
+        "Install Google Tag Manager on your website, create a Click URL variable, set up a custom trigger for WhatsApp links (checking if URL contains 'wa.me' or 'api.whatsapp.com'), create a GA4 Event tag named 'whatsapp_click', and publish. In GA4, navigate to Reports > Events to view WhatsApp click data. You can also mark it as a conversion for ROI tracking.",
+    },
+    {
+      question: "What metrics should I track for WhatsApp campaigns?",
+      answer:
+        "Track click-through rate (CTR), unique vs. total clicks, time between message delivery and click, conversion rate from click to purchase, bounce rate after clicking, source pages driving WhatsApp engagement, campaign-specific performance with UTM parameters, and A/B test results comparing different messages, CTAs, or send times to continuously optimize performance.",
+    },
+    {
+      question: "Can I track clicks from Click-to-WhatsApp ads?",
+      answer:
+        "Absolutely! Click-to-WhatsApp ads on Facebook and Instagram automatically include tracking parameters. You can monitor which ads drive conversations, measure cost-per-click and cost-per-conversation, track user journey from ad click to purchase, and integrate with Meta Pixel for retargeting. This closed-loop tracking proves social media advertising ROI and optimizes ad spend.",
+    },
+    {
+      question: "Is click tracking compliant with privacy regulations?",
+      answer:
+        "Yes, when implemented correctly. Use first-party tracking domains, obtain proper consent before collecting data, anonymize personally identifiable information (PII) where required, comply with GDPR and regional privacy laws, provide clear privacy policies explaining data collection, and allow users to opt out. WhatsApp's end-to-end encryption remains intact—tracking only measures link clicks, not message content.",
     },
   ];
 
@@ -613,86 +660,13 @@ export default function ClickTrackingPage() {
       </section>
 
       {/* FAQ Section */}
-      <section
-        ref={faqRef}
-        className="py-16 md:py-20 bg-gradient-to-br from-gray-50 to-white"
-      >
-        <div className="container mx-auto px-4">
-          <div
-            className={`text-center mb-12 transition-all duration-1000 ${
-              faqInView
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-8"
-            }`}
-          >
-            <Badge className="mb-4 shadow-sm" variant="outline">
-              Common Questions
-            </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Everything you need to know about WhatsApp Click Tracking
-            </p>
-          </div>
-
-          <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Left Column */}
-              <div
-                className={`transition-all duration-1000 ${
-                  faqInView
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Accordion type="single" collapsible className="space-y-3">
-                  {faqsColumn1.map((faq, index) => (
-                    <AccordionItem
-                      key={index}
-                      value={`item-${index}`}
-                      className="bg-white border-2 rounded-lg px-6 shadow-sm hover:shadow-md transition-shadow"
-                    >
-                      <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground pb-4 leading-relaxed">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-
-              {/* Right Column */}
-              <div
-                className={`transition-all duration-1000 delay-300 ${
-                  faqInView
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Accordion type="single" collapsible className="space-y-3">
-                  {faqsColumn2.map((faq, index) => (
-                    <AccordionItem
-                      key={index}
-                      value={`item-${index + 3}`}
-                      className="bg-white border-2 rounded-lg px-6 shadow-sm hover:shadow-md transition-shadow"
-                    >
-                      <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground pb-4 leading-relaxed">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <FAQSection
+        badgeText="Common Questions"
+        title="Frequently Asked Questions"
+        description="Everything you need to know about WhatsApp Click Tracking"
+        faqsColumn1={faqsColumnFAQSection1}
+        faqsColumn2={faqsColumnFAQSection2}
+      />
 
       {/* Final CTA */}
       <section className="py-16 md:py-20 bg-gradient-to-br from-blue-600 to-purple-600 text-white">

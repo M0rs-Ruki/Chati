@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import FAQSection from "@/components/section/FAQSection";
 import {
   Accordion,
   AccordionContent,
@@ -192,6 +193,52 @@ export default function WhatsAppWebViewsPage() {
       question: "Do I need coding skills to implement WebViews?",
       answer:
         "Not necessarily. Our platform provides easy-to-use tools and templates for common use cases like forms, catalogs, and booking systems. For custom implementations, basic web development knowledge is helpful, but our support team can guide you through the process.",
+    },
+  ];
+
+  const faqsColumnFAQSection1 = [
+    {
+      question: "What are WhatsApp WebViews?",
+      answer:
+        "WhatsApp WebViews allow web-based content to display directly inside WhatsApp chats, eliminating the need to leave the app. Users can browse product catalogs, fill forms, make payments, upload documents, and complete complex tasks—all within the familiar WhatsApp interface, creating a seamless and uninterrupted experience.",
+    },
+    {
+      question: "How do WebViews improve conversions?",
+      answer:
+        "WebViews boost conversions by up to 35% by keeping customers in the app throughout their journey. When users don't have to switch between apps or external browsers, friction is eliminated, drop-off rates decrease significantly, and customers can complete purchases or actions faster—resulting in higher engagement and conversion rates.",
+    },
+    {
+      question: "What can I build with WhatsApp WebViews?",
+      answer:
+        "You can create embedded forms for feedback and onboarding, dynamic product catalogs with images and descriptions, secure payment flows with gateways like Razorpay or Stripe, booking and appointment systems, document upload interfaces for KYC or claims, order tracking dashboards, and personalized recommendation engines—all accessible within WhatsApp chats.",
+    },
+    {
+      question: "Do I need coding skills to implement WebViews?",
+      answer:
+        "Not necessarily. While custom WebViews require HTML, CSS, and JavaScript development, many platforms like Hubtype offer no-code Flow Builders with drag-and-drop functionality and pre-built templates. These tools simplify WebView deployment, allowing you to create sophisticated in-chat experiences without extensive coding knowledge.",
+    },
+  ];
+
+  const faqsColumnFAQSection2 = [
+    {
+      question: "Are WebViews secure for payments and sensitive data?",
+      answer:
+        "Yes, WhatsApp WebViews maintain end-to-end encryption and operate within WhatsApp's secure environment. Payment integrations support PCI compliance and use trusted gateways like Razorpay, Stripe, and PayPal. Advanced encryption protocols protect sensitive data during collection, ensuring customer information remains secure throughout the entire transaction process.",
+    },
+    {
+      question: "Which businesses benefit most from WebViews?",
+      answer:
+        "E-commerce stores benefit from in-app shopping and checkout, travel companies use them for booking modifications, insurance firms streamline claim submissions with document uploads, restaurants enable table reservations, healthcare providers facilitate appointment scheduling, and service businesses collect customer information through forms—essentially any business requiring multi-step interactions or data collection.",
+    },
+    {
+      question: "How does WebView differ from regular URL links?",
+      answer:
+        "Regular links redirect users to external browsers, breaking the conversation flow and often causing drop-offs. WebViews open content natively inside WhatsApp, maintaining context and continuity. Users feel they never left the app, can easily return to the chat, and the entire journey is tracked—providing businesses with complete visibility into user behavior and engagement.",
+    },
+    {
+      question: "Do WebViews work on all devices?",
+      answer:
+        "WebViews are automatically enabled for WhatsApp Business accounts with daily messaging limits of 1,000+ business-initiated conversations. They work across Android and iOS devices, though availability is being gradually rolled out. The feature is automatically enabled by WhatsApp—no configuration needed—and is designed to be responsive across different screen sizes and devices.",
     },
   ];
 
@@ -714,86 +761,13 @@ export default function WhatsAppWebViewsPage() {
       </section>
 
       {/* FAQ Section */}
-      <section
-        ref={faqRef}
-        className="py-16 md:py-20 bg-gradient-to-br from-gray-50 to-white"
-      >
-        <div className="container mx-auto px-4">
-          <div
-            className={`text-center mb-12 transition-all duration-1000 ${
-              faqInView
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-8"
-            }`}
-          >
-            <Badge className="mb-4 shadow-sm" variant="outline">
-              Common Questions
-            </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Everything you need to know about WhatsApp WebViews
-            </p>
-          </div>
-
-          <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Left Column */}
-              <div
-                className={`transition-all duration-1000 ${
-                  faqInView
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Accordion type="single" collapsible className="space-y-3">
-                  {faqsColumn1.map((faq, index) => (
-                    <AccordionItem
-                      key={index}
-                      value={`item-${index}`}
-                      className="bg-white border-2 rounded-lg px-6 shadow-sm hover:shadow-md transition-shadow"
-                    >
-                      <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground pb-4 leading-relaxed">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-
-              {/* Right Column */}
-              <div
-                className={`transition-all duration-1000 delay-300 ${
-                  faqInView
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Accordion type="single" collapsible className="space-y-3">
-                  {faqsColumn2.map((faq, index) => (
-                    <AccordionItem
-                      key={index}
-                      value={`item-${index + 3}`}
-                      className="bg-white border-2 rounded-lg px-6 shadow-sm hover:shadow-md transition-shadow"
-                    >
-                      <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground pb-4 leading-relaxed">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <FAQSection
+        badgeText="Common Questions"
+        title="Frequently Asked Questions"
+        description="Everything you need to know about WhatsApp WebViews"
+        faqsColumn1={faqsColumnFAQSection1}
+        faqsColumn2={faqsColumnFAQSection2}
+      />
 
       {/* Final CTA */}
       <section className="py-16 md:py-20 bg-gradient-to-br from-emerald-600 to-blue-600 text-white">
