@@ -14,6 +14,7 @@ export async function GET(req: NextRequest) {
         id: true,
         name: true,
         logoUrl: true,
+        theme: true
       },
     });
 

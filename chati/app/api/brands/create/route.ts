@@ -23,6 +23,7 @@ const createBrandSchema = z.object({
     .trim(),
   logoUrl: z.array(logoSchema).min(1, "At least one logo is required"),
   status: z.enum(["ACTIVE", "INACTIVE"]).optional(),
+  theme: z.enum(["COLOR", "DARK"]).optional(),
 });
 
 export async function POST(req: NextRequest) {
@@ -64,7 +65,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { name, logoUrl, status } = validation.data;
+    const { name, logoUrl, status, theme } = validation.data;
 
     const existingBrand = await prisma.brand.findFirst({
       where: { name: { equals: name, mode: "insensitive" } },
@@ -82,6 +83,7 @@ export async function POST(req: NextRequest) {
         name,
         logoUrl: logoUrl as any, // Prisma will store this as Json
         status: status || "INACTIVE",
+        theme: theme || "DARK",
       },
     });
 

@@ -6,6 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import Image from "next/image";
 import { MediaPicker } from "@/components/media-picker-multiple";
 import {
@@ -30,6 +37,7 @@ interface Brand {
   name: string;
   logoUrl: BrandLogo[]; // Changed to BrandLogo[]
   status: "ACTIVE" | "INACTIVE";
+  theme: "DARK" | "COLOR";
   createdAt: string;
   updatedAt: string;
 }
@@ -48,6 +56,7 @@ export default function BrandsPage() {
   const [newBrandForm, setNewBrandForm] = useState({
     name: "",
     logoUrls: [] as BrandLogo[], // Changed to BrandLogo[]
+    theme: "DARK" as "DARK" | "COLOR",
   });
 
   const [editingBrand, setEditingBrand] = useState<Brand | null>(null);
@@ -126,6 +135,7 @@ export default function BrandsPage() {
         body: JSON.stringify({
           name: newBrandForm.name,
           logoUrl: newBrandForm.logoUrls, // Now sends {name, url} objects
+          theme: newBrandForm.theme,
         }),
       });
 
@@ -139,7 +149,7 @@ export default function BrandsPage() {
         description: "Brand created successfully!",
       });
 
-      setNewBrandForm({ name: "", logoUrls: [] });
+      setNewBrandForm({ name: "", logoUrls: [], theme: "DARK" });
       fetchBrands();
     } catch (error: any) {
       toast({
@@ -173,6 +183,7 @@ export default function BrandsPage() {
         body: JSON.stringify({
           name: editingBrand.name,
           logoUrl: editingBrand.logoUrl,
+          theme: editingBrand.theme,
         }),
       });
 
@@ -269,7 +280,9 @@ export default function BrandsPage() {
 
       toast({
         title: "Success",
-        description: `Brand ${newStatus === "ACTIVE" ? "activated" : "deactivated"} successfully!`,
+        description: `Brand ${
+          newStatus === "ACTIVE" ? "activated" : "deactivated"
+        } successfully!`,
       });
 
       fetchBrands();
@@ -388,6 +401,33 @@ export default function BrandsPage() {
           </div>
 
           <div>
+            <Label htmlFor="brand-theme" className="text-gray-700 font-medium">
+              Logo Theme *
+            </Label>
+            <Select
+              value={newBrandForm.theme}
+              onValueChange={(value: "DARK" | "COLOR") =>
+                setNewBrandForm({ ...newBrandForm, theme: value })
+              }
+            >
+              <SelectTrigger id="brand-theme" className="mt-2 w-full">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="DARK">
+                  Dark (Grayscale with hover color)
+                </SelectItem>
+                <SelectItem value="COLOR">Color (Always full color)</SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-xs text-gray-500 mt-1">
+              {newBrandForm.theme === "DARK"
+                ? "Logos will appear in grayscale and show color on hover"
+                : "Logos will always display in full color"}
+            </p>
+          </div>
+
+          <div>
             <div className="flex items-center justify-between mb-3">
               <Label className="text-gray-700 font-medium">
                 Brand Logos * ({newBrandForm.logoUrls.length})
@@ -419,7 +459,15 @@ export default function BrandsPage() {
                     key={index}
                     className="relative border-2 border-gray-200 rounded-lg p-3 bg-white hover:border-indigo-300 transition-colors"
                   >
-                    <div className="aspect-square flex items-center justify-center mb-2 bg-gray-50 rounded">
+                    <div
+                      className={`aspect-square flex items-center justify-center mb-2 bg-gray-50 rounded transition-all duration-300
+                      ${
+                        newBrandForm.theme === "DARK"
+                          ? "grayscale hover:grayscale-0"
+                          : ""
+                      }
+                      `}
+                    >
                       <Image
                         src={logo.url}
                         alt={logo.name}
@@ -498,6 +546,33 @@ export default function BrandsPage() {
             </div>
 
             <div>
+              <Label className="text-gray-700 font-medium">Logo Theme *</Label>
+              <Select
+                value={editingBrand.theme}
+                onValueChange={(value: "DARK" | "COLOR") =>
+                  setEditingBrand({ ...editingBrand, theme: value })
+                }
+              >
+                <SelectTrigger className="mt-2 w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="DARK">
+                    Dark (Grayscale with hover color)
+                  </SelectItem>
+                  <SelectItem value="COLOR">
+                    Color (Always full color)
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-gray-500 mt-1">
+                {editingBrand.theme === "DARK"
+                  ? "Logos will appear in grayscale and show color on hover"
+                  : "Logos will always display in full color"}
+              </p>
+            </div>
+
+            <div>
               <div className="flex items-center justify-between mb-3">
                 <Label className="text-gray-700 font-medium">
                   Brand Logos * ({editingBrand.logoUrl.length})
@@ -520,7 +595,15 @@ export default function BrandsPage() {
                     key={index}
                     className="relative border-2 border-gray-200 rounded-lg p-3 bg-white hover:border-blue-300 transition-colors"
                   >
-                    <div className="aspect-square flex items-center justify-center mb-2 bg-gray-50 rounded">
+                    <div
+                      className={`aspect-square flex items-center justify-center mb-2 bg-gray-50 rounded transition-all duration-300
+                      ${
+                        editingBrand.theme === "DARK"
+                          ? "grayscale hover:grayscale-0"
+                          : ""
+                      }
+                      `}
+                    >
                       <Image
                         src={logo.url}
                         alt={logo.name}
@@ -623,7 +706,9 @@ export default function BrandsPage() {
                               : "text-gray-500"
                           }`}
                         >
-                          {isTogglingStatus === brand.id ? "Updating..." : brand.status}
+                          {isTogglingStatus === brand.id
+                            ? "Updating..."
+                            : brand.status}
                         </span>
                       </div>
                     </div>
@@ -634,7 +719,13 @@ export default function BrandsPage() {
                       {brand.logoUrl.slice(0, 3).map((logo, idx) => (
                         <div
                           key={idx}
-                          className="w-16 h-16 border rounded-lg p-2 bg-gray-50 flex items-center justify-center"
+                          className={`w-16 h-16 border rounded-lg p-2 bg-gray-50 flex items-center justify-center transition-all duration-300
+                          ${
+                            brand.theme === "DARK"
+                              ? "grayscale hover:grayscale-0"
+                              : ""
+                          }
+                          `}
                           title={logo.name}
                         >
                           <Image

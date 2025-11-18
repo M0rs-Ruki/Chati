@@ -6,6 +6,7 @@ import { CheckCircle2 } from "lucide-react";
 interface LogoItem {
   url: string;
   name: string;
+  theme?: "DARK" | "COLOR";
 }
 
 interface Brand {
@@ -17,7 +18,7 @@ interface Brand {
 }
 
 export function BrandSlider() {
-  const [brands, setBrands] = useState<Brand[]>([]);
+  const [brands, setBrands] = useState<LogoItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Fetch actual data
@@ -27,8 +28,13 @@ export function BrandSlider() {
         const res = await fetch("/api/public/brands");
         const json = await res.json();
 
-
-        setBrands(json.data[0].logoUrl);
+        const brandData = json.data[0];
+        setBrands(
+          brandData.logoUrl.map((logo: LogoItem) => ({
+            ...logo,
+            theme: brandData.theme,
+          }))
+        );
       } catch (error) {
         console.error("Error fetching brands:", error);
       } finally {
@@ -41,17 +47,13 @@ export function BrandSlider() {
 
   if (loading) {
     return (
-      <div className="py-20 text-center text-gray-500">
-        Loading brands...
-      </div>
+      <div className="py-20 text-center text-gray-500">Loading brands...</div>
     );
   }
 
   if (!brands.length) {
     return (
-      <div className="py-20 text-center text-gray-500">
-        No brands found.
-      </div>
+      <div className="py-20 text-center text-gray-500">No brands found.</div>
     );
   }
 
@@ -83,10 +85,18 @@ export function BrandSlider() {
               <div key={setIndex} className="flex">
                 {brands.map((brand, index) => (
                   <div
-                    key={`${setIndex}-${brand.id}-${index}`}
+                    key={`${setIndex}-${index}`}
                     className="flex flex-col items-center justify-center mx-8 md:mx-12 min-w-[140px] md:min-w-[180px]"
                   >
-                    <div className="h-16 md:h-20 w-full flex items-center justify-center mb-3 grayscale hover:grayscale-0 transition-all duration-300 hover:scale-110">
+                    <div
+                      className={`h-16 md:h-20 w-full flex items-center justify-center mb-3 transition-all duration-300 hover:scale-110
+                      ${
+                        brand.theme === "DARK"
+                          ? "grayscale hover:grayscale-0"
+                          : ""
+                      }
+                      `}
+                    >
                       <img
                         src={brand.url}
                         alt={brand.name}

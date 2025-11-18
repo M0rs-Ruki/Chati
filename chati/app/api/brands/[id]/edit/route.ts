@@ -24,6 +24,7 @@ const updateBrandSchema = z
       .optional(),
     logoUrl: z.array(logoSchema).optional(),
     status: z.enum(["ACTIVE", "INACTIVE"]).optional(),
+    theme: z.enum(["COLOR", "DARK"]).optional(),
   })
   .refine(
     (data) =>
@@ -75,7 +76,7 @@ export async function PUT(
       );
     }
 
-    const { name, logoUrl, status } = validation.data;
+    const { name, logoUrl, status, theme } = validation.data;
 
     const existingBrand = await prisma.brand.findUnique({
       where: { id: params.id },
@@ -108,6 +109,7 @@ export async function PUT(
     if (name !== undefined) updateData.name = name;
     if (logoUrl !== undefined) updateData.logoUrl = logoUrl as any;
     if (status !== undefined) updateData.status = status;
+    if (theme !== undefined) updateData.theme = theme;
 
     const updatedBrand = await prisma.brand.update({
       where: { id: params.id },
