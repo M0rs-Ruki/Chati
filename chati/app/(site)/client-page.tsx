@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import FAQSection from "@/components/section/FAQSection";
+import CTASection from "@/components/section/CTASection";
 import {
   Card,
   CardDescription,
@@ -110,6 +111,21 @@ export default function ClientPage() {
         "We offer 24/7 customer support via WhatsApp, email, and live chat. Enterprise customers get dedicated account managers, priority support, and custom onboarding. Our technical team is always available to help with integrations and troubleshooting.",
     },
   ];
+
+  const ctaData = {
+    title: "Grow Better with Cati Today",
+    description:
+      "Join thousands of businesses transforming their customer communication. Start your free trial and see results in days, not months.",
+    primaryButtonText: "Start Free Trial",
+    primaryButtonLink:
+      process.env.NEXT_PUBLIC_APP_URL || "https://app.chati.chat",
+    secondaryButtonText: "Talk to Sales",
+    secondaryButtonLink: `https://wa.me/${
+      process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""
+    }`,
+    footerText: "No credit card required • Free 14-day trial • Cancel anytime",
+  };
+
   return (
     <div className="flex flex-col">
       <StructuredData />
@@ -976,62 +992,15 @@ export default function ClientPage() {
       />
 
       {/* CTA Section - Minimalistic and compact */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-green-600 to-blue-700 py-6 md:py-6">
-        {/* Decorative elements for depth */}
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />
-        <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
-
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3 text-balance">
-              Grow Better with Cati Today
-            </h2>
-
-            <p className="text-base md:text-lg text-white/90 mb-5 max-w-2xl mx-auto text-pretty leading-relaxed">
-              Join thousands of businesses transforming their customer
-              communication. Start your free trial and see results in days, not
-              months.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
-              <Button
-                size="default"
-                className="bg-white text-green-600 hover:bg-gray-50 font-semibold shadow-xl hover:shadow-2xl transition-all px-6 group"
-                asChild
-              >
-                <Link
-                  href={
-                    process.env.NEXT_PUBLIC_APP_URL || "https://app.chati.chat"
-                  }
-                >
-                  Start Free Trial
-                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </Button>
-              <Button
-                size="default"
-                variant="outline"
-                className="border-2 border-white text-white hover:bg-white/10 font-medium shadow-lg backdrop-blur-sm px-6 bg-transparent"
-                asChild
-              >
-                <Link
-                  href={`https://wa.me/${
-                    process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ""
-                  }`}
-                >
-                  <Bell className="mr-2 h-4 w-4" />
-                  Talk to Sales
-                </Link>
-              </Button>
-            </div>
-
-            <p className="mt-4 text-xs text-white/80">
-              No credit card required • Free 14-day trial • Cancel anytime
-            </p>
-          </div>
-        </div>
-      </section>
+      <CTASection
+        title={ctaData.title}
+        description={ctaData.description}
+        primaryButtonText={ctaData.primaryButtonText}
+        primaryButtonLink={ctaData.primaryButtonLink}
+        secondaryButtonText={ctaData.secondaryButtonText}
+        secondaryButtonLink={ctaData.secondaryButtonLink}
+        footerText={ctaData.footerText}
+      />
 
       {/* BackToTop Component */}
       <BackToTop />

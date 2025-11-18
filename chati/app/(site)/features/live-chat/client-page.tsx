@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import FAQSection from "@/components/section/FAQSection";
+import CTASection from "@/components/section/CTASection";
 import {
   Accordion,
   AccordionContent,
@@ -919,34 +920,22 @@ export default function LiveChatPage() {
       />
 
       {/* CTA Section */}
-      <section className="py-12 md:py-14 bg-gradient-to-br from-blue-600 to-purple-700 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Ready to Transform Your Customer Support?
-          </h2>
-          <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
-            Start managing all your customer conversations in one unified inbox
-            today
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              size="lg"
-              variant="secondary"
-              className="bg-white text-blue-600 hover:bg-gray-100"
-            >
-              Start Free Trial
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-white text-white hover:bg-white/10 bg-transparent"
-              asChild
-            >
-              <Link href="/pricing">View Pricing Plans</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+      <CTASection
+        gradientFrom="from-blue-600"
+        gradientVia="via-blue-600"
+        gradientTo="to-purple-700"
+        title="Ready to Transform Your Customer Support?"
+        description="Start managing all your customer conversations in one unified inbox today"
+        primaryButtonText="Start Free Trial"
+        primaryButtonLink="/signup"
+        primaryButtonBgColor="bg-white"
+        primaryButtonTextColor="text-blue-600"
+        primaryButtonHoverBg="hover:bg-gray-100"
+        secondaryButtonText="View Pricing Plans"
+        secondaryButtonLink="/pricing"
+        showSecondaryButton={true}
+        footerText=""
+      />
     </div>
   );
 }
