@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import FAQSection from "@/components/section/FAQSection";
 import {
   Accordion,
   AccordionContent,
@@ -244,6 +245,52 @@ export default function ChatbotsAIPage() {
       question: "Which platforms support AI chatbots?",
       answer:
         "Our AI chatbots work across all major messaging platforms including WhatsApp Business API, RCS (Rich Communication Services), Instagram Direct Messages, Facebook Messenger, website live chat, and mobile apps. Deploy once and engage customers everywhere they are.",
+    },
+  ];
+
+  const faqsColumnFAQSection1 = [
+    {
+      question: "What is an AI chatbot?",
+      answer:
+        "An AI chatbot is an intelligent virtual assistant powered by artificial intelligence and natural language processing (NLP). It can understand and respond to customer questions in real-time, learn from conversations, and provide human-like interactions 24/7 without requiring human intervention.",
+    },
+    {
+      question: "How does conversational AI work?",
+      answer:
+        "Conversational AI uses natural language processing (NLP) and machine learning to understand user intent, analyze context, and generate appropriate responses. It learns from millions of conversations, recognizes patterns, and continuously improves its accuracy to deliver more natural and helpful interactions.",
+    },
+    {
+      question: "Can the chatbot handle multiple languages?",
+      answer:
+        "Yes, our AI chatbot supports 120+ languages with automatic language detection. It can seamlessly switch between languages during conversations and maintain context, making it perfect for global businesses serving customers across different regions.",
+    },
+    {
+      question: "How accurate are AI chatbot responses?",
+      answer:
+        "Our chatbot is trained on billions of conversations and achieves 95%+ accuracy in understanding user intent. It continuously learns from interactions and improves over time. For complex queries it can't handle, it seamlessly transfers the conversation to a human agent.",
+    },
+  ];
+
+  const faqsColumnFAQSection2 = [
+    {
+      question: "Can I customize the chatbot's personality and responses?",
+      answer:
+        "Absolutely! You can fully customize your chatbot's tone, personality, brand voice, and conversation flows. Define specific responses, create custom workflows, and train it on your business data to ensure it perfectly represents your brand and handles industry-specific queries.",
+    },
+    {
+      question: "How long does it take to set up an AI chatbot?",
+      answer:
+        "With our platform, you can launch a basic AI chatbot in minutes by uploading your FAQs, knowledge base articles, or website URLs. For more advanced chatbots with custom integrations and workflows, setup typically takes 1-2 weeks depending on complexity.",
+    },
+    {
+      question: "What happens when the chatbot doesn't understand a question?",
+      answer:
+        "When the chatbot encounters a question it can't confidently answer, it will either ask clarifying questions, offer related topics, or seamlessly transfer the conversation to a human agent. All unresolved queries are logged so you can train the AI to handle them in the future.",
+    },
+    {
+      question: "Can the chatbot integrate with my existing tools?",
+      answer:
+        "Yes, our AI chatbot integrates with popular CRM systems, help desks, e-commerce platforms, payment gateways, and business tools through APIs and webhooks. It can access customer data, create tickets, process orders, and sync conversations across your entire tech stack.",
     },
   ];
 
@@ -885,93 +932,13 @@ export default function ChatbotsAIPage() {
       </section>
 
       {/* FAQ Section */}
-      <section
-        ref={faqRef}
-        className="relative overflow-hidden bg-gradient-to-br from-gray-50 via-white to-blue-50/20 py-12 md:py-14"
-      >
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-6xl mx-auto">
-            <div
-              className={`mb-10 text-center transition-all duration-700 ${
-                faqInView
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-8"
-              }`}
-            >
-              <Badge className="mb-3 shadow-sm" variant="outline">
-                FAQ
-              </Badge>
-              <h2 className="mb-3 text-balance text-3xl font-bold md:text-4xl">
-                Frequently Asked Questions
-              </h2>
-              <p className="text-muted-foreground text-base">
-                Everything you need to know about AI chatbots and conversational
-                AI
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-              <div
-                className={`space-y-3 transition-all duration-700 ${
-                  faqInView
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Accordion
-                  type="single"
-                  collapsible
-                  className="w-full space-y-3"
-                >
-                  {faqsColumn1.map((faq, index) => (
-                    <AccordionItem
-                      key={index}
-                      value={`item-${index}`}
-                      className="border rounded-lg px-6 bg-white shadow-sm hover:shadow-md transition-all duration-300"
-                    >
-                      <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground leading-relaxed pb-4 animate-in fade-in slide-in-from-top-2 duration-300">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-
-              <div
-                className={`space-y-3 transition-all duration-700 delay-200 ${
-                  faqInView
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Accordion
-                  type="single"
-                  collapsible
-                  className="w-full space-y-3"
-                >
-                  {faqsColumn2.map((faq, index) => (
-                    <AccordionItem
-                      key={index}
-                      value={`item-${index + 3}`}
-                      className="border rounded-lg px-6 bg-white shadow-sm hover:shadow-md transition-all duration-300"
-                    >
-                      <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground leading-relaxed pb-4 animate-in fade-in slide-in-from-top-2 duration-300">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <FAQSection
+        badgeText="FAQ"
+        title="Frequently Asked Questions"
+        description="Everything you need to know about AI chatbots and conversational AI"
+        faqsColumn1={faqsColumnFAQSection1}
+        faqsColumn2={faqsColumnFAQSection2}
+      />
 
       {/* CTA Section */}
       <section className="py-12 md:py-14 bg-gradient-to-br from-purple-600 to-blue-700 text-white">

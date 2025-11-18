@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import FAQSection from "@/components/section/FAQSection";
 import {
   Accordion,
   AccordionContent,
@@ -241,6 +242,45 @@ export default function LiveChatPage() {
         "Our analytics dashboard tracks first response time, average response time, and resolution time for each channel and team member. You can set SLA targets and receive alerts when response times exceed thresholds.",
     },
   ];
+
+  const faqsColumnFAQSection1 = [
+    {
+      question: "What is a unified inbox?",
+      answer: "A unified inbox consolidates all your customer conversations from multiple channels—WhatsApp, email, live chat, social media, and SMS—into a single dashboard. This allows your team to manage all interactions without switching between platforms, ensuring no message gets lost."
+    },
+    {
+      question: "Which channels can I connect?",
+      answer: "Our platform supports all major communication channels including WhatsApp, Facebook Messenger, Instagram DMs, email, live website chat, SMS, Telegram, and more. You can enable or disable channels based on your business needs and manage them all from one interface."
+    },
+    {
+      question: "Can multiple agents handle the same conversation?",
+      answer: "Yes, your team can collaborate seamlessly. Conversations can be assigned to specific agents, transferred between team members, or handled collaboratively with internal notes. All team members can view the complete conversation history and customer context."
+    },
+    {
+      question: "How does conversation routing work?",
+      answer: "Our intelligent routing system automatically assigns incoming messages to the most qualified agent based on channel, language, department, or expertise. You can also set up custom routing rules and round-robin distribution to balance workload across your team."
+    }
+  ];
+  
+  const faqsColumnFAQSection2 = [
+    {
+      question: "Can customers switch between channels mid-conversation?",
+      answer: "Absolutely! Our unified inbox maintains conversation continuity across all channels. If a customer starts on live chat and continues via WhatsApp, your agents will see the complete conversation history, so customers never have to repeat themselves."
+    },
+    {
+      question: "Does the platform support multiple languages?",
+      answer: "Yes, our platform includes built-in translation for 120+ languages. Customers can chat in their preferred language, and agents receive auto-translated messages, making your support team instantly multilingual without any language barriers."
+    },
+    {
+      question: "Can I set office hours for live chat?",
+      answer: "Yes, you can configure business hours for each channel. Outside office hours, you can automatically switch to chatbot responses, show offline messages, or create tickets that your team can handle the next business day."
+    },
+    {
+      question: "How many concurrent chats can agents handle?",
+      answer: "Agents can manage multiple conversations simultaneously. You can set custom limits per agent based on their capacity—typically 3-5 concurrent chats for live support. The platform helps prioritize urgent messages and provides quick reply templates to improve efficiency."
+    }
+  ];
+  
 
   return (
     <div className="min-h-screen">
@@ -863,95 +903,13 @@ export default function LiveChatPage() {
       </section>
 
       {/* FAQ Section */}
-      <section
-        ref={faqRef}
-        className="relative overflow-hidden bg-gradient-to-br from-gray-50 via-white to-blue-50/20 py-12 md:py-14"
-      >
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-6xl mx-auto">
-            <div
-              className={`mb-10 text-center transition-all duration-700 ${
-                faqInView
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-8"
-              }`}
-            >
-              <Badge className="mb-3 shadow-sm" variant="outline">
-                FAQ
-              </Badge>
-              <h2 className="mb-3 text-balance text-3xl font-bold md:text-4xl">
-                Frequently Asked Questions
-              </h2>
-              <p className="text-muted-foreground text-base">
-                Everything you need to know about multi-channel live chat and
-                unified inbox
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-              {/* Left Column - 3 FAQs */}
-              <div
-                className={`space-y-3 transition-all duration-700 ${
-                  faqInView
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Accordion
-                  type="single"
-                  collapsible
-                  className="w-full space-y-3"
-                >
-                  {faqsColumn1.map((faq, index) => (
-                    <AccordionItem
-                      key={index}
-                      value={`item-${index}`}
-                      className="border rounded-lg px-6 bg-white shadow-sm hover:shadow-md transition-all duration-300"
-                    >
-                      <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground leading-relaxed pb-4 animate-in fade-in slide-in-from-top-2 duration-300">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-
-              {/* Right Column - 3 FAQs */}
-              <div
-                className={`space-y-3 transition-all duration-700 delay-200 ${
-                  faqInView
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Accordion
-                  type="single"
-                  collapsible
-                  className="w-full space-y-3"
-                >
-                  {faqsColumn2.map((faq, index) => (
-                    <AccordionItem
-                      key={index}
-                      value={`item-${index + 3}`}
-                      className="border rounded-lg px-6 bg-white shadow-sm hover:shadow-md transition-all duration-300"
-                    >
-                      <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground leading-relaxed pb-4 animate-in fade-in slide-in-from-top-2 duration-300">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <FAQSection
+        badgeText="FAQ"
+        title="Frequently Asked Questions"
+        description="Everything you need to know about our live chat platform"
+        faqsColumn1={faqsColumnFAQSection1}
+        faqsColumn2={faqsColumnFAQSection2}
+      />
 
       {/* CTA Section */}
       <section className="py-12 md:py-14 bg-gradient-to-br from-blue-600 to-purple-700 text-white">

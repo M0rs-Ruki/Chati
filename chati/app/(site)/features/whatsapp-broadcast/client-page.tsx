@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import FAQSection from "@/components/section/FAQSection";
 import {
   Accordion,
   AccordionContent,
@@ -242,6 +243,52 @@ export default function WhatsAppBroadcastPage() {
       question: "What types of media can I send?",
       answer:
         "You can send text, images, videos, documents, PDFs, and interactive buttons. Rich media content helps increase engagement and conversion rates.",
+    },
+  ];
+
+  const faqsColumnFAQSection1 = [
+    {
+      question: "What is WhatsApp broadcast messaging?",
+      answer:
+        "WhatsApp broadcast messaging allows you to send messages to multiple contacts at once, with each recipient receiving it as an individual message. Recipients won't see each other's information, making it perfect for personalized business communication at scale.",
+    },
+    {
+      question: "How many contacts can I reach with a broadcast?",
+      answer:
+        "With our platform using WhatsApp Business API, you can send broadcasts to thousands of contacts simultaneously - far beyond the 256 contact limit of the standard WhatsApp Business app. The exact limit depends on your plan.",
+    },
+    {
+      question: "Do recipients know it's a broadcast message?",
+      answer:
+        "No, recipients receive broadcast messages as regular individual chats. They won't know the message was sent to multiple people, and they can't see other recipients' contact information or responses.",
+    },
+    {
+      question: "Do I need customer permission to send broadcasts?",
+      answer:
+        "Yes, you must have active opt-in consent from customers before sending them messages on WhatsApp. This can be obtained through website checkboxes, SMS opt-ins, or when customers initiate conversations with your business.",
+    },
+  ];
+
+  const faqsColumnFAQSection2 = [
+    {
+      question: "What types of messages can I send?",
+      answer:
+        "You can send text messages, images, videos, PDFs, documents, and other multimedia content. For marketing and promotional messages, you'll need to use approved WhatsApp message templates that comply with WhatsApp's business policies.",
+    },
+    {
+      question: "How quickly are broadcast messages delivered?",
+      answer:
+        "Messages are delivered instantly to all recipients on your broadcast list. Our platform ensures fast, reliable delivery with real-time tracking so you can monitor delivery status and engagement metrics.",
+    },
+    {
+      question: "Can I personalize broadcast messages?",
+      answer:
+        "Absolutely! Our platform supports dynamic personalization using customer data like names, order details, and custom fields. This makes each broadcast feel like a one-to-one conversation rather than bulk messaging.",
+    },
+    {
+      question: "Will I get banned for sending broadcasts?",
+      answer:
+        "Not if you follow WhatsApp's guidelines. Our platform includes built-in compliance features, rate limiting, and anti-block functionality to ensure your broadcasts stay within WhatsApp's policies and maintain your account's good standing.",
     },
   ];
 
@@ -1128,94 +1175,13 @@ export default function WhatsAppBroadcastPage() {
       </section>
 
       {/* FAQ Section */}
-      <section
-        ref={faqRef}
-        className="relative overflow-hidden bg-gradient-to-br from-gray-50 via-white to-blue-50/20 py-12 md:py-14"
-      >
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-6xl mx-auto">
-            <div
-              className={`mb-10 text-center transition-all duration-700 ${
-                faqInView
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-8"
-              }`}
-            >
-              <Badge className="mb-3 shadow-sm" variant="outline">
-                FAQ
-              </Badge>
-              <h2 className="mb-3 text-balance text-3xl font-bold md:text-4xl">
-                Frequently Asked Questions
-              </h2>
-              <p className="text-muted-foreground text-base">
-                Everything you need to know about WhatsApp broadcast messaging
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-              {/* Left Column - 3 FAQs */}
-              <div
-                className={`space-y-3 transition-all duration-700 ${
-                  faqInView
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Accordion
-                  type="single"
-                  collapsible
-                  className="w-full space-y-3"
-                >
-                  {faqsColumn1.map((faq, index) => (
-                    <AccordionItem
-                      key={index}
-                      value={`item-${index}`}
-                      className="border rounded-lg px-6 bg-white shadow-sm hover:shadow-md transition-all duration-300"
-                    >
-                      <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground leading-relaxed pb-4 animate-in fade-in slide-in-from-top-2 duration-300">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-
-              {/* Right Column - 3 FAQs */}
-              <div
-                className={`space-y-3 transition-all duration-700 delay-200 ${
-                  faqInView
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Accordion
-                  type="single"
-                  collapsible
-                  className="w-full space-y-3"
-                >
-                  {faqsColumn2.map((faq, index) => (
-                    <AccordionItem
-                      key={index}
-                      value={`item-${index + 3}`}
-                      className="border rounded-lg px-6 bg-white shadow-sm hover:shadow-md transition-all duration-300"
-                    >
-                      <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground leading-relaxed pb-4 animate-in fade-in slide-in-from-top-2 duration-300">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <FAQSection
+        badgeText="FAQ"
+        title="Frequently Asked Questions"
+        description="Everything you need to know about WhatsApp broadcast messaging"
+        faqsColumn1={faqsColumnFAQSection1}
+        faqsColumn2={faqsColumnFAQSection2}
+      />
 
       {/* CTA Section */}
       <section className="py-12 md:py-14 bg-gradient-to-br from-green-600 to-green-700 text-white">

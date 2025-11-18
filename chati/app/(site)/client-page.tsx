@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import FAQSection from "@/components/section/FAQSection";
 import {
   Card,
   CardDescription,
@@ -33,7 +34,10 @@ import {
   FloatingSocialIcons,
   FloatingSocialIconsMobile,
 } from "@/components/floating-social-icons";
-import { FloatingCDPElements, FloatingCDPElementsMobile } from "@/components/floating-cdp-elements";
+import {
+  FloatingCDPElements,
+  FloatingCDPElementsMobile,
+} from "@/components/floating-cdp-elements";
 import dynamic from "next/dynamic";
 import { CounterAnimation } from "@/components/counter-animation";
 import { BackToTop } from "@/components/back-to-top";
@@ -70,6 +74,42 @@ export default function ClientPage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const faqsColumn1 = [
+    {
+      question:
+        "What is WhatsApp Business API and how does it differ from WhatsApp Business App?",
+      answer:
+        "WhatsApp Business API is designed for medium to large businesses to communicate with customers at scale. Unlike the WhatsApp Business App, the API allows multiple users, automation, integration with CRM systems, and can handle unlimited conversations simultaneously.",
+    },
+    {
+      question: "How quickly can I get started with the platform?",
+      answer:
+        "You can start sending messages within 24-48 hours. Our team will help you with account setup, WhatsApp Business verification, and integration. Most businesses are fully operational within 3-5 business days.",
+    },
+    {
+      question: "What messaging channels do you support?",
+      answer:
+        "We support WhatsApp Business API, Instagram Messaging, Facebook Messenger, RCS (Rich Communication Services), SMS, and email. All channels can be managed from a single unified inbox with consistent automation and analytics.",
+    },
+  ];
+
+  const faqsColumn2 = [
+    {
+      question: "Is my customer data secure and compliant?",
+      answer:
+        "Yes, we are fully GDPR compliant and follow industry-standard security practices. All data is encrypted in transit and at rest. We are also SOC 2 certified and regularly undergo security audits to ensure your data remains protected.",
+    },
+    {
+      question: "Can I integrate with my existing CRM or e-commerce platform?",
+      answer:
+        "We offer native integrations with popular platforms like Shopify, WooCommerce, Salesforce, HubSpot, and more. We also provide REST APIs and webhooks for custom integrations with any system.",
+    },
+    {
+      question: "What kind of support do you provide?",
+      answer:
+        "We offer 24/7 customer support via WhatsApp, email, and live chat. Enterprise customers get dedicated account managers, priority support, and custom onboarding. Our technical team is always available to help with integrations and troubleshooting.",
+    },
+  ];
   return (
     <div className="flex flex-col">
       <StructuredData />
@@ -463,7 +503,10 @@ export default function ClientPage() {
         {/* 
           Force the section to fill at least the viewport, push content up if needed, and ensure the image always touches the bottom.
         */}
-        <div className="container relative mx-auto z-10 flex flex-col flex-1" style={{gap: 0}}>
+        <div
+          className="container relative mx-auto z-10 flex flex-col flex-1"
+          style={{ gap: 0 }}
+        >
           <div className="flex flex-col flex-1 justify-start">
             {/* Badge */}
             <Badge
@@ -567,7 +610,10 @@ export default function ClientPage() {
           </div>
 
           {/* Image is forced to always touch the bottom */}
-          <div className="relative w-full flex items-end justify-center pt-0 flex-shrink-0" style={{minHeight: 0}}>
+          <div
+            className="relative w-full flex items-end justify-center pt-0 flex-shrink-0"
+            style={{ minHeight: 0 }}
+          >
             <div className="absolute inset-0 bg-gradient-to-br from-purple-400/20 via-blue-400/15 to-pink-400/20 blur-2xl rounded-full" />
             <FloatingCDPElementsMobile />
             <Image
@@ -921,138 +967,13 @@ export default function ClientPage() {
       </section>
 
       {/* FAQ Section - Two-column layout with smooth animations */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-gray-50 via-white to-blue-50/20 py-12 md:py-14">
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-6xl mx-auto">
-            <div className="mb-10 text-center">
-              <Badge className="mb-3 shadow-sm" variant="outline">
-                FAQ
-              </Badge>
-              <h2 className="mb-3 text-balance text-3xl font-bold md:text-4xl">
-                Frequently Asked Questions
-              </h2>
-              <p className="text-muted-foreground text-base">
-                Quick answers to common questions about our messaging platform
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-              {/* Left Column */}
-              <div className="space-y-3">
-                <Accordion
-                  type="single"
-                  collapsible
-                  className="w-full space-y-3"
-                >
-                  <AccordionItem
-                    value="item-1"
-                    className="border rounded-lg px-6 bg-white shadow-sm hover:shadow-md transition-all duration-300"
-                  >
-                    <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
-                      What is WhatsApp Business API and how does it differ from
-                      WhatsApp Business App?
-                    </AccordionTrigger>
-                    <AccordionContent className="text-muted-foreground leading-relaxed pb-4 animate-in fade-in slide-in-from-top-2 duration-300">
-                      WhatsApp Business API is designed for medium to large
-                      businesses to communicate with customers at scale. Unlike
-                      the WhatsApp Business App, the API allows multiple users,
-                      automation, integration with CRM systems, and can handle
-                      unlimited conversations simultaneously.
-                    </AccordionContent>
-                  </AccordionItem>
-
-                  <AccordionItem
-                    value="item-2"
-                    className="border rounded-lg px-6 bg-white shadow-sm hover:shadow-md transition-all duration-300"
-                  >
-                    <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
-                      How quickly can I get started with the platform?
-                    </AccordionTrigger>
-                    <AccordionContent className="text-muted-foreground leading-relaxed pb-4 animate-in fade-in slide-in-from-top-2 duration-300">
-                      You can start sending messages within 24-48 hours. Our
-                      team will help you with account setup, WhatsApp Business
-                      verification, and integration. Most businesses are fully
-                      operational within 3-5 business days.
-                    </AccordionContent>
-                  </AccordionItem>
-
-                  <AccordionItem
-                    value="item-3"
-                    className="border rounded-lg px-6 bg-white shadow-sm hover:shadow-md transition-all duration-300"
-                  >
-                    <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
-                      What messaging channels do you support?
-                    </AccordionTrigger>
-                    <AccordionContent className="text-muted-foreground leading-relaxed pb-4 animate-in fade-in slide-in-from-top-2 duration-300">
-                      We support WhatsApp Business API, Instagram Messaging,
-                      Facebook Messenger, RCS (Rich Communication Services),
-                      SMS, and email. All channels can be managed from a single
-                      unified inbox with consistent automation and analytics.
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-              </div>
-
-              {/* Right Column */}
-              <div className="space-y-3">
-                <Accordion
-                  type="single"
-                  collapsible
-                  className="w-full space-y-3"
-                >
-                  <AccordionItem
-                    value="item-4"
-                    className="border rounded-lg px-6 bg-white shadow-sm hover:shadow-md transition-all duration-300"
-                  >
-                    <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
-                      Is my customer data secure and compliant?
-                    </AccordionTrigger>
-                    <AccordionContent className="text-muted-foreground leading-relaxed pb-4 animate-in fade-in slide-in-from-top-2 duration-300">
-                      Yes, we are fully GDPR compliant and follow
-                      industry-standard security practices. All data is
-                      encrypted in transit and at rest. We are also SOC 2
-                      certified and regularly undergo security audits to ensure
-                      your data remains protected.
-                    </AccordionContent>
-                  </AccordionItem>
-
-                  <AccordionItem
-                    value="item-5"
-                    className="border rounded-lg px-6 bg-white shadow-sm hover:shadow-md transition-all duration-300"
-                  >
-                    <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
-                      Can I integrate with my existing CRM or e-commerce
-                      platform?
-                    </AccordionTrigger>
-                    <AccordionContent className="text-muted-foreground leading-relaxed pb-4 animate-in fade-in slide-in-from-top-2 duration-300">
-                      We offer native integrations with popular platforms like
-                      Shopify, WooCommerce, Salesforce, HubSpot, and more. We
-                      also provide REST APIs and webhooks for custom
-                      integrations with any system.
-                    </AccordionContent>
-                  </AccordionItem>
-
-                  <AccordionItem
-                    value="item-6"
-                    className="border rounded-lg px-6 bg-white shadow-sm hover:shadow-md transition-all duration-300"
-                  >
-                    <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
-                      What kind of support do you provide?
-                    </AccordionTrigger>
-                    <AccordionContent className="text-muted-foreground leading-relaxed pb-4 animate-in fade-in slide-in-from-top-2 duration-300">
-                      We offer 24/7 customer support via WhatsApp, email, and
-                      live chat. Enterprise customers get dedicated account
-                      managers, priority support, and custom onboarding. Our
-                      technical team is always available to help with
-                      integrations and troubleshooting.
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <FAQSection
+        badgeText="FAQ"
+        title="Frequently Asked Questions"
+        description="Quick answers to common questions about our messaging platform"
+        faqsColumn1={faqsColumn1}
+        faqsColumn2={faqsColumn2}
+      />
 
       {/* CTA Section - Minimalistic and compact */}
       <section className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-green-600 to-blue-700 py-6 md:py-6">

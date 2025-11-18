@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import FAQSection from "@/components/section/FAQSection";
 import {
   Accordion,
   AccordionContent,
@@ -280,6 +281,52 @@ export default function AutomationWorkflowPage() {
       question: "How do I track workflow performance?",
       answer:
         "Our analytics dashboard shows detailed metrics for each workflow including trigger count, delivery rates, open rates, click rates, and conversions. You can see which workflows perform best and optimize accordingly.",
+    },
+  ];
+
+  const faqsColumnFAQSection1 = [
+    {
+      question: "What are automation workflows?",
+      answer:
+        "Automation workflows are sequences of actions that automatically trigger based on customer behavior, time delays, or specific conditions. They allow you to send personalized messages across multiple channels, nurture leads, and engage customers without manual intervention—saving 80% of your time on repetitive tasks.",
+    },
+    {
+      question: "Which channels can I automate campaigns on?",
+      answer:
+        "You can create automated campaigns across 12+ channels including WhatsApp, SMS, email, push notifications, Facebook Messenger, Instagram DMs, and more. Our platform lets you orchestrate multi-channel journeys with a drag-and-drop editor, ensuring consistent messaging across all touchpoints.",
+    },
+    {
+      question: "How do I trigger automated workflows?",
+      answer:
+        "Workflows can be triggered by customer actions (purchases, cart abandonment, form submissions), time-based events (birthdays, anniversaries), segment changes (entering or exiting customer groups), or API calls from your systems. You can combine multiple triggers and conditions for sophisticated automation.",
+    },
+    {
+      question: "Can I personalize automated messages?",
+      answer:
+        "Absolutely! Use dynamic fields to personalize messages with customer names, purchase history, product recommendations, and custom data. Our AI-powered personalization analyzes behavior patterns to deliver the right message, on the right channel, at the optimal time for each individual customer.",
+    },
+  ];
+
+  const faqsColumnFAQSection2 = [
+    {
+      question: "How complex can my workflows be?",
+      answer:
+        "From simple one-message campaigns to complex multi-step journeys with conditional branches, time delays, A/B testing, and cross-channel orchestration. Create workflows with wait conditions, behavioral triggers, segment filters, and unlimited actions—all without coding using our visual workflow builder.",
+    },
+    {
+      question: "What happens if a customer doesn't respond?",
+      answer:
+        "You can set up conditional logic to handle non-engagement. For example, if someone doesn't open an email within 24 hours, automatically send an SMS. If they still don't respond, try WhatsApp or push notification. Our workflows adapt based on customer behavior and channel preferences.",
+    },
+    {
+      question: "Can I A/B test automated campaigns?",
+      answer:
+        "Yes! Test different message variations, send times, channels, and content to find what works best. Our platform automatically selects winning variations and optimizes send times based on engagement patterns. You can split test any element of your workflow to continuously improve performance.",
+    },
+    {
+      question: "How do I measure workflow performance?",
+      answer:
+        "Access detailed analytics for every workflow including delivery rates, open rates, click-through rates, conversions, and revenue attribution across all channels. Track customer journeys, identify drop-off points, and get AI-powered insights to optimize your automation strategies and boost ROI.",
     },
   ];
 
@@ -1231,93 +1278,13 @@ export default function AutomationWorkflowPage() {
       </section>
 
       {/* FAQ Section */}
-      <section
-        ref={faqRef}
-        className="relative overflow-hidden bg-gradient-to-br from-gray-50 via-white to-blue-50/20 py-12 md:py-14"
-      >
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-6xl mx-auto">
-            <div
-              className={`mb-10 text-center transition-all duration-700 ${
-                faqInView
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-8"
-              }`}
-            >
-              <Badge className="mb-3 shadow-sm" variant="outline">
-                FAQ
-              </Badge>
-              <h2 className="mb-3 text-balance text-3xl font-bold md:text-4xl">
-                Frequently Asked Questions
-              </h2>
-              <p className="text-muted-foreground text-base">
-                Everything you need to know about automation workflows and
-                multi-channel campaigns
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-              <div
-                className={`space-y-3 transition-all duration-700 ${
-                  faqInView
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Accordion
-                  type="single"
-                  collapsible
-                  className="w-full space-y-3"
-                >
-                  {faqsColumn1.map((faq, index) => (
-                    <AccordionItem
-                      key={index}
-                      value={`item-${index}`}
-                      className="border rounded-lg px-6 bg-white shadow-sm hover:shadow-md transition-all duration-300"
-                    >
-                      <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground leading-relaxed pb-4 animate-in fade-in slide-in-from-top-2 duration-300">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-
-              <div
-                className={`space-y-3 transition-all duration-700 delay-200 ${
-                  faqInView
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-              >
-                <Accordion
-                  type="single"
-                  collapsible
-                  className="w-full space-y-3"
-                >
-                  {faqsColumn2.map((faq, index) => (
-                    <AccordionItem
-                      key={index}
-                      value={`item-${index + 3}`}
-                      className="border rounded-lg px-6 bg-white shadow-sm hover:shadow-md transition-all duration-300"
-                    >
-                      <AccordionTrigger className="text-left font-semibold hover:no-underline py-4">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground leading-relaxed pb-4 animate-in fade-in slide-in-from-top-2 duration-300">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <FAQSection
+        badgeText="FAQ"
+        title="Frequently Asked Questions"
+        description="Everything you need to know about automation workflows and multi-channel campaigns"
+        faqsColumn1={faqsColumnFAQSection1}
+        faqsColumn2={faqsColumnFAQSection2}
+      />
 
       {/* CTA Section */}
       <section className="py-12 md:py-14 bg-gradient-to-br from-purple-600 to-blue-700 text-white">
